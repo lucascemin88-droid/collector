@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collector — coleções de TCG</title>
+<style>
+  :root{
+    --bg:#0b0d12; --bg2:#11141c; --surface:#161a24; --surface2:#1d2230;
+    --line:#262c3a; --line2:#333b4d;
+    --text:#e9ecf3; --muted:#9aa3b6; --faint:#6b7488;
+    --gold:#d8a84e; --gold-dim:#8a6c31;
+    --green:#4ec98a; --red:#e2604f; --blue:#5aa9e6;
+    --mythic:linear-gradient(135deg,#e06b2a,#c0392b);
+    --rare:linear-gradient(135deg,#d8a84e,#a8791f);
+    --uncommon:linear-gradient(135deg,#a9b6c6,#6d7a8c);
+    --common:linear-gradient(135deg,#4a5262,#333b4d);
+    --radius:14px;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #1b2233 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 0%, #241d2e 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px; line-height:1.5; min-height:100vh;
+  }
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:none;background:none}
+  a{color:var(--blue);text-decoration:none}
+  ::selection{background:var(--gold);color:#111}
+
+  /* ---------- topbar ---------- */
+  header.top{
+    position:sticky;top:0;z-index:40;
+    backdrop-filter:blur(14px);
+    background:rgba(11,13,18,.82);
+    border-bottom:1px solid var(--line);
+  }
+  .top-inner{max-width:1400px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand h1{
+    margin:0;font-size:20px;letter-spacing:.22em;font-weight:700;
+    background:linear-gradient(180deg,#f4e3bd,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand span{font-size:11px;color:var(--faint);letter-spacing:.08em}
+  .games{display:flex;gap:6px;margin-left:4px}
+  .game-pill{
+    padding:5px 12px;border-radius:999px;border:1px solid var(--line2);
+    font-size:12px;color:var(--muted);background:var(--surface);
+  }
+  .game-pill.active{color:#12141a;background:linear-gradient(180deg,#f0d69f,var(--gold));border-color:transparent;font-weight:600}
+  .game-pill.soon{opacity:.5}
+  .spacer{flex:1}
+  .kpis{display:flex;gap:18px;align-items:center}
+  .kpi{text-align:right}
+  .kpi b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+  .kpi small{color:var(--faint);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em}
+  .icon-btn{
+    padding:8px 12px;border-radius:10px;border:1px solid var(--line2);
+    background:var(--surface);color:var(--muted);font-size:12.5px;transition:.15s;
+  }
+  .icon-btn:hover{color:var(--text);border-color:var(--gold-dim)}
+
+  nav.tabs{max-width:1400px;margin:0 auto;padding:0 22px;display:flex;gap:4px;border-top:1px solid transparent}
+  .tab{
+    padding:11px 16px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;transition:.15s;
+  }
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+  main{max-width:1400px;margin:0 auto;padding:26px 22px 80px}
+
+  /* ---------- generic ---------- */
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
+  .section-head h2{margin:0;font-size:17px;font-weight:650;letter-spacing:.01em}
+  .section-head p{margin:3px 0 0;color:var(--muted);font-size:13px;max-width:62ch}
+  .btn{
+    padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;
+    background:linear-gradient(180deg,#f0d69f,var(--gold));color:#15171d;transition:.15s;
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:var(--surface);color:var(--text);border:1px solid var(--line2);font-weight:500}
+  .btn.ghost:hover{border-color:var(--gold-dim)}
+  .btn.danger{background:transparent;border:1px solid var(--line2);color:var(--red);font-weight:500}
+  input[type=text],input[type=search],textarea,select{
+    width:100%;padding:10px 13px;border-radius:10px;background:var(--bg2);
+    border:1px solid var(--line2);outline:none;transition:.15s;
+  }
+  input:focus,textarea:focus,select:focus{border-color:var(--gold-dim);background:#0e1118}
+  label.field{display:block;margin-bottom:13px}
+  label.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+  label.field small{display:block;color:var(--faint);font-size:11.5px;margin-top:5px}
+  .empty{padding:60px 20px;text-align:center;color:var(--faint);border:1px dashed var(--line2);border-radius:var(--radius)}
+
+  /* ---------- theme grid ---------- */
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+  .theme{
+    position:relative;border-radius:var(--radius);overflow:hidden;text-align:left;
+    background:var(--surface);border:1px solid var(--line);transition:.18s;display:flex;flex-direction:column;
+  }
+  .theme:hover{transform:translateY(-3px);border-color:var(--gold-dim);box-shadow:var(--shadow)}
+  .theme-cover{height:82px;position:relative;display:flex;align-items:center;justify-content:center;font-size:34px}
+  .theme-body{padding:13px 15px 15px;flex:1;display:flex;flex-direction:column;gap:6px}
+  .theme-body h3{margin:0;font-size:14.5px;font-weight:640}
+  .theme-body p{margin:0;font-size:12.3px;color:var(--muted);flex:1}
+  .theme-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--faint)}
+  .chip{padding:3px 8px;border-radius:999px;background:var(--surface2);border:1px solid var(--line2);font-size:11px;color:var(--muted)}
+  .mini-bar{height:4px;border-radius:999px;background:var(--surface2);overflow:hidden;margin-top:8px}
+  .mini-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold))}
+
+  /* ---------- collection view ---------- */
+  .coll-head{
+    display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;
+    padding:20px;border-radius:var(--radius);background:linear-gradient(180deg,var(--surface),var(--bg2));
+    border:1px solid var(--line);margin-bottom:20px;
+  }
+  .coll-head .ico{font-size:40px;line-height:1}
+  .coll-head h2{margin:0 0 4px;font-size:20px}
+  .coll-head p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
+  .progress-wrap{min-width:250px;flex:1}
+  .bar{height:9px;border-radius:999px;background:var(--surface2);overflow:hidden;margin:8px 0 6px;border:1px solid var(--line)}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .4s}
+  .progress-num{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+  .progress-num b{color:var(--gold);font-size:15px;font-variant-numeric:tabular-nums}
+
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .toolbar .grow{flex:1;min-width:200px}
+  .seg{display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+  .seg button{padding:8px 14px;font-size:12.5px;color:var(--muted)}
+  .seg button.active{background:var(--surface2);color:var(--gold)}
+
+  /* ---------- card grid ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .card{position:relative;border-radius:11px;overflow:hidden;background:var(--surface2);aspect-ratio:488/680;transition:.15s;border:1px solid transparent}
+  .card img{width:100%;height:100%;object-fit:cover;display:block;transition:.2s}
+  .card:not(.owned) img{filter:grayscale(.85) brightness(.55)}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .card:hover img{filter:none}
+  .card.owned{border-color:var(--gold)}
+  .card .tick{
+    position:absolute;left:7px;top:7px;width:24px;height:24px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+    background:rgba(10,12,16,.78);border:1px solid var(--line2);color:var(--faint);
+  }
+  .card.owned .tick{background:linear-gradient(180deg,#f0d69f,var(--gold));color:#15171d;border-color:transparent}
+  .card .info{
+    position:absolute;right:7px;top:7px;width:24px;height:24px;border-radius:50%;
+    background:rgba(10,12,16,.78);border:1px solid var(--line2);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-style:italic;font-family:Georgia,serif;
+  }
+  .card .info:hover{color:var(--gold);border-color:var(--gold-dim)}
+  .card .cap{
+    position:absolute;left:0;right:0;bottom:0;padding:16px 8px 7px;font-size:11px;
+    background:linear-gradient(180deg,transparent,rgba(8,10,14,.93));
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .card .price{position:absolute;right:7px;bottom:7px;font-size:10.5px;color:var(--gold);font-variant-numeric:tabular-nums}
+  .card-skel{border-radius:11px;aspect-ratio:488/680;background:linear-gradient(100deg,var(--surface) 30%,var(--surface2) 50%,var(--surface) 70%);background-size:220% 100%;animation:sk 1.2s infinite}
+  @keyframes sk{from{background-position:180% 0}to{background-position:-40% 0}}
+
+  .loadmore{display:flex;justify-content:center;margin-top:22px}
+  .status{color:var(--faint);font-size:12.5px;margin-top:12px;text-align:center}
+
+  /* ---------- modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(5,6,10,.78);backdrop-filter:blur(5px);z-index:60;display:flex;align-items:center;justify-content:center;padding:22px}
+  .modal{background:var(--bg2);border:1px solid var(--line2);border-radius:18px;max-width:820px;width:100%;max-height:90vh;overflow:auto;box-shadow:var(--shadow)}
+  .modal-pad{padding:22px}
+  .modal h3{margin:0 0 4px;font-size:18px}
+  .modal .close{position:absolute;right:14px;top:12px;font-size:20px;color:var(--faint);padding:4px 10px;border-radius:8px}
+  .modal .close:hover{color:var(--text);background:var(--surface)}
+  .detail{display:flex;gap:22px;flex-wrap:wrap}
+  .detail img{width:260px;border-radius:12px;box-shadow:var(--shadow)}
+  .detail .meta{flex:1;min-width:230px}
+  .kv{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .kv span{color:var(--muted)}
+  .oracle{white-space:pre-wrap;font-size:13px;color:var(--muted);margin:12px 0;padding:12px;background:var(--surface);border-radius:10px;border:1px solid var(--line)}
+  .rarity-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+    background:var(--surface2);border:1px solid var(--gold-dim);color:var(--text);
+    padding:11px 18px;border-radius:12px;font-size:13px;z-index:90;box-shadow:var(--shadow);
+  }
+  @media (max-width:640px){
+    .top-inner{padding:12px 14px;gap:12px}
+    main{padding:18px 14px 70px}
+    nav.tabs{padding:0 14px}
+    .cards{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+    .kpis{gap:12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <h1>COLLECTOR</h1>
+      <span>coleções de TCG</span>
+    </div>
+    <div class="games">
+      <button class="game-pill active">Magic</button>
+      <button class="game-pill soon" title="Em breve">Pokémon · em breve</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="kpis">
+      <div class="kpi"><b id="kpi-cards">0</b><small>cartas na coleção</small></div>
+      <div class="kpi"><b id="kpi-value">US$ 0</b><small>valor estimado</small></div>
+      <button class="icon-btn" id="btn-backup">Backup</button>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-view="themes">Coleções temáticas</button>
+    <button class="tab" data-view="mine">Minhas coleções</button>
+    <button class="tab" data-view="search">Buscar cartas</button>
+  </nav>
+</header>
+
+<main id="app"></main>
+<div id="modal-root"></div>
+
+<script>
+/* ============================================================
+   Collector — protótipo v0.1
+   Dados: Scryfall API (https://scryfall.com) — uso não comercial,
+   sem afiliação com a Wizards of the Coast.
+   ============================================================ */
+
+const API = "https://api.scryfall.com";
+const PAGE_DELAY = 120;      // Scryfall pede ~50-100ms entre chamadas
+const STORE = "collector.mtg.v1";
+
+/* ---------------- estado persistido ---------------- */
+const blank = { owned:{}, custom:[], totals:{} };
+let S = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE);
+    if(!raw) return structuredClone(blank);
+    return Object.assign(structuredClone(blank), JSON.parse(raw));
+  }catch(e){ return structuredClone(blank); }
+}
+function save(){
+  try{ localStorage.setItem(STORE, JSON.stringify(S)); }
+  catch(e){ toast("Não consegui salvar (armazenamento cheio ou bloqueado)"); }
+}
+
+/* ---------------- coleções temáticas prontas ---------------- */
+const THEMES = [
+  { id:"cats", icon:"🐈", name:"Gatos na arte",
+    desc:"Toda carta com um gato na ilustração — a caçada mais fofa do Multiverso.",
+    q:"art:cat game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3b2f4a,#7a5c8e)" },
+
+  { id:"dogs", icon:"🐕", name:"Cachorros na arte",
+    desc:"Cães em qualquer set, de Isamaru a Rin and Seri.",
+    q:"art:dog game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#4a3826,#8e6b3f)" },
+
+  { id:"dragons", icon:"🐉", name:"Dragões lendários",
+    desc:"Todas as criaturas lendárias do tipo Dragon.",
+    q:"t:dragon t:legendary game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#5a1f1f,#a13b25)" },
+
+  { id:"ltr-legendary", icon:"💍", name:"O Senhor dos Anéis — lendárias",
+    desc:"Personagens lendários do set Tales of Middle-earth.",
+    q:"e:ltr t:legendary", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2f2a1c,#8a6c31)" },
+
+  { id:"serialized", icon:"🔢", name:"Cartas serializadas",
+    desc:"Impressões numeradas à mão (x/500, x/100, x/1). O topo da cadeia alimentar.",
+    q:"is:serialized", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1f2a3a,#3f6ea8)" },
+
+  { id:"fullart-lands", icon:"🏞️", name:"Terras full-art",
+    desc:"Terras básicas de arte completa — a coleção mais visual que existe.",
+    q:"is:fullart t:land", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c3a2c,#3f8a63)" },
+
+  { id:"power9", icon:"👑", name:"Power Nine",
+    desc:"As nove cartas mais icônicas e caras da história do Magic.",
+    q:'!"Black Lotus" or !"Ancestral Recall" or !"Time Walk" or !"Mox Pearl" or !"Mox Sapphire" or !"Mox Jet" or !"Mox Ruby" or !"Mox Emerald" or !"Timetwister"',
+    unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a2f10,#c0952f)" },
+
+  { id:"sld", icon:"🎁", name:"Secret Lair",
+    desc:"Todas as cartas de Secret Lair Drop — arte alternativa e crossovers.",
+    q:"e:sld", unique:"prints", order:"released", cover:"linear-gradient(135deg,#3a1f3a,#a13b8a)" },
+
+  { id:"planeswalkers-mythic", icon:"✨", name:"Planeswalkers míticos",
+    desc:"Todo planeswalker de raridade mítica já impresso.",
+    q:"t:planeswalker r:mythic game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#28304a,#5b6fb0)" },
+
+  { id:"blb", icon:"🐿️", name:"Bloomburrow completo",
+    desc:"O set inteiro, carta por carta — o desafio clássico do colecionador.",
+    q:"e:blb", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2c3a1c,#7a9b3f)" },
+
+  { id:"reserved", icon:"🔒", name:"Reserved List",
+    desc:"Cartas que a Wizards prometeu nunca reimprimir.",
+    q:"is:reserved", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#331f1f,#7a3535)" },
+
+  { id:"showcase", icon:"🖼️", name:"Showcase & Borderless",
+    desc:"Tratamentos especiais das últimas temporadas.",
+    q:"is:showcase r>=rare", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1f2f33,#3f8a92)" },
+];
+
+function themeById(id){ return THEMES.find(t=>t.id===id); }
+function customById(id){ return S.custom.find(c=>c.id===id); }
+function anyCollection(id){ return themeById(id) || customById(id); }
+
+/* ---------------- Scryfall ---------------- */
+const memCache = new Map();     // "q|unique|order|page" -> resposta
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+async function scryPage(q, unique="cards", order="name", page=1){
+  const key = `${q}|${unique}|${order}|${page}`;
+  if(memCache.has(key)) return memCache.get(key);
+  const url = `${API}/cards/search?q=${encodeURIComponent(q)}&unique=${unique}&order=${order}&page=${page}`;
+  const res = await fetch(url, { headers:{ "Accept":"application/json" } });
+  if(res.status === 404){ const out = { data:[], total_cards:0, has_more:false }; memCache.set(key,out); return out; }
+  if(!res.ok) throw new Error(`Scryfall respondeu ${res.status}`);
+  const json = await res.json();
+  memCache.set(key, json);
+  await sleep(PAGE_DELAY);
+  return json;
+}
+
+function normalize(c){
+  const face = (c.image_uris ? c : (c.card_faces && c.card_faces[0])) || {};
+  const img = face.image_uris || {};
+  return {
+    id:c.id, name:c.name, set:(c.set||"").toUpperCase(), setName:c.set_name,
+    num:c.collector_number, rarity:c.rarity, type:c.type_line, mana:c.mana_cost || (c.card_faces&&c.card_faces[0].mana_cost) || "",
+    oracle:c.oracle_text || (c.card_faces||[]).map(f=>f.oracle_text).filter(Boolean).join("\n//\n"),
+    artist:c.artist, released:c.released_at,
+    small:img.small, normal:img.normal || img.large,
+    usd:c.prices && (c.prices.usd || c.prices.usd_foil),
+    eur:c.prices && (c.prices.eur || c.prices.eur_foil),
+    url:c.scryfall_uri
+  };
+}
+
+/* ---------------- posse ---------------- */
+function isOwned(id){ return !!S.owned[id]; }
+function toggleOwn(card){
+  if(S.owned[card.id]) delete S.owned[card.id];
+  else S.owned[card.id] = { n:card.name, s:card.set, usd:card.usd?Number(card.usd):0, at:Date.now() };
+  save(); renderKPIs();
+}
+function ownedCount(){ return Object.keys(S.owned).length; }
+function ownedValue(){ return Object.values(S.owned).reduce((a,c)=>a+(c.usd||0),0); }
+function money(v){ return "US$ " + v.toLocaleString("pt-BR",{maximumFractionDigits:0}); }
+
+function renderKPIs(){
+  document.getElementById("kpi-cards").textContent = ownedCount().toLocaleString("pt-BR");
+  document.getElementById("kpi-value").textContent = money(ownedValue());
+}
+
+/* ---------------- roteamento simples ---------------- */
+let view = { name:"themes", id:null };
+const app = document.getElementById("app");
+
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick = ()=>{ view = { name:t.dataset.view, id:null }; render(); };
+});
+function setTabs(){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.view===view.name);
+  });
+}
+function go(name,id){ view={name,id}; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+function render(){
+  setTabs(); renderKPIs();
+  if(view.name==="themes") return renderThemes();
+  if(view.name==="mine") return renderMine();
+  if(view.name==="search") return renderSearch();
+  if(view.name==="collection") return renderCollection(view.id);
+}
+
+/* ---------------- view: temas ---------------- */
+function renderThemes(){
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Coleções temáticas</h2>
+        <p>Metas prontas para colecionar. Abra uma, marque o que você já tem e acompanhe o progresso — os dados vêm ao vivo do Scryfall.</p>
+      </div>
+    </div>
+    <div class="theme-grid">${THEMES.map(themeCardHTML).join("")}</div>`;
+  app.querySelectorAll("[data-open]").forEach(el=> el.onclick = ()=> go("collection", el.dataset.open));
+}
+
+function themeCardHTML(t){
+  const total = S.totals[t.id];
+  const pct = total ? Math.round(100*collectionOwnedCount(t.id)/total) : null;
+  return `
+  <button class="theme" data-open="${t.id}">
+    <div class="theme-cover" style="background:${t.cover}">${t.icon}</div>
+    <div class="theme-body">
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>
+      <div class="theme-meta">
+        <span class="chip">${total ? total.toLocaleString("pt-BR")+" cartas" : "Magic"}</span>
+        <span>${pct!==null ? pct+"% completa" : "abrir →"}</span>
+      </div>
+      ${pct!==null ? `<div class="mini-bar"><i style="width:${pct}%"></i></div>` : ""}
+    </div>
+  </button>`;
+}
+
+// progresso memorizado da última vez que a coleção foi aberta
+function collectionOwnedCount(id){ return S.totals[id+"::own"] || 0; }
+
+/* ---------------- view: minhas coleções ---------------- */
+function renderMine(){
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Minhas coleções</h2>
+        <p>Crie sua própria meta: por busca automática (ex.: <code>art:cat r:mythic</code>) ou montando carta por carta.</p>
+      </div>
+      <button class="btn" id="new-coll">+ Nova coleção</button>
+    </div>
+    ${S.custom.length===0
+      ? `<div class="empty">Você ainda não criou nenhuma coleção.<br>Comece por um tema pronto ou crie a sua.</div>`
+      : `<div class="theme-grid">${S.custom.map(customCardHTML).join("")}</div>`}`;
+  document.getElementById("new-coll").onclick = openNewCollection;
+  app.querySelectorAll("[data-open]").forEach(el=> el.onclick = ()=> go("collection", el.dataset.open));
+}
+
+function customCardHTML(c){
+  const total = c.type==="manual" ? c.cards.length : S.totals[c.id];
+  const pct = total ? Math.round(100*collectionOwnedCount(c.id)/total) : null;
+  const owned = c.type==="manual" ? c.cards.filter(x=>isOwned(x.id)).length : collectionOwnedCount(c.id);
+  return `
+  <button class="theme" data-open="${c.id}">
+    <div class="theme-cover" style="background:linear-gradient(135deg,#232a3a,#3d4a68)">${c.icon||"⭐"}</div>
+    <div class="theme-body">
+      <h3>${escapeHTML(c.name)}</h3>
+      <p>${escapeHTML(c.desc||"")}</p>
+      <div class="theme-meta">
+        <span class="chip">${c.type==="manual" ? "manual" : "busca"}</span>
+        <span>${total ? owned+" / "+total : "abrir →"}</span>
+      </div>
+      ${pct!==null ? `<div class="mini-bar"><i style="width:${pct}%"></i></div>` : ""}
+    </div>
+  </button>`;
+}
+
+/* ---------------- view: coleção ---------------- */
+let cur = null; // { def, cards:[], page, hasMore, total, filter, term }
+
+async function renderCollection(id){
+  const def = anyCollection(id);
+  if(!def){ go("themes"); return; }
+  const isManual = def.type === "manual";
+  cur = { def, cards: isManual ? def.cards.slice() : [], page:1, hasMore:!isManual, total: isManual?def.cards.length:null, filter:"all", term:"" };
+
+  app.innerHTML = `
+    <button class="icon-btn" id="back" style="margin-bottom:16px">← voltar</button>
+    <div class="coll-head">
+      <div class="ico">${def.icon||"⭐"}</div>
+      <div style="flex:1;min-width:220px">
+        <h2>${escapeHTML(def.name)}</h2>
+        <p>${escapeHTML(def.desc||"")}</p>
+        ${def.q?`<p style="margin-top:8px"><span class="chip">busca: ${escapeHTML(def.q)}</span></p>`:""}
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-num"><span>progresso</span><b id="pct">0%</b></div>
+        <div class="bar"><i id="bar" style="width:0%"></i></div>
+        <div class="progress-num"><span id="prog-label">carregando…</span><span id="prog-value"></span></div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="grow"><input type="search" id="filter-term" placeholder="filtrar por nome dentro da coleção…"></div>
+      <div class="seg" id="seg">
+        <button class="active" data-f="all">Todas</button>
+        <button data-f="owned">Tenho</button>
+        <button data-f="missing">Faltam</button>
+      </div>
+      ${def.type ? `<button class="btn ghost" id="del-coll">Excluir</button>` : ""}
+      <button class="btn ghost" id="share-coll">Compartilhar</button>
+    </div>
+    <div class="cards" id="grid">${skeletons(12)}</div>
+    <div class="status" id="status"></div>
+    <div class="loadmore" id="loadmore"></div>`;
+
+  document.getElementById("back").onclick = ()=> go(def.type ? "mine" : "themes");
+  document.getElementById("filter-term").oninput = e=>{ cur.term = e.target.value.toLowerCase(); paintGrid(); };
+  document.getElementById("seg").onclick = e=>{
+    const b = e.target.closest("button"); if(!b) return;
+    cur.filter = b.dataset.f;
+    document.querySelectorAll("#seg button").forEach(x=>x.classList.toggle("active", x===b));
+    paintGrid();
+  };
+  const del = document.getElementById("del-coll");
+  if(del) del.onclick = ()=>{
+    if(!confirm("Excluir esta coleção? As cartas marcadas continuam na sua conta.")) return;
+    S.custom = S.custom.filter(c=>c.id!==def.id); save(); go("mine");
+  };
+  document.getElementById("share-coll").onclick = ()=> shareCollection(def);
+
+  if(isManual){ cur.total = def.cards.length; paintGrid(); paintProgress(); return; }
+  await loadMore();
+}
+
+function skeletons(n){ return Array.from({length:n},()=>`<div class="card-skel"></div>`).join(""); }
+
+async function loadMore(){
+  const st = document.getElementById("status");
+  const lm = document.getElementById("loadmore");
+  if(lm) lm.innerHTML = "";
+  st.textContent = `Buscando página ${cur.page} no Scryfall…`;
+  try{
+    const json = await scryPage(cur.def.q, cur.def.unique||"cards", cur.def.order||"name", cur.page);
+    cur.total = json.total_cards || cur.cards.length;
+    cur.cards.push(...(json.data||[]).map(normalize));
+    cur.hasMore = !!json.has_more;
+    cur.page++;
+    S.totals[cur.def.id] = cur.total;
+    save();
+    paintGrid(); paintProgress();
+    st.textContent = `${cur.cards.length} de ${cur.total.toLocaleString("pt-BR")} cartas carregadas`;
+    if(cur.hasMore){
+      const rest = Math.min(175, cur.total - cur.cards.length);
+      lm.innerHTML = `<button class="btn ghost" id="more">Carregar mais ${rest} cartas</button>`;
+      document.getElementById("more").onclick = loadMore;
+    }
+  }catch(err){
+    st.innerHTML = `<span style="color:var(--red)">Falha ao falar com o Scryfall: ${escapeHTML(err.message)}</span>`;
+    document.getElementById("grid").innerHTML = "";
+  }
+}
+
+function visibleCards(){
+  return cur.cards.filter(c=>{
+    if(cur.term && !c.name.toLowerCase().includes(cur.term)) return false;
+    if(cur.filter==="owned") return isOwned(c.id);
+    if(cur.filter==="missing") return !isOwned(c.id);
+    return true;
+  });
+}
+
+function paintGrid(){
+  const grid = document.getElementById("grid");
+  const list = visibleCards();
+  if(list.length===0){
+    const manualVazia = cur.def.type==="manual" && cur.cards.length===0;
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">${manualVazia
+      ? `Coleção vazia. Vá em <b>Buscar cartas</b>, abra o <b>ⓘ</b> de uma carta e escolha “Adicionar a uma coleção manual”.`
+      : "Nenhuma carta com esse filtro."}</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(cardHTML).join("");
+  grid.querySelectorAll(".card").forEach(el=>{
+    const card = cur.cards.find(c=>c.id===el.dataset.id);
+    el.querySelector(".info").onclick = e=>{ e.stopPropagation(); openCard(card); };
+    el.onclick = ()=>{ toggleOwn(card); el.classList.toggle("owned", isOwned(card.id)); paintProgress(); };
+  });
+}
+
+function cardHTML(c){
+  const own = isOwned(c.id);
+  return `
+  <div class="card ${own?"owned":""}" data-id="${c.id}" title="${escapeHTML(c.name)} — clique para marcar">
+    <img loading="lazy" src="${c.small||""}" alt="${escapeHTML(c.name)}">
+    <div class="tick">${own?"✓":""}</div>
+    <button class="info">i</button>
+    <div class="cap">${escapeHTML(c.name)}</div>
+    ${c.usd?`<div class="price">$${c.usd}</div>`:""}
+  </div>`;
+}
+
+function paintProgress(){
+  const total = cur.def.type==="manual" ? cur.cards.length : (cur.total||0);
+  const own = cur.cards.filter(c=>isOwned(c.id)).length;
+  const pct = total ? Math.round(100*own/total) : 0;
+  if(cur.def.id && cur.def.id!=="__search__"){ S.totals[cur.def.id]=total; S.totals[cur.def.id+"::own"]=own; save(); }
+  document.getElementById("pct").textContent = pct+"%";
+  document.getElementById("bar").style.width = pct+"%";
+  document.getElementById("prog-label").textContent = `${own} de ${total.toLocaleString("pt-BR")} cartas`;
+  const val = cur.cards.filter(c=>isOwned(c.id)).reduce((a,c)=>a+(Number(c.usd)||0),0);
+  document.getElementById("prog-value").textContent = val ? money(val)+" nesta coleção" : "";
+  renderKPIs();
+}
+
+/* ---------------- view: busca ---------------- */
+let searchState = { q:"", cards:[], page:1, hasMore:false, total:0 };
+
+function renderSearch(){
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Buscar cartas</h2>
+        <p>Busca livre no Scryfall. Aceita a sintaxe completa: <code>art:cat</code>, <code>e:ltr</code>, <code>t:dragon r:mythic</code>, <code>is:serialized</code>, <code>"Sauron"</code>.</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="grow"><input type="text" id="q" placeholder="ex.: art:cat r:mythic" value="${escapeHTML(searchState.q)}"></div>
+      <button class="btn" id="do-search">Buscar</button>
+      <button class="btn ghost" id="add-sel">Salvar resultado como coleção</button>
+    </div>
+    <div class="cards" id="grid"></div>
+    <div class="status" id="status">Digite uma busca para começar.</div>
+    <div class="loadmore" id="loadmore"></div>`;
+
+  const input = document.getElementById("q");
+  document.getElementById("do-search").onclick = runSearch;
+  input.onkeydown = e=>{ if(e.key==="Enter") runSearch(); };
+  document.getElementById("add-sel").onclick = ()=>{
+    const q = input.value.trim();
+    if(!q) return toast("Faça uma busca primeiro");
+    openNewCollection({ query:q });
+  };
+  if(searchState.cards.length){ cur = { def:{id:"__search__",q:searchState.q}, cards:searchState.cards, filter:"all", term:"" }; paintSearchGrid(); }
+
+  async function runSearch(){
+    const q = input.value.trim(); if(!q) return;
+    searchState = { q, cards:[], page:1, hasMore:false, total:0 };
+    document.getElementById("grid").innerHTML = skeletons(12);
+    await fetchSearchPage();
+  }
+}
+
+async function fetchSearchPage(){
+  const st = document.getElementById("status");
+  st.textContent = "Buscando…";
+  try{
+    const json = await scryPage(searchState.q, "cards", "name", searchState.page);
+    searchState.cards.push(...(json.data||[]).map(normalize));
+    searchState.total = json.total_cards||0;
+    searchState.hasMore = !!json.has_more;
+    searchState.page++;
+    cur = { def:{id:"__search__"}, cards:searchState.cards, filter:"all", term:"" };
+    paintSearchGrid();
+    st.textContent = searchState.total ? `${searchState.cards.length} de ${searchState.total.toLocaleString("pt-BR")} resultados` : "Nada encontrado.";
+    const lm = document.getElementById("loadmore");
+    lm.innerHTML = searchState.hasMore ? `<button class="btn ghost" id="more">Carregar mais</button>` : "";
+    if(searchState.hasMore) document.getElementById("more").onclick = fetchSearchPage;
+  }catch(err){
+    st.innerHTML = `<span style="color:var(--red)">Erro: ${escapeHTML(err.message)}</span>`;
+  }
+}
+
+function paintSearchGrid(){
+  const grid = document.getElementById("grid");
+  grid.innerHTML = cur.cards.map(cardHTML).join("");
+  grid.querySelectorAll(".card").forEach(el=>{
+    const card = cur.cards.find(c=>c.id===el.dataset.id);
+    el.querySelector(".info").onclick = e=>{ e.stopPropagation(); openCard(card); };
+    el.onclick = ()=>{ toggleOwn(card); el.classList.toggle("owned", isOwned(card.id)); };
+  });
+}
+
+/* ---------------- modais ---------------- */
+const root = document.getElementById("modal-root");
+function closeModal(){ root.innerHTML = ""; }
+function modal(html){
+  root.innerHTML = `<div class="overlay"><div class="modal" style="position:relative">
+    <button class="close">×</button>${html}</div></div>`;
+  root.querySelector(".close").onclick = closeModal;
+  root.querySelector(".overlay").onclick = e=>{ if(e.target.classList.contains("overlay")) closeModal(); };
+}
+
+const RAR = { mythic:"#e06b2a", rare:"#d8a84e", uncommon:"#a9b6c6", common:"#6b7488", special:"#a13b8a", bonus:"#5aa9e6" };
+
+function openCard(c){
+  const own = isOwned(c.id);
+  const manuals = S.custom.filter(x=>x.type==="manual");
+  const inManual = view.name==="collection" && cur && cur.def && cur.def.type==="manual";
+  modal(`<div class="modal-pad">
+    <div class="detail">
+      <img src="${c.normal||c.small}" alt="${escapeHTML(c.name)}">
+      <div class="meta">
+        <h3>${escapeHTML(c.name)}</h3>
+        <div style="color:var(--muted);font-size:13px;margin-bottom:12px">
+          <span class="rarity-dot" style="background:${RAR[c.rarity]||"#666"}"></span>${escapeHTML(c.setName||"")} · #${c.num} · ${c.rarity}
+        </div>
+        ${c.oracle?`<div class="oracle">${escapeHTML(c.oracle)}</div>`:""}
+        <div class="kv"><span>Tipo</span><b>${escapeHTML(c.type||"—")}</b></div>
+        <div class="kv"><span>Custo</span><b>${escapeHTML(c.mana||"—")}</b></div>
+        <div class="kv"><span>Artista</span><b>${escapeHTML(c.artist||"—")}</b></div>
+        <div class="kv"><span>Lançamento</span><b>${c.released||"—"}</b></div>
+        <div class="kv"><span>Preço (TCGplayer)</span><b style="color:var(--gold)">${c.usd?"US$ "+c.usd:"—"}</b></div>
+        <div class="kv"><span>Preço (Cardmarket)</span><b>${c.eur?"€ "+c.eur:"—"}</b></div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+          <button class="btn" id="own-toggle">${own?"✓ Tenho esta carta":"Marcar como minha"}</button>
+          <a class="btn ghost" href="${c.url}" target="_blank" rel="noopener">Ver no Scryfall</a>
+          ${inManual ? `<button class="btn danger" id="rm-card">Remover desta coleção</button>` : ""}
+        </div>
+        ${manuals.length ? `
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
+          <span style="font-size:12px;color:var(--muted)">Adicionar a uma coleção manual</span>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <select id="add-to" style="flex:1">${manuals.map(m=>`<option value="${m.id}">${escapeHTML(m.name)}</option>`).join("")}</select>
+            <button class="btn ghost" id="add-go">Adicionar</button>
+          </div>
+        </div>` : ""}
+      </div>
+    </div>
+  </div>`);
+  document.getElementById("own-toggle").onclick = ()=>{
+    toggleOwn(c); closeModal();
+    if(view.name==="collection"){ paintGrid(); paintProgress(); }
+    else if(view.name==="search"){ paintSearchGrid(); }
+  };
+  const addGo = document.getElementById("add-go");
+  if(addGo) addGo.onclick = ()=>{
+    const col = customById(document.getElementById("add-to").value);
+    if(!col) return;
+    if(col.cards.some(x=>x.id===c.id)) return toast("Essa carta já está em " + col.name);
+    col.cards.push(c); save(); closeModal(); toast(`Adicionada a ${col.name}`);
+    if(view.name==="collection" && cur.def.id===col.id){ cur.cards.push(c); paintGrid(); paintProgress(); }
+  };
+  const rm = document.getElementById("rm-card");
+  if(rm) rm.onclick = ()=>{
+    const col = customById(cur.def.id);
+    col.cards = col.cards.filter(x=>x.id!==c.id);
+    cur.cards = cur.cards.filter(x=>x.id!==c.id);
+    save(); closeModal(); paintGrid(); paintProgress(); toast("Removida da coleção");
+  };
+}
+
+function openNewCollection(preset={}){
+  modal(`<div class="modal-pad">
+    <h3>Nova coleção</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 18px">
+      Uma coleção por busca se atualiza sozinha quando saem cartas novas. Uma manual você monta carta por carta.</p>
+    <label class="field"><span>Nome</span><input type="text" id="c-name" placeholder="ex.: Todo Sauron impresso"></label>
+    <label class="field"><span>Descrição</span><input type="text" id="c-desc" placeholder="ex.: minha caçada pessoal"></label>
+    <label class="field"><span>Ícone</span><input type="text" id="c-icon" value="⭐" maxlength="4" style="width:80px"></label>
+    <label class="field"><span>Tipo</span>
+      <select id="c-type">
+        <option value="query">Automática (busca Scryfall)</option>
+        <option value="manual">Manual (adiciono as cartas)</option>
+      </select>
+    </label>
+    <label class="field" id="q-field"><span>Busca Scryfall</span>
+      <input type="text" id="c-q" value="${escapeHTML(preset.query||"")}" placeholder="ex.: art:cat r:mythic">
+      <small>Sintaxe do Scryfall: <code>t:</code> tipo, <code>e:</code> set, <code>r:</code> raridade, <code>art:</code> arte, <code>is:serialized</code>, <code>a:</code> artista.</small>
+    </label>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn ghost" id="c-cancel">Cancelar</button>
+      <button class="btn" id="c-save">Criar coleção</button>
+    </div>
+  </div>`);
+  const type = document.getElementById("c-type");
+  type.onchange = ()=>{ document.getElementById("q-field").style.display = type.value==="manual"?"none":"block"; };
+  document.getElementById("c-cancel").onclick = closeModal;
+  document.getElementById("c-save").onclick = ()=>{
+    const name = document.getElementById("c-name").value.trim();
+    if(!name) return toast("Dê um nome para a coleção");
+    const t = type.value;
+    const q = document.getElementById("c-q").value.trim();
+    if(t==="query" && !q) return toast("Informe a busca do Scryfall");
+    const c = {
+      id:"c"+Date.now().toString(36), type:t, name,
+      desc:document.getElementById("c-desc").value.trim(),
+      icon:document.getElementById("c-icon").value.trim()||"⭐",
+      q: t==="query"?q:null, unique:"prints", order:"name", cards:[], createdAt:Date.now()
+    };
+    S.custom.push(c); save(); closeModal(); go("collection", c.id);
+  };
+}
+
+function shareCollection(def){
+  const payload = { app:"collector", v:1, name:def.name, desc:def.desc, icon:def.icon||"⭐",
+                    type:def.type||"query", q:def.q||null, cards:def.cards||[] };
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  modal(`<div class="modal-pad">
+    <h3>Compartilhar coleção</h3>
+    <p style="color:var(--muted);font-size:13px">Copie o código abaixo e mande para outro colecionador. Ele importa em <b>Backup → Importar</b> e passa a acompanhar o mesmo desafio.</p>
+    <textarea id="share-code" rows="6" style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px">${code}</textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+      <button class="btn" id="copy">Copiar código</button>
+    </div>
+    <p style="color:var(--faint);font-size:12px;margin-top:14px">Na versão com comunidade, isso vira um link público com ranking de quem completou primeiro.</p>
+  </div>`);
+  document.getElementById("copy").onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(code); toast("Código copiado"); }
+    catch(e){ document.getElementById("share-code").select(); toast("Selecione e copie (Cmd+C)"); }
+  };
+}
+
+document.getElementById("btn-backup").onclick = ()=>{
+  modal(`<div class="modal-pad">
+    <h3>Backup e importação</h3>
+    <p style="color:var(--muted);font-size:13px">Tudo fica salvo neste navegador. Exporte para não perder e para levar para outro dispositivo.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0">
+      <button class="btn" id="exp">Exportar meus dados</button>
+      <button class="btn ghost" id="imp">Importar coleção / backup</button>
+    </div>
+    <div class="kv"><span>Cartas marcadas</span><b>${ownedCount()}</b></div>
+    <div class="kv"><span>Coleções próprias</span><b>${S.custom.length}</b></div>
+    <div class="kv"><span>Valor estimado</span><b style="color:var(--gold)">${money(ownedValue())}</b></div>
+  </div>`);
+  document.getElementById("exp").onclick = ()=>{
+    const blob = new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `collector-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click(); toast("Backup baixado");
+  };
+  document.getElementById("imp").onclick = ()=>{
+    const code = prompt("Cole aqui o código da coleção ou o conteúdo do arquivo de backup:");
+    if(!code) return;
+    try{
+      let obj;
+      try{ obj = JSON.parse(code); }
+      catch(e){ obj = JSON.parse(decodeURIComponent(escape(atob(code.trim())))); }
+      if(obj.app==="collector"){
+        obj.id = "c"+Date.now().toString(36); obj.cards = obj.cards||[]; obj.createdAt=Date.now();
+        S.custom.push(obj); save(); closeModal(); go("mine"); toast("Coleção importada");
+      }else if(obj.owned){
+        S.owned = Object.assign(S.owned, obj.owned);
+        S.custom = S.custom.concat(obj.custom||[]);
+        S.totals = Object.assign(S.totals, obj.totals||{});
+        save(); closeModal(); render(); toast("Backup restaurado");
+      }else toast("Formato não reconhecido");
+    }catch(e){ toast("Não consegui ler esse código"); }
+  };
+};
+
+/* ---------------- utils ---------------- */
+function escapeHTML(s){ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+let toastT;
+function toast(msg){
+  clearTimeout(toastT);
+  let el = document.querySelector(".toast");
+  if(!el){ el = document.createElement("div"); el.className="toast"; document.body.appendChild(el); }
+  el.textContent = msg;
+  toastT = setTimeout(()=>el.remove(), 2600);
+}
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+render();
+</script>
+</body>
+</html>
