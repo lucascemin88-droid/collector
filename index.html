@@ -432,6 +432,9 @@
   .produto-rel.acima{color:var(--green)} .produto-rel.perto{color:var(--gold)} .produto-rel.abaixo{color:var(--red)}
   .produto-ev{font-size:11px;color:var(--muted)}
   .produto-link{font-size:11px;color:var(--faint);text-decoration:none}
+  .ligar-cases{font-size:12.5px;color:var(--accent);padding:0;margin-top:4px;
+    background:none;border:none;text-decoration:underline;text-underline-offset:3px}
+  .ligar-cases:hover{color:var(--accent-hover)}
   .produto-link:hover{color:var(--gold)}
 
   .arte.escondida{display:none}
@@ -3834,10 +3837,17 @@ function pintarProdutos(st, produtos, cartas, cfg){
     return 0;
   };
 
-  const ordem = { booster_box:0, booster_case:1, booster_pack:2, bundle:3, bundle_case:4,
-                  box_set:5, commander_deck:6, deck:7, prerelease_kit:8 };
-  const lista = produtos.slice().sort((a,b) =>
-    (ordem[a.cat] ?? 20) - (ordem[b.cat] ?? 20) || String(a.nome).localeCompare(String(b.nome)));
+  const ordem = { booster_box:0, booster_pack:1, bundle:2,
+                  box_set:3, commander_deck:4, deck:5, prerelease_kit:6,
+                  booster_case:15, bundle_case:16, case:17 };
+  /* "Case" é a caixa de atacado que vem com seis displays dentro — quem
+     coleciona não compra isso, e elas só enchiam a lista. Ficam escondidas,
+     com um link para quem quiser ver. */
+  const ehCase = pr => /_case$/.test(pr.cat || "") || pr.cat === "case" || /\bcases?\b/i.test(pr.nome || "");
+  const cases = produtos.filter(ehCase);
+  const mostrarCases = !!(S.config && S.config.mostrarCases);
+  const lista = (mostrarCases ? produtos.slice() : produtos.filter(pr => !ehCase(pr)))
+    .sort((a,b) => (ordem[a.cat] ?? 10) - (ordem[b.cat] ?? 10) || String(a.nome).localeCompare(String(b.nome)));
 
   const linhaProduto = pr => {
     const img = imagemProduto(pr.tcg);
@@ -3885,10 +3895,19 @@ function pintarProdutos(st, produtos, cartas, cfg){
         <p>${lista.length} produtos catalogados nesta edição, com a foto oficial.
         ${temAuto ? "O preço de mercado vem do TCGplayer, atualizado todo dia."
                   : "Ainda não tenho preço de mercado destes produtos — ponha o que você vê na loja."}
-        O que você digitar vale mais que o automático, e a % compara o preço com o valor das cartas de dentro.</p>
+        O que você digitar vale mais que o automático, e a % compara o preço com o valor das cartas de dentro.
+        ${cases.length ? `<br><button class="ligar-cases" id="ver-cases">${mostrarCases
+            ? `esconder as ${cases.length} caixas de atacado (case)`
+            : `mostrar as ${cases.length} caixas de atacado (case)`}</button>` : ""}</p>
       </div>
     </div>
     <div class="produtos">${lista.map(linhaProduto).join("")}</div>`;
+
+  const btnCases = document.getElementById("ver-cases");
+  if(btnCases) btnCases.onclick = () => {
+    S.config.mostrarCases = !mostrarCases; save();
+    pintarProdutos(st, produtos, cartas, cfg);
+  };
 
   /* Repintar a lista inteira a cada tecla tirava o foco do campo no meio do
      número. Agora só a linha mexida é refeita. */
