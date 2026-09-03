@@ -2,7 +2,16 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0b0e">
+<meta name="description" content="Sua coleção de Magic: catálogo completo, coleções temáticas, decks, chase cards e a mesa de jogo.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png" type="image/png">
+<!-- o iPhone não lê o manifest inteiro: precisa destas três -->
+<link rel="apple-touch-icon" href="icone-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Collector">
 <title>Collector — coleções de TCG</title>
 <style>
   /* =================================================================
@@ -68,6 +77,7 @@
   /* ---------- topbar ---------- */
   header.top{
     position:sticky;top:0;z-index:40;
+    padding-top:env(safe-area-inset-top);
     backdrop-filter:blur(10px) saturate(140%);
     background:rgba(10,11,14,.88);
     border-bottom:1px solid var(--line);
@@ -115,7 +125,8 @@
   .tab:hover{color:var(--text);background:var(--surface-2)}
   .tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line);font-weight:600}
 
-  main{max-width:1400px;margin:0 auto;padding:26px 22px 80px}
+  main{max-width:1400px;margin:0 auto;
+    padding:26px max(22px, env(safe-area-inset-left)) calc(80px + env(safe-area-inset-bottom))}
 
   /* ---------- generic ---------- */
   .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
@@ -521,6 +532,12 @@
     text-decoration:underline;text-underline-offset:3px}
 
 
+
+  .passos-instalar{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .passo-i{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .passo-i b{display:block;font-size:13px;margin-bottom:8px}
+  .passo-i ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;
+    font-size:12.5px;color:var(--muted);line-height:1.5}
   /* ---------- mesa de jogo ---------- */
   .codigo-grande{
     font-size:34px;font-weight:700;letter-spacing:.3em;color:var(--accent);
@@ -987,6 +1004,7 @@
       <div class="kpi"><b id="kpi-cards">0</b><small>cartas na coleção</small></div>
       <div class="kpi"><b id="kpi-value">US$ 0</b><small>valor estimado</small></div>
       <button class="icon-btn" id="btn-regiao">Global</button>
+      <button class="icon-btn" id="btn-instalar">Instalar</button>
       <button class="icon-btn" id="btn-backup">Backup</button>
     </div>
   </div>
@@ -6817,44 +6835,241 @@ function shareCollection(def){
   };
 }
 
-document.getElementById("btn-backup").onclick = ()=>{
+/* =====================================================================
+   Backup
+
+   Tudo mora no navegador, e navegador esquece: o Safari apaga dados de
+   site que passa semanas sem uso, e o app instalado na tela de início
+   guarda em outro lugar que o Safari. Por isso o backup leva TUDO — não
+   só as cartas — e existe em duas formas: arquivo, para guardar, e
+   código, para colar de um aparelho no outro.
+   ===================================================================== */
+
+/* as chaves que compõem o seu estado; qualquer coisa nova entra aqui */
+const CHAVES_BACKUP = ["owned","custom","totals","exclusoes","inclusoes","uniques",
+                       "selados","capas","decks","chase","mesa","config"];
+
+function pacoteDeBackup(){
+  const fora = { app:"collector-backup", versao:2, em:new Date().toISOString() };
+  CHAVES_BACKUP.forEach(k => { if(S[k] !== undefined) fora[k] = S[k]; });
+  return fora;
+}
+
+function tamanhoDoBackup(){
+  try{ return (JSON.stringify(pacoteDeBackup()).length / 1024).toFixed(0) + " KB"; }
+  catch(e){ return "?"; }
+}
+
+/* Junta o que veio com o que já existe, sem apagar nada seu. Em caso de
+   conflito na mesma carta, fica a que já estava aqui. */
+function restaurarBackup(obj){
+  if(!obj || typeof obj !== "object") return "Formato não reconhecido";
+
+  // código de uma coleção só (o "compartilhar" antigo) continua funcionando
+  if(obj.app === "collector" && obj.cards){
+    obj.id = "c" + Date.now().toString(36); obj.createdAt = Date.now();
+    S.custom.push(obj); save();
+    return null;
+  }
+  if(!obj.owned && !obj.decks && !obj.custom) return "Formato não reconhecido";
+
+  S.owned   = Object.assign({}, obj.owned || {}, S.owned || {});
+  S.totals  = Object.assign({}, obj.totals || {}, S.totals || {});
+  S.uniques = Object.assign({}, obj.uniques || {}, S.uniques || {});
+  S.capas   = Object.assign({}, obj.capas || {}, S.capas || {});
+  S.selados = Object.assign({}, obj.selados || {}, S.selados || {});
+  S.config  = Object.assign({}, obj.config || {}, S.config || {});
+
+  ["exclusoes","inclusoes"].forEach(k => {
+    S[k] = S[k] || {};
+    Object.entries(obj[k] || {}).forEach(([col, lista]) => {
+      const atual = S[k][col] || [];
+      const idsAtuais = new Set(atual.map(x => (x && x.id) || x));
+      S[k][col] = atual.concat((lista || []).filter(x => !idsAtuais.has((x && x.id) || x)));
+    });
+  });
+
+  // listas: entra o que ainda não existe, comparando por id
+  const juntarPorId = (minha, deles) => {
+    const ids = new Set((minha || []).map(x => x.id));
+    return (minha || []).concat((deles || []).filter(x => x && !ids.has(x.id)));
+  };
+  S.custom = juntarPorId(S.custom, obj.custom);
+  S.decks  = juntarPorId(S.decks,  obj.decks);
+
+  if(obj.chase){
+    S.chase = S.chase || { grupos:[], cartas:[] };
+    S.chase.grupos = juntarPorId(S.chase.grupos, obj.chase.grupos);
+    S.chase.cartas = juntarPorId(S.chase.cartas, obj.chase.cartas);
+  }
+  if(obj.mesa){
+    S.mesa = S.mesa || { eu:"", grupos:[], atual:null };
+    S.mesa.eu = S.mesa.eu || obj.mesa.eu || "";
+    const codigos = new Set((S.mesa.grupos || []).map(g => g.code));
+    S.mesa.grupos = (S.mesa.grupos || []).concat((obj.mesa.grupos || []).filter(g => !codigos.has(g.code)));
+    S.mesa.atual = S.mesa.atual || obj.mesa.atual;
+  }
+  save();
+  return null;
+}
+
+function abrirBackup(){
+  const p = pacoteDeBackup();
+  const codigo = (() => { try{ return btoa(unescape(encodeURIComponent(JSON.stringify(p)))); }catch(e){ return ""; } })();
+
   modal(`<div class="modal-pad">
-    <h3>Backup e importação</h3>
-    <p style="color:var(--muted);font-size:13px">Tudo fica salvo neste navegador. Exporte para não perder e para levar para outro dispositivo.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0">
-      <button class="btn" id="exp">Exportar meus dados</button>
-      <button class="btn ghost" id="imp">Importar coleção / backup</button>
-    </div>
+    <h3>Backup</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Leva <b>tudo</b>: cartas, coleções, decks, chase cards, capas, grupos da mesa e configurações.
+      Guarde o arquivo, ou use o código para passar de um aparelho para outro.</p>
+
     <div class="kv"><span>Cartas marcadas</span><b>${ownedCount()}</b></div>
-    <div class="kv"><span>Coleções próprias</span><b>${S.custom.length}</b></div>
-    <div class="kv"><span>Valor estimado</span><b style="color:var(--gold)">${money(ownedValue())}</b></div>
+    <div class="kv"><span>Coleções próprias</span><b>${(S.custom||[]).length}</b></div>
+    <div class="kv"><span>Decks</span><b>${(S.decks||[]).length}</b></div>
+    <div class="kv"><span>Chase cards</span><b>${((S.chase||{}).cartas||[]).length}</b></div>
+    <div class="kv"><span>Grupos de mesa</span><b>${((S.mesa||{}).grupos||[]).length}</b></div>
+    <div class="kv"><span>Tamanho do backup</span><b>${tamanhoDoBackup()}</b></div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 12px">
+      <button class="btn" id="bk-arquivo">Baixar arquivo</button>
+      <label class="btn ghost" style="cursor:pointer">Restaurar de arquivo
+        <input type="file" id="bk-ler" accept="application/json,.json" hidden></label>
+    </div>
+
+    <details class="avancado" ${codigo ? "" : "hidden"}>
+      <summary>Passar por código (para outro aparelho)</summary>
+      <p style="color:var(--faint);font-size:11.5px;margin:8px 0">
+        Copie daqui e cole no outro aparelho, em Backup → Restaurar de código.</p>
+      <textarea id="bk-codigo" rows="4" readonly
+        style="font-family:ui-monospace,monospace;font-size:11px">${escapeHTML(codigo)}</textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn ghost" id="bk-copiar">Copiar código</button>
+        <button class="btn ghost" id="bk-colar">Restaurar de código</button>
+      </div>
+    </details>
+    <div class="status" id="bk-status"></div>
   </div>`);
-  document.getElementById("exp").onclick = ()=>{
-    const blob = new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+
+  const st = document.getElementById("bk-status");
+
+  document.getElementById("bk-arquivo").onclick = () => {
+    const blob = new Blob([JSON.stringify(p, null, 2)], { type:"application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `collector-backup-${new Date().toISOString().slice(0,10)}.json`;
-    a.click(); toast("Backup baixado");
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast("Backup baixado");
   };
-  document.getElementById("imp").onclick = ()=>{
-    const code = prompt("Cole aqui o código da coleção ou o conteúdo do arquivo de backup:");
-    if(!code) return;
-    try{
-      let obj;
-      try{ obj = JSON.parse(code); }
-      catch(e){ obj = JSON.parse(decodeURIComponent(escape(atob(code.trim())))); }
-      if(obj.app==="collector"){
-        obj.id = "c"+Date.now().toString(36); obj.cards = obj.cards||[]; obj.createdAt=Date.now();
-        S.custom.push(obj); save(); closeModal(); go("mine"); toast("Coleção importada");
-      }else if(obj.owned){
-        S.owned = Object.assign(S.owned, obj.owned);
-        S.custom = S.custom.concat(obj.custom||[]);
-        S.totals = Object.assign(S.totals, obj.totals||{});
-        save(); closeModal(); render(); toast("Backup restaurado");
-      }else toast("Formato não reconhecido");
-    }catch(e){ toast("Não consegui ler esse código"); }
+
+  document.getElementById("bk-ler").onchange = e => {
+    const arq = e.target.files && e.target.files[0];
+    if(!arq) return;
+    const leitor = new FileReader();
+    leitor.onload = () => {
+      let obj = null;
+      try{ obj = JSON.parse(leitor.result); }catch(err){ st.textContent = "esse arquivo não é um backup"; return; }
+      const erro = restaurarBackup(obj);
+      if(erro){ st.textContent = erro; return; }
+      closeModal(); render(); toast("Backup restaurado — nada do que já estava aqui foi apagado");
+    };
+    leitor.readAsText(arq);
   };
-};
+
+  const copiar = document.getElementById("bk-copiar");
+  if(copiar) copiar.onclick = () => {
+    const el = document.getElementById("bk-codigo");
+    el.removeAttribute("readonly"); el.select(); el.setSelectionRange(0, 999999);
+    try{ document.execCommand("copy"); toast("código copiado"); }catch(e){}
+    el.setAttribute("readonly", "");
+  };
+  const colar = document.getElementById("bk-colar");
+  if(colar) colar.onclick = () => {
+    const texto = prompt("Cole aqui o código do outro aparelho:");
+    if(!texto) return;
+    let obj = null;
+    try{ obj = JSON.parse(texto); }
+    catch(e){ try{ obj = JSON.parse(decodeURIComponent(escape(atob(texto.trim())))); }catch(e2){} }
+    const erro = obj ? restaurarBackup(obj) : "não consegui ler esse código";
+    if(erro){ st.textContent = erro; return; }
+    closeModal(); render(); toast("Dados restaurados");
+  };
+}
+document.getElementById("btn-backup").onclick = abrirBackup;
+document.getElementById("btn-instalar").onclick = abrirInstalar;
+
+/* =====================================================================
+   Instalação na tela de início
+
+   O service worker faz o app abrir sem internet e guardar a arte das
+   cartas já vistas. Em file:// o navegador não deixa registrar — e tudo
+   bem, ali é só para testar.
+   ===================================================================== */
+/* https em produção; localhost também vale, é onde a gente testa */
+if("serviceWorker" in navigator &&
+   (location.protocol === "https:" || ["localhost","127.0.0.1"].includes(location.hostname))){
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+
+/* está rodando como app instalado, e não como aba do navegador? */
+function ehAppInstalado(){
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
+function ehIPhone(){ return /iPhone|iPad|iPod/.test(navigator.userAgent); }
+
+function abrirInstalar(){
+  const instalado = ehAppInstalado();
+  modal(`<div class="modal-pad">
+    <h3>${instalado ? "Você já está no app instalado" : "Instalar no seu telefone"}</h3>
+    ${instalado
+      ? `<p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
+           O Collector está aberto como aplicativo: tela cheia, ícone na tela de início e
+           funciona sem internet para o que você já abriu.</p>`
+      : `<p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
+           Dá para pôr o Collector na tela de início e usar como aplicativo — tela cheia,
+           sem barra de navegador, abrindo mesmo sem internet.</p>
+
+         <div class="passos-instalar">
+           <div class="passo-i"><b>iPhone e iPad</b>
+             <ol>
+               <li>Abra este endereço no <b>Safari</b> (só ele instala no iOS).</li>
+               <li>Toque no botão de <b>compartilhar</b>, o quadradinho com a seta para cima.</li>
+               <li>Role e escolha <b>Adicionar à Tela de Início</b>.</li>
+               <li>Confirme. O ícone do Collector aparece junto dos outros apps.</li>
+             </ol>
+           </div>
+           <div class="passo-i"><b>Android</b>
+             <ol>
+               <li>Abra no <b>Chrome</b>.</li>
+               <li>Menu dos três pontinhos → <b>Instalar aplicativo</b>.</li>
+             </ol>
+           </div>
+         </div>
+
+         <div class="nota-regiao" style="margin-top:16px">
+           <b>Antes de instalar, faça um backup.</b> O aplicativo instalado guarda os dados em um lugar
+           separado do navegador — sua coleção não atravessa sozinha. Baixe o backup aqui, instale, abra o
+           app pelo ícone e restaure lá dentro. Leva um minuto e você não perde nada.
+         </div>`}
+
+    <div class="pergunta-acoes" style="margin-top:16px">
+      <button class="btn" id="inst-backup">${instalado ? "Restaurar um backup" : "Fazer backup agora"}</button>
+      ${instalado ? "" : `<button class="btn ghost" id="inst-copiar">Copiar o endereço</button>`}
+    </div>
+  </div>`);
+
+  document.getElementById("inst-backup").onclick = () => { closeModal(); abrirBackup(); };
+  const copiar = document.getElementById("inst-copiar");
+  if(copiar) copiar.onclick = () => {
+    const t = document.createElement("textarea");
+    t.value = location.href.split("#")[0];
+    document.body.appendChild(t); t.select();
+    try{ document.execCommand("copy"); toast("endereço copiado"); }catch(e){}
+    t.remove();
+  };
+}
 
 /* ---------------- utils ---------------- */
 function escapeHTML(s){ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
