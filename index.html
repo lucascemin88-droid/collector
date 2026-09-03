@@ -520,6 +520,92 @@
   .link-int{color:var(--accent);background:none;border:none;padding:0;font-size:inherit;
     text-decoration:underline;text-underline-offset:3px}
 
+
+  /* ---------- mesa de jogo ---------- */
+  .codigo-grande{
+    font-size:34px;font-weight:700;letter-spacing:.3em;color:var(--accent);
+    background:var(--surface-2);border:1px solid var(--accent-line);border-radius:var(--radius);
+    padding:18px 10px 18px 22px;font-variant-numeric:tabular-nums;
+  }
+  .rank-tabela{display:flex;flex-direction:column;gap:4px}
+  .rank-cab,.rank-linha{
+    display:grid;grid-template-columns:34px minmax(0,1.4fr) 44px 44px 56px 110px minmax(0,1fr);
+    gap:10px;align-items:center;padding:9px 12px;border-radius:var(--r-sm);
+  }
+  .rank-cab{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);padding-bottom:2px}
+  .rank-linha{background:var(--surface-1);border:1px solid var(--line)}
+  .rank-linha.lider{border-color:var(--accent-line)}
+  .rank-pos{font-size:12px;font-weight:700;color:var(--faint);text-align:center}
+  .rank-nome{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rank-nome em{font-style:normal;font-size:11px;color:var(--accent)}
+  .rank-num{font-size:13px;text-align:center;font-variant-numeric:tabular-nums}
+  .rank-num.destaque{color:var(--accent);font-weight:600}
+  .rank-ultimas{display:flex;gap:3px}
+  .rank-ultimas i{width:9px;height:9px;border-radius:2px;display:block}
+  .rank-ultimas i.v{background:var(--pos)} .rank-ultimas i.d{background:var(--surface-3);border:1px solid var(--line)}
+  .rank-deck{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  @media (max-width:760px){
+    .rank-cab,.rank-linha{grid-template-columns:28px minmax(0,1fr) 36px 36px 48px;gap:8px}
+    .rank-ultimas,.rank-deck,.rank-cab span:nth-child(6),.rank-cab span:nth-child(7){display:none}
+  }
+
+  .partidas{display:flex;flex-direction:column;gap:8px}
+  .partida{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+  .partida-topo{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .partida-topo b{font-size:13.5px;flex:1;min-width:0}
+  .partida-topo span{font-size:11.5px;color:var(--faint)}
+  .partida-x{color:var(--faint);font-size:16px;line-height:1;background:none;border:none;padding:0 4px}
+  .partida-x:hover{color:var(--neg)}
+  .partida-jogadores{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .pj{display:inline-flex;align-items:baseline;gap:5px;font-size:12px;padding:4px 10px;border-radius:999px;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+  .pj.ganhou{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+  .pj i{font-style:normal;font-size:10px;color:var(--faint)}
+  .pj small{font-size:10.5px;color:var(--faint)}
+  .partida-nota{margin:8px 0 0;font-size:12px;color:var(--muted);font-style:italic}
+
+  .rp-jogadores{display:flex;flex-direction:column;gap:6px}
+  .rp-jogador{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) 80px 100px;gap:8px;align-items:center;
+    padding:7px 9px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm)}
+  .rp-jogador input[type=text],.rp-jogador input[type=number]{padding:6px 9px;font-size:12.5px}
+  @media (max-width:640px){ .rp-jogador{grid-template-columns:1fr 1fr;gap:6px} }
+
+  .ferramentas{display:flex;flex-direction:column;gap:16px}
+  .ferr-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--lift)}
+  .ferr-topo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .ferr-acoes{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .vidas{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+  .painel-vida{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:12px;text-align:center}
+  .painel-vida.perigo{border-color:var(--accent-line)}
+  .painel-vida.morto{opacity:.55;border-color:var(--neg)}
+  .pv-nome{font-size:12.5px;font-weight:600;outline:none;margin-bottom:6px;color:var(--muted)}
+  .pv-linha{display:flex;align-items:center;justify-content:center;gap:6px}
+  .pv-num{font-size:34px;font-weight:600;min-width:62px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .pv-linha button{width:30px;height:30px;border-radius:8px;background:var(--surface-3);border:1px solid var(--line);
+    color:var(--muted);font-size:12px}
+  .pv-linha button:hover{color:var(--accent);border-color:var(--accent-line)}
+  .pv-extras{display:flex;gap:5px;justify-content:center;margin-top:8px}
+  .pv-chip{font-size:11px;padding:3px 9px;border-radius:999px;background:var(--surface-3);
+    border:1px solid var(--line);color:var(--muted)}
+  .pv-chip:hover{color:var(--accent);border-color:var(--accent-line)}
+  .pv-morto{display:block;margin-top:7px;font-size:10.5px;color:var(--neg);text-transform:uppercase;letter-spacing:.08em}
+  .cronometro{font-size:44px;font-weight:600;letter-spacing:.02em;text-align:center;
+    font-variant-numeric:tabular-nums;color:var(--accent);padding:6px 0}
+  .ordem-sorteada{display:flex;flex-wrap:wrap;gap:7px}
+  .ordem-item{display:inline-flex;align-items:baseline;gap:6px;font-size:12.5px;padding:6px 12px;border-radius:999px;
+    background:var(--surface-2);border:1px solid var(--line)}
+  .ordem-item.primeiro{border-color:var(--accent-line);color:var(--accent)}
+  .ordem-item b{font-size:11px;color:var(--faint)}
+  .ordem-item.primeiro b{color:var(--accent)}
+  .dados{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .resultado-dado{font-size:26px;font-weight:600;text-align:center;color:var(--accent);font-variant-numeric:tabular-nums}
+  .cmd-dano{display:flex;flex-direction:column;gap:6px}
+  .cmd-dano-linha{display:grid;grid-template-columns:1fr 32px 44px 32px;gap:8px;align-items:center;
+    padding:7px 10px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm)}
+  .cmd-dano-linha b{text-align:center;font-size:15px;font-variant-numeric:tabular-nums}
+  .cmd-dano-linha button{width:30px;height:28px;border-radius:7px;background:var(--surface-3);
+    border:1px solid var(--line);color:var(--muted)}
+
   /* ---------- chase cards ---------- */
   .chase-grupo{margin-bottom:26px}
   .chase-nome{outline:none;text-transform:none;font-size:13px;letter-spacing:0;color:var(--text);border-bottom:1px dashed transparent}
@@ -910,6 +996,7 @@
     <button class="tab" data-view="mine">Minhas coleções</button>
     <button class="tab" data-view="decks">Decks</button>
     <button class="tab" data-view="chase">Chase cards</button>
+    <button class="tab" data-view="mesa">Mesa</button>
     <button class="tab" data-view="catalogo">Catálogo</button>
     <button class="tab" data-view="sets">Edições</button>
   </nav>
@@ -1074,7 +1161,8 @@ const STORE = "collector.mtg.v1";
 
 /* ---------------- estado persistido ---------------- */
 const blank = { owned:{}, custom:[], totals:{}, exclusoes:{}, inclusoes:{}, uniques:{}, selados:{}, capas:{},
-                decks:[], chase:{ grupos:[{ id:"geral", nome:"Quero comprar" }], cartas:[] }, config:{ regiao:"global", acabamento:"normal" } };
+                decks:[], chase:{ grupos:[{ id:"geral", nome:"Quero comprar" }], cartas:[] },
+                mesa:{ eu:"", grupos:[], atual:null }, config:{ regiao:"global", acabamento:"normal" } };
 let S = load();
 
 function load(){
@@ -1576,6 +1664,7 @@ function render(){
   if(view.name==="decks") return renderDecks();
   if(view.name==="deck") return renderDeck(view.id);
   if(view.name==="chase") return renderChase();
+  if(view.name==="mesa") return renderMesa();
   if(view.name==="catalogo") return renderCatalogo();
   if(view.name==="sets") return renderSets();
   if(view.name==="set") return renderSet(view.id);
@@ -5300,6 +5389,673 @@ async function carregarPrecosDoChase(){
       else caixa.innerHTML = `<small class="sem-hist">sem histórico ainda</small>`;
     }catch(e){ break; }
   }
+}
+
+
+
+/* =====================================================================
+   MESA — o grupo de jogo
+
+   Primeira parte do app em que gente diferente escreve no mesmo lugar.
+   Sem cadastro: quem cria o grupo recebe um código de 8 letras e passa
+   para a mesa; quem tem o código entra. As tabelas ficam fechadas no
+   banco e tudo passa por funções que exigem esse código, então a chave
+   pública que vive dentro do app não abre grupo de ninguém.
+
+   O que fica guardado aqui no aparelho é só quais grupos são seus e com
+   que nome você entrou.
+   ===================================================================== */
+
+function mesa(){
+  if(!S.mesa) S.mesa = { eu:"", grupos:[], atual:null };
+  return S.mesa;
+}
+const grupoAtual = () => mesa().grupos.find(g => g.code === mesa().atual) || null;
+
+async function rpc(funcao, args){
+  const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${funcao}`, {
+    method:"POST",
+    headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`,
+              "Content-Type":"application/json", Accept:"application/json" },
+    body: JSON.stringify(args || {})
+  });
+  const txt = await r.text();
+  let corpo = null;
+  try{ corpo = txt ? JSON.parse(txt) : null; }catch(e){}
+  if(!r.ok){
+    const msg = (corpo && (corpo.message || corpo.hint)) || `erro ${r.status}`;
+    throw new Error(msg.replace(/^.*?:\s*/, ""));
+  }
+  return corpo;
+}
+
+/* ---------------- ranking ---------------- */
+function rankingDoGrupo(dados){
+  const linhas = (dados.members || []).map(m => ({
+    id:m.id, nome:m.name, jogos:0, vitorias:0, tempo:0, decks:{}, ultimas:[]
+  }));
+  const porId = {};
+  linhas.forEach(l => porId[l.id] = l);
+
+  (dados.matches || []).slice().reverse().forEach(p => {
+    (p.players || []).forEach(j => {
+      const l = porId[j.member_id];
+      if(!l) return;
+      l.jogos++;
+      if(j.won) l.vitorias++;
+      l.tempo += Number(p.seconds) || 0;
+      if(j.deck_name) l.decks[j.deck_name] = (l.decks[j.deck_name] || 0) + 1;
+      l.ultimas.push(!!j.won);
+    });
+  });
+
+  linhas.forEach(l => {
+    l.taxa = l.jogos ? l.vitorias / l.jogos : 0;
+    l.ultimas = l.ultimas.slice(-8);
+    // sequência de vitórias atual, contando de trás para frente
+    let seq = 0;
+    for(let i = l.ultimas.length - 1; i >= 0 && l.ultimas[i]; i--) seq++;
+    l.sequencia = seq;
+    const favorito = Object.entries(l.decks).sort((a,b) => b[1]-a[1])[0];
+    l.deckFavorito = favorito ? `${favorito[0]} (${favorito[1]})` : "";
+  });
+  return linhas.sort((a,b) => b.vitorias - a.vitorias || b.taxa - a.taxa || a.nome.localeCompare(b.nome));
+}
+
+const tempoCurto = seg => {
+  seg = Math.max(0, Math.round(Number(seg) || 0));
+  const h = Math.floor(seg/3600), m = Math.floor((seg%3600)/60), s = seg%60;
+  return h ? `${h}h${String(m).padStart(2,"0")}` : `${m}:${String(s).padStart(2,"0")}`;
+};
+
+/* ---------------- view ---------------- */
+let mesaView = { dados:null, carregando:false, erro:"", aba:"ranking" };
+
+async function renderMesa(){
+  const m = mesa();
+  const g = grupoAtual();
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Mesa</h2>
+        <p>O grupo de quem joga junto: ranking, histórico de partidas, sorteio de ordem e
+        as ferramentas da mesa. Quem tem o código do grupo participa — não precisa de cadastro.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="mesa-novo">+ Criar grupo</button>
+        <button class="btn ghost" id="mesa-entrar">Entrar com código</button>
+      </div>
+    </div>
+
+    ${m.grupos.length ? `
+      <div class="toolbar" style="margin-bottom:16px">
+        <div class="toggles" id="mesa-grupos">
+          ${m.grupos.map(x => `<button class="tog ${x.code===m.atual?"on":""}" data-g="${escapeHTML(x.code)}">
+            ${escapeHTML(x.name)}</button>`).join("")}
+        </div>
+        <div class="grow"></div>
+        ${g ? `<button class="icon-btn" id="mesa-codigo" title="mostrar e copiar o código de entrada">
+          código: <b style="letter-spacing:.14em">${escapeHTML(g.code)}</b></button>` : ""}
+        ${g ? `<button class="icon-btn" id="mesa-sair" title="tirar este grupo deste aparelho">sair</button>` : ""}
+      </div>` : ""}
+
+    <div id="mesa-conteudo">
+      ${m.grupos.length ? `<div class="status">carregando o grupo…</div>` : `
+        <div class="empty">
+          Você ainda não está em nenhum grupo.<br>
+          <b>Crie um</b> e mande o código para a galera, ou <b>entre com o código</b> que te passaram.
+        </div>
+        ${blocoFerramentas()}`}
+    </div>`;
+
+  document.getElementById("mesa-novo").onclick = criarGrupo;
+  document.getElementById("mesa-entrar").onclick = entrarNoGrupo;
+  const barra = document.getElementById("mesa-grupos");
+  if(barra) barra.onclick = e => {
+    const b = e.target.closest("[data-g]"); if(!b) return;
+    mesa().atual = b.dataset.g; save(); mesaView.dados = null; renderMesa();
+  };
+  const btnCodigo = document.getElementById("mesa-codigo");
+  if(btnCodigo) btnCodigo.onclick = () => mostrarCodigo(grupoAtual());
+  const btnSair = document.getElementById("mesa-sair");
+  if(btnSair) btnSair.onclick = () => {
+    if(!confirm(`Tirar "${g.name}" deste aparelho? O grupo continua existindo para os outros, e você volta com o código.`)) return;
+    m.grupos = m.grupos.filter(x => x.code !== g.code);
+    m.atual = m.grupos.length ? m.grupos[0].code : null;
+    save(); mesaView.dados = null; renderMesa();
+  };
+
+  if(!g) { ligarFerramentas(); return; }
+  if(!m.atual){ m.atual = g.code; save(); }
+
+  try{
+    mesaView.dados = await rpc("play_group_read", { p_code: g.code });
+    mesaView.erro = "";
+  }catch(e){ mesaView.erro = e.message; }
+  if(view.name !== "mesa") return;
+  pintarMesa();
+}
+
+function pintarMesa(){
+  const alvo = document.getElementById("mesa-conteudo");
+  const g = grupoAtual();
+  if(!alvo || !g) return;
+  if(mesaView.erro){
+    alvo.innerHTML = `<div class="nota-regiao">Não consegui abrir o grupo: ${escapeHTML(mesaView.erro)}.
+      Se o código mudou ou o grupo foi apagado, saia dele e entre de novo.</div>` + blocoFerramentas();
+    ligarFerramentas();
+    return;
+  }
+  const dados = mesaView.dados || { members:[], matches:[] };
+  const rank = rankingDoGrupo(dados);
+  const partidas = dados.matches || [];
+  const tempoTotal = partidas.reduce((a,p) => a + (Number(p.seconds)||0), 0);
+
+  alvo.innerHTML = `
+    <div class="resumo-colecao" style="margin-bottom:18px">
+      <div class="rc"><b>${partidas.length}</b><small>partidas</small></div>
+      <div class="rc"><b>${(dados.members||[]).length}</b><small>jogadores</small></div>
+      <div class="rc"><b>${partidas.length ? tempoCurto(tempoTotal/partidas.length) : "—"}</b><small>duração média</small></div>
+      <div class="rc"><b>${rank[0] && rank[0].vitorias ? escapeHTML(rank[0].nome) : "—"}</b><small>líder</small></div>
+    </div>
+
+    <div class="toolbar" style="margin-bottom:16px">
+      <button class="btn" id="mesa-partida">+ Registrar partida</button>
+      <div class="grow"></div>
+      <div class="toggles" id="mesa-abas">
+        ${[["ranking","Ranking"],["historico","Histórico"],["ferramentas","Ferramentas da mesa"]]
+          .map(([id,nome]) => `<button class="tog ${mesaView.aba===id?"on":""}" data-a="${id}">${nome}</button>`).join("")}
+      </div>
+    </div>
+
+    <div id="mesa-aba">${
+      mesaView.aba === "historico" ? blocoHistorico(dados) :
+      mesaView.aba === "ferramentas" ? blocoFerramentas() :
+      blocoRanking(rank)}</div>`;
+
+  document.getElementById("mesa-partida").onclick = () => registrarPartida(dados);
+  document.getElementById("mesa-abas").onclick = e => {
+    const b = e.target.closest("[data-a]"); if(!b) return;
+    mesaView.aba = b.dataset.a; pintarMesa();
+  };
+  if(mesaView.aba === "ferramentas") ligarFerramentas();
+  if(mesaView.aba === "historico") ligarHistorico(dados);
+}
+
+function blocoRanking(rank){
+  if(!rank.length) return `<div class="empty">Nenhum jogador ainda.</div>`;
+  const jogou = rank.some(l => l.jogos);
+  if(!jogou) return `<div class="empty">Ninguém jogou ainda. Clique em <b>+ Registrar partida</b> quando a
+    primeira terminar — ou use as <b>ferramentas da mesa</b> para sortear a ordem e cronometrar.</div>`;
+  return `
+    <div class="rank-tabela">
+      <div class="rank-cab">
+        <span>#</span><span>jogador</span><span>V</span><span>J</span><span>%</span>
+        <span>últimas</span><span>deck mais usado</span>
+      </div>
+      ${rank.map((l,i) => `
+        <div class="rank-linha ${i===0 && l.vitorias ? "lider" : ""}">
+          <span class="rank-pos">${i+1}</span>
+          <span class="rank-nome">${escapeHTML(l.nome)}${l.sequencia >= 2 ? ` <em title="sequência de vitórias">🔥${l.sequencia}</em>` : ""}</span>
+          <span class="rank-num">${l.vitorias}</span>
+          <span class="rank-num">${l.jogos}</span>
+          <span class="rank-num destaque">${l.jogos ? Math.round(100*l.taxa) : 0}%</span>
+          <span class="rank-ultimas">${l.ultimas.map(v => `<i class="${v?"v":"d"}" title="${v?"vitória":"derrota"}"></i>`).join("")}</span>
+          <span class="rank-deck">${escapeHTML(l.deckFavorito)}</span>
+        </div>`).join("")}
+    </div>`;
+}
+
+function blocoHistorico(dados){
+  const partidas = dados.matches || [];
+  if(!partidas.length) return `<div class="empty">Nenhuma partida registrada ainda.</div>`;
+  const nome = id => ((dados.members||[]).find(m => m.id === id) || {}).name || "?";
+  return `<div class="partidas">${partidas.map(p => {
+    const venceu = (p.players||[]).filter(j => j.won).map(j => nome(j.member_id));
+    return `
+    <div class="partida" data-p="${p.id}">
+      <div class="partida-topo">
+        <b>${venceu.length ? escapeHTML(venceu.join(", ")) + " venceu" : "sem vencedor anotado"}</b>
+        <span>${new Date(p.played_at).toLocaleString("pt-BR", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" })}
+          ${p.seconds ? ` · ${tempoCurto(p.seconds)}` : ""}${p.format ? ` · ${escapeHTML(p.format)}` : ""}</span>
+        <button class="partida-x" title="apagar esta partida">×</button>
+      </div>
+      <div class="partida-jogadores">
+        ${(p.players||[]).map(j => `
+          <span class="pj ${j.won?"ganhou":""}">
+            ${j.seat ? `<i>${j.seat}º</i>` : ""}${escapeHTML(nome(j.member_id))}
+            ${j.deck_name ? `<small>${escapeHTML(j.deck_name)}</small>` : ""}
+          </span>`).join("")}
+      </div>
+      ${p.notes ? `<p class="partida-nota">${escapeHTML(p.notes)}</p>` : ""}
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function ligarHistorico(dados){
+  document.querySelectorAll(".partida .partida-x").forEach(b => b.onclick = async () => {
+    const id = b.closest(".partida").dataset.p;
+    if(!confirm("Apagar esta partida do histórico do grupo?")) return;
+    try{
+      await rpc("play_match_delete", { p_code: grupoAtual().code, p_match: id });
+      mesaView.dados = null; renderMesa();
+    }catch(e){ toast("não consegui apagar: " + e.message); }
+  });
+}
+
+/* ---------------- criar / entrar ---------------- */
+function criarGrupo(){
+  modal(`<div class="modal-pad">
+    <h3>Criar grupo</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 16px">
+      O grupo nasce com um código de 8 letras. Quem tiver esse código entra e passa a aparecer no ranking.</p>
+    <label class="field"><span>Nome do grupo</span>
+      <input type="text" id="mg-nome" placeholder="ex.: Mesa de quinta, Liga do bairro"></label>
+    <label class="field"><span>Seu nome na mesa</span>
+      <input type="text" id="mg-eu" value="${escapeHTML(mesa().eu || "")}" placeholder="como os outros te conhecem"></label>
+    <div class="pergunta-acoes">
+      <button class="btn" id="mg-ok">Criar</button>
+      <button class="btn ghost" id="mg-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="mg-status"></div>
+  </div>`);
+  document.getElementById("mg-cancelar").onclick = closeModal;
+  document.getElementById("mg-nome").focus();
+  document.getElementById("mg-ok").onclick = async () => {
+    const nome = document.getElementById("mg-nome").value.trim();
+    const eu = document.getElementById("mg-eu").value.trim();
+    const st = document.getElementById("mg-status");
+    if(!nome) { st.textContent = "dê um nome ao grupo"; return; }
+    st.textContent = "criando…";
+    try{
+      const g = await rpc("play_group_create", { p_name: nome, p_member: eu || "Anfitrião" });
+      const m = mesa();
+      m.eu = eu || m.eu;
+      m.grupos.push({ id:g.id, name:g.name, code:g.code, membroId:g.member_id, meuNome:eu || "Anfitrião" });
+      m.atual = g.code; save();
+      closeModal(); mesaView.dados = null; renderMesa();
+      setTimeout(() => mostrarCodigo(grupoAtual(), true), 300);
+    }catch(e){ st.textContent = "não deu certo: " + e.message; }
+  };
+}
+
+function entrarNoGrupo(){
+  modal(`<div class="modal-pad">
+    <h3>Entrar em um grupo</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 16px">
+      Peça o código de 8 letras para quem criou a mesa.</p>
+    <label class="field"><span>Código</span>
+      <input type="text" id="me-codigo" maxlength="8" autocapitalize="characters" autocomplete="off"
+             style="text-transform:uppercase;letter-spacing:.28em;font-size:18px" placeholder="XXXXXXXX"></label>
+    <label class="field"><span>Seu nome na mesa</span>
+      <input type="text" id="me-eu" value="${escapeHTML(mesa().eu || "")}" placeholder="como os outros te conhecem"></label>
+    <div class="pergunta-acoes">
+      <button class="btn" id="me-ok">Entrar</button>
+      <button class="btn ghost" id="me-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="me-status"></div>
+  </div>`);
+  document.getElementById("me-cancelar").onclick = closeModal;
+  document.getElementById("me-codigo").focus();
+  document.getElementById("me-ok").onclick = async () => {
+    const codigo = (document.getElementById("me-codigo").value || "").trim().toUpperCase();
+    const eu = document.getElementById("me-eu").value.trim();
+    const st = document.getElementById("me-status");
+    if(codigo.length < 4){ st.textContent = "digite o código"; return; }
+    st.textContent = "procurando…";
+    try{
+      const g = await rpc("play_group_join", { p_code: codigo, p_member: eu || "Convidado" });
+      const m = mesa();
+      m.eu = eu || m.eu;
+      if(!m.grupos.some(x => x.code === g.code))
+        m.grupos.push({ id:g.id, name:g.name, code:g.code, membroId:g.member_id, meuNome:eu || "Convidado" });
+      m.atual = g.code; save();
+      closeModal(); mesaView.dados = null; renderMesa();
+    }catch(e){ st.textContent = "não achei esse grupo: " + e.message; }
+  };
+}
+
+function mostrarCodigo(g, novo){
+  if(!g) return;
+  modal(`<div class="modal-pad" style="text-align:center">
+    <h3>${novo ? "Grupo criado" : escapeHTML(g.name)}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 18px">
+      Mande este código para a mesa. Quem tiver ele entra no grupo e aparece no ranking.</p>
+    <div class="codigo-grande" id="codigo-grande">${escapeHTML(g.code)}</div>
+    <div class="pergunta-acoes" style="justify-content:center;margin-top:18px">
+      <button class="btn" id="copiar-codigo">Copiar código</button>
+    </div>
+  </div>`);
+  document.getElementById("copiar-codigo").onclick = () => {
+    const t = document.createElement("textarea");
+    t.value = g.code; document.body.appendChild(t); t.select();
+    try{ document.execCommand("copy"); toast("código copiado"); }catch(e){}
+    t.remove();
+  };
+}
+
+/* ---------------- registrar partida ---------------- */
+function registrarPartida(dados){
+  const membros = dados.members || [];
+  if(!membros.length) return toast("o grupo ainda não tem jogadores");
+  const meusDecks = decks().map(d => d.nome);
+
+  modal(`<div class="modal-pad">
+    <h3>Registrar partida</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Marque quem jogou, com que deck, e quem venceu. A ordem de jogo e o tempo são opcionais —
+      se você usou o cronômetro da mesa, ele já vem preenchido.</p>
+
+    <div class="dupla">
+      <label class="field"><span>Formato</span>
+        <select id="rp-formato">
+          ${FORMATOS.map(f => `<option value="${f.id}"${f.id==="commander"?" selected":""}>${f.nome}</option>`).join("")}
+        </select></label>
+      <label class="field"><span>Duração (minutos)</span>
+        <input type="number" id="rp-minutos" min="0" step="1"
+               value="${cron.acumulado ? Math.round(cron.acumulado/60) : ""}" placeholder="ex.: 52"></label>
+    </div>
+
+    <span class="flabel">Quem jogou</span>
+    <div class="rp-jogadores">
+      ${membros.map(m => `
+        <div class="rp-jogador" data-m="${m.id}">
+          <label class="check"><input type="checkbox" class="rp-tem" checked><span>${escapeHTML(m.name)}</span></label>
+          <input type="text" class="rp-deck" list="rp-decks" placeholder="deck usado (opcional)">
+          <input type="number" class="rp-seat" min="1" max="12" placeholder="ordem">
+          <label class="check rp-venceu-lbl"><input type="radio" name="rp-venceu" class="rp-venceu" value="${m.id}">
+            <span>venceu</span></label>
+        </div>`).join("")}
+    </div>
+    <datalist id="rp-decks">${meusDecks.map(n => `<option value="${escapeHTML(n)}"></option>`).join("")}</datalist>
+
+    <label class="field" style="margin-top:14px"><span>Anotação (opcional)</span>
+      <input type="text" id="rp-nota" placeholder="ex.: virada no último turno"></label>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="rp-ok">Salvar partida</button>
+      <button class="btn ghost" id="rp-sortear">Sortear a ordem</button>
+      <button class="btn ghost" id="rp-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="rp-status"></div>
+  </div>`);
+
+  document.getElementById("rp-cancelar").onclick = closeModal;
+  document.getElementById("rp-sortear").onclick = () => {
+    const linhas = [...document.querySelectorAll(".rp-jogador")]
+      .filter(l => l.querySelector(".rp-tem").checked);
+    const ordem = linhas.map((_,i) => i+1);
+    for(let i = ordem.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [ordem[i], ordem[j]] = [ordem[j], ordem[i]];
+    }
+    linhas.forEach((l,i) => l.querySelector(".rp-seat").value = ordem[i]);
+    toast("ordem sorteada");
+  };
+
+  document.getElementById("rp-ok").onclick = async () => {
+    const st = document.getElementById("rp-status");
+    const jogadores = [...document.querySelectorAll(".rp-jogador")]
+      .filter(l => l.querySelector(".rp-tem").checked)
+      .map(l => ({
+        member_id: l.dataset.m,
+        deck_name: l.querySelector(".rp-deck").value.trim() || null,
+        seat: Number(l.querySelector(".rp-seat").value) || null,
+        won: l.querySelector(".rp-venceu").checked,
+      }));
+    if(!jogadores.length){ st.textContent = "marque quem jogou"; return; }
+    st.textContent = "salvando…";
+    try{
+      await rpc("play_match_add", {
+        p_code: grupoAtual().code,
+        p_format: document.getElementById("rp-formato").value,
+        p_seconds: Math.round((Number(document.getElementById("rp-minutos").value) || 0) * 60),
+        p_notes: document.getElementById("rp-nota").value.trim() || null,
+        p_players: jogadores,
+      });
+      cron.acumulado = 0; cron.rodando = false;
+      closeModal(); mesaView.dados = null; renderMesa();
+      toast("partida registrada");
+    }catch(e){ st.textContent = "não consegui salvar: " + e.message; }
+  };
+}
+
+/* =====================================================================
+   FERRAMENTAS DA MESA
+
+   O que se usa com a carta na mão: contador de vida com dano de
+   comandante e veneno, sorteio de quem começa, cronômetro da partida,
+   dado e cara ou coroa. Tudo funciona sem grupo e sem internet — é a
+   parte do app que roda com o celular no meio da mesa.
+   ===================================================================== */
+
+let vida = { jogadores:[], formato:"commander" };
+let cron = { rodando:false, inicio:0, acumulado:0, timer:null };
+
+function vidaInicial(){ return vida.formato === "commander" ? 40 : 20; }
+
+function novoJogadorDeVida(nome){
+  return { id:"j"+Math.random().toString(36).slice(2,7), nome, vida:vidaInicial(), veneno:0, cmd:{} };
+}
+function garantirJogadores(){
+  if(!vida.jogadores.length){
+    const g = grupoAtual();
+    const nomes = (mesaView.dados && mesaView.dados.members || []).map(m => m.name);
+    const base = nomes.length ? nomes.slice(0,6) : ["Você", "Oponente"];
+    vida.jogadores = base.map(novoJogadorDeVida);
+  }
+}
+
+function blocoFerramentas(){
+  garantirJogadores();
+  return `
+  <div class="ferramentas">
+    <section class="ferr-bloco">
+      <div class="ferr-topo">
+        <span class="flabel" style="margin:0">Contador de vida</span>
+        <div class="ferr-acoes">
+          <select id="vida-formato" style="width:auto">
+            <option value="commander"${vida.formato==="commander"?" selected":""}>Commander — 40</option>
+            <option value="normal"${vida.formato==="normal"?" selected":""}>Constructed — 20</option>
+          </select>
+          <button class="icon-btn" id="vida-add">+ jogador</button>
+          <button class="icon-btn" id="vida-zerar">recomeçar</button>
+        </div>
+      </div>
+      <div class="vidas" id="vidas">
+        ${vida.jogadores.map(j => painelDeVida(j)).join("")}
+      </div>
+      <p class="dg-txt">Toque no número grande para somar ou tirar. O <b>⚔</b> abre o dano de comandante
+      recebido de cada um — 21 de um mesmo comandante elimina, e o app avisa.</p>
+    </section>
+
+    <section class="ferr-bloco">
+      <div class="ferr-topo">
+        <span class="flabel" style="margin:0">Cronômetro da partida</span>
+        <div class="ferr-acoes">
+          <button class="btn" id="cron-toggle">${cron.rodando ? "Pausar" : (cron.acumulado ? "Continuar" : "Começar")}</button>
+          <button class="icon-btn" id="cron-zerar">zerar</button>
+        </div>
+      </div>
+      <div class="cronometro" id="cronometro">${tempoLongo(tempoDoCron())}</div>
+      <p class="dg-txt">Quando você registrar a partida, esse tempo já vem preenchido.</p>
+    </section>
+
+    <section class="ferr-bloco">
+      <div class="ferr-topo"><span class="flabel" style="margin:0">Quem começa</span>
+        <div class="ferr-acoes"><button class="btn ghost" id="sortear-ordem">Sortear ordem</button></div>
+      </div>
+      <div id="ordem-sorteada" class="ordem-sorteada"></div>
+    </section>
+
+    <section class="ferr-bloco">
+      <div class="ferr-topo"><span class="flabel" style="margin:0">Dado e moeda</span></div>
+      <div class="dados">
+        ${[4,6,8,10,12,20].map(n => `<button class="tog" data-dado="${n}">d${n}</button>`).join("")}
+        <button class="tog" data-moeda="1">cara ou coroa</button>
+      </div>
+      <div class="resultado-dado" id="resultado-dado">—</div>
+    </section>
+  </div>`;
+}
+
+function painelDeVida(j){
+  const perigo = j.vida <= 5 || j.veneno >= 10 || Object.values(j.cmd).some(v => v >= 21);
+  const morto = j.vida <= 0 || j.veneno >= 10 || Object.values(j.cmd).some(v => v >= 21);
+  return `
+  <div class="painel-vida ${morto?"morto":perigo?"perigo":""}" data-j="${j.id}">
+    <div class="pv-nome" contenteditable="true" spellcheck="false">${escapeHTML(j.nome)}</div>
+    <div class="pv-linha">
+      <button class="pv-menos" data-d="-5">−5</button>
+      <button class="pv-menos" data-d="-1">−1</button>
+      <b class="pv-num">${j.vida}</b>
+      <button class="pv-mais" data-d="1">+1</button>
+      <button class="pv-mais" data-d="5">+5</button>
+    </div>
+    <div class="pv-extras">
+      <button class="pv-chip pv-veneno" title="veneno">☠ ${j.veneno}</button>
+      <button class="pv-chip pv-cmd" title="dano de comandante recebido">⚔ ${Object.values(j.cmd).reduce((a,b)=>a+b,0)}</button>
+      <button class="pv-chip pv-fora" title="tirar da mesa">×</button>
+    </div>
+    ${morto ? `<span class="pv-morto">fora da partida</span>` : ""}
+  </div>`;
+}
+
+function tempoDoCron(){
+  return cron.acumulado + (cron.rodando ? (Date.now() - cron.inicio)/1000 : 0);
+}
+const tempoLongo = seg => {
+  seg = Math.max(0, Math.floor(seg));
+  const h = Math.floor(seg/3600), m = Math.floor((seg%3600)/60), s = seg%60;
+  return `${h ? h+":" : ""}${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+};
+
+function ligarFerramentas(){
+  const grade = document.getElementById("vidas");
+  if(grade){
+    grade.querySelectorAll(".painel-vida").forEach(el => {
+      const j = vida.jogadores.find(x => x.id === el.dataset.j);
+      if(!j) return;
+      el.querySelectorAll("[data-d]").forEach(b => b.onclick = () => {
+        j.vida += Number(b.dataset.d);
+        repintarVidas();
+      });
+      const nome = el.querySelector(".pv-nome");
+      nome.onblur = () => { const t = nome.textContent.trim(); if(t) j.nome = t; else nome.textContent = j.nome; };
+      nome.onkeydown = e => { if(e.key === "Enter"){ e.preventDefault(); nome.blur(); } };
+      el.querySelector(".pv-veneno").onclick = () => { j.veneno = (j.veneno + 1) % 11; repintarVidas(); };
+      el.querySelector(".pv-fora").onclick = () => {
+        vida.jogadores = vida.jogadores.filter(x => x.id !== j.id); repintarVidas();
+      };
+      el.querySelector(".pv-cmd").onclick = () => abrirDanoDeComandante(j);
+    });
+  }
+
+  const fmt = document.getElementById("vida-formato");
+  if(fmt) fmt.onchange = () => {
+    vida.formato = fmt.value;
+    vida.jogadores.forEach(j => { j.vida = vidaInicial(); j.veneno = 0; j.cmd = {}; });
+    repintarVidas();
+  };
+  const add = document.getElementById("vida-add");
+  if(add) add.onclick = () => {
+    vida.jogadores.push(novoJogadorDeVida("Jogador " + (vida.jogadores.length + 1)));
+    repintarVidas();
+  };
+  const zerar = document.getElementById("vida-zerar");
+  if(zerar) zerar.onclick = () => {
+    vida.jogadores.forEach(j => { j.vida = vidaInicial(); j.veneno = 0; j.cmd = {}; });
+    repintarVidas();
+  };
+
+  const bt = document.getElementById("cron-toggle");
+  if(bt) bt.onclick = () => {
+    if(cron.rodando){
+      cron.acumulado = tempoDoCron(); cron.rodando = false;
+      clearInterval(cron.timer); cron.timer = null;
+    } else {
+      cron.inicio = Date.now(); cron.rodando = true;
+      clearInterval(cron.timer);
+      cron.timer = setInterval(() => {
+        const el = document.getElementById("cronometro");
+        if(!el || !el.isConnected){ clearInterval(cron.timer); cron.timer = null; return; }
+        el.textContent = tempoLongo(tempoDoCron());
+      }, 500);
+    }
+    bt.textContent = cron.rodando ? "Pausar" : "Continuar";
+  };
+  const cz = document.getElementById("cron-zerar");
+  if(cz) cz.onclick = () => {
+    cron.rodando = false; cron.acumulado = 0;
+    clearInterval(cron.timer); cron.timer = null;
+    const el = document.getElementById("cronometro");
+    if(el) el.textContent = tempoLongo(0);
+    const b = document.getElementById("cron-toggle");
+    if(b) b.textContent = "Começar";
+  };
+
+  const sortear = document.getElementById("sortear-ordem");
+  if(sortear) sortear.onclick = () => {
+    const nomes = vida.jogadores.map(j => j.nome);
+    for(let i = nomes.length - 1; i > 0; i--){
+      const k = Math.floor(Math.random() * (i+1));
+      [nomes[i], nomes[k]] = [nomes[k], nomes[i]];
+    }
+    const alvo = document.getElementById("ordem-sorteada");
+    if(alvo) alvo.innerHTML = nomes.length
+      ? nomes.map((n,i) => `<span class="ordem-item ${i===0?"primeiro":""}"><b>${i+1}º</b>${escapeHTML(n)}</span>`).join("")
+      : `<span class="status">ponha jogadores no contador de vida primeiro</span>`;
+  };
+
+  const dados = document.querySelector(".dados");
+  if(dados) dados.onclick = e => {
+    const b = e.target.closest("[data-dado],[data-moeda]"); if(!b) return;
+    const alvo = document.getElementById("resultado-dado");
+    if(b.dataset.moeda) alvo.textContent = Math.random() < 0.5 ? "cara" : "coroa";
+    else {
+      const n = Number(b.dataset.dado);
+      alvo.textContent = `d${n}: ${1 + Math.floor(Math.random()*n)}`;
+    }
+  };
+}
+
+function repintarVidas(){
+  const grade = document.getElementById("vidas");
+  if(!grade) return;
+  grade.innerHTML = vida.jogadores.map(j => painelDeVida(j)).join("");
+  ligarFerramentas();
+}
+
+function abrirDanoDeComandante(j){
+  const outros = vida.jogadores.filter(x => x.id !== j.id);
+  modal(`<div class="modal-pad">
+    <h3>Dano de comandante em ${escapeHTML(j.nome)}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 16px">
+      Vinte e um de dano do mesmo comandante elimina o jogador, mesmo com vida sobrando.</p>
+    ${outros.length ? `<div class="cmd-dano">
+      ${outros.map(o => `
+        <div class="cmd-dano-linha" data-de="${o.id}">
+          <span>${escapeHTML(o.nome)}</span>
+          <button class="dl-menos">−</button>
+          <b>${j.cmd[o.id] || 0}</b>
+          <button class="dl-mais">+</button>
+        </div>`).join("")}
+    </div>` : `<div class="empty">Ponha mais jogadores na mesa primeiro.</div>`}
+    <div class="pergunta-acoes"><button class="btn" id="cd-fechar">Pronto</button></div>
+  </div>`);
+  document.getElementById("cd-fechar").onclick = () => { closeModal(); repintarVidas(); };
+  document.querySelectorAll(".cmd-dano-linha").forEach(el => {
+    const de = el.dataset.de;
+    const mexer = n => {
+      j.cmd[de] = Math.max(0, (j.cmd[de] || 0) + n);
+      if(n > 0) j.vida -= n; else j.vida -= n;   // dano de comandante também tira vida
+      el.querySelector("b").textContent = j.cmd[de];
+      if((j.cmd[de] || 0) >= 21) toast(`${j.nome} tomou 21 de ${vida.jogadores.find(x=>x.id===de).nome}`);
+    };
+    el.querySelector(".dl-mais").onclick = () => mexer(1);
+    el.querySelector(".dl-menos").onclick = () => mexer(-1);
+  });
 }
 
 
