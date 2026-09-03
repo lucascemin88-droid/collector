@@ -489,6 +489,17 @@
 
   .cmd-mini{width:54px;flex:0 0 54px;min-height:40px;display:flex;align-items:center}
   .cmd-mini img{width:100%;border-radius:5px;display:block;cursor:pointer}
+
+  .meta-lista{display:flex;flex-direction:column;gap:5px}
+  .meta-linha{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line)}
+  .meta-pos{font-size:12px;font-weight:700;color:var(--faint);min-width:22px;text-align:right}
+  .meta-nome{flex:0 0 220px;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meta-barra{flex:1;height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+  .meta-barra i{display:block;height:100%;background:var(--accent)}
+  .meta-share{font-size:12.5px;font-weight:600;color:var(--accent);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
+  .meta-decks{font-size:11px;color:var(--faint);min-width:70px;text-align:right}
+  @media (max-width:640px){ .meta-nome{flex:0 0 130px} .meta-decks{display:none} }
   .ajuda{display:flex;flex-direction:column;gap:18px;max-width:860px}
   .ajuda-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--lift)}
   .ajuda-bloco h3{margin:0 0 6px;font-size:16px;font-weight:600}
@@ -4720,12 +4731,25 @@ const PERIODOS_TOP = [
   ["anos2",   "Últimos 2 anos"],
   ["sempre",  "Desde sempre"],
 ];
+/* Commander tem as quatro janelas (o EDHREC publica as três primeiras e o
+   Scryfall carrega o ranking histórico). Os formatos de torneio vêm das
+   listas de torneio dos últimos 7 e 30 dias — não existe "desde sempre"
+   honesto ali, porque o metagame de dois anos atrás não é o de hoje. */
+const PERIODOS_POR_FORMATO = {
+  commander: ["semana","mes","anos2","sempre"],
+  brawl:     [],
+  standard:  ["semana","mes"], pioneer:["semana","mes"], modern:["semana","mes"],
+  legacy:    ["semana","mes"], vintage:["semana","mes"], pauper:["semana","mes"],
+};
+const periodosDe = f => PERIODOS_POR_FORMATO[f] || [];
 let topView = { formato:"commander", periodo:"semana", linhas:[], cartas:{}, busca:"", pagina:1, temMais:false, total:0 };
 
 async function pintarTopDecks(){
   const alvo = document.getElementById("deck-conteudo");
   if(!alvo) return;
-  const temFonte = topView.formato === "commander";
+  const janelas = periodosDe(topView.formato);
+  const temFonte = janelas.length > 0;
+  if(temFonte && !janelas.includes(topView.periodo)) topView.periodo = janelas[0];
 
   alvo.innerHTML = `
     <div class="toggles" style="margin-bottom:10px" id="top-formatos">
@@ -4733,7 +4757,8 @@ async function pintarTopDecks(){
     </div>
     ${temFonte ? `
       <div class="toggles" style="margin-bottom:16px" id="top-periodos">
-        ${PERIODOS_TOP.map(([id,nome]) => `<button class="tog ${topView.periodo===id?"on":""}" data-p="${id}">${nome}</button>`).join("")}
+        ${PERIODOS_TOP.filter(([id]) => janelas.includes(id))
+            .map(([id,nome]) => `<button class="tog ${topView.periodo===id?"on":""}" data-p="${id}">${nome}</button>`).join("")}
       </div>` : ""}
     <div id="top-lista"></div>`;
 
@@ -4754,47 +4779,53 @@ async function pintarTopDecks(){
     lista.innerHTML = `
       <div class="nota-regiao">
         <b>Ainda não tenho ranking de ${fmt.nome}.</b><br>
-        Em Commander o deck é o comandante, e o EDHREC publica esse número aberto, por período — por isso
-        aquele funciona. Para os formatos de torneio, nenhum site publica a tabela de arquétipos de graça:
-        MTGGoldfish e MTGTop8 servem só HTML e bloqueiam leitura de fora. Dá para ligar, mas exige o job
-        diário ler as listas de torneio e classificar arquétipo — é trabalho de verdade, não é só apontar
-        para um endereço. Enquanto isso, o metagame ao vivo está em
+        Os formatos de torneio saem das listas publicadas de MTGO, Melee e Topdeck, e o Brawl quase não
+        aparece nelas. Se você quiser acompanhar, o lugar hoje é
         <a href="${link[1]}" target="_blank" rel="noopener">${escapeHTML(link[0])} ↗</a>.
       </div>`;
     return;
   }
 
-  if(topView.periodo === "sempre") return listaDeSempre();
+  if(topView.formato === "commander" && topView.periodo === "sempre") return listaDeSempre();
   return listaDoPeriodo();
 }
 
-/* semana / mês / 2 anos: vem da nossa tabela, alimentada pelo job */
+/* Vem da nossa tabela, alimentada pelo job diário. Em Commander cada linha é
+   um comandante; nos formatos de torneio é um arquétipo, com a fatia que ele
+   ocupou nas listas de torneio da janela. */
 async function listaDoPeriodo(){
   const alvo = document.getElementById("top-lista");
   if(!alvo) return;
+  const ehEdh = topView.formato === "commander";
   alvo.innerHTML = `<div class="status">carregando o ranking…</div>`;
   let linhas = [];
   try{
-    linhas = await supa(`top_decks?formato=eq.commander&periodo=eq.${encodeURIComponent(topView.periodo)}`
+    linhas = await supa(`top_decks?formato=eq.${encodeURIComponent(topView.formato)}`
+      + `&periodo=eq.${encodeURIComponent(topView.periodo)}`
       + `&select=posicao,nome,decks,url,dia&order=posicao.asc&limit=100`);
   }catch(e){ linhas = []; }
   if(!alvo.isConnected) return;
 
   if(!linhas.length){
     alvo.innerHTML = `<div class="nota-regiao">
-      O ranking desta janela ainda não foi baixado. Ele vem do EDHREC pelo job diário, que roda às 6h10;
-      enquanto isso, o <b>Desde sempre</b> funciona sozinho, direto do Scryfall.</div>`;
+      O ranking desta janela ainda não foi baixado. Ele vem do job diário, que roda às 6h10.
+      ${ehEdh ? "Enquanto isso, o <b>Desde sempre</b> funciona sozinho, direto do Scryfall." : ""}</div>`;
     return;
   }
 
   const dia = linhas[0].dia;
+  const totalDecks = linhas.reduce((a,l) => a + (l.decks||0), 0) || 1;
+  const janela = (PERIODOS_TOP.find(p => p[0] === topView.periodo) || ["","essa janela"])[1].toLowerCase();
+
   alvo.innerHTML = `
     <p class="status" style="text-align:left;margin:0 0 12px">
-      ${linhas.length} decks mais jogados de Commander ${
-        PERIODOS_TOP.find(p => p[0] === topView.periodo)[1].toLowerCase()} ·
-      número de decks publicados no EDHREC${dia ? ` · atualizado em ${new Date(dia+"T12:00:00").toLocaleDateString("pt-BR")}` : ""}</p>
-    <div class="cmd-grade" id="top-grade">
-      ${linhas.map(l => `
+      ${linhas.length} ${ehEdh ? "decks mais jogados de Commander" : "arquétipos de " + formatoDe(topView.formato).nome}
+      ${janela} · ${ehEdh
+        ? "número de decks publicados no EDHREC"
+        : `${totalDecks.toLocaleString("pt-BR")} decks de torneio classificados`}${
+        dia ? ` · atualizado em ${new Date(dia+"T12:00:00").toLocaleDateString("pt-BR")}` : ""}</p>
+    <div class="${ehEdh ? "cmd-grade" : "meta-lista"}" id="top-grade">
+      ${linhas.map(l => ehEdh ? `
         <div class="cmd-cartao" data-nome="${escapeHTML(l.nome)}">
           <div class="cmd-pos">${l.posicao}</div>
           <div class="cmd-mini" id="mini-${l.posicao}"></div>
@@ -4806,12 +4837,23 @@ async function listaDoPeriodo(){
               ${l.url ? `<a class="btn ghost" href="${escapeHTML(l.url)}" target="_blank" rel="noopener">Ver no EDHREC ↗</a>` : ""}
             </div>
           </div>
+        </div>` : `
+        <div class="meta-linha">
+          <span class="meta-pos">${l.posicao}</span>
+          <span class="meta-nome">${escapeHTML(l.nome)}</span>
+          <span class="meta-barra"><i style="width:${Math.round(100*(l.decks||0)/totalDecks)}%"></i></span>
+          <span class="meta-share">${(100*(l.decks||0)/totalDecks).toFixed(1)}%</span>
+          <span class="meta-decks">${(l.decks||0)} deck${(l.decks||0)===1?"":"s"}</span>
         </div>`).join("")}
-    </div>`;
+    </div>
+    ${ehEdh ? "" : `<p class="impr-dica">Arquétipo classificado pelas regras abertas do MTGOFormatData,
+      sobre as listas de torneio de MTGO, Melee, Topdeck e Manatraders. A fatia é sobre os decks
+      classificados nesta janela, não sobre o mundo inteiro.</p>`}`;
+
+  if(!ehEdh) return;
 
   // as imagens vêm do Scryfall em lote, pelo nome
-  const nomes = linhas.map(l => l.nome);
-  const cartas = await cartasPorNome(nomes);
+  const cartas = await cartasPorNome(linhas.map(l => l.nome));
   if(!alvo.isConnected) return;
   linhas.forEach(l => {
     const c = cartas[chaveDeNome(l.nome)];
