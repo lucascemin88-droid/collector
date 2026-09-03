@@ -244,6 +244,16 @@
     display:flex;align-items:center;justify-content:center;font-size:12px;font-style:italic;font-family:Georgia,serif;
   }
   .card .info:hover{color:var(--gold);border-color:var(--gold-dim)}
+  .card .quero-carta{
+    position:absolute;right:7px;top:36px;z-index:3;width:23px;height:23px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1;
+    background:rgba(10,12,16,.7);border:1px solid var(--line-strong);color:var(--faint);
+    backdrop-filter:blur(4px);opacity:0;transition:opacity var(--t-fast),color var(--t-fast);
+  }
+  .card:hover .quero-carta,.card:focus-within .quero-carta,.card .quero-carta.na-lista{opacity:1}
+  .card .quero-carta:hover{color:var(--accent);border-color:var(--accent-line)}
+  .card .quero-carta.na-lista{color:var(--accent);border-color:var(--accent-line)}
+  @media (hover:none){ .card .quero-carta{opacity:1} }
   .card .tirar-carta{
     position:absolute;left:7px;bottom:30px;z-index:3;width:24px;height:24px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;
@@ -475,6 +485,29 @@
   .cmd-info small{font-size:11px;color:var(--faint)}
   .cmd-acoes{display:flex;gap:6px;margin-top:4px}
   .cmd-acoes .btn{min-height:28px;padding:0 10px;font-size:11.5px}
+
+
+  .cmd-mini{width:54px;flex:0 0 54px;min-height:40px;display:flex;align-items:center}
+  .cmd-mini img{width:100%;border-radius:5px;display:block;cursor:pointer}
+  .ajuda{display:flex;flex-direction:column;gap:18px;max-width:860px}
+  .ajuda-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--lift)}
+  .ajuda-bloco h3{margin:0 0 6px;font-size:16px;font-weight:600}
+  .ajuda-bloco p{margin:0 0 12px;font-size:13px;color:var(--muted);line-height:1.6}
+  .receita{display:flex;flex-direction:column;gap:6px}
+  .receita-item{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:var(--r-sm);
+    background:var(--surface-2);border:1px solid var(--line)}
+  .receita-item.clicavel{cursor:pointer;transition:border-color var(--t-fast),background var(--t-fast)}
+  .receita-item.clicavel:hover{border-color:var(--accent-line);background:var(--surface-3)}
+  .receita-item > b{font-size:15px;color:var(--accent);min-width:64px;text-align:right;font-variant-numeric:tabular-nums}
+  .receita-item div{flex:1;min-width:0}
+  .receita-item span{display:block;font-size:13.5px;font-weight:600}
+  .receita-item small{display:block;font-size:11.5px;color:var(--faint);line-height:1.5;margin-top:2px}
+  .receita-item em{font-size:11px;color:var(--accent);font-style:normal;white-space:nowrap}
+  .ajuda-passos,.ajuda-lista{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px;
+    font-size:13px;color:var(--muted);line-height:1.6}
+  .ajuda-passos b,.ajuda-lista b{color:var(--text)}
+  .link-int{color:var(--accent);background:none;border:none;padding:0;font-size:inherit;
+    text-decoration:underline;text-underline-offset:3px}
 
   /* ---------- chase cards ---------- */
   .chase-grupo{margin-bottom:26px}
@@ -1666,11 +1699,33 @@ function customCardHTML(c){
 
 /* Regra única de interação com uma miniatura, para não haver surpresa:
    clique marca a carta que você não tem; carta que você já tem só sai pelo ×. */
+function naChase(id){ return !!(S.chase && (S.chase.cartas||[]).some(x => x.id === id)); }
+
+/* o botão de "quero esta" existe em toda miniatura do app: catálogo, edições,
+   coleções, Secret Lair. Ele manda a carta para os chase cards sem sair da tela. */
+function ligarQuero(el, c, aoMudar){
+  const b = el.querySelector(".quero-carta");
+  if(!b) return;
+  b.onclick = e => {
+    e.stopPropagation();
+    if(naChase(c.id)){
+      S.chase.cartas = S.chase.cartas.filter(x => x.id !== c.id); save();
+      toast(`${c.name} saiu dos chase cards`);
+    } else {
+      porNoChase(c);
+      toast(`${c.name} entrou nos chase cards`);
+    }
+    if(aoMudar) aoMudar(c, el);
+    else { b.classList.toggle("na-lista", naChase(c.id)); b.textContent = naChase(c.id) ? "★" : "☆"; }
+  };
+}
+
 function ligarCartas(grid, achar, aoMudar){
   if(!grid) return;
   grid.querySelectorAll(".card").forEach(el => {
     const c = achar(el.dataset.id);
     if(!c) return;
+    ligarQuero(el, c, aoMudar);
     const info = el.querySelector(".info");
     if(info) info.onclick = e => { e.stopPropagation(); openCard(c); };
     const tirar = el.querySelector(".tirar-carta");
@@ -1837,6 +1892,8 @@ function cardHTML(c, copias, selo, comQtd){
     ${selo ? `<span class="copias selo-edicoes">${escapeHTML(selo)}</span>` : ""}
     ${["foil","etched"].includes(c.acabamentoEscolhido) ? `<span class="marca-foil">${nomeAcabamento(c, c.acabamentoEscolhido)}</span>` : ""}
     ${own ? `<button class="tirar-carta" title="tirar da minha coleção">×</button>` : ""}
+    <button class="quero-carta ${naChase(c.id)?"na-lista":""}"
+            title="${naChase(c.id) ? "já está nos chase cards" : "quero esta — mandar para os chase cards"}">${naChase(c.id)?"★":"☆"}</button>
     ${c.small ? `<img loading="lazy" src="${c.small}" alt="${escapeHTML(c.name)}">`
               : `<div class="sem-arte">${escapeHTML(c.name)}</div>`}
     <div class="tick">${own?"✓":""}</div>
@@ -4189,8 +4246,8 @@ function renderDecks(){
 
     <div class="abas-deck">
       <button class="tog ${deckView.aba==="meus"?"on":""}" data-aba="meus">Meus decks</button>
-      <button class="tog ${deckView.aba==="comandantes"?"on":""}" data-aba="comandantes">Comandantes mais jogados</button>
-      <button class="tog ${deckView.aba==="metagame"?"on":""}" data-aba="metagame">O que está sendo jogado</button>
+      <button class="tog ${deckView.aba==="top"?"on":""}" data-aba="top">Decks mais jogados</button>
+      <button class="tog ${deckView.aba==="ajuda"?"on":""}" data-aba="ajuda">Como montar um deck</button>
     </div>
 
     <div id="deck-conteudo"></div>`;
@@ -4201,8 +4258,8 @@ function renderDecks(){
     deckView.aba = b.dataset.aba; renderDecks();
   };
 
-  if(deckView.aba === "comandantes") return pintarComandantes();
-  if(deckView.aba === "metagame") return pintarMetagame();
+  if(deckView.aba === "top") return pintarTopDecks();
+  if(deckView.aba === "ajuda") return pintarAjuda();
 
   const alvo = document.getElementById("deck-conteudo");
   alvo.innerHTML = decks().length === 0
@@ -4649,73 +4706,209 @@ function exportarDeck(d){
   };
 }
 
-/* ---------------- comandantes mais jogados ----------------
-   O Scryfall traz o edhrec_rank de cada carta: é a posição dela no ranking
-   de uso do EDHREC, que junta milhões de decks publicados. Ordenar os
-   lendários por esse número dá, de graça e ao vivo, a lista dos comandantes
-   mais jogados do momento — sem depender de nenhuma API fechada. */
-let cmdView = { cartas:[], pagina:1, temMais:false, total:0, busca:"", cor:"", carregando:false };
+/* ---------------- decks mais jogados ----------------
+   Em Commander o deck é o comandante, e o EDHREC publica esse ranking por
+   período. O navegador não lê o EDHREC direto (o site não libera CORS), então
+   quem lê é o job diário: a tela aqui consulta a nossa tabela top_decks.
+   "Desde sempre" não precisa de tabela: o próprio Scryfall carrega o ranking
+   histórico do EDHREC dentro de cada carta (edhrec_rank), e ordenar por ele
+   dá a lista de todos os tempos ao vivo. */
 
-async function pintarComandantes(){
+const PERIODOS_TOP = [
+  ["semana",  "Última semana"],
+  ["mes",     "Último mês"],
+  ["anos2",   "Últimos 2 anos"],
+  ["sempre",  "Desde sempre"],
+];
+let topView = { formato:"commander", periodo:"semana", linhas:[], cartas:{}, busca:"", pagina:1, temMais:false, total:0 };
+
+async function pintarTopDecks(){
   const alvo = document.getElementById("deck-conteudo");
+  if(!alvo) return;
+  const temFonte = topView.formato === "commander";
+
+  alvo.innerHTML = `
+    <div class="toggles" style="margin-bottom:10px" id="top-formatos">
+      ${FORMATOS.map(f => `<button class="tog ${topView.formato===f.id?"on":""}" data-f="${f.id}">${f.nome}</button>`).join("")}
+    </div>
+    ${temFonte ? `
+      <div class="toggles" style="margin-bottom:16px" id="top-periodos">
+        ${PERIODOS_TOP.map(([id,nome]) => `<button class="tog ${topView.periodo===id?"on":""}" data-p="${id}">${nome}</button>`).join("")}
+      </div>` : ""}
+    <div id="top-lista"></div>`;
+
+  document.getElementById("top-formatos").onclick = e => {
+    const b = e.target.closest("[data-f]"); if(!b) return;
+    topView.formato = b.dataset.f; topView.linhas = []; pintarTopDecks();
+  };
+  const per = document.getElementById("top-periodos");
+  if(per) per.onclick = e => {
+    const b = e.target.closest("[data-p]"); if(!b) return;
+    topView.periodo = b.dataset.p; topView.linhas = []; topView.pagina = 1; pintarTopDecks();
+  };
+
+  const lista = document.getElementById("top-lista");
+  if(!temFonte){
+    const fmt = formatoDe(topView.formato);
+    const link = LINKS_META[topView.formato] || LINKS_META.commander;
+    lista.innerHTML = `
+      <div class="nota-regiao">
+        <b>Ainda não tenho ranking de ${fmt.nome}.</b><br>
+        Em Commander o deck é o comandante, e o EDHREC publica esse número aberto, por período — por isso
+        aquele funciona. Para os formatos de torneio, nenhum site publica a tabela de arquétipos de graça:
+        MTGGoldfish e MTGTop8 servem só HTML e bloqueiam leitura de fora. Dá para ligar, mas exige o job
+        diário ler as listas de torneio e classificar arquétipo — é trabalho de verdade, não é só apontar
+        para um endereço. Enquanto isso, o metagame ao vivo está em
+        <a href="${link[1]}" target="_blank" rel="noopener">${escapeHTML(link[0])} ↗</a>.
+      </div>`;
+    return;
+  }
+
+  if(topView.periodo === "sempre") return listaDeSempre();
+  return listaDoPeriodo();
+}
+
+/* semana / mês / 2 anos: vem da nossa tabela, alimentada pelo job */
+async function listaDoPeriodo(){
+  const alvo = document.getElementById("top-lista");
+  if(!alvo) return;
+  alvo.innerHTML = `<div class="status">carregando o ranking…</div>`;
+  let linhas = [];
+  try{
+    linhas = await supa(`top_decks?formato=eq.commander&periodo=eq.${encodeURIComponent(topView.periodo)}`
+      + `&select=posicao,nome,decks,url,dia&order=posicao.asc&limit=100`);
+  }catch(e){ linhas = []; }
+  if(!alvo.isConnected) return;
+
+  if(!linhas.length){
+    alvo.innerHTML = `<div class="nota-regiao">
+      O ranking desta janela ainda não foi baixado. Ele vem do EDHREC pelo job diário, que roda às 6h10;
+      enquanto isso, o <b>Desde sempre</b> funciona sozinho, direto do Scryfall.</div>`;
+    return;
+  }
+
+  const dia = linhas[0].dia;
+  alvo.innerHTML = `
+    <p class="status" style="text-align:left;margin:0 0 12px">
+      ${linhas.length} decks mais jogados de Commander ${
+        PERIODOS_TOP.find(p => p[0] === topView.periodo)[1].toLowerCase()} ·
+      número de decks publicados no EDHREC${dia ? ` · atualizado em ${new Date(dia+"T12:00:00").toLocaleDateString("pt-BR")}` : ""}</p>
+    <div class="cmd-grade" id="top-grade">
+      ${linhas.map(l => `
+        <div class="cmd-cartao" data-nome="${escapeHTML(l.nome)}">
+          <div class="cmd-pos">${l.posicao}</div>
+          <div class="cmd-mini" id="mini-${l.posicao}"></div>
+          <div class="cmd-info">
+            <b>${escapeHTML(l.nome)}</b>
+            <small>${(l.decks||0).toLocaleString("pt-BR")} decks publicados</small>
+            <div class="cmd-acoes">
+              <button class="btn ghost cmd-usar">Criar deck</button>
+              ${l.url ? `<a class="btn ghost" href="${escapeHTML(l.url)}" target="_blank" rel="noopener">Ver no EDHREC ↗</a>` : ""}
+            </div>
+          </div>
+        </div>`).join("")}
+    </div>`;
+
+  // as imagens vêm do Scryfall em lote, pelo nome
+  const nomes = linhas.map(l => l.nome);
+  const cartas = await cartasPorNome(nomes);
+  if(!alvo.isConnected) return;
+  linhas.forEach(l => {
+    const c = cartas[chaveDeNome(l.nome)];
+    const caixa = document.getElementById("mini-" + l.posicao);
+    if(caixa && c) caixa.innerHTML = `<img loading="lazy" src="${escapeHTML(c.small||"")}" alt="${escapeHTML(c.name)}">`;
+  });
+  alvo.querySelectorAll(".cmd-cartao").forEach(el => {
+    const c = cartas[chaveDeNome(el.dataset.nome)];
+    const usar = el.querySelector(".cmd-usar");
+    if(usar) usar.onclick = () => c
+      ? novoDeck({ formato:"commander", nome:c.name, comandante:cartaDeDeck(c,1) })
+      : novoDeck({ formato:"commander", nome:el.dataset.nome });
+    const mini = el.querySelector(".cmd-mini");
+    if(mini && c) mini.onclick = () => openCard(c);
+  });
+}
+
+/* busca em lote pelo nome exato — /cards/collection aceita 75 por vez */
+async function cartasPorNome(nomes){
+  const fora = {};
+  const unicos = [...new Set(nomes)];
+  for(let i = 0; i < unicos.length; i += 75){
+    const lote = unicos.slice(i, i+75).map(n => ({ name: n.split(" // ")[0] }));
+    try{
+      const r = await fetch(`${API}/cards/collection`, {
+        method:"POST", headers:{ "Content-Type":"application/json", Accept:"application/json" },
+        body: JSON.stringify({ identifiers: lote })
+      });
+      if(!r.ok) break;
+      const j = await r.json();
+      (j.data || []).map(normalize).forEach(c => {
+        fora[chaveDeNome(c.name)] = c;
+        fora[chaveDeNome(c.name.split(" // ")[0])] = c;
+      });
+    }catch(e){ break; }
+    await sleep(120);
+  }
+  return fora;
+}
+
+/* desde sempre: ao vivo do Scryfall, ordenado pelo ranking histórico */
+async function listaDeSempre(){
+  const alvo = document.getElementById("top-lista");
   if(!alvo) return;
   alvo.innerHTML = `
     <div class="toolbar" style="margin-bottom:14px">
-      <div class="grow"><input type="search" id="cmd-busca" placeholder="procurar comandante pelo nome…" value="${escapeHTML(cmdView.busca)}"></div>
-      <div class="toggles" id="cmd-cores">
+      <div class="grow"><input type="search" id="top-busca" placeholder="procurar comandante pelo nome…" value="${escapeHTML(topView.busca)}"></div>
+      <div class="toggles" id="top-cores">
         ${[["w","Branco"],["u","Azul"],["b","Preto"],["r","Vermelho"],["g","Verde"],["c","Incolor"]]
-          .map(([c,n]) => `<button class="tog ${cmdView.cor===c?"on":""}" data-cor="${c}">
+          .map(([c,n]) => `<button class="tog ${topView.cor===c?"on":""}" data-cor="${c}">
             <i class="ponto-cor" style="background:${PONTOS_COR[c] || "#8a92a6"}"></i>${n}</button>`).join("")}
       </div>
     </div>
-    <p class="status" style="text-align:left;margin:0 0 12px" id="cmd-status">carregando…</p>
-    <div class="cmd-grade" id="cmd-grade">${skeletons(10)}</div>
-    <div class="loadmore" id="cmd-mais"></div>`;
+    <p class="status" style="text-align:left;margin:0 0 12px" id="top-status">carregando…</p>
+    <div class="cmd-grade" id="top-grade">${skeletons(8)}</div>
+    <div class="loadmore" id="top-mais"></div>`;
 
-  const b = document.getElementById("cmd-busca");
+  const b = document.getElementById("top-busca");
   let t;
-  b.oninput = () => { clearTimeout(t); t = setTimeout(() => { cmdView.busca = b.value; carregarComandantes(true); }, 380); };
-  document.getElementById("cmd-cores").onclick = e => {
+  b.oninput = () => { clearTimeout(t); t = setTimeout(() => { topView.busca = b.value; carregarSempre(true); }, 380); };
+  document.getElementById("top-cores").onclick = e => {
     const x = e.target.closest("[data-cor]"); if(!x) return;
-    cmdView.cor = cmdView.cor === x.dataset.cor ? "" : x.dataset.cor;
-    document.querySelectorAll("#cmd-cores .tog").forEach(y => y.classList.toggle("on", y.dataset.cor === cmdView.cor));
-    carregarComandantes(true);
+    topView.cor = topView.cor === x.dataset.cor ? "" : x.dataset.cor;
+    carregarSempre(true);
   };
-  carregarComandantes(true);
+  carregarSempre(true);
 }
 
-async function carregarComandantes(zerar){
-  const grade = document.getElementById("cmd-grade"), status = document.getElementById("cmd-status");
+async function carregarSempre(zerar){
+  const grade = document.getElementById("top-grade"), status = document.getElementById("top-status");
   if(!grade) return;
-  if(zerar){ cmdView.cartas = []; cmdView.pagina = 1; grade.innerHTML = skeletons(10); }
-  cmdView.carregando = true;
+  if(zerar){ topView.linhas = []; topView.pagina = 1; grade.innerHTML = skeletons(8); }
   const partes = ["is:commander game:paper"];
-  if(cmdView.busca.trim()) partes.push(`name:"${cmdView.busca.trim()}"`);
-  if(cmdView.cor) partes.push(cmdView.cor === "c" ? "ci:c" : `ci:${cmdView.cor}`);
+  if((topView.busca||"").trim()) partes.push(`name:"${topView.busca.trim()}"`);
+  if(topView.cor) partes.push(topView.cor === "c" ? "ci:c" : `ci:${topView.cor}`);
   try{
-    const json = await scryPage(partes.join(" "), "cards", "edhrec", cmdView.pagina, "auto");
+    const json = await scryPage(partes.join(" "), "cards", "edhrec", topView.pagina, "auto");
     if(!grade.isConnected) return;
-    cmdView.cartas.push(...(json.data || []).map(normalize));
-    cmdView.total = json.total_cards || cmdView.cartas.length;
-    cmdView.temMais = !!json.has_more;
-    cmdView.pagina++;
+    topView.linhas.push(...(json.data || []).map(normalize));
+    topView.total = json.total_cards || topView.linhas.length;
+    topView.temMais = !!json.has_more;
+    topView.pagina++;
   }catch(e){
     if(grade.isConnected){ grade.innerHTML = ""; status.textContent = "não consegui buscar agora."; }
-    cmdView.carregando = false;
     return;
   }
-  cmdView.carregando = false;
   if(!grade.isConnected) return;
 
-  status.innerHTML = `${cmdView.total.toLocaleString("pt-BR")} comandantes${cmdView.busca||cmdView.cor?" nesse filtro":""} ·
-    ordenados por quanto aparecem em deck publicado (ranking do EDHREC)`;
-  grade.innerHTML = cmdView.cartas.map((c,i) => `
+  status.innerHTML = `${topView.total.toLocaleString("pt-BR")} comandantes${topView.busca||topView.cor?" nesse filtro":""} ·
+    ordenados pelo ranking histórico de uso do EDHREC, que o Scryfall publica em cada carta`;
+  grade.innerHTML = topView.linhas.map((c,i) => `
     <div class="cmd-cartao" data-id="${c.id}">
       <div class="cmd-pos">${i+1}</div>
-      <img loading="lazy" src="${escapeHTML(c.small||"")}" alt="${escapeHTML(c.name)}">
+      <div class="cmd-mini"><img loading="lazy" src="${escapeHTML(c.small||"")}" alt="${escapeHTML(c.name)}"></div>
       <div class="cmd-info">
         <b>${escapeHTML(c.name)}</b>
-        <small>${escapeHTML((c.type||"").split("—")[0].trim())}${c.edhrec ? ` · #${c.edhrec} no EDHREC` : ""}</small>
+        <small>${escapeHTML((c.type||"").split("—")[0].trim())}${c.edhrec ? ` · #${c.edhrec} entre todas as cartas` : ""}</small>
         <div class="cmd-acoes">
           <button class="btn ghost cmd-usar">Criar deck</button>
           <button class="btn ghost cmd-ver">Ver carta</button>
@@ -4724,69 +4917,113 @@ async function carregarComandantes(zerar){
     </div>`).join("");
 
   grade.querySelectorAll(".cmd-cartao").forEach(el => {
-    const c = cmdView.cartas.find(x => x.id === el.dataset.id);
+    const c = topView.linhas.find(x => x.id === el.dataset.id);
     if(!c) return;
     el.querySelector(".cmd-usar").onclick = () => novoDeck({ formato:"commander", nome:c.name, comandante:cartaDeDeck(c,1) });
     el.querySelector(".cmd-ver").onclick = () => openCard(c);
   });
 
-  const mais = document.getElementById("cmd-mais");
-  if(mais) mais.innerHTML = cmdView.temMais
-    ? `<button class="btn ghost" id="cmd-mais-btn">Carregar mais</button>` : "";
-  const btn = document.getElementById("cmd-mais-btn");
-  if(btn) btn.onclick = () => { btn.disabled = true; carregarComandantes(false); };
+  const mais = document.getElementById("top-mais");
+  if(mais) mais.innerHTML = topView.temMais ? `<button class="btn ghost" id="top-mais-btn">Carregar mais</button>` : "";
+  const btn = document.getElementById("top-mais-btn");
+  if(btn) btn.onclick = () => { btn.disabled = true; carregarSempre(false); };
 }
 
-/* ---------------- o que está sendo jogado ---------------- */
 const LINKS_META = {
   commander: ["EDHREC — comandantes da semana", "https://edhrec.com/top/week"],
+  brawl:     ["EDHREC — Brawl", "https://edhrec.com/commanders/brawl"],
   standard:  ["MTGGoldfish — metagame de Standard", "https://www.mtggoldfish.com/metagame/standard"],
   pioneer:   ["MTGGoldfish — metagame de Pioneer",  "https://www.mtggoldfish.com/metagame/pioneer"],
   modern:    ["MTGGoldfish — metagame de Modern",   "https://www.mtggoldfish.com/metagame/modern"],
   legacy:    ["MTGGoldfish — metagame de Legacy",   "https://www.mtggoldfish.com/metagame/legacy"],
   vintage:   ["MTGGoldfish — metagame de Vintage",  "https://www.mtggoldfish.com/metagame/vintage"],
   pauper:    ["MTGGoldfish — metagame de Pauper",   "https://www.mtggoldfish.com/metagame/pauper"],
-  brawl:     ["EDHREC — Brawl", "https://edhrec.com/commanders/brawl"],
 };
-let metaView = { formato:"commander", cartas:[], carregando:false };
 
-async function pintarMetagame(){
+/* ---------------- como montar um deck ----------------
+   A receita que todo guia de Commander repete, escrita em português e ligada
+   ao app: cada peça vira um botão que já abre a busca certa. */
+
+const RECEITA_EDH = [
+  ["Terrenos", "36 a 38", "É a peça que mais gente erra para menos. A conta exata sai no diagnóstico do seu deck, a partir do custo médio das cartas.", "t:land -t:basic f:commander"],
+  ["Rampa", "10 a 12", "Coisas que adiantam mana: Sol Ring, Arcane Signet, Cultivate. Sem isso o deck trava em quatro manas.", "(o:\"add {\" or o:\"search your library for a basic land\") mv<=3 f:commander"],
+  ["Compra de carta", "8 a 12", "O que repõe a mão. É a diferença entre jogar e assistir depois do turno seis.", "o:\"draw\" o:\"card\" -t:land f:commander"],
+  ["Remoção pontual", "8 a 10", "Destruir, exilar ou anular uma ameaça específica.", "(o:\"destroy target\" or o:\"exile target\") f:commander"],
+  ["Varridas", "2 a 4", "Limpar a mesa quando três adversários montaram board.", "o:\"destroy all creatures\" f:commander"],
+  ["Proteção", "3 a 5", "Manter seu comandante vivo: Swiftfoot Boots, Heroic Intervention.", "(o:\"hexproof\" or o:\"indestructible\") mv<=3 f:commander"],
+  ["O tema", "25 a 30", "O que o deck faz de divertido. Tudo acima é encanamento; isto é a casa.", ""],
+];
+
+function pintarAjuda(){
   const alvo = document.getElementById("deck-conteudo");
   if(!alvo) return;
-  const f = metaView.formato;
-  const [rotulo, url] = LINKS_META[f] || LINKS_META.commander;
-
   alvo.innerHTML = `
-    <div class="toggles" style="margin-bottom:14px" id="meta-formatos">
-      ${FORMATOS.map(x => `<button class="tog ${f===x.id?"on":""}" data-f="${x.id}">${x.nome}</button>`).join("")}
-    </div>
-    <div class="nota-regiao" style="margin-bottom:16px">
-      <b>De onde vem este número.</b> As cartas abaixo estão ordenadas pelo ranking de uso do EDHREC,
-      que o Scryfall publica carta a carta — é o dado de uso mais confiável que existe de graça e ao vivo.
-      Ele conta deck publicado, e ninguém publica deck de Standard tanto quanto de Commander, então para os
-      formatos de torneio ele indica bem as cartas populares, mas não substitui a tabela de metagame:
-      para essa, <a href="${url}" target="_blank" rel="noopener">${escapeHTML(rotulo)} ↗</a>.
-    </div>
-    <p class="status" style="text-align:left;margin:0 0 12px" id="meta-status">carregando…</p>
-    <div class="cards" id="meta-grade">${skeletons(12)}</div>`;
+    <div class="ajuda">
+      <section class="ajuda-bloco">
+        <h3>A receita de um Commander de 100 cartas</h3>
+        <p>Não existe lei, mas existe consenso. Um deck que respeita estas faixas funciona; um deck que
+        ignora duas delas trava na mesa. Clique em qualquer peça para abrir o catálogo já filtrado.</p>
+        <div class="receita">
+          ${RECEITA_EDH.map(([nome, qtd, txt, q]) => `
+            <div class="receita-item ${q ? "clicavel" : ""}" ${q ? `data-q="${escapeHTML(q)}"` : ""}>
+              <b>${qtd}</b>
+              <div><span>${nome}</span><small>${txt}</small></div>
+              ${q ? `<em>ver cartas →</em>` : ""}
+            </div>`).join("")}
+        </div>
+      </section>
 
-  document.getElementById("meta-formatos").onclick = e => {
-    const b = e.target.closest("[data-f]"); if(!b) return;
-    metaView.formato = b.dataset.f; pintarMetagame();
-  };
+      <section class="ajuda-bloco">
+        <h3>Por onde começar</h3>
+        <ol class="ajuda-passos">
+          <li><b>Escolha o comandante primeiro.</b> Ele decide as cores e o plano. Se estiver perdido, veja
+          os <button class="link-int" data-aba="top">decks mais jogados</button> — os primeiros da lista são
+          populares porque são fáceis de montar e de jogar.</li>
+          <li><b>Ponha os terrenos antes das cartas legais.</b> Trinta e seis parece muito e não é. O
+          diagnóstico do deck recalcula esse número conforme o seu custo médio.</li>
+          <li><b>Encha o encanamento:</b> rampa, compra, remoção e varrida, nas faixas acima. São ~35
+          cartas que quase não mudam de deck para deck.</li>
+          <li><b>Sobrou espaço? É o tema.</b> As 25 a 30 cartas que fazem o deck ser o <i>seu</i> deck.</li>
+          <li><b>Passe o olho no diagnóstico.</b> Ele mostra curva, fontes de cor por símbolo exigido,
+          legalidade e o quanto falta comprar.</li>
+        </ol>
+      </section>
 
-  const grade = document.getElementById("meta-grade"), status = document.getElementById("meta-status");
-  try{
-    const json = await scryPage(`f:${f} game:paper -t:basic`, "cards", "edhrec", 1, "auto");
-    if(!grade.isConnected) return;
-    const cartas = (json.data || []).map(normalize).slice(0, 60);
-    status.textContent = `as ${cartas.length} cartas mais usadas em ${formatoDe(f).nome} hoje`;
-    grade.innerHTML = cartas.map(c => cardHTML(c)).join("");
-    ligarCartas(grade, id => cartas.find(c => c.id === id), () => pintarMetagame());
-  }catch(e){
-    if(grade.isConnected){ grade.innerHTML = ""; status.textContent = "não consegui buscar agora."; }
-  }
+      <section class="ajuda-bloco">
+        <h3>Erros que aparecem em quase todo deck novo</h3>
+        <ul class="ajuda-lista">
+          <li><b>Poucos terrenos.</b> Trinta e três não é ousadia, é mão travada. A conta do diagnóstico
+          é do Frank Karsten e vale mais que a intuição.</li>
+          <li><b>Curva pesada demais.</b> Se a barra de 5, 6 e 7+ está maior que a de 2 e 3, o deck só
+          começa a jogar no turno seis — e a mesa não espera.</li>
+          <li><b>Três cores com fontes de menos.</b> Se você tem 20 símbolos verdes e 8 fontes de verde,
+          o verde vai faltar. O diagnóstico compara os dois.</li>
+          <li><b>Nenhuma varrida.</b> Todo deck precisa de um botão de pânico.</li>
+          <li><b>Carta fora da identidade de cor.</b> É a regra que mais desclassifica deck em mesa nova —
+          o app aponta a carta pelo nome.</li>
+        </ul>
+      </section>
+
+      <section class="ajuda-bloco">
+        <h3>Nos formatos de 60 cartas</h3>
+        <p>A lógica é a mesma com números menores: 17 a 18 terrenos num deck de curva baixa, 24 a 26 num
+        deck de curva alta, e no máximo 4 cópias de cada carta. O diagnóstico troca a conta sozinho quando
+        você muda o formato do deck.</p>
+      </section>
+    </div>`;
+
+  alvo.querySelectorAll(".receita-item.clicavel").forEach(el => el.onclick = () => {
+    cat.f = FILTROS_VAZIOS();
+    cat.f.avancado = el.dataset.q;
+    view = { name:"catalogo", id:null };
+    renderCatalogo().then(buscarCatalogo);
+    window.scrollTo({ top:0, behavior:"smooth" });
+  });
+  alvo.querySelectorAll(".link-int").forEach(el => el.onclick = () => {
+    deckView.aba = el.dataset.aba; renderDecks();
+  });
 }
+
 
 /* =====================================================================
    CHASE CARDS — a lista de desejo com preço de olho
@@ -5096,6 +5333,7 @@ function openCard(c){
 
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
           <button class="btn" id="own-toggle">${own?"✓ Tenho esta carta":"Marcar como minha"}</button>
+          <button class="btn ghost" id="quero-detalhe">${naChase(c.id) ? "★ nos chase cards" : "☆ Quero esta"}</button>
           <a class="btn ghost" href="${c.url}" target="_blank" rel="noopener">Scryfall</a>
           ${numaColecao ? `<button class="btn danger" id="rm-card">Remover da coleção</button>` : ""}
         </div>
@@ -5162,6 +5400,17 @@ function openCard(c){
       virar.textContent = `↻ virar — ver ${outra.nome || "o outro lado"}`;
     };
   }
+
+  const quero = document.getElementById("quero-detalhe");
+  if(quero) quero.onclick = () => {
+    if(naChase(c.id)){
+      S.chase.cartas = S.chase.cartas.filter(x => x.id !== c.id); save();
+      toast(`${c.name} saiu dos chase cards`);
+    } else {
+      porNoChase(c); toast(`${c.name} entrou nos chase cards`);
+    }
+    openCard(c);
+  };
 
   const seletor = document.getElementById("acab-seletor");
   if(seletor) seletor.onclick = e => {
