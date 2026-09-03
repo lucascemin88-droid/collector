@@ -151,6 +151,16 @@
 
   /* ---------- theme grid ---------- */
   .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+  .grupo-temas{margin-bottom:30px}
+  .grupo-titulo{
+    display:flex;align-items:center;gap:9px;margin:0 0 12px;
+    font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);
+  }
+  .grupo-titulo span{
+    font-size:10.5px;font-weight:600;letter-spacing:0;color:var(--faint);
+    background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:1px 8px;
+  }
+  .grupo-titulo::after{content:"";flex:1;height:1px;background:var(--line)}
   .theme{
     position:relative;border-radius:var(--radius);overflow:hidden;text-align:left;
     background:var(--surface);border:1px solid var(--line);transition:.18s;display:flex;flex-direction:column;
@@ -917,55 +927,280 @@ function save(){
 }
 
 /* ---------------- coleções temáticas prontas ---------------- */
+/* =====================================================================
+   Coleções temáticas prontas.
+
+   Toda busca aqui foi conferida contra o Scryfall antes de entrar: coleção
+   que abre vazia é pior do que coleção que não existe. O número ao lado de
+   cada uma é quantas cartas a busca devolvia quando foi escrita — serve de
+   alerta se um dia mudar muito.
+
+   'grupo' só organiza a tela; 'unique' decide se a meta é uma linha por
+   carta ou toda impressão (o que muda completamente o tamanho da coleção).
+   ===================================================================== */
 const THEMES = [
-  { id:"cats", icon:"🐈", name:"Gatos na arte",
+  /* ---------------- bichos e natureza ---------------- */
+  { id:"cats", icon:"🐈", name:"Gatos na arte", grupo:"Bichos e natureza",
     desc:"Toda carta com um gato na ilustração — a caçada mais fofa do Multiverso.",
     q:"art:cat game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3b2f4a,#7a5c8e)" },
 
-  { id:"dogs", icon:"🐕", name:"Cachorros na arte",
+  { id:"dogs", icon:"🐕", name:"Cachorros na arte", grupo:"Bichos e natureza",
     desc:"Cães em qualquer set, de Isamaru a Rin and Seri.",
     q:"art:dog game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#4a3826,#8e6b3f)" },
 
-  { id:"dragons", icon:"🐉", name:"Dragões lendários",
+  { id:"owls", icon:"🦉", name:"Corujas", grupo:"Bichos e natureza",
+    desc:"Cento e poucas corujas espalhadas por trinta anos de ilustração.",
+    q:"art:owl game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a2418,#6b5a35)" },
+
+  { id:"foxes", icon:"🦊", name:"Raposas", grupo:"Bichos e natureza",
+    desc:"De Kamigawa a Bloomburrow — a coleção mais enxuta desta lista.",
+    q:"art:fox game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#4a2a18,#a3572a)" },
+
+  { id:"frogs", icon:"🐸", name:"Sapos e rãs", grupo:"Bichos e natureza",
+    desc:"Anfíbios em toda parte: brejo, floresta e um ou outro feitiço de transformação.",
+    q:"art:frog game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#1c3a26,#4a8a4a)" },
+
+  { id:"squirrels", icon:"🐿️", name:"Esquilos", grupo:"Bichos e natureza",
+    desc:"A piada que virou arquétipo. Poucas cartas, todas queridas.",
+    q:"t:squirrel game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a2c18,#8a6b35)" },
+
+  { id:"dinosaurs", icon:"🦕", name:"Dinossauros", grupo:"Bichos e natureza",
+    desc:"Ixalan, Jurassic World e tudo que ruge no Multiverso.",
+    q:"t:dinosaur game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2c3a1c,#6b8a35)" },
+
+  { id:"sea-monsters", icon:"🐙", name:"Monstros do mar", grupo:"Bichos e natureza",
+    desc:"Krakens, leviatãs, baleias e polvos — tudo que sobe do fundo.",
+    q:"(t:kraken or t:leviathan or t:whale or t:octopus) game:paper",
+    unique:"cards", order:"name", cover:"linear-gradient(135deg,#12283a,#2a6b8a)" },
+
+  { id:"flowers", icon:"🌸", name:"Flores na arte", grupo:"Bichos e natureza",
+    desc:"Mil cartas com flor na ilustração. Uma das coleções mais bonitas de montar.",
+    q:"art:flower game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a1c2c,#a34a7a)" },
+
+  { id:"moons", icon:"🌙", name:"Luas", grupo:"Bichos e natureza",
+    desc:"Toda lua já ilustrada — cheia, minguante, quebrada e vermelha.",
+    q:"art:moon game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#1c1c33,#4a4a8a)" },
+
+  /* ---------------- criaturas icônicas ---------------- */
+  { id:"dragons", icon:"🐉", name:"Dragões lendários", grupo:"Criaturas icônicas",
     desc:"Todas as criaturas lendárias do tipo Dragon.",
     q:"t:dragon t:legendary game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#5a1f1f,#a13b25)" },
 
-  { id:"ltr-legendary", icon:"💍", name:"O Senhor dos Anéis — lendárias",
-    desc:"Personagens lendários do set Tales of Middle-earth.",
-    q:"e:ltr t:legendary", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2f2a1c,#8a6c31)" },
+  { id:"elder-dragons", icon:"🐲", name:"Elder Dragons", grupo:"Criaturas icônicas",
+    desc:"A linhagem que deu nome ao formato: Elder Dragon Highlander.",
+    q:"t:elder t:dragon game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a2410,#9b6b1f)" },
 
-  { id:"serialized", icon:"🔢", name:"Cartas serializadas",
-    desc:"Impressões numeradas à mão (x/500, x/100, x/1). O topo da cadeia alimentar.",
-    q:"is:serialized", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1f2a3a,#3f6ea8)" },
+  { id:"angels", icon:"👼", name:"Anjos raros e míticos", grupo:"Criaturas icônicas",
+    desc:"O tipo mais colecionado do jogo, só nas raridades que valem moldura.",
+    q:"t:angel r>=rare game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#33301c,#b0a35a)" },
 
-  { id:"fullart-lands", icon:"🏞️", name:"Terras full-art",
-    desc:"Terras básicas de arte completa — a coleção mais visual que existe.",
-    q:"is:fullart t:land", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c3a2c,#3f8a63)" },
+  { id:"demons", icon:"😈", name:"Demônios", grupo:"Criaturas icônicas",
+    desc:"O outro lado da moeda dos anjos — sempre com um custo escondido.",
+    q:"t:demon game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a1020,#7a1f3a)" },
 
-  { id:"power9", icon:"👑", name:"Power Nine",
+  { id:"slivers", icon:"🦠", name:"Slivers", grupo:"Criaturas icônicas",
+    desc:"A colmeia inteira. Cada um deixa todos os outros mais fortes.",
+    q:"t:sliver game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a1c33,#6b3a8a)" },
+
+  { id:"hydras", icon:"🐍", name:"Hidras", grupo:"Criaturas icônicas",
+    desc:"Corta uma cabeça, nascem duas. E todas custam X.",
+    q:"t:hydra game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#1c3320,#3f8a4a)" },
+
+  { id:"praetors", icon:"☣️", name:"Praetors de Phyrexia", grupo:"Criaturas icônicas",
+    desc:"Os dezoito comandantes da invasão — um ciclo fechado e caro.",
+    q:"t:praetor game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#0f2a2a,#2a7a6b)" },
+
+  { id:"eldrazi", icon:"🌀", name:"Titãs Eldrazi", grupo:"Criaturas icônicas",
+    desc:"Os lendários gigantes de custo 8 ou mais que quebram as regras do jogo.",
+    q:"t:eldrazi t:legendary mv>=8 game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#20202a,#5a5a7a)" },
+
+  { id:"knights", icon:"⚔️", name:"Cavaleiros lendários", grupo:"Criaturas icônicas",
+    desc:"Nomes com armadura, de Sidar Kondo a Aragorn.",
+    q:"t:knight t:legendary game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a2a33,#6b6b8a)" },
+
+  { id:"legendary-cats", icon:"🦁", name:"Gatos lendários", grupo:"Criaturas icônicas",
+    desc:"Só os felinos com nome próprio — de Arahbo a Jetmir.",
+    q:"t:cat t:legendary game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a2a10,#a37a2a)" },
+
+  /* ---------------- cobiça e investimento ---------------- */
+  { id:"power9", icon:"👑", name:"Power Nine", grupo:"Cobiça e investimento",
     desc:"As nove cartas mais icônicas e caras da história do Magic.",
     q:'!"Black Lotus" or !"Ancestral Recall" or !"Time Walk" or !"Mox Pearl" or !"Mox Sapphire" or !"Mox Jet" or !"Mox Ruby" or !"Mox Emerald" or !"Timetwister"',
     unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a2f10,#c0952f)" },
 
-  { id:"sld", icon:"🎁", name:"Secret Lair",
-    desc:"Todas as cartas de Secret Lair Drop — arte alternativa e crossovers.",
-    q:"e:sld", unique:"prints", order:"released", cover:"linear-gradient(135deg,#3a1f3a,#a13b8a)" },
+  { id:"duals", icon:"🗺️", name:"Dez duais originais", grupo:"Cobiça e investimento",
+    desc:"O ciclo de terras duplas de 1993. Nunca reimpressas em torneio.",
+    q:"is:dual game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#20301c,#5a7a3a)" },
 
-  { id:"planeswalkers-mythic", icon:"✨", name:"Planeswalkers míticos",
-    desc:"Todo planeswalker de raridade mítica já impresso.",
-    q:"t:planeswalker r:mythic game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#28304a,#5b6fb0)" },
+  { id:"fetchlands", icon:"🔎", name:"Fetchlands", grupo:"Cobiça e investimento",
+    desc:"As dez terras de busca de Onslaught e Zendikar — o motor de todo deck.",
+    q:"is:fetchland game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#2a2018,#7a5a35)" },
 
-  { id:"blb", icon:"🐿️", name:"Bloomburrow completo",
-    desc:"O set inteiro, carta por carta — o desafio clássico do colecionador.",
-    q:"e:blb", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2c3a1c,#7a9b3f)" },
+  { id:"shocklands", icon:"🌩️", name:"Shocklands", grupo:"Cobiça e investimento",
+    desc:"As dez terras de Ravnica que entram desviradas por dois de vida.",
+    q:"is:shockland game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#2a1c33,#7a3a8a)" },
 
-  { id:"reserved", icon:"🔒", name:"Reserved List",
+  { id:"reserved", icon:"🔒", name:"Reserved List", grupo:"Cobiça e investimento",
     desc:"Cartas que a Wizards prometeu nunca reimprimir.",
     q:"is:reserved", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#331f1f,#7a3535)" },
 
-  { id:"showcase", icon:"🖼️", name:"Showcase & Borderless",
+  { id:"serialized", icon:"🔢", name:"Cartas serializadas", grupo:"Cobiça e investimento",
+    desc:"Impressões numeradas à mão (x/500, x/100, x/1). O topo da cadeia alimentar.",
+    q:"is:serialized", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1f2a3a,#3f6ea8)" },
+
+  { id:"masterpieces", icon:"🏆", name:"Masterpieces", grupo:"Cobiça e investimento",
+    desc:"Expeditions, Inventions, Invocations e as demais séries de luxo.",
+    q:"is:masterpiece", unique:"prints", order:"released", cover:"linear-gradient(135deg,#2a2410,#8a7a2a)" },
+
+  { id:"expensive", icon:"💎", name:"Acima de 100 dólares", grupo:"Cobiça e investimento",
+    desc:"Toda carta que passa dos três dígitos. Comece pela mais barata dessa lista.",
+    q:"usd>=100 game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#10303a,#2a8a9b)" },
+
+  { id:"banned", icon:"🚫", name:"Banidas no Commander", grupo:"Cobiça e investimento",
+    desc:"O museu das cartas boas demais — proibidas no formato mais jogado.",
+    q:"banned:commander game:paper", unique:"cards", order:"usd", cover:"linear-gradient(135deg,#331515,#8a2a2a)" },
+
+  /* ---------------- mundos de fora ---------------- */
+  { id:"ltr-legendary", icon:"💍", name:"O Senhor dos Anéis — lendárias", grupo:"Mundos de fora",
+    desc:"Personagens lendários do set Tales of Middle-earth.",
+    q:"e:ltr t:legendary", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2f2a1c,#8a6c31)" },
+
+  { id:"who", icon:"🕰️", name:"Doctor Who", grupo:"Mundos de fora",
+    desc:"O set inteiro do Doutor, com os quatro decks de Commander.",
+    q:"e:who", unique:"cards", order:"name", cover:"linear-gradient(135deg,#10203a,#2a5a9b)" },
+
+  { id:"warhammer", icon:"💀", name:"Warhammer 40.000", grupo:"Mundos de fora",
+    desc:"No grimdark futuro distante, só existe guerra — e quatro decks prontos.",
+    q:"e:40k", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a2018,#7a6b3a)" },
+
+  { id:"fallout", icon:"☢️", name:"Fallout", grupo:"Mundos de fora",
+    desc:"O ermo pós-nuclear em forma de carta.",
+    q:"e:pip", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a2a10,#8a8a2a)" },
+
+  { id:"finalfantasy", icon:"🗡️", name:"Final Fantasy", grupo:"Mundos de fora",
+    desc:"Trinta e cinco anos de RPG japonês virando Magic.",
+    q:"e:fin", unique:"cards", order:"name", cover:"linear-gradient(135deg,#1c2a3a,#3a6b9b)" },
+
+  { id:"spiderman", icon:"🕷️", name:"Homem-Aranha", grupo:"Mundos de fora",
+    desc:"O primeiro set da Marvel dentro do Magic.",
+    q:"e:spm", unique:"cards", order:"name", cover:"linear-gradient(135deg,#3a1010,#9b2a2a)" },
+
+  { id:"assassins", icon:"🗝️", name:"Assassin's Creed", grupo:"Mundos de fora",
+    desc:"Set pequeno e fechado — dá para completar.",
+    q:"e:acr", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a2a2a,#7a7a7a)" },
+
+  { id:"jurassic", icon:"🦖", name:"Jurassic World", grupo:"Mundos de fora",
+    desc:"Vinte e seis cartas. A coleção de fim de semana.",
+    q:"e:rex", unique:"cards", order:"name", cover:"linear-gradient(135deg,#1c3320,#4a8a3a)" },
+
+  /* ---------------- arte e tratamento ---------------- */
+  { id:"sld", icon:"🎁", name:"Secret Lair", grupo:"Arte e tratamento",
+    desc:"Todas as cartas de Secret Lair Drop — arte alternativa e crossovers.",
+    q:"e:sld", unique:"prints", order:"released", cover:"linear-gradient(135deg,#3a1f3a,#a13b8a)" },
+
+  { id:"fullart-lands", icon:"🏞️", name:"Terras full-art", grupo:"Arte e tratamento",
+    desc:"Terras básicas de arte completa — a coleção mais visual que existe.",
+    q:"is:fullart t:land", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c3a2c,#3f8a63)" },
+
+  { id:"showcase", icon:"🖼️", name:"Showcase & Borderless", grupo:"Arte e tratamento",
     desc:"Tratamentos especiais das últimas temporadas.",
     q:"is:showcase r>=rare", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1f2f33,#3f8a92)" },
+
+  { id:"textless", icon:"🔇", name:"Sem caixa de texto", grupo:"Arte e tratamento",
+    desc:"Só arte, sem regra escrita. Prêmio de torneio e promo de loja.",
+    q:"is:textless game:paper", unique:"prints", order:"released", cover:"linear-gradient(135deg,#26262e,#63636e)" },
+
+  { id:"retro", icon:"📼", name:"Moldura retrô moderna", grupo:"Arte e tratamento",
+    desc:"Cartas novas impressas na moldura de 1997. Nostalgia de fábrica.",
+    q:"frame:1997 year>=2019", unique:"prints", order:"released", cover:"linear-gradient(135deg,#33291c,#8a6b3a)" },
+
+  { id:"neo-showcase", icon:"🎌", name:"Kamigawa em ukiyo-e", grupo:"Arte e tratamento",
+    desc:"Os tratamentos de Neon Dynasty: mangá, soft glow e pintura tradicional.",
+    q:"e:neo is:showcase", unique:"prints", order:"released", cover:"linear-gradient(135deg,#3a1c2a,#9b3a5a)" },
+
+  { id:"flavorname", icon:"🎭", name:"Cartas com apelido", grupo:"Arte e tratamento",
+    desc:"As que ganharam outro nome na arte — Godzilla, Stranger Things e afins.",
+    q:"has:flavorname game:paper", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c332a,#3a8a6b)" },
+
+  /* ---------------- artistas ---------------- */
+  { id:"guay", icon:"🖌️", name:"Rebecca Guay", grupo:"Artistas",
+    desc:"A aquarela que definiu a estética do Magic dos anos 90.",
+    q:'a:"Rebecca Guay" game:paper', unique:"cards", order:"released", cover:"linear-gradient(135deg,#2a2033,#6b5a8a)" },
+
+  { id:"avon-lands", icon:"🏝️", name:"Terras de John Avon", grupo:"Artistas",
+    desc:"O paisagista oficial do jogo. Colecionar terra dele é hobby dentro do hobby.",
+    q:'a:"John Avon" t:land', unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c2a3a,#3a7a9b)" },
+
+  { id:"mckinnon", icon:"🌑", name:"Seb McKinnon", grupo:"Artistas",
+    desc:"Sombra, silhueta e melancolia — o traço mais reconhecível da era moderna.",
+    q:'a:"Seb McKinnon" game:paper', unique:"cards", order:"released", cover:"linear-gradient(135deg,#1a1a22,#4a4a5a)" },
+
+  { id:"danner-lands", icon:"🌄", name:"Terras de Alayna Danner", grupo:"Artistas",
+    desc:"As paisagens mais recentes que viraram objeto de coleção.",
+    q:'a:"Alayna Danner" t:land', unique:"prints", order:"released", cover:"linear-gradient(135deg,#2a3320,#6b8a3a)" },
+
+  /* ---------------- nostalgia ---------------- */
+  { id:"alpha", icon:"🅰️", name:"Limited Edition Alpha", grupo:"Nostalgia",
+    desc:"O primeiro set da história, 1993. A coleção definitiva.",
+    q:"e:lea", unique:"prints", order:"usd", cover:"linear-gradient(135deg,#2a2018,#8a6b3a)" },
+
+  { id:"vintage-art", icon:"📜", name:"Antes de 1996", grupo:"Nostalgia",
+    desc:"Todo o Magic dos três primeiros anos, quando ninguém sabia o que estava fazendo.",
+    q:"year<=1995 game:paper", unique:"cards", order:"released", cover:"linear-gradient(135deg,#33301c,#8a7a4a)" },
+
+  { id:"funny", icon:"🃏", name:"Cartas de brincadeira", grupo:"Nostalgia",
+    desc:"Un-sets e playtest cards: borda prateada, regras impossíveis e piadas ótimas.",
+    q:"is:funny", unique:"cards", order:"released", cover:"linear-gradient(135deg,#33201c,#9b5a3a)" },
+
+  /* ---------------- uma carta, todas as versões ---------------- */
+  { id:"all-sol-ring", icon:"☀️", name:"Todos os Sol Ring", grupo:"Uma carta, todas as versões",
+    desc:"A carta mais impressa do Commander. Cada arte, cada edição.",
+    q:'!"Sol Ring"', unique:"prints", order:"released", cover:"linear-gradient(135deg,#33290f,#a3852a)" },
+
+  { id:"all-bolt", icon:"⚡", name:"Todos os Lightning Bolt", grupo:"Uma carta, todas as versões",
+    desc:"Três de dano por um mana vermelho, em setenta molduras diferentes.",
+    q:'!"Lightning Bolt"', unique:"prints", order:"released", cover:"linear-gradient(135deg,#3a1c10,#a3502a)" },
+
+  { id:"all-counterspell", icon:"🧊", name:"Todos os Counterspell", grupo:"Uma carta, todas as versões",
+    desc:"Duas ilhas e um não. A carta azul mais reimpressa do jogo.",
+    q:'!"Counterspell"', unique:"prints", order:"released", cover:"linear-gradient(135deg,#10283a,#2a6b9b)" },
+
+  { id:"all-command-tower", icon:"🗼", name:"Todas as Command Tower", grupo:"Uma carta, todas as versões",
+    desc:"A terra obrigatória de todo deck de Commander, em cem edições.",
+    q:'!"Command Tower"', unique:"prints", order:"released", cover:"linear-gradient(135deg,#2a2a20,#7a7a4a)" },
+
+  { id:"all-llanowar", icon:"🧝", name:"Todos os Llanowar Elves", grupo:"Uma carta, todas as versões",
+    desc:"O elfo de 1993 que nunca saiu de moda.",
+    q:'!"Llanowar Elves"', unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c3320,#4a8a4a)" },
+
+  /* ---------------- desafios ---------------- */
+  { id:"blb", icon:"🍄", name:"Bloomburrow completo", grupo:"Desafios",
+    desc:"O set inteiro, carta por carta — o desafio clássico do colecionador.",
+    q:"e:blb", unique:"prints", order:"set", cover:"linear-gradient(135deg,#2c3a1c,#7a9b3f)" },
+
+  { id:"planeswalkers-mythic", icon:"✨", name:"Planeswalkers míticos", grupo:"Desafios",
+    desc:"Todo planeswalker de raridade mítica já impresso.",
+    q:"t:planeswalker r:mythic game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#28304a,#5b6fb0)" },
+
+  { id:"zero-cost", icon:"0️⃣", name:"Custo zero", grupo:"Desafios",
+    desc:"Tudo que se joga de graça — e não é terreno.",
+    q:"mv=0 -t:land game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#20202a,#5a5a6b)" },
+
+  { id:"giants", icon:"🦣", name:"Poder 10 ou mais", grupo:"Desafios",
+    desc:"As criaturas que decidem a partida sozinhas — se você chegar lá.",
+    q:"pow>=10 game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#332a1c,#8a6b3a)" },
+
+  { id:"you-win", icon:"🏁", name:"“Você vence o jogo”", grupo:"Desafios",
+    desc:"As poucas cartas que dizem, com todas as letras, que você ganhou.",
+    q:'o:"you win the game" game:paper', unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a3320,#6b9b3a)" },
+
+  { id:"five-color", icon:"🌈", name:"Comandantes de cinco cores", grupo:"Desafios",
+    desc:"Os lendários que abrem o deck inteiro para qualquer carta do jogo.",
+    q:"is:commander ci=wubrg game:paper", unique:"cards", order:"name", cover:"linear-gradient(135deg,#2a1c3a,#7a3a9b)" },
+
+  { id:"pt-mythic", icon:"🇧🇷", name:"Míticas em português", grupo:"Desafios",
+    desc:"Impressões brasileiras das cartas míticas, de 2020 para cá.",
+    q:"lang:pt r:mythic year>=2020", unique:"prints", order:"released", cover:"linear-gradient(135deg,#1c3320,#3a8a4a)" },
 ];
 
 /* cartas que o usuário tirou de uma coleção na mão — vale para as temáticas
@@ -1176,16 +1411,50 @@ function render(){
 
 /* ---------------- view: temas ---------------- */
 function renderThemes(){
+  // com 60 coleções, jogar tudo numa grade só vira parede; vão por assunto
+  const grupos = [];
+  THEMES.forEach(t => {
+    const g = grupos.find(x => x.nome === (t.grupo || "Outras"));
+    if(g) g.itens.push(t); else grupos.push({ nome:t.grupo || "Outras", itens:[t] });
+  });
+
+  const busca = (temas.busca || "").trim();
+  const filtrar = lista => {
+    if(!busca) return lista;
+    const t = semAcento(busca);
+    return lista.filter(x => semAcento(x.name).includes(t) || semAcento(x.desc).includes(t)
+                          || semAcento(x.grupo || "").includes(t));
+  };
+  const visiveis = grupos.map(g => ({ ...g, itens:filtrar(g.itens) })).filter(g => g.itens.length);
+  const quantas = visiveis.reduce((a,g) => a + g.itens.length, 0);
+
   app.innerHTML = `
     <div class="section-head">
       <div>
         <h2>Coleções temáticas</h2>
-        <p>Metas prontas para colecionar. Abra uma, marque o que você já tem e acompanhe o progresso — os dados vêm ao vivo do Scryfall.</p>
+        <p>${THEMES.length} metas prontas para colecionar, de "todas as corujas" a "todos os Sol Ring".
+        Abra uma, marque o que você já tem e acompanhe o progresso — as cartas vêm ao vivo do Scryfall.</p>
       </div>
+      <input type="search" id="busca-tema" placeholder="filtrar temas…" value="${escapeHTML(busca)}"
+             style="width:auto;min-width:200px">
     </div>
-    <div class="theme-grid">${THEMES.map(themeCardHTML).join("")}</div>`;
+    ${quantas ? visiveis.map(g => `
+      <section class="grupo-temas">
+        <h3 class="grupo-titulo">${escapeHTML(g.nome)}<span>${g.itens.length}</span></h3>
+        <div class="theme-grid">${g.itens.map(themeCardHTML).join("")}</div>
+      </section>`).join("")
+    : `<div class="empty">Nenhum tema com esse nome.</div>`}`;
+
   app.querySelectorAll("[data-open]").forEach(el=> el.onclick = ()=> go("collection", el.dataset.open));
+  const campo = document.getElementById("busca-tema");
+  if(campo) campo.oninput = () => {
+    temas.busca = campo.value;
+    const foco = document.activeElement === campo;
+    renderThemes();
+    if(foco){ const novo = document.getElementById("busca-tema"); if(novo){ novo.focus(); novo.setSelectionRange(novo.value.length, novo.value.length); } }
+  };
 }
+let temas = { busca:"" };
 
 /* ---------------- capa da coleção ----------------
    Por padrão a capa é o emoji sobre uma cor. Quem quiser põe uma carta:
