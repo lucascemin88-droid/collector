@@ -382,6 +382,125 @@
   .impr-preco{display:block;font-size:10.5px;color:var(--gold);font-variant-numeric:tabular-nums;margin-top:1px}
   .impr-dica{font-size:11.5px;color:var(--faint);margin-top:8px}
 
+
+  /* ---------- decks ---------- */
+  .abas-deck{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+  .decks-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .deck-cartao{
+    text-align:left;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--lift);
+    transition:transform var(--t-base),border-color var(--t-base);
+  }
+  .deck-cartao:hover{transform:translateY(-2px);border-color:var(--line-strong)}
+  .deck-capa{
+    height:104px;background-size:cover;background-position:center 22%;background-color:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;
+  }
+  .deck-capa::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,11,14,.7))}
+  .deck-corpo{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .deck-corpo h3{margin:0;font-size:15px;font-weight:600}
+  .deck-meta{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--faint);flex-wrap:wrap}
+  .deck-cmd{margin:0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .deck-tenho{font-size:11px;color:var(--faint)}
+  .deck-cores{display:flex;gap:3px}
+  .ponto-cor{width:10px;height:10px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.4)}
+
+  .formatos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:6px}
+  .formato{
+    text-align:left;padding:10px 12px;border-radius:var(--r-sm);background:var(--surface-2);
+    border:1px solid var(--line);transition:background var(--t-fast),border-color var(--t-fast);
+  }
+  .formato b{display:block;font-size:13px}
+  .formato small{display:block;font-size:11px;color:var(--faint);line-height:1.35;margin-top:2px}
+  .formato.on{background:var(--accent-soft);border-color:var(--accent-line)}
+  .formato.on b{color:var(--accent)}
+
+  .deck-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;align-items:start}
+  @media (max-width:900px){ .deck-layout{grid-template-columns:1fr} }
+  .deck-secao{margin-bottom:20px}
+  .deck-linhas{display:flex;flex-direction:column;gap:4px}
+  .deck-linha{
+    display:flex;align-items:center;gap:10px;padding:5px 8px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line);
+  }
+  .deck-linha.tenho{border-color:var(--accent-line)}
+  .dl-qtd{font-size:12px;font-weight:600;color:var(--muted);min-width:26px;text-align:right}
+  .dl-img{width:34px;height:26px;object-fit:cover;object-position:center 18%;border-radius:4px;flex:0 0 34px;background:var(--surface-2)}
+  .dl-nome{flex:1;min-width:0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dl-nome small{display:block;font-size:10.5px;color:var(--faint)}
+  .dl-preco{font-size:12px;color:var(--accent);min-width:64px;text-align:right}
+  .dl-tenho{width:14px;color:var(--accent);font-size:12px}
+  .dl-acoes{display:flex;gap:2px;opacity:0;transition:opacity var(--t-fast)}
+  .deck-linha:hover .dl-acoes,.chase-linha:hover .dl-acoes{opacity:1}
+  @media (hover:none){ .dl-acoes{opacity:1} }
+  .dl-acoes button{
+    width:24px;height:24px;border-radius:6px;color:var(--muted);font-size:13px;
+    background:var(--surface-2);border:1px solid var(--line);
+  }
+  .dl-acoes button:hover{color:var(--text);border-color:var(--line-strong)}
+  .dl-acoes .dl-fora:hover{color:var(--neg);border-color:var(--neg)}
+  .card.no-deck{outline:2px solid var(--accent);outline-offset:2px}
+
+  .deck-lado{display:flex;flex-direction:column;gap:14px;position:sticky;top:80px}
+  .dg-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--lift)}
+  .dg-grande{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}
+  .dg-grande b{font-size:30px;font-weight:600;letter-spacing:-.02em}
+  .dg-grande span{font-size:12px;color:var(--faint)}
+  .dg-grande.certo b{color:var(--pos)} .dg-grande.abaixo b{color:var(--neg)} .dg-grande.acima b{color:var(--accent)}
+  .dg-txt{margin:6px 0 0;font-size:11.5px;line-height:1.5;color:var(--muted)}
+  .dg-linha{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .dg-linha:last-child{border-bottom:none}
+  .dg-linha span:first-child{flex:1;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .dg-linha b{font-variant-numeric:tabular-nums;min-width:26px;text-align:right}
+  .dg-linha small{font-size:10.5px;color:var(--faint);min-width:96px;text-align:right}
+  .dg-linha.certo b{color:var(--pos)} .dg-linha.abaixo b{color:var(--neg)} .dg-linha.acima b{color:var(--accent)}
+  .dg-problema{font-size:12px;padding:7px 9px;border-radius:7px;margin-bottom:6px;line-height:1.4}
+  .dg-problema.erro{background:var(--neg-soft);color:var(--neg)}
+  .dg-problema.aviso{background:var(--accent-soft);color:var(--accent)}
+  .dg-problema.ok{background:rgba(91,214,155,.1);color:var(--pos)}
+  .curva{display:flex;align-items:flex-end;gap:5px;height:90px;margin-top:6px}
+  .curva-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:4px}
+  .curva-col i{display:block;width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;min-height:2px}
+  .curva-col span{font-size:10px;color:var(--faint)}
+
+  .cmd-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .cmd-cartao{
+    display:flex;gap:10px;padding:10px;background:var(--surface-1);border:1px solid var(--line);
+    border-radius:var(--radius);align-items:center;
+  }
+  .cmd-pos{font-size:12px;font-weight:700;color:var(--faint);min-width:22px;text-align:right}
+  .cmd-cartao img{width:54px;border-radius:5px;flex:0 0 54px}
+  .cmd-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .cmd-info b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmd-info small{font-size:11px;color:var(--faint)}
+  .cmd-acoes{display:flex;gap:6px;margin-top:4px}
+  .cmd-acoes .btn{min-height:28px;padding:0 10px;font-size:11.5px}
+
+  /* ---------- chase cards ---------- */
+  .chase-grupo{margin-bottom:26px}
+  .chase-nome{outline:none;text-transform:none;font-size:13px;letter-spacing:0;color:var(--text);border-bottom:1px dashed transparent}
+  .chase-nome:hover,.chase-nome:focus{border-bottom-color:var(--line-strong)}
+  .chase-soma{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0}
+  .chase-apagar{color:var(--faint);font-size:15px;line-height:1;padding:0 4px;background:none;border:none}
+  .chase-apagar:hover{color:var(--neg)}
+  .chase-linhas{display:flex;flex-direction:column;gap:5px}
+  .chase-linha{
+    display:flex;align-items:center;gap:12px;padding:7px 10px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line);flex-wrap:wrap;
+  }
+  .chase-linha.na-mira{border-color:var(--pos)}
+  .chase-graf{width:130px;flex:0 0 130px}
+  .chase-graf .spark{width:100%;height:34px}
+  .sem-hist{font-size:10px;color:var(--faint)}
+  .chase-preco{min-width:120px;text-align:right}
+  .chase-preco b{display:block;font-size:13px;color:var(--accent)}
+  .chase-preco small{display:block;font-size:10.5px}
+  .var-subiu{color:var(--neg)} .var-caiu{color:var(--pos)} .var-parado{color:var(--faint)}
+  .chase-alvo{display:flex;flex-direction:column;gap:2px;width:118px}
+  .chase-alvo input{padding:5px 8px;font-size:12px}
+  .chase-alvo em{font-size:10px;color:var(--pos);font-style:normal}
+  .chase-mover{width:auto;min-width:130px;padding:5px 8px;font-size:11.5px}
+
   /* ---------- minha coleção ---------- */
   .resumo-colecao{
     display:flex;gap:26px;align-items:center;flex-wrap:wrap;
@@ -745,6 +864,8 @@
     <button class="tab active" data-view="themes">Temas prontos</button>
     <button class="tab" data-view="minha">Minha coleção</button>
     <button class="tab" data-view="mine">Minhas coleções</button>
+    <button class="tab" data-view="decks">Decks</button>
+    <button class="tab" data-view="chase">Chase cards</button>
     <button class="tab" data-view="catalogo">Catálogo</button>
     <button class="tab" data-view="sets">Edições</button>
   </nav>
@@ -908,7 +1029,8 @@ const PAGE_DELAY = 120;      // Scryfall pede ~50-100ms entre chamadas
 const STORE = "collector.mtg.v1";
 
 /* ---------------- estado persistido ---------------- */
-const blank = { owned:{}, custom:[], totals:{}, exclusoes:{}, inclusoes:{}, uniques:{}, selados:{}, capas:{}, config:{ regiao:"global", acabamento:"normal" } };
+const blank = { owned:{}, custom:[], totals:{}, exclusoes:{}, inclusoes:{}, uniques:{}, selados:{}, capas:{},
+                decks:[], chase:{ grupos:[{ id:"geral", nome:"Quero comprar" }], cartas:[] }, config:{ regiao:"global", acabamento:"normal" } };
 let S = load();
 
 function load(){
@@ -1294,6 +1416,12 @@ function normalize(c){
     promos:c.promo_types || [],
     frames:c.frame_effects || [],
     borda:c.border_color || "",
+    /* usados pela área de decks: identidade de cor manda no Commander,
+       o que a terra produz manda no diagnóstico de mana */
+    ci:(c.color_identity || []).join("").toLowerCase(),
+    produz:(c.produced_mana || []).join("").toLowerCase(),
+    legal:c.legalities || null,
+    edhrec:c.edhrec_rank || null,
     cores:(c.colors || (c.card_faces && c.card_faces[0] && c.card_faces[0].colors) || []).join("").toLowerCase(),
     mv:(c.cmc === undefined ? null : c.cmc)
   };
@@ -1401,6 +1529,9 @@ function render(){
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
   if(view.name==="mine") return renderMine();
+  if(view.name==="decks") return renderDecks();
+  if(view.name==="deck") return renderDeck(view.id);
+  if(view.name==="chase") return renderChase();
   if(view.name==="catalogo") return renderCatalogo();
   if(view.name==="sets") return renderSets();
   if(view.name==="set") return renderSet(view.id);
@@ -3862,6 +3993,1036 @@ function nomeDoDrop(bruto){
     .replace(/\s{2,}/g, " ")
     .trim() || bruto;
 }
+
+
+/* =====================================================================
+   DECKS
+
+   Um deck aqui é uma lista de cartas com quantidade, um formato e (no
+   Commander) um comandante. As cartas são guardadas em forma compacta,
+   como na Minha coleção, para o deck abrir sem depender do Scryfall.
+
+   O que o app faz de útil e ninguém faz por você:
+   - conta quantos terrenos o deck pede, pela fórmula do Frank Karsten
+   - conta rampa, compra, remoção e varrida lendo o texto das cartas
+   - compara as fontes de cor com os símbolos de mana que o deck exige
+   - diz o que é ilegal no formato antes de você levar o deck para a mesa
+   - mostra quanto do deck você já tem e quanto custa o que falta
+   ===================================================================== */
+
+const FORMATOS = [
+  { id:"commander", nome:"Commander",  cartas:100, singleton:true,  comandante:true,
+    desc:"100 cartas, uma de cada, tudo dentro da identidade de cor do comandante." },
+  { id:"brawl",     nome:"Brawl",      cartas:100, singleton:true,  comandante:true,
+    desc:"Commander com cartas do Standard." },
+  { id:"standard",  nome:"Standard",   cartas:60,  singleton:false, comandante:false,
+    desc:"Só as edições mais recentes. Máximo de 4 cópias." },
+  { id:"pioneer",   nome:"Pioneer",    cartas:60,  singleton:false, comandante:false,
+    desc:"De Return to Ravnica para cá." },
+  { id:"modern",    nome:"Modern",     cartas:60,  singleton:false, comandante:false,
+    desc:"De Eighth Edition (2003) para cá." },
+  { id:"legacy",    nome:"Legacy",     cartas:60,  singleton:false, comandante:false,
+    desc:"Quase tudo que já foi impresso." },
+  { id:"vintage",   nome:"Vintage",    cartas:60,  singleton:false, comandante:false,
+    desc:"Tudo, com uma lista de cartas restritas a uma cópia." },
+  { id:"pauper",    nome:"Pauper",     cartas:60,  singleton:false, comandante:false,
+    desc:"Só cartas que já saíram como comuns." },
+];
+const formatoDe = id => FORMATOS.find(f => f.id === id) || FORMATOS[0];
+
+/* carta dentro de um deck: o suficiente para contar mana, cor e regra sem rede */
+function cartaDeDeck(c, qtd){
+  return {
+    id:c.id, n:c.name, s:c.set, sn:c.setName, num:c.num, r:c.rarity, t:c.type,
+    mv:(c.mv === undefined || c.mv === null) ? 0 : c.mv,
+    cores:c.cores || "", ci:c.ci || c.cores || "", produz:c.produz || "",
+    mana:c.mana || "", oracle:c.oracle || "",
+    img:c.small, big:c.normal, usd:Number(c.usd) || 0, eur:Number(c.eur) || 0,
+    legal:c.legal || null, qtd:qtd || 1,
+  };
+}
+/* volta ao formato que o resto do app entende (openCard, preço, links) */
+function deckParaCarta(d){
+  return { id:d.id, name:d.n, set:d.s, setName:d.sn, num:d.num, rarity:d.r, type:d.t,
+           mv:d.mv, cores:d.cores, ci:d.ci, produz:d.produz, mana:d.mana, oracle:d.oracle,
+           small:d.img, normal:d.big || d.img, usd:d.usd || null, eur:d.eur || null,
+           acabamentos:[], promos:[], frames:[], legal:d.legal, released:"", compra:null };
+}
+
+function decks(){ return S.decks || (S.decks = []); }
+function deckPorId(id){ return decks().find(d => d.id === id); }
+function totalDoDeck(d){
+  return (d.cartas || []).reduce((a,c) => a + (c.qtd || 1), 0) + (d.comandante ? 1 : 0);
+}
+function cartasDoDeck(d){
+  return (d.comandante ? [Object.assign({}, d.comandante, { qtd:1, ehComandante:true })] : [])
+    .concat(d.cartas || []);
+}
+
+/* ---------------- diagnóstico ---------------- */
+
+const EH_TERRENO = c => /land/i.test(c.t || "");
+/* Regras de bolso para ler o que uma carta faz. Não é perfeito — nenhum
+   robô lê Magic direito — mas erra para o lado seguro e é conferível. */
+const EH_RAMPA = c => !EH_TERRENO(c) && (c.mv || 0) <= 4 &&
+  /add \{|search your library for (a|up to \w+) (basic )?(land|plains|island|swamp|mountain|forest)|lands? onto the battlefield/i.test(c.oracle || "");
+const EH_COMPRA = c => /draw (a|one|two|three|four|five|\w+) cards?|draws? cards? equal/i.test(c.oracle || "")
+  && !/opponent draws/i.test(c.oracle || "");
+const EH_REMOCAO = c => /(destroy|exile) target|counter target (spell|creature)|deals? \d+ damage to (target|any target)|target creature gets -|fight target/i.test(c.oracle || "");
+const EH_VARRIDA = c => /(destroy|exile) all|each (creature|player sacrifices)|all creatures get -/i.test(c.oracle || "");
+
+function simbolosDeMana(texto){
+  const conta = { w:0, u:0, b:0, r:0, g:0 };
+  (String(texto || "").match(/\{[^}]+\}/g) || []).forEach(s => {
+    const dentro = s.slice(1,-1).toLowerCase();
+    ["w","u","b","r","g"].forEach(cor => { if(dentro.includes(cor)) conta[cor]++; });
+  });
+  return conta;
+}
+
+/* Quantos terrenos o deck pede.
+   Fórmula do Frank Karsten (artigo "How Many Lands Do You Need?"), que é o
+   trabalho mais citado sobre isso: para 100 cartas, 31,42 + 3,13 × custo
+   médio − 0,28 × (rampa e compra baratas); para 60, 16,79 + 1,83 × custo
+   médio − 0,28 × (rampa e compra baratas). */
+function terrenosSugeridos(cartas, tamanho){
+  const naoTerreno = cartas.filter(c => !EH_TERRENO(c));
+  const copias = naoTerreno.reduce((a,c) => a + (c.qtd || 1), 0) || 1;
+  const somaMv = naoTerreno.reduce((a,c) => a + (c.mv || 0) * (c.qtd || 1), 0);
+  const mvMedio = somaMv / copias;
+  const baratas = naoTerreno.filter(c => (c.mv || 0) <= 3 && (EH_RAMPA(c) || EH_COMPRA(c)))
+                            .reduce((a,c) => a + (c.qtd || 1), 0);
+  const bruto = tamanho >= 100
+    ? 31.42 + 3.13 * mvMedio - 0.28 * baratas
+    : 16.79 + 1.83 * mvMedio - 0.28 * baratas;
+  return { alvo: Math.max(tamanho >= 100 ? 30 : 17, Math.round(bruto)), mvMedio };
+}
+
+function diagnosticoDoDeck(d){
+  const fmt = formatoDe(d.formato);
+  const todas = cartasDoDeck(d);
+  const expandidas = [];
+  todas.forEach(c => { for(let i = 0; i < (c.qtd || 1); i++) expandidas.push(c); });
+
+  const terrenos = expandidas.filter(EH_TERRENO).length;
+  const { alvo, mvMedio } = terrenosSugeridos(todas.filter(c => !c.ehComandante), fmt.cartas);
+  const conta = f => todas.filter(c => !EH_TERRENO(c) && f(c)).reduce((a,c) => a + (c.qtd || 1), 0);
+
+  // curva: quantas cartas em cada custo (terreno fora)
+  const curva = {};
+  expandidas.filter(c => !EH_TERRENO(c)).forEach(c => {
+    const k = Math.min(7, Math.round(c.mv || 0));
+    curva[k] = (curva[k] || 0) + 1;
+  });
+
+  // cor: símbolos exigidos × fontes que produzem aquela cor
+  const pips = { w:0, u:0, b:0, r:0, g:0 };
+  expandidas.filter(c => !EH_TERRENO(c)).forEach(c => {
+    const s = simbolosDeMana(c.mana);
+    ["w","u","b","r","g"].forEach(x => pips[x] += s[x]);
+  });
+  const fontes = { w:0, u:0, b:0, r:0, g:0 };
+  expandidas.forEach(c => {
+    const p = c.produz || (EH_TERRENO(c) ? "" : "");
+    ["w","u","b","r","g"].forEach(x => { if(p.includes(x)) fontes[x]++; });
+  });
+
+  // legalidade
+  const problemas = [];
+  const total = totalDoDeck(d);
+  if(total !== fmt.cartas)
+    problemas.push({ tipo: total < fmt.cartas ? "aviso" : "erro",
+      txt:`${total} de ${fmt.cartas} cartas${total < fmt.cartas ? ` — faltam ${fmt.cartas - total}` : ` — ${total - fmt.cartas} a mais`}` });
+
+  const fora = todas.filter(c => c.legal && c.legal[d.formato] && c.legal[d.formato] !== "legal" && c.legal[d.formato] !== "restricted");
+  if(fora.length) problemas.push({ tipo:"erro", txt:`${fora.length} carta${fora.length>1?"s":""} não permitida${fora.length>1?"s":""} em ${fmt.nome}: ${fora.slice(0,4).map(c=>c.n).join(", ")}${fora.length>4?"…":""}` });
+
+  if(fmt.singleton){
+    const basicos = c => /basic/i.test(c.t || "");
+    const repetidas = todas.filter(c => (c.qtd || 1) > 1 && !basicos(c));
+    if(repetidas.length) problemas.push({ tipo:"erro", txt:`${fmt.nome} é singleton: ${repetidas.map(c=>c.n).join(", ")} aparece${repetidas.length>1?"m":""} mais de uma vez` });
+  } else {
+    const demais = todas.filter(c => (c.qtd || 1) > 4 && !/basic/i.test(c.t || ""));
+    if(demais.length) problemas.push({ tipo:"erro", txt:`máximo de 4 cópias: ${demais.map(c=>c.n).join(", ")}` });
+  }
+
+  if(fmt.comandante && d.comandante){
+    const ci = (d.comandante.ci || "").split("");
+    const foraDaCor = (d.cartas || []).filter(c =>
+      (c.ci || "").split("").some(x => x && !ci.includes(x)));
+    if(foraDaCor.length) problemas.push({ tipo:"erro",
+      txt:`${foraDaCor.length} carta${foraDaCor.length>1?"s":""} fora da identidade de cor do comandante: ${foraDaCor.slice(0,4).map(c=>c.n).join(", ")}${foraDaCor.length>4?"…":""}` });
+  }
+  if(fmt.comandante && !d.comandante)
+    problemas.push({ tipo:"aviso", txt:"o deck ainda não tem comandante" });
+
+  const tenho = todas.filter(c => isOwned(c.id)).reduce((a,c) => a + (c.qtd || 1), 0);
+  const valor = todas.reduce((a,c) => { const p = precoLocal(deckParaCarta(c)); return a + (p ? p.valor * (c.qtd||1) : 0); }, 0);
+  const falta = todas.filter(c => !isOwned(c.id))
+    .reduce((a,c) => { const p = precoLocal(deckParaCarta(c)); return a + (p ? p.valor * (c.qtd||1) : 0); }, 0);
+
+  return { fmt, total, terrenos, alvoTerrenos:alvo, mvMedio, curva, pips, fontes, problemas,
+           rampa:conta(EH_RAMPA), compra:conta(EH_COMPRA), remocao:conta(EH_REMOCAO), varrida:conta(EH_VARRIDA),
+           tenho, valor, falta };
+}
+
+/* metas de referência do Commander, que é onde a maioria começa perdida */
+const METAS_EDH = { rampa:[8,12], compra:[8,12], remocao:[6,10], varrida:[2,4] };
+
+/* ---------------- view: lista de decks ---------------- */
+let deckView = { busca:"", formato:"", aba:"meus" };
+
+function renderDecks(){
+  const lista = decks().filter(d =>
+    (!deckView.formato || d.formato === deckView.formato) &&
+    (!deckView.busca || semAcento(d.nome).includes(semAcento(deckView.busca))));
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Decks</h2>
+        <p>Monte seu deck puxando cartas da sua coleção ou do catálogo inteiro. O app conta os terrenos,
+        olha a curva, confere a legalidade e diz o que falta comprar.</p>
+      </div>
+      <button class="btn" id="novo-deck">+ Novo deck</button>
+    </div>
+
+    <div class="abas-deck">
+      <button class="tog ${deckView.aba==="meus"?"on":""}" data-aba="meus">Meus decks</button>
+      <button class="tog ${deckView.aba==="comandantes"?"on":""}" data-aba="comandantes">Comandantes mais jogados</button>
+      <button class="tog ${deckView.aba==="metagame"?"on":""}" data-aba="metagame">O que está sendo jogado</button>
+    </div>
+
+    <div id="deck-conteudo"></div>`;
+
+  document.getElementById("novo-deck").onclick = () => novoDeck();
+  document.querySelector(".abas-deck").onclick = e => {
+    const b = e.target.closest("[data-aba]"); if(!b) return;
+    deckView.aba = b.dataset.aba; renderDecks();
+  };
+
+  if(deckView.aba === "comandantes") return pintarComandantes();
+  if(deckView.aba === "metagame") return pintarMetagame();
+
+  const alvo = document.getElementById("deck-conteudo");
+  alvo.innerHTML = decks().length === 0
+    ? `<div class="empty">Você ainda não tem deck nenhum.<br>
+         Comece pelo <b>+ Novo deck</b>, ou vá em <b>Comandantes mais jogados</b> e crie um deck já com o comandante.</div>`
+    : `<div class="toolbar" style="margin-bottom:14px">
+         <div class="grow"><input type="search" id="busca-deck" placeholder="filtrar por nome…" value="${escapeHTML(deckView.busca)}"></div>
+         <select id="filtro-formato" style="width:auto">
+           <option value="">todos os formatos</option>
+           ${FORMATOS.map(f => `<option value="${f.id}"${deckView.formato===f.id?" selected":""}>${f.nome}</option>`).join("")}
+         </select>
+       </div>
+       <div class="decks-grade">${lista.map(cartaoDeDeck).join("")}</div>
+       ${lista.length ? "" : `<div class="empty">Nenhum deck com esse filtro.</div>`}`;
+
+  const b = document.getElementById("busca-deck");
+  if(b) b.oninput = () => { deckView.busca = b.value; const f = document.activeElement === b;
+    renderDecks(); if(f){ const n = document.getElementById("busca-deck"); if(n){ n.focus(); n.setSelectionRange(n.value.length,n.value.length); } } };
+  const ff = document.getElementById("filtro-formato");
+  if(ff) ff.onchange = () => { deckView.formato = ff.value; renderDecks(); };
+  alvo.querySelectorAll("[data-deck]").forEach(el => el.onclick = () => go("deck", el.dataset.deck));
+}
+
+function cartaoDeDeck(d){
+  const fmt = formatoDe(d.formato);
+  const total = totalDoDeck(d);
+  const capa = (d.comandante && (d.comandante.big || d.comandante.img))
+            || ((d.cartas || []).find(c => c.img) || {}).img;
+  const tenho = cartasDoDeck(d).filter(c => isOwned(c.id)).reduce((a,c)=>a+(c.qtd||1),0);
+  const pct = total ? Math.round(100 * tenho / total) : 0;
+  const cores = coresDoDeck(d);
+  return `
+  <button class="deck-cartao" data-deck="${d.id}">
+    <div class="deck-capa" ${capa ? `style="background-image:url('${escapeHTML(capa)}')"` : ""}>
+      ${capa ? "" : `<span>🂠</span>`}
+    </div>
+    <div class="deck-corpo">
+      <h3>${escapeHTML(d.nome)}</h3>
+      <div class="deck-meta">
+        <span class="chip">${fmt.nome}</span>
+        ${cores ? `<span class="deck-cores">${cores}</span>` : ""}
+        <span>${total}/${fmt.cartas}</span>
+      </div>
+      ${d.comandante ? `<p class="deck-cmd">${escapeHTML(d.comandante.n)}</p>` : ""}
+      <div class="mini-bar" title="${pct}% das cartas você já tem"><i style="width:${pct}%"></i></div>
+      <span class="deck-tenho">${pct}% na sua coleção</span>
+    </div>
+  </button>`;
+}
+
+const PONTOS_COR = { w:"#f8f3d8", u:"#9fd3f0", b:"#9a8fa3", r:"#f0a08c", g:"#9fd3a8" };
+function coresDoDeck(d){
+  const cores = new Set();
+  cartasDoDeck(d).forEach(c => (c.ci || c.cores || "").split("").forEach(x => { if(PONTOS_COR[x]) cores.add(x); }));
+  return [...cores].map(c => `<i class="ponto-cor" style="background:${PONTOS_COR[c]}"></i>`).join("");
+}
+
+/* ---------------- criar deck ---------------- */
+function novoDeck(preset = {}){
+  modal(`<div class="modal-pad">
+    <h3>Novo deck</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 16px">
+      O formato muda as regras que o app confere. Dá para trocar depois.</p>
+    <label class="field"><span>Nome do deck</span>
+      <input type="text" id="nd-nome" placeholder="ex.: Atraxa infinito" value="${escapeHTML(preset.nome || "")}">
+    </label>
+    <span class="flabel">Formato</span>
+    <div class="formatos">
+      ${FORMATOS.map(f => `
+        <button class="formato ${(preset.formato || "commander")===f.id?"on":""}" data-fmt="${f.id}">
+          <b>${f.nome}</b><small>${f.desc}</small>
+        </button>`).join("")}
+    </div>
+    ${preset.comandante ? `<div class="nota-regiao" style="margin-top:14px">
+      Comandante: <b>${escapeHTML(preset.comandante.n)}</b></div>` : ""}
+    <div class="pergunta-acoes" style="margin-top:18px">
+      <button class="btn" id="nd-criar">Criar deck</button>
+      <button class="btn ghost" id="nd-cancelar">Cancelar</button>
+    </div>
+  </div>`);
+
+  let formato = preset.formato || "commander";
+  const grade = document.querySelector(".formatos");
+  grade.onclick = e => {
+    const b = e.target.closest(".formato"); if(!b) return;
+    formato = b.dataset.fmt;
+    grade.querySelectorAll(".formato").forEach(x => x.classList.toggle("on", x === b));
+  };
+  document.getElementById("nd-cancelar").onclick = closeModal;
+  document.getElementById("nd-criar").onclick = () => {
+    const nome = (document.getElementById("nd-nome").value || "").trim()
+      || (preset.comandante ? preset.comandante.n : "Deck sem nome");
+    const d = { id:"deck-" + Date.now().toString(36), nome, formato,
+                comandante: preset.comandante || null, cartas:[], criado:Date.now() };
+    decks().push(d); save(); closeModal(); go("deck", d.id);
+  };
+  const campo = document.getElementById("nd-nome");
+  if(campo) campo.focus();
+}
+
+/* ---------------- view: um deck ---------------- */
+const GRUPOS_DECK = [
+  ["comandante",   "Comandante",    c => c.ehComandante],
+  ["criatura",     "Criaturas",     c => /creature/i.test(c.t) && !/land/i.test(c.t)],
+  ["planeswalker", "Planeswalkers", c => /planeswalker/i.test(c.t)],
+  ["instantanea",  "Instantâneas",  c => /instant/i.test(c.t)],
+  ["feitico",      "Feitiços",      c => /sorcery/i.test(c.t)],
+  ["artefato",     "Artefatos",     c => /artifact/i.test(c.t)],
+  ["encantamento", "Encantamentos", c => /enchantment/i.test(c.t)],
+  ["batalha",      "Batalhas",      c => /battle/i.test(c.t)],
+  ["terreno",      "Terrenos",      c => /land/i.test(c.t)],
+];
+
+function renderDeck(id){
+  const d = deckPorId(id);
+  if(!d){ go("decks"); return; }
+  const fmt = formatoDe(d.formato);
+
+  app.innerHTML = `
+    <button class="icon-btn" id="voltar-decks" style="margin-bottom:16px">← todos os decks</button>
+    <div class="coll-head">
+      <div class="ico">${d.comandante && d.comandante.img
+        ? `<img class="ico-capa" src="${escapeHTML(d.comandante.img)}" alt="">` : "🂠"}</div>
+      <div style="flex:1;min-width:220px">
+        <h2 contenteditable="true" id="deck-nome" spellcheck="false">${escapeHTML(d.nome)}</h2>
+        <p>${fmt.nome} · ${fmt.desc}</p>
+      </div>
+      <div class="progress-wrap" id="deck-resumo"></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn" id="add-carta-deck">+ Adicionar cartas</button>
+      ${fmt.comandante ? `<button class="btn ghost" id="def-comandante">${d.comandante ? "Trocar comandante" : "Escolher comandante"}</button>` : ""}
+      <select id="deck-formato" style="width:auto">
+        ${FORMATOS.map(f => `<option value="${f.id}"${d.formato===f.id?" selected":""}>${f.nome}</option>`).join("")}
+      </select>
+      <div class="grow"></div>
+      <button class="btn ghost" id="deck-texto">Exportar lista</button>
+      <button class="btn ghost" id="deck-excluir">Excluir</button>
+    </div>
+
+    <div class="deck-layout">
+      <div class="deck-cartas" id="deck-cartas"></div>
+      <aside class="deck-lado" id="deck-diagnostico"></aside>
+    </div>`;
+
+  document.getElementById("voltar-decks").onclick = () => go("decks");
+  const nome = document.getElementById("deck-nome");
+  nome.onblur = () => { const t = nome.textContent.trim(); if(t){ d.nome = t; save(); } else nome.textContent = d.nome; };
+  nome.onkeydown = e => { if(e.key === "Enter"){ e.preventDefault(); nome.blur(); } };
+
+  document.getElementById("add-carta-deck").onclick = () => buscarParaDeck(d);
+  const bc = document.getElementById("def-comandante");
+  if(bc) bc.onclick = () => buscarParaDeck(d, { comandante:true });
+  document.getElementById("deck-formato").onchange = e => { d.formato = e.target.value; save(); renderDeck(d.id); };
+  document.getElementById("deck-texto").onclick = () => exportarDeck(d);
+  document.getElementById("deck-excluir").onclick = () => {
+    if(!confirm(`Excluir o deck "${d.nome}"? As cartas continuam na sua coleção.`)) return;
+    S.decks = decks().filter(x => x.id !== d.id); save(); go("decks");
+  };
+
+  pintarDeck(d);
+}
+
+function pintarDeck(d){
+  const alvo = document.getElementById("deck-cartas");
+  if(!alvo) return;
+  const todas = cartasDoDeck(d);
+
+  const usadas = new Set();
+  const secoes = GRUPOS_DECK.map(([chave, titulo, casa]) => {
+    const itens = todas.filter(c => !usadas.has(c) && casa(c));
+    itens.forEach(c => usadas.add(c));
+    return { chave, titulo, itens:itens.sort((a,b) => (a.mv||0)-(b.mv||0) || a.n.localeCompare(b.n)) };
+  }).filter(s => s.itens.length);
+  const sobrou = todas.filter(c => !usadas.has(c));
+  if(sobrou.length) secoes.push({ chave:"outros", titulo:"Outras", itens:sobrou });
+
+  alvo.innerHTML = todas.length === 0
+    ? `<div class="empty">Deck vazio. Clique em <b>+ Adicionar cartas</b> — dá para buscar em tudo
+        que existe ou só no que você já tem.</div>`
+    : secoes.map(s => `
+      <section class="deck-secao">
+        <h3 class="grupo-titulo">${s.titulo}<span>${s.itens.reduce((a,c)=>a+(c.qtd||1),0)}</span></h3>
+        <div class="deck-linhas">
+          ${s.itens.map(c => linhaDeCarta(c, d)).join("")}
+        </div>
+      </section>`).join("");
+
+  ligarLinhasDoDeck(d);
+  pintarDiagnostico(d);
+  pintarResumoDoDeck(d);
+}
+
+function linhaDeCarta(c, d){
+  const tenho = isOwned(c.id);
+  const p = precoLocal(deckParaCarta(c));
+  return `
+  <div class="deck-linha ${tenho?"tenho":""}" data-id="${c.id}">
+    <span class="dl-qtd">${c.ehComandante ? "★" : (c.qtd || 1) + "×"}</span>
+    <img class="dl-img" loading="lazy" src="${escapeHTML(c.img || "")}" alt="">
+    <span class="dl-nome">${escapeHTML(c.n)}
+      <small>${escapeHTML((c.t || "").split("—")[0].trim())}${c.mv ? ` · ${c.mv} mana` : ""}</small></span>
+    <span class="dl-preco">${p ? formatarPreco(p) : "—"}</span>
+    <span class="dl-tenho" title="${tenho ? "você tem esta carta" : "você ainda não tem"}">${tenho ? "✓" : ""}</span>
+    <span class="dl-acoes">
+      ${c.ehComandante ? "" : `<button class="dl-menos" title="tirar uma">−</button>
+      <button class="dl-mais" title="mais uma">+</button>`}
+      <button class="dl-info" title="detalhes">i</button>
+      <button class="dl-fora" title="tirar do deck">×</button>
+    </span>
+  </div>`;
+}
+
+function ligarLinhasDoDeck(d){
+  const alvo = document.getElementById("deck-cartas");
+  if(!alvo) return;
+  alvo.querySelectorAll(".deck-linha").forEach(el => {
+    const id = el.dataset.id;
+    const achar = () => (d.cartas || []).find(x => x.id === id);
+    const ehCmd = d.comandante && d.comandante.id === id;
+    const mexer = f => { f(); save(); pintarDeck(d); };
+    const bt = (sel, fn) => { const b = el.querySelector(sel); if(b) b.onclick = e => { e.stopPropagation(); fn(); }; };
+    bt(".dl-mais", () => mexer(() => { const c = achar(); if(c) c.qtd = (c.qtd || 1) + 1; }));
+    bt(".dl-menos", () => mexer(() => {
+      const c = achar(); if(!c) return;
+      if((c.qtd || 1) <= 1) d.cartas = d.cartas.filter(x => x.id !== id); else c.qtd--;
+    }));
+    bt(".dl-fora", () => mexer(() => {
+      if(ehCmd) d.comandante = null; else d.cartas = d.cartas.filter(x => x.id !== id);
+    }));
+    bt(".dl-info", () => {
+      const c = ehCmd ? d.comandante : achar();
+      if(c) openCard(deckParaCarta(c));
+    });
+  });
+}
+
+function pintarResumoDoDeck(d){
+  const alvo = document.getElementById("deck-resumo");
+  if(!alvo) return;
+  const dg = diagnosticoDoDeck(d);
+  const pct = dg.total ? Math.round(100 * dg.tenho / dg.total) : 0;
+  alvo.innerHTML = `
+    <div class="progress-num"><span>você tem</span><b>${pct}%</b></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="progress-num">
+      <span>${dg.total} de ${dg.fmt.cartas} cartas</span>
+      <span>${formatarPreco({valor:dg.valor, simbolo:regiao().simbolo})}</span>
+    </div>`;
+}
+
+function pintarDiagnostico(d){
+  const alvo = document.getElementById("deck-diagnostico");
+  if(!alvo) return;
+  const g = diagnosticoDoDeck(d);
+  const edh = g.fmt.cartas >= 100;
+  const fmtP = v => formatarPreco({ valor:v, simbolo:regiao().simbolo });
+
+  const barraCurva = () => {
+    const max = Math.max(1, ...Object.values(g.curva));
+    return `<div class="curva">${[0,1,2,3,4,5,6,7].map(k => `
+      <div class="curva-col" title="${g.curva[k]||0} carta(s) de custo ${k}${k===7?"+":""}">
+        <i style="height:${Math.round(100*(g.curva[k]||0)/max)}%"></i>
+        <span>${k}${k===7?"+":""}</span>
+      </div>`).join("")}</div>`;
+  };
+
+  const meta = (nome, valor, faixa, dica) => {
+    const [min,max] = faixa;
+    const estado = valor < min ? "abaixo" : valor > max ? "acima" : "certo";
+    const rotulo = estado === "certo" ? "ok" : estado === "abaixo" ? `pouco (mire ${min}–${max})` : `muito (mire ${min}–${max})`;
+    return `<div class="dg-linha ${estado}">
+      <span>${nome}</span><b>${valor}</b><small title="${escapeHTML(dica)}">${rotulo}</small></div>`;
+  };
+
+  const cores = ["w","u","b","r","g"].filter(c => g.pips[c] > 0 || g.fontes[c] > 0);
+  const nomeCor = { w:"branco", u:"azul", b:"preto", r:"vermelho", g:"verde" };
+
+  alvo.innerHTML = `
+    <div class="dg-bloco">
+      <span class="flabel">Terrenos</span>
+      <div class="dg-grande ${g.terrenos < g.alvoTerrenos - 2 ? "abaixo" : g.terrenos > g.alvoTerrenos + 2 ? "acima" : "certo"}">
+        <b>${g.terrenos}</b><span>no deck</span>
+      </div>
+      <p class="dg-txt">Para um custo médio de <b>${g.mvMedio.toFixed(2)}</b>, a conta do Frank Karsten pede
+      <b>${g.alvoTerrenos}</b> terrenos${g.terrenos === g.alvoTerrenos ? " — está no ponto." :
+        g.terrenos < g.alvoTerrenos ? ` — faltam ${g.alvoTerrenos - g.terrenos}.` : ` — ${g.terrenos - g.alvoTerrenos} a mais do que o necessário.`}
+      Rampa e compra barata puxam esse número para baixo.</p>
+    </div>
+
+    <div class="dg-bloco">
+      <span class="flabel">Curva de mana</span>
+      ${barraCurva()}
+    </div>
+
+    ${edh ? `<div class="dg-bloco">
+      <span class="flabel">Peças que todo deck precisa</span>
+      ${meta("Rampa", g.rampa, METAS_EDH.rampa, "cartas de até 4 manas que colocam terreno ou produzem mana")}
+      ${meta("Compra", g.compra, METAS_EDH.compra, "cartas que compram carta")}
+      ${meta("Remoção", g.remocao, METAS_EDH.remocao, "destruir, exilar, anular ou queimar um alvo")}
+      ${meta("Varridas", g.varrida, METAS_EDH.varrida, "destrói ou exila tudo de uma vez")}
+      <p class="dg-txt">As faixas são o consenso de deck de Commander. Não é lei — deck de aggro
+      leva menos varrida, deck de controle leva mais.</p>
+    </div>` : ""}
+
+    ${cores.length > 1 ? `<div class="dg-bloco">
+      <span class="flabel">Cores: símbolo exigido × fonte de mana</span>
+      ${cores.map(c => {
+        const falta = g.pips[c] > 0 && g.fontes[c] < Math.max(6, Math.round(g.pips[c] * 0.55));
+        return `<div class="dg-linha ${falta?"abaixo":"certo"}">
+          <span><i class="ponto-cor" style="background:${PONTOS_COR[c]}"></i>${nomeCor[c]}</span>
+          <b>${g.fontes[c]}</b><small>${g.pips[c]} símbolo${g.pips[c]===1?"":"s"}${falta?" · poucas fontes":""}</small></div>`;
+      }).join("")}
+    </div>` : ""}
+
+    <div class="dg-bloco">
+      <span class="flabel">Legalidade e tamanho</span>
+      ${g.problemas.length
+        ? g.problemas.map(p => `<div class="dg-problema ${p.tipo}">${escapeHTML(p.txt)}</div>`).join("")
+        : `<div class="dg-problema ok">Tudo certo para ${g.fmt.nome}.</div>`}
+    </div>
+
+    <div class="dg-bloco">
+      <span class="flabel">Preço</span>
+      <div class="dg-linha certo"><span>deck inteiro</span><b>${fmtP(g.valor)}</b><small></small></div>
+      <div class="dg-linha ${g.falta ? "abaixo" : "certo"}"><span>o que falta comprar</span><b>${fmtP(g.falta)}</b>
+        <small>${g.total - g.tenho} carta${g.total-g.tenho===1?"":"s"}</small></div>
+    </div>`;
+}
+
+/* ---------------- buscar cartas para o deck ---------------- */
+function buscarParaDeck(d, opcoes = {}){
+  const fmt = formatoDe(d.formato);
+  const soComandante = !!opcoes.comandante;
+  let busca = 0, achadas = [], soMinhas = false;
+
+  modal(`<div class="modal-pad">
+    <h3>${soComandante ? "Escolher comandante" : "Adicionar cartas"}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      ${soComandante
+        ? "Só aparecem cartas que podem ser comandante."
+        : `Busca em tudo que é legal em ${fmt.nome}${d.comandante ? `, dentro da identidade de cor de ${escapeHTML(d.comandante.n)}` : ""}.`}</p>
+    <label class="field"><span>Nome, tipo ou o que a carta faz</span>
+      <input type="text" id="bd-termo" placeholder="ex.: Sol Ring, dragão, destroy target creature" autocomplete="off">
+    </label>
+    <label class="check" style="margin-bottom:12px"><input type="checkbox" id="bd-minhas">
+      <span>só cartas que eu já tenho</span></label>
+    <div class="status" id="bd-status">digite pelo menos três letras</div>
+    <div class="cards" id="bd-grade"></div>
+  </div>`);
+
+  const campo = document.getElementById("bd-termo");
+  const status = document.getElementById("bd-status");
+  const grade = document.getElementById("bd-grade");
+  campo.focus();
+  let timer;
+  campo.oninput = () => { clearTimeout(timer); timer = setTimeout(rodar, 380); };
+  document.getElementById("bd-minhas").onchange = e => { soMinhas = e.target.checked; rodar(); };
+
+  function query(termo){
+    const partes = [];
+    if(soComandante) partes.push("is:commander");
+    partes.push(`f:${d.formato}`);
+    if(!soComandante && d.comandante && fmt.comandante) partes.push(`ci<=${d.comandante.ci || "c"}`);
+    if(soComandante && false) partes.push("");
+    partes.push(`(name:"${termo}" or type:"${termo}" or oracle:"${termo}")`);
+    return partes.join(" ");
+  }
+
+  async function rodar(){
+    const termo = campo.value.trim();
+    if(termo.length < 3){ status.textContent = "digite pelo menos três letras"; grade.innerHTML = ""; return; }
+    status.textContent = "buscando…"; grade.innerHTML = skeletons(8);
+    const meu = ++busca;
+    try{
+      if(soMinhas){
+        const t = semAcento(termo);
+        achadas = cartasQueTenho().filter(c => semAcento(c.name).includes(t) || semAcento(c.type||"").includes(t));
+        if(meu !== busca || !grade.isConnected) return;
+        status.textContent = `${achadas.length} na sua coleção`;
+      } else {
+        const json = await scryPage(query(termo), "cards", "edhrec", 1, "auto");
+        if(meu !== busca || !grade.isConnected) return;
+        achadas = (json.data || []).map(normalize);
+        status.textContent = `${json.total_cards || achadas.length} carta${(json.total_cards||0)===1?"":"s"} — mostrando ${achadas.length}`;
+      }
+      if(!achadas.length){ grade.innerHTML = ""; status.textContent = "nada encontrado"; return; }
+      grade.innerHTML = achadas.map(c => cardHTML(c)).join("");
+      grade.querySelectorAll(".card").forEach(el => {
+        const c = achadas.find(x => x.id === el.dataset.id);
+        if(!c) return;
+        const info = el.querySelector(".info");
+        if(info) info.onclick = ev => { ev.stopPropagation(); openCard(c); };
+        el.onclick = () => {
+          if(soComandante){
+            d.comandante = cartaDeDeck(c, 1); save(); closeModal(); renderDeck(d.id);
+            toast(`${c.name} virou o comandante`);
+            return;
+          }
+          porNoDeck(d, c);
+          el.classList.add("no-deck");
+          toast(`${c.name} entrou no deck`);
+        };
+      });
+    }catch(e){
+      if(meu === busca && grade.isConnected){ status.textContent = "erro na busca"; grade.innerHTML = ""; }
+    }
+  }
+}
+
+function porNoDeck(d, carta){
+  const fmt = formatoDe(d.formato);
+  d.cartas = d.cartas || [];
+  const ja = d.cartas.find(x => x.id === carta.id);
+  const basico = /basic/i.test(carta.type || "");
+  if(ja){
+    if(fmt.singleton && !basico) return toast(`${carta.name} já está no deck (${fmt.nome} é singleton)`);
+    if(!fmt.singleton && !basico && (ja.qtd || 1) >= 4) return toast("máximo de 4 cópias");
+    ja.qtd = (ja.qtd || 1) + 1;
+  } else {
+    d.cartas.push(cartaDeDeck(carta, 1));
+  }
+  save();
+  if(view.name === "deck") pintarDeck(d);
+}
+
+function exportarDeck(d){
+  const linhas = [];
+  if(d.comandante) linhas.push(`1 ${d.comandante.n}`, "");
+  (d.cartas || []).forEach(c => linhas.push(`${c.qtd || 1} ${c.n}`));
+  const txt = linhas.join("\n");
+  modal(`<div class="modal-pad">
+    <h3>Lista do deck</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">
+      Formato de texto que Moxfield, Archidekt e a maioria dos sites entende.</p>
+    <textarea id="deck-txt" rows="14" style="font-family:ui-monospace,monospace;font-size:12.5px">${escapeHTML(txt)}</textarea>
+    <div class="pergunta-acoes"><button class="btn" id="copiar-deck">Copiar</button></div>
+  </div>`);
+  document.getElementById("copiar-deck").onclick = () => {
+    const el = document.getElementById("deck-txt");
+    el.select(); document.execCommand("copy");
+    toast("lista copiada");
+  };
+}
+
+/* ---------------- comandantes mais jogados ----------------
+   O Scryfall traz o edhrec_rank de cada carta: é a posição dela no ranking
+   de uso do EDHREC, que junta milhões de decks publicados. Ordenar os
+   lendários por esse número dá, de graça e ao vivo, a lista dos comandantes
+   mais jogados do momento — sem depender de nenhuma API fechada. */
+let cmdView = { cartas:[], pagina:1, temMais:false, total:0, busca:"", cor:"", carregando:false };
+
+async function pintarComandantes(){
+  const alvo = document.getElementById("deck-conteudo");
+  if(!alvo) return;
+  alvo.innerHTML = `
+    <div class="toolbar" style="margin-bottom:14px">
+      <div class="grow"><input type="search" id="cmd-busca" placeholder="procurar comandante pelo nome…" value="${escapeHTML(cmdView.busca)}"></div>
+      <div class="toggles" id="cmd-cores">
+        ${[["w","Branco"],["u","Azul"],["b","Preto"],["r","Vermelho"],["g","Verde"],["c","Incolor"]]
+          .map(([c,n]) => `<button class="tog ${cmdView.cor===c?"on":""}" data-cor="${c}">
+            <i class="ponto-cor" style="background:${PONTOS_COR[c] || "#8a92a6"}"></i>${n}</button>`).join("")}
+      </div>
+    </div>
+    <p class="status" style="text-align:left;margin:0 0 12px" id="cmd-status">carregando…</p>
+    <div class="cmd-grade" id="cmd-grade">${skeletons(10)}</div>
+    <div class="loadmore" id="cmd-mais"></div>`;
+
+  const b = document.getElementById("cmd-busca");
+  let t;
+  b.oninput = () => { clearTimeout(t); t = setTimeout(() => { cmdView.busca = b.value; carregarComandantes(true); }, 380); };
+  document.getElementById("cmd-cores").onclick = e => {
+    const x = e.target.closest("[data-cor]"); if(!x) return;
+    cmdView.cor = cmdView.cor === x.dataset.cor ? "" : x.dataset.cor;
+    document.querySelectorAll("#cmd-cores .tog").forEach(y => y.classList.toggle("on", y.dataset.cor === cmdView.cor));
+    carregarComandantes(true);
+  };
+  carregarComandantes(true);
+}
+
+async function carregarComandantes(zerar){
+  const grade = document.getElementById("cmd-grade"), status = document.getElementById("cmd-status");
+  if(!grade) return;
+  if(zerar){ cmdView.cartas = []; cmdView.pagina = 1; grade.innerHTML = skeletons(10); }
+  cmdView.carregando = true;
+  const partes = ["is:commander game:paper"];
+  if(cmdView.busca.trim()) partes.push(`name:"${cmdView.busca.trim()}"`);
+  if(cmdView.cor) partes.push(cmdView.cor === "c" ? "ci:c" : `ci:${cmdView.cor}`);
+  try{
+    const json = await scryPage(partes.join(" "), "cards", "edhrec", cmdView.pagina, "auto");
+    if(!grade.isConnected) return;
+    cmdView.cartas.push(...(json.data || []).map(normalize));
+    cmdView.total = json.total_cards || cmdView.cartas.length;
+    cmdView.temMais = !!json.has_more;
+    cmdView.pagina++;
+  }catch(e){
+    if(grade.isConnected){ grade.innerHTML = ""; status.textContent = "não consegui buscar agora."; }
+    cmdView.carregando = false;
+    return;
+  }
+  cmdView.carregando = false;
+  if(!grade.isConnected) return;
+
+  status.innerHTML = `${cmdView.total.toLocaleString("pt-BR")} comandantes${cmdView.busca||cmdView.cor?" nesse filtro":""} ·
+    ordenados por quanto aparecem em deck publicado (ranking do EDHREC)`;
+  grade.innerHTML = cmdView.cartas.map((c,i) => `
+    <div class="cmd-cartao" data-id="${c.id}">
+      <div class="cmd-pos">${i+1}</div>
+      <img loading="lazy" src="${escapeHTML(c.small||"")}" alt="${escapeHTML(c.name)}">
+      <div class="cmd-info">
+        <b>${escapeHTML(c.name)}</b>
+        <small>${escapeHTML((c.type||"").split("—")[0].trim())}${c.edhrec ? ` · #${c.edhrec} no EDHREC` : ""}</small>
+        <div class="cmd-acoes">
+          <button class="btn ghost cmd-usar">Criar deck</button>
+          <button class="btn ghost cmd-ver">Ver carta</button>
+        </div>
+      </div>
+    </div>`).join("");
+
+  grade.querySelectorAll(".cmd-cartao").forEach(el => {
+    const c = cmdView.cartas.find(x => x.id === el.dataset.id);
+    if(!c) return;
+    el.querySelector(".cmd-usar").onclick = () => novoDeck({ formato:"commander", nome:c.name, comandante:cartaDeDeck(c,1) });
+    el.querySelector(".cmd-ver").onclick = () => openCard(c);
+  });
+
+  const mais = document.getElementById("cmd-mais");
+  if(mais) mais.innerHTML = cmdView.temMais
+    ? `<button class="btn ghost" id="cmd-mais-btn">Carregar mais</button>` : "";
+  const btn = document.getElementById("cmd-mais-btn");
+  if(btn) btn.onclick = () => { btn.disabled = true; carregarComandantes(false); };
+}
+
+/* ---------------- o que está sendo jogado ---------------- */
+const LINKS_META = {
+  commander: ["EDHREC — comandantes da semana", "https://edhrec.com/top/week"],
+  standard:  ["MTGGoldfish — metagame de Standard", "https://www.mtggoldfish.com/metagame/standard"],
+  pioneer:   ["MTGGoldfish — metagame de Pioneer",  "https://www.mtggoldfish.com/metagame/pioneer"],
+  modern:    ["MTGGoldfish — metagame de Modern",   "https://www.mtggoldfish.com/metagame/modern"],
+  legacy:    ["MTGGoldfish — metagame de Legacy",   "https://www.mtggoldfish.com/metagame/legacy"],
+  vintage:   ["MTGGoldfish — metagame de Vintage",  "https://www.mtggoldfish.com/metagame/vintage"],
+  pauper:    ["MTGGoldfish — metagame de Pauper",   "https://www.mtggoldfish.com/metagame/pauper"],
+  brawl:     ["EDHREC — Brawl", "https://edhrec.com/commanders/brawl"],
+};
+let metaView = { formato:"commander", cartas:[], carregando:false };
+
+async function pintarMetagame(){
+  const alvo = document.getElementById("deck-conteudo");
+  if(!alvo) return;
+  const f = metaView.formato;
+  const [rotulo, url] = LINKS_META[f] || LINKS_META.commander;
+
+  alvo.innerHTML = `
+    <div class="toggles" style="margin-bottom:14px" id="meta-formatos">
+      ${FORMATOS.map(x => `<button class="tog ${f===x.id?"on":""}" data-f="${x.id}">${x.nome}</button>`).join("")}
+    </div>
+    <div class="nota-regiao" style="margin-bottom:16px">
+      <b>De onde vem este número.</b> As cartas abaixo estão ordenadas pelo ranking de uso do EDHREC,
+      que o Scryfall publica carta a carta — é o dado de uso mais confiável que existe de graça e ao vivo.
+      Ele conta deck publicado, e ninguém publica deck de Standard tanto quanto de Commander, então para os
+      formatos de torneio ele indica bem as cartas populares, mas não substitui a tabela de metagame:
+      para essa, <a href="${url}" target="_blank" rel="noopener">${escapeHTML(rotulo)} ↗</a>.
+    </div>
+    <p class="status" style="text-align:left;margin:0 0 12px" id="meta-status">carregando…</p>
+    <div class="cards" id="meta-grade">${skeletons(12)}</div>`;
+
+  document.getElementById("meta-formatos").onclick = e => {
+    const b = e.target.closest("[data-f]"); if(!b) return;
+    metaView.formato = b.dataset.f; pintarMetagame();
+  };
+
+  const grade = document.getElementById("meta-grade"), status = document.getElementById("meta-status");
+  try{
+    const json = await scryPage(`f:${f} game:paper -t:basic`, "cards", "edhrec", 1, "auto");
+    if(!grade.isConnected) return;
+    const cartas = (json.data || []).map(normalize).slice(0, 60);
+    status.textContent = `as ${cartas.length} cartas mais usadas em ${formatoDe(f).nome} hoje`;
+    grade.innerHTML = cartas.map(c => cardHTML(c)).join("");
+    ligarCartas(grade, id => cartas.find(c => c.id === id), () => pintarMetagame());
+  }catch(e){
+    if(grade.isConnected){ grade.innerHTML = ""; status.textContent = "não consegui buscar agora."; }
+  }
+}
+
+/* =====================================================================
+   CHASE CARDS — a lista de desejo com preço de olho
+
+   O usuário cria os grupos com o nome que quiser ("comprar em outubro",
+   "reserva do Modern") e joga carta dentro. Para cada carta o app guarda o
+   preço do dia em que ela entrou e compara com o de agora, usando o mesmo
+   histórico diário que alimenta o gráfico da carta.
+   ===================================================================== */
+
+function chase(){
+  if(!S.chase) S.chase = { grupos:[{ id:"geral", nome:"Quero comprar" }], cartas:[] };
+  if(!S.chase.grupos.length) S.chase.grupos = [{ id:"geral", nome:"Quero comprar" }];
+  return S.chase;
+}
+function porNoChase(carta, grupoId){
+  const c = chase();
+  if(c.cartas.some(x => x.id === carta.id)) return false;
+  const p = precoLocal(carta);
+  c.cartas.push(Object.assign(cartaDeDeck(carta, 1), {
+    grupo: grupoId || c.grupos[0].id,
+    entrada: p ? p.valor : 0,
+    entradaEm: Date.now(),
+    alvo: 0,
+  }));
+  save();
+  return true;
+}
+
+let chaseView = { carregouHistorico:false };
+
+function renderChase(){
+  const c = chase();
+  const total = c.cartas.reduce((a,x) => { const p = precoLocal(deckParaCarta(x)); return a + (p?p.valor:0); }, 0);
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Chase cards</h2>
+        <p>As cartas que você quer comprar, em grupos com o nome que você quiser. O app guarda o preço
+        do dia em que cada uma entrou e mostra o que subiu e o que caiu desde então.</p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="chase-add">+ Adicionar carta</button>
+        <button class="btn ghost" id="chase-grupo">+ Grupo</button>
+      </div>
+    </div>
+
+    ${c.cartas.length === 0
+      ? `<div class="empty">Nenhuma carta na lista ainda.<br>
+          Use o <b>+ Adicionar carta</b>, ou abra qualquer carta no catálogo e clique em
+          <b>“quero esta”</b>.</div>`
+      : `<div class="resumo-colecao" style="margin-bottom:18px">
+          <div class="rc"><b>${c.cartas.length}</b><small>cartas na mira</small></div>
+          <div class="rc"><b>${formatarPreco({valor:total, simbolo:regiao().simbolo})}</b><small>custo de comprar tudo</small></div>
+          <div class="rc"><b>${c.grupos.length}</b><small>grupos</small></div>
+        </div>` }
+
+    <div id="chase-lista"></div>`;
+
+  document.getElementById("chase-add").onclick = () => buscarParaChase();
+  document.getElementById("chase-grupo").onclick = () => criarGrupoChase();
+  pintarChase();
+  carregarPrecosDoChase();
+}
+
+function pintarChase(){
+  const alvo = document.getElementById("chase-lista");
+  if(!alvo) return;
+  const c = chase();
+  if(!c.cartas.length){ alvo.innerHTML = ""; return; }
+
+  alvo.innerHTML = c.grupos.map(g => {
+    const itens = c.cartas.filter(x => x.grupo === g.id);
+    const soma = itens.reduce((a,x) => { const p = precoLocal(deckParaCarta(x)); return a + (p?p.valor:0); }, 0);
+    return `
+    <section class="chase-grupo" data-grupo="${g.id}">
+      <h3 class="grupo-titulo">
+        <span class="chase-nome" contenteditable="true" spellcheck="false" data-g="${g.id}">${escapeHTML(g.nome)}</span>
+        <span>${itens.length}</span>
+        <b class="chase-soma">${formatarPreco({valor:soma, simbolo:regiao().simbolo})}</b>
+        ${c.grupos.length > 1 ? `<button class="chase-apagar" data-g="${g.id}" title="apagar grupo">×</button>` : ""}
+      </h3>
+      ${itens.length
+        ? `<div class="chase-linhas">${itens.map(linhaChase).join("")}</div>`
+        : `<div class="empty" style="padding:22px">Grupo vazio — mande cartas para cá pelo seletor de cada carta.</div>`}
+    </section>`;
+  }).join("");
+
+  ligarChase();
+}
+
+function linhaChase(x){
+  const carta = deckParaCarta(x);
+  const p = precoLocal(carta);
+  const agora = p ? p.valor : 0;
+  const entrada = Number(x.entrada) || 0;
+  const dif = entrada && agora ? (agora - entrada) / entrada : 0;
+  const seta = dif > 0.02 ? "subiu" : dif < -0.02 ? "caiu" : "parado";
+  const alvo = Number(x.alvo) || 0;
+  const bateu = alvo && agora && agora <= alvo;
+  const grupos = chase().grupos;
+  return `
+  <div class="chase-linha ${bateu?"na-mira":""}" data-id="${x.id}">
+    <img class="dl-img" loading="lazy" src="${escapeHTML(x.img||"")}" alt="">
+    <span class="dl-nome">${escapeHTML(x.n)}
+      <small>${escapeHTML(x.sn || x.s || "")}</small></span>
+    <span class="chase-graf" id="chase-graf-${escapeHTML(x.id)}"></span>
+    <span class="chase-preco">
+      <b>${p ? formatarPreco(p) : "—"}</b>
+      ${entrada ? `<small class="var-${seta}">${dif>0?"+":""}${(dif*100).toFixed(0)}% desde que entrou</small>` : ""}
+    </span>
+    <span class="chase-alvo">
+      <input type="number" step="0.01" min="0" placeholder="preço alvo" value="${alvo||""}" data-alvo="${escapeHTML(x.id)}">
+      ${bateu ? `<em>chegou no alvo</em>` : ""}
+    </span>
+    <select class="chase-mover" data-mover="${escapeHTML(x.id)}">
+      ${grupos.map(g => `<option value="${g.id}"${g.id===x.grupo?" selected":""}>${escapeHTML(g.nome)}</option>`).join("")}
+    </select>
+    <span class="dl-acoes">
+      <button class="dl-info" title="detalhes">i</button>
+      <button class="dl-fora" title="tirar da lista">×</button>
+    </span>
+  </div>`;
+}
+
+function ligarChase(){
+  const alvo = document.getElementById("chase-lista");
+  if(!alvo) return;
+  const c = chase();
+
+  alvo.querySelectorAll(".chase-nome").forEach(el => {
+    el.onblur = () => {
+      const g = c.grupos.find(x => x.id === el.dataset.g);
+      const t = el.textContent.trim();
+      if(g && t){ g.nome = t; save(); pintarChase(); } else el.textContent = g ? g.nome : "";
+    };
+    el.onkeydown = e => { if(e.key === "Enter"){ e.preventDefault(); el.blur(); } };
+  });
+
+  alvo.querySelectorAll(".chase-apagar").forEach(b => b.onclick = () => {
+    const g = c.grupos.find(x => x.id === b.dataset.g);
+    if(!g) return;
+    const quantas = c.cartas.filter(x => x.grupo === g.id).length;
+    if(quantas && !confirm(`Apagar "${g.nome}"? As ${quantas} cartas vão para o primeiro grupo.`)) return;
+    c.grupos = c.grupos.filter(x => x.id !== g.id);
+    c.cartas.forEach(x => { if(x.grupo === g.id) x.grupo = c.grupos[0].id; });
+    save(); renderChase();
+  });
+
+  alvo.querySelectorAll(".chase-linha").forEach(el => {
+    const x = c.cartas.find(y => y.id === el.dataset.id);
+    if(!x) return;
+    el.querySelector(".dl-info").onclick = () => openCard(deckParaCarta(x));
+    el.querySelector(".dl-fora").onclick = () => {
+      registrarDesfazer(`tirar ${x.n} da lista de desejo`, { chase: JSON.parse(JSON.stringify(c)) });
+      S.chase.cartas = c.cartas.filter(y => y.id !== x.id); save(); renderChase();
+    };
+    const alvoInput = el.querySelector("[data-alvo]");
+    if(alvoInput) alvoInput.onchange = () => { x.alvo = Number(alvoInput.value) || 0; save(); pintarChase(); };
+    const mover = el.querySelector("[data-mover]");
+    if(mover) mover.onchange = () => { x.grupo = mover.value; save(); pintarChase(); };
+  });
+}
+
+function criarGrupoChase(){
+  const nome = prompt("Nome do grupo (ex.: comprar em outubro, reserva do Modern):");
+  if(!nome || !nome.trim()) return;
+  chase().grupos.push({ id:"g" + Date.now().toString(36), nome:nome.trim() });
+  save(); renderChase();
+}
+
+function buscarParaChase(){
+  let busca = 0, achadas = [];
+  const grupos = chase().grupos;
+  modal(`<div class="modal-pad">
+    <h3>Adicionar à lista de desejo</h3>
+    <label class="field"><span>Nome da carta</span>
+      <input type="text" id="ch-termo" placeholder="ex.: Mana Crypt" autocomplete="off"></label>
+    <label class="field"><span>Em qual grupo</span>
+      <select id="ch-grupo">${grupos.map(g => `<option value="${g.id}">${escapeHTML(g.nome)}</option>`).join("")}</select>
+    </label>
+    <div class="status" id="ch-status">digite pelo menos três letras</div>
+    <div class="cards" id="ch-grade"></div>
+  </div>`);
+  const campo = document.getElementById("ch-termo");
+  const status = document.getElementById("ch-status"), grade = document.getElementById("ch-grade");
+  campo.focus();
+  let t;
+  campo.oninput = () => { clearTimeout(t); t = setTimeout(rodar, 380); };
+
+  async function rodar(){
+    const termo = campo.value.trim();
+    if(termo.length < 3){ status.textContent = "digite pelo menos três letras"; grade.innerHTML = ""; return; }
+    status.textContent = "buscando…"; grade.innerHTML = skeletons(6);
+    const meu = ++busca;
+    try{
+      const json = await scryPage(`name:"${termo}"`, "prints", "usd", 1, "desc");
+      if(meu !== busca || !grade.isConnected) return;
+      achadas = (json.data || []).map(normalize);
+      status.textContent = `${achadas.length} impressões — escolha a que você quer comprar`;
+      grade.innerHTML = achadas.map(c => cardHTML(c)).join("");
+      grade.querySelectorAll(".card").forEach(el => {
+        const c = achadas.find(x => x.id === el.dataset.id);
+        if(!c) return;
+        const info = el.querySelector(".info");
+        if(info) info.onclick = ev => { ev.stopPropagation(); openCard(c); };
+        el.onclick = () => {
+          const g = document.getElementById("ch-grupo").value;
+          if(porNoChase(c, g)) toast(`${c.name} entrou na lista`);
+          else toast(`${c.name} já estava na lista`);
+          closeModal(); renderChase();
+        };
+      });
+    }catch(e){
+      if(meu === busca && grade.isConnected){ status.textContent = "erro na busca"; grade.innerHTML = ""; }
+    }
+  }
+}
+
+/* o gráfico de cada carta da lista vem do mesmo histórico diário do banco */
+async function carregarPrecosDoChase(){
+  const c = chase();
+  for(const x of c.cartas.slice(0, 40)){
+    const caixa = document.getElementById("chase-graf-" + x.id);
+    if(!caixa || !caixa.isConnected) continue;
+    try{
+      const linhas = await supa(`price_history?card_id=eq.${encodeURIComponent(x.id)}&select=day,usd,usd_foil&order=day.asc&limit=120`);
+      if(!caixa.isConnected) continue;
+      const pontos = (linhas || []).map(l => ({ dia:l.day, v:Number(l.usd || l.usd_foil) })).filter(p => p.v > 0);
+      if(pontos.length >= 2) caixa.innerHTML = sparkline(pontos);
+      else caixa.innerHTML = `<small class="sem-hist">sem histórico ainda</small>`;
+    }catch(e){ break; }
+  }
+}
+
 
 /* ---------------- modais ---------------- */
 const root = document.getElementById("modal-root");
