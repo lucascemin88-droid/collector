@@ -48,7 +48,7 @@
     --green:var(--pos); --red:var(--neg); --blue:var(--info);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
+  html,body{margin:0;padding:0;overflow-x:hidden;max-width:100%}
   body{
     background:var(--bg);
     color:var(--text);
@@ -96,7 +96,7 @@
   .game-pill.active{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line);font-weight:600}
   .game-pill.soon{opacity:.45}
   .spacer{flex:1}
-  .kpis{display:flex;gap:8px;align-items:stretch}
+  .kpis{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
   .kpi{
     text-align:left;padding:5px 12px;display:flex;flex-direction:column-reverse;gap:1px;
     background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--lift);
@@ -109,6 +109,11 @@
     transition:background var(--t-fast),color var(--t-fast),border-color var(--t-fast);
   }
   .icon-btn:hover{color:var(--text);background:var(--surface-2);border-color:var(--line-strong)}
+  /* quando alguém entrou, o botão de conta vira a inicial num círculo */
+  .icon-btn.logado{
+    min-width:36px;padding:8px 10px;border-radius:999px;font-weight:700;
+    color:var(--gold);border-color:rgba(227,178,90,.35);background:rgba(227,178,90,.10);
+  }
 
   /* abas em pílula: no celular elas rolam de lado em vez de espremer */
   nav.tabs{
@@ -282,6 +287,17 @@
   .card .cap-nome{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   /* no celular a miniatura é estreita: nome em cima, preço embaixo,
      senão o nome vira "Cart…" e não serve para nada */
+  @media (max-width:760px){
+    /* a barra de cima não pode empurrar a página: marca em cima, números embaixo */
+    .top-inner{gap:8px;padding:10px 14px}
+    .spacer{display:none}
+    .brand{flex:1 1 auto}
+    .games{order:3;width:100%;margin-left:0}
+    .kpis{order:4;width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;padding-bottom:2px}
+    .kpis::-webkit-scrollbar{display:none}
+    .kpis .kpi,.kpis .icon-btn{flex:0 0 auto}
+    .game-pill{font-size:11.5px;padding:5px 10px}
+  }
   @media (max-width:640px){
     .card .cap{flex-direction:column;align-items:flex-start;gap:0;padding:16px 7px 5px}
     .card .cap-nome{font-size:10.5px;width:100%}
@@ -533,6 +549,16 @@
 
 
 
+
+  .instalar-passos{display:flex;flex-direction:column;gap:14px}
+  .ip-passo{display:flex;gap:12px;align-items:flex-start}
+  .ip-num{
+    flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;font-weight:700;color:var(--accent-ink);background:var(--accent);
+  }
+  .ip-passo b{display:block;font-size:13.5px;margin-bottom:3px}
+  .ip-passo small{display:block;font-size:12px;color:var(--muted);line-height:1.55}
+  .ip-arte{display:block;width:100%;max-width:300px;margin-top:9px}
   .passos-instalar{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
   .passo-i{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
   .passo-i b{display:block;font-size:13px;margin-bottom:8px}
@@ -1004,7 +1030,8 @@
       <div class="kpi"><b id="kpi-cards">0</b><small>cartas na coleção</small></div>
       <div class="kpi"><b id="kpi-value">US$ 0</b><small>valor estimado</small></div>
       <button class="icon-btn" id="btn-regiao">Global</button>
-      <button class="icon-btn" id="btn-instalar">Instalar</button>
+      <button class="icon-btn" id="btn-conta">Entrar</button>
+      <button class="icon-btn" id="btn-instalar">Instalar no celular</button>
       <button class="icon-btn" id="btn-backup">Backup</button>
     </div>
   </div>
@@ -1038,9 +1065,21 @@ const API = "https://api.scryfall.com";
 const SUPA_URL = "https://elkavicjupjcwrdgossx.supabase.co";
 const SUPA_KEY = "sb_publishable_Bua_15O5bp_LzAxV4RasxQ_anZme9DF";
 
+/* A sessão de quem entrou, quando alguém entrou. Fica em SESSAO e é lida do
+   armazenamento lá embaixo, na área de conta. Enquanto for nula o app inteiro
+   funciona igual — a conta é opcional por decisão de projeto. */
+let SESSAO = null;
+
+/* Toda chamada ao banco usa o token de quem está logado, se houver. Sem
+   login vai a chave publishable, que só abre catálogo e preço. */
+function cabecalhoAuth(){
+  const token = (SESSAO && SESSAO.access_token) || SUPA_KEY;
+  return { apikey:SUPA_KEY, Authorization:`Bearer ${token}` };
+}
+
 async function supa(caminho){
   const r = await fetch(`${SUPA_URL}/rest/v1/${caminho}`,
-    { headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`, Accept:"application/json" } });
+    { headers:Object.assign(cabecalhoAuth(), { Accept:"application/json" }) });
   if(!r.ok) throw new Error(`banco respondeu ${r.status}`);
   return r.json();
 }
@@ -1196,6 +1235,8 @@ function load(){
 function save(){
   try{ localStorage.setItem(STORE, JSON.stringify(S)); }
   catch(e){ toast("Não consegui salvar (armazenamento cheio ou bloqueado)"); }
+  // quem está logado tem a mudança levada para a conta alguns segundos depois
+  if(typeof agendarSync === "function") agendarSync();
 }
 
 /* ---------------- coleções temáticas prontas ---------------- */
@@ -5433,8 +5474,8 @@ const grupoAtual = () => mesa().grupos.find(g => g.code === mesa().atual) || nul
 async function rpc(funcao, args){
   const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${funcao}`, {
     method:"POST",
-    headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`,
-              "Content-Type":"application/json", Accept:"application/json" },
+    headers:Object.assign(cabecalhoAuth(),
+            { "Content-Type":"application/json", Accept:"application/json" }),
     body: JSON.stringify(args || {})
   });
   const txt = await r.text();
@@ -6913,6 +6954,427 @@ function restaurarBackup(obj){
   return null;
 }
 
+/* =====================================================================
+   CONTA E SINCRONIZAÇÃO
+
+   Três decisões que explicam todo o resto deste bloco:
+
+   1. Entrar é OPCIONAL. Sem conta o app é o que sempre foi: tudo no
+      aparelho, nada sai daqui. A conta só acrescenta — nunca é exigida
+      para abrir uma tela.
+
+   2. A porta é um CÓDIGO DE SEIS DÍGITOS por e-mail, não um link. Link
+      mágico é mais bonito, mas no iPhone ele abre no Safari — e quem
+      instalou o Collector na tela de início ficaria logado no navegador
+      e deslogado no aplicativo, que é exatamente o problema que a conta
+      veio resolver. Código a pessoa digita onde ela está. Sem senha:
+      senha é mais uma coisa para vazar, esquecer e recuperar.
+
+   3. O que sobe é o PACOTE DO BACKUP inteiro, o mesmo de sempre. E a
+      fusão é sempre aditiva, dos dois lados: entrar numa conta nunca
+      apaga o que já estava no aparelho, e subir nunca apaga o que já
+      estava na nuvem. Na dúvida entre perder e duplicar, duplica.
+   ===================================================================== */
+
+const SESSAO_KEY = "collector.sessao";
+const SYNC_KEY   = "collector.sync";
+
+let SYNC = { rev:0, dono:null, em:0, sujo:false, estado:"parado", timer:null, indo:null };
+
+function lerSessao(){
+  try{
+    const s = JSON.parse(localStorage.getItem(SESSAO_KEY) || "null");
+    return (s && s.refresh_token) ? s : null;
+  }catch(e){ return null; }
+}
+function guardarSessao(s){
+  SESSAO = s;
+  try{
+    if(s) localStorage.setItem(SESSAO_KEY, JSON.stringify(s));
+    else localStorage.removeItem(SESSAO_KEY);
+  }catch(e){}
+  pintarBotaoConta();
+}
+function lerSync(){
+  try{ return Object.assign(SYNC, JSON.parse(localStorage.getItem(SYNC_KEY) || "{}"), { timer:null, indo:null }); }
+  catch(e){ return SYNC; }
+}
+function guardarSync(){
+  try{ localStorage.setItem(SYNC_KEY, JSON.stringify({ rev:SYNC.rev, dono:SYNC.dono, em:SYNC.em, sujo:SYNC.sujo })); }
+  catch(e){}
+}
+
+const logado = () => !!(SESSAO && SESSAO.refresh_token);
+
+/* ---------------- as três chamadas de autenticação ---------------- */
+async function auth(caminho, corpo){
+  const r = await fetch(`${SUPA_URL}/auth/v1/${caminho}`, {
+    method:"POST",
+    headers:{ apikey:SUPA_KEY, "Content-Type":"application/json" },
+    body: JSON.stringify(corpo || {})
+  });
+  const txt = await r.text();
+  let j = null; try{ j = txt ? JSON.parse(txt) : null; }catch(e){}
+  if(!r.ok){
+    const m = (j && (j.msg || j.error_description || j.message || j.error)) || `erro ${r.status}`;
+    throw new Error(traduzErroAuth(m, r.status));
+  }
+  return j;
+}
+
+function traduzErroAuth(m, status){
+  const t = String(m).toLowerCase();
+  if(/invalid|expired|token has expired|otp/.test(t) && status === 403) return "código errado ou vencido — peça outro";
+  if(/rate|too many|seconds/.test(t))    return "muitas tentativas seguidas — espere um minuto";
+  if(/invalid.*email|email.*invalid/.test(t)) return "esse e-mail não parece válido";
+  if(/signups not allowed|disabled/.test(t))  return "cadastro fechado no momento";
+  return m;
+}
+
+function daSessao(j){
+  if(!j || !j.access_token) throw new Error("resposta do login veio incompleta");
+  return {
+    access_token: j.access_token,
+    refresh_token: j.refresh_token,
+    expira_em: Date.now() + (Number(j.expires_in || 3600) * 1000),
+    email: (j.user && j.user.email) || "",
+    user_id: (j.user && j.user.id) || ""
+  };
+}
+
+/* Para onde o link do e-mail volta. Precisa estar na lista de Redirect URLs
+   do Supabase (Authentication → URL Configuration). */
+function voltarPara(){
+  return location.origin + location.pathname;
+}
+
+async function pedirCodigo(email){
+  await auth("otp?redirect_to=" + encodeURIComponent(voltarPara()), { email, create_user:true });
+}
+
+/* O e-mail pode chegar de duas formas, e as duas funcionam:
+
+   - CÓDIGO de seis dígitos, que é o caminho bom: a pessoa digita onde
+     estiver, inclusive dentro do app instalado na tela de início.
+   - LINK, que é o que o Supabase manda enquanto o projeto usa o servidor
+     de e-mail dele (no plano gratuito o texto do e-mail é fixo e só traz
+     o link). Clicar no link traz os tokens no fim do endereço; esta
+     função os recolhe e limpa a barra de endereço.
+
+   Assim o login funciona hoje, e passa a funcionar também pelo código no
+   dia em que o projeto tiver SMTP próprio — sem mexer no app. */
+function pegarSessaoDoLink(){
+  const bruto = (location.hash || "").replace(/^#/, "");
+  if(!bruto) return false;
+  const p = new URLSearchParams(bruto);
+  // tira os tokens da barra de endereço para não ficarem no histórico
+  const limpar = () => {
+    try{ history.replaceState(null, "", location.pathname + location.search); }
+    catch(e){ location.hash = ""; }
+  };
+
+  if(p.get("error_description") || p.get("error")){
+    const m = decodeURIComponent(p.get("error_description") || p.get("error")).replace(/\+/g," ");
+    limpar();
+    setTimeout(() => toast("O link do e-mail não valeu: " + m), 300);
+    return false;
+  }
+  if(!p.get("access_token") || !p.get("refresh_token")) return false;
+
+  guardarSessao({
+    access_token: p.get("access_token"),
+    refresh_token: p.get("refresh_token"),
+    expira_em: Date.now() + (Number(p.get("expires_in") || 3600) * 1000),
+    email: "", user_id: ""
+  });
+  limpar();
+  // o token traz o e-mail e o id dentro dele; ler é só decodificar o meio
+  try{
+    const meio = JSON.parse(decodeURIComponent(escape(atob(
+      SESSAO.access_token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")))));
+    SESSAO.email = meio.email || ""; SESSAO.user_id = meio.sub || "";
+    guardarSessao(SESSAO);
+  }catch(e){}
+  return true;
+}
+async function entrarComCodigo(email, codigo){
+  const j = await auth("verify", { type:"email", email, token:String(codigo).replace(/\D/g,"") });
+  guardarSessao(daSessao(j));
+}
+async function renovarSessao(){
+  if(!logado()) return false;
+  try{
+    const j = await auth("token?grant_type=refresh_token", { refresh_token: SESSAO.refresh_token });
+    guardarSessao(daSessao(j));
+    return true;
+  }catch(e){
+    // refresh vencido de vez: a sessão acabou, mas os dados daqui continuam intactos
+    guardarSessao(null);
+    return false;
+  }
+}
+async function garantirSessao(){
+  if(!logado()) return false;
+  if(SESSAO.access_token && SESSAO.expira_em - Date.now() > 60000) return true;
+  return renovarSessao();
+}
+async function sair(){
+  try{
+    await fetch(`${SUPA_URL}/auth/v1/logout`, { method:"POST",
+      headers:Object.assign(cabecalhoAuth(), { "Content-Type":"application/json" }) });
+  }catch(e){}
+  guardarSessao(null);
+  SYNC.rev = 0; SYNC.dono = null; SYNC.em = 0; SYNC.sujo = false; SYNC.estado = "parado";
+  guardarSync();
+}
+
+/* ---------------- subir e descer ---------------- */
+function nomeDoAparelho(){
+  const ua = navigator.userAgent;
+  const qual = /iPhone/.test(ua) ? "iPhone" : /iPad/.test(ua) ? "iPad"
+             : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac"
+             : /Windows/.test(ua) ? "Windows" : "navegador";
+  return qual + (ehAppInstalado() ? " (app)" : "");
+}
+
+function pintarEstadoSync(){
+  const el = document.getElementById("sync-estado");
+  if(el) el.innerHTML = textoDoSync();
+  pintarBotaoConta();
+}
+function textoDoSync(){
+  if(!logado()) return "";
+  if(SYNC.estado === "indo")  return "sincronizando…";
+  if(SYNC.estado === "erro")  return `<span style="color:var(--neg)">não consegui sincronizar — tentarei de novo</span>`;
+  if(!SYNC.em)                return "ainda não sincronizado";
+  const min = Math.round((Date.now() - SYNC.em)/60000);
+  return SYNC.sujo ? "alterações esperando para subir"
+       : min < 1 ? "tudo salvo na conta, agora mesmo"
+       : `tudo salvo na conta · há ${min} min`;
+}
+
+/* O coração: junta o que está na nuvem com o que está aqui e sobe o
+   resultado. Roda inteiro em qualquer um dos casos — primeiro login,
+   aparelho novo, conflito — porque a fusão aditiva é idempotente. */
+async function sincronizar(motivo){
+  if(!logado()) return;
+  if(SYNC.indo) return SYNC.indo;
+
+  SYNC.indo = (async () => {
+    SYNC.estado = "indo"; pintarEstadoSync();
+    try{
+      if(!await garantirSessao()) throw new Error("sessão vencida");
+
+      // conta diferente da última que sincronizou neste aparelho: começa do zero
+      if(SYNC.dono && SESSAO.user_id && SYNC.dono !== SESSAO.user_id){ SYNC.rev = 0; }
+      SYNC.dono = SESSAO.user_id || SYNC.dono;
+
+      const nuvem = await rpc("sync_pull", {});
+      let precisaSubir = SYNC.sujo || !nuvem || motivo === "entrou";
+
+      if(nuvem && nuvem.payload && nuvem.rev !== SYNC.rev){
+        // o que está lá é novidade para este aparelho: funde e sobe o resultado
+        restaurarBackup(nuvem.payload);
+        precisaSubir = true;
+      }
+
+      if(precisaSubir){
+        let r = await rpc("sync_push", { p_payload: pacoteDeBackup(), p_device: nomeDoAparelho(),
+                                         p_rev: nuvem ? nuvem.rev : null });
+        if(r && r.conflito){                       // alguém subiu no meio do caminho
+          restaurarBackup(r.payload);
+          r = await rpc("sync_push", { p_payload: pacoteDeBackup(), p_device: nomeDoAparelho(), p_rev: null });
+        }
+        SYNC.rev = (r && r.rev) || SYNC.rev;
+      } else if(nuvem){
+        SYNC.rev = nuvem.rev;
+      }
+
+      SYNC.sujo = false; SYNC.em = Date.now(); SYNC.estado = "ok";
+      guardarSync();
+      if(motivo === "entrou" || motivo === "manual") render();
+    }catch(e){
+      SYNC.estado = "erro";
+      if(motivo === "manual") toast("Não consegui sincronizar: " + e.message);
+    }finally{
+      SYNC.indo = null;
+      pintarEstadoSync();
+    }
+  })();
+  return SYNC.indo;
+}
+
+/* save() chama isto a cada mudança; sobe uma vez só depois que a pessoa para de mexer */
+function agendarSync(){
+  if(!logado()) return;
+  // se já tem uma subida em andamento, ela leva o que acabou de mudar
+  if(SYNC.indo) return;
+  SYNC.sujo = true; guardarSync(); pintarEstadoSync();
+  clearTimeout(SYNC.timer);
+  SYNC.timer = setTimeout(() => sincronizar("mudou"), 4000);
+}
+
+/* ---------------- a tela ---------------- */
+function pintarBotaoConta(){
+  const b = document.getElementById("btn-conta");
+  if(!b) return;
+  if(!logado()){ b.textContent = "Entrar"; b.classList.remove("logado"); return; }
+  b.classList.add("logado");
+  const inicial = (SESSAO.email || "?").trim()[0].toUpperCase();
+  const pino = SYNC.estado === "indo" ? "…" : SYNC.estado === "erro" ? "!" : SYNC.sujo ? "•" : "";
+  b.textContent = inicial + (pino ? " " + pino : "");
+  b.title = SESSAO.email + " — " + textoDoSync().replace(/<[^>]+>/g,"");
+}
+
+function abrirConta(){
+  if(logado()) return telaDaConta();
+  telaDeEntrada();
+}
+
+function telaDeEntrada(email){
+  modal(`<div class="modal-pad">
+    <h3>Entrar no Collector</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      Entrar guarda a sua coleção na conta e ela aparece igual em qualquer aparelho —
+      celular, computador, e no app instalado na tela de início.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 16px">
+      Sem senha: você põe o e-mail e recebe um código de seis dígitos — ou, se o e-mail
+      vier com um link em vez do código, é só tocar no link.</p>
+
+    <label for="ct-email" style="display:block;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);margin-bottom:8px">Seu e-mail</label>
+    <input type="text" id="ct-email" inputmode="email" autocomplete="email"
+           placeholder="voce@exemplo.com" value="${escapeHTML(email || "")}">
+
+    <div class="pergunta-acoes" style="margin-top:14px">
+      <button class="btn" id="ct-enviar">Receber código</button>
+    </div>
+    <div class="status" id="ct-status" style="margin-top:10px"></div>
+
+    <div class="nota-regiao" style="margin-top:18px">
+      <b>Nada muda se você não entrar.</b> O app continua funcionando inteiro sem conta —
+      só o backup fica por sua conta, no botão ao lado.
+    </div>
+  </div>`);
+
+  const campo = document.getElementById("ct-email");
+  const st = document.getElementById("ct-status");
+  const bt = document.getElementById("ct-enviar");
+  campo.focus();
+
+  const enviar = async () => {
+    const e = campo.value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){ st.textContent = "esse e-mail não parece completo"; return; }
+    bt.disabled = true; st.textContent = "enviando…";
+    try{
+      await pedirCodigo(e);
+      telaDoCodigo(e);
+    }catch(err){
+      st.textContent = err.message; bt.disabled = false;
+    }
+  };
+  bt.onclick = enviar;
+  campo.onkeydown = ev => { if(ev.key === "Enter") enviar(); };
+}
+
+function telaDoCodigo(email){
+  modal(`<div class="modal-pad">
+    <h3>Digite o código</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
+      Mandei um e-mail para <b>${escapeHTML(email)}</b>, e ele vale por uma hora.
+      Se vier um código de seis dígitos, digite aqui. Se vier um link, toque nele —
+      dá no mesmo. Não chegou em um minuto? Olhe no spam.</p>
+
+    <input type="text" id="ct-codigo" inputmode="numeric" autocomplete="one-time-code"
+           maxlength="8" placeholder="000000"
+           style="font-family:ui-monospace,Menlo,monospace;font-size:22px;letter-spacing:6px;text-align:center">
+
+    <div class="pergunta-acoes" style="margin-top:14px">
+      <button class="btn" id="ct-ok">Entrar</button>
+      <button class="btn ghost" id="ct-voltar">Trocar o e-mail</button>
+      <button class="btn ghost" id="ct-reenviar">Reenviar</button>
+    </div>
+    <div class="status" id="ct-status" style="margin-top:10px"></div>
+  </div>`);
+
+  const campo = document.getElementById("ct-codigo");
+  const st = document.getElementById("ct-status");
+  const bt = document.getElementById("ct-ok");
+  campo.focus();
+
+  const entrar = async () => {
+    const c = campo.value.replace(/\D/g,"");
+    if(c.length < 6){ st.textContent = "faltam dígitos"; return; }
+    bt.disabled = true; st.textContent = "entrando…";
+    try{
+      await entrarComCodigo(email, c);
+      closeModal();
+      toast("Bem-vindo — sincronizando a sua coleção");
+      await sincronizar("entrou");
+      telaDaConta();
+    }catch(err){
+      st.textContent = err.message; bt.disabled = false;
+    }
+  };
+  bt.onclick = entrar;
+  campo.onkeydown = ev => { if(ev.key === "Enter") entrar(); };
+  campo.oninput = () => { if(campo.value.replace(/\D/g,"").length === 6) entrar(); };
+  document.getElementById("ct-voltar").onclick = () => telaDeEntrada(email);
+  document.getElementById("ct-reenviar").onclick = async () => {
+    st.textContent = "reenviando…";
+    try{ await pedirCodigo(email); st.textContent = "código novo enviado"; }
+    catch(err){ st.textContent = err.message; }
+  };
+}
+
+function telaDaConta(){
+  modal(`<div class="modal-pad">
+    <h3>Sua conta</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
+      Tudo o que está aqui sobe sozinho e volta em qualquer aparelho onde você entrar com este e-mail.</p>
+
+    <div class="kv"><span>E-mail</span><b>${escapeHTML(SESSAO.email || "—")}</b></div>
+    <div class="kv"><span>Aparelho</span><b>${escapeHTML(nomeDoAparelho())}</b></div>
+    <div class="kv"><span>Cartas marcadas</span><b>${ownedCount()}</b></div>
+    <div class="kv"><span>Coleções próprias</span><b>${(S.custom||[]).length}</b></div>
+    <div class="kv"><span>Decks</span><b>${(S.decks||[]).length}</b></div>
+    <div class="kv"><span>Chase cards</span><b>${((S.chase||{}).cartas||[]).length}</b></div>
+    <div class="kv"><span>Situação</span><b id="sync-estado">${textoDoSync()}</b></div>
+
+    <div class="pergunta-acoes" style="margin-top:16px">
+      <button class="btn" id="ct-sync">Sincronizar agora</button>
+      <button class="btn ghost" id="ct-backup">Backup em arquivo</button>
+      <button class="btn ghost" id="ct-sair">Sair desta conta</button>
+    </div>
+
+    <div class="nota-regiao" style="margin-top:18px">
+      <b>Sair não apaga nada deste aparelho.</b> Os dados continuam aqui e voltam a subir
+      quando você entrar de novo. E entrar num aparelho novo <b>junta</b> as duas coleções —
+      nunca troca uma pela outra.
+    </div>
+  </div>`);
+
+  document.getElementById("ct-sync").onclick = () => sincronizar("manual");
+  document.getElementById("ct-backup").onclick = () => abrirBackup();
+  document.getElementById("ct-sair").onclick = async () => {
+    await sair();
+    closeModal();
+    toast("Você saiu — os dados continuam neste aparelho");
+    render();
+  };
+}
+
+/* ---------------- partida ---------------- */
+SESSAO = lerSessao();
+lerSync();
+const veioDoLink = pegarSessaoDoLink();
+pintarBotaoConta();
+if(logado()){
+  // sessão pode estar vencida; renovar já resolve, e o pull vem junto
+  if(veioDoLink) setTimeout(() => { toast("Você entrou — sincronizando a sua coleção"); sincronizar("entrou"); }, 200);
+  else sincronizar("abriu");
+  setInterval(() => { if(logado() && SYNC.sujo) sincronizar("mudou"); }, 120000);
+}
+
 function abrirBackup(){
   const p = pacoteDeBackup();
   const codigo = (() => { try{ return btoa(unescape(encodeURIComponent(JSON.stringify(p)))); }catch(e){ return ""; } })();
@@ -6997,6 +7459,7 @@ function abrirBackup(){
 }
 document.getElementById("btn-backup").onclick = abrirBackup;
 document.getElementById("btn-instalar").onclick = abrirInstalar;
+document.getElementById("btn-conta").onclick = abrirConta;
 
 /* =====================================================================
    Instalação na tela de início
@@ -7021,54 +7484,120 @@ function ehIPhone(){ return /iPhone|iPad|iPod/.test(navigator.userAgent); }
 
 function abrirInstalar(){
   const instalado = ehAppInstalado();
+  const iphone = ehIPhone();
+  const safari = /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent);
+
   modal(`<div class="modal-pad">
-    <h3>${instalado ? "Você já está no app instalado" : "Instalar no seu telefone"}</h3>
-    ${instalado
-      ? `<p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
-           O Collector está aberto como aplicativo: tela cheia, ícone na tela de início e
-           funciona sem internet para o que você já abriu.</p>`
-      : `<p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
-           Dá para pôr o Collector na tela de início e usar como aplicativo — tela cheia,
-           sem barra de navegador, abrindo mesmo sem internet.</p>
+    <h3>${instalado ? "Você já está no aplicativo" : "Pôr na tela de início"}</h3>
 
-         <div class="passos-instalar">
-           <div class="passo-i"><b>iPhone e iPad</b>
-             <ol>
-               <li>Abra este endereço no <b>Safari</b> (só ele instala no iOS).</li>
-               <li>Toque no botão de <b>compartilhar</b>, o quadradinho com a seta para cima.</li>
-               <li>Role e escolha <b>Adicionar à Tela de Início</b>.</li>
-               <li>Confirme. O ícone do Collector aparece junto dos outros apps.</li>
-             </ol>
-           </div>
-           <div class="passo-i"><b>Android</b>
-             <ol>
-               <li>Abra no <b>Chrome</b>.</li>
-               <li>Menu dos três pontinhos → <b>Instalar aplicativo</b>.</li>
-             </ol>
-           </div>
-         </div>
+    ${instalado ? `
+      <p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
+        O Collector está aberto como aplicativo: tela cheia, ícone junto dos outros e funciona sem internet
+        para o que você já abriu.</p>
+      <div class="pergunta-acoes"><button class="btn" id="inst-backup">Restaurar um backup</button></div>
+    ` : `
+      <div class="nota-regiao" style="margin-bottom:16px">
+        <b>Este botão não instala nada sozinho — e nem poderia.</b> A Apple não deixa um site se instalar:
+        quem faz isso é você, em dois toques dentro do Safari. Abaixo está exatamente onde tocar.
+      </div>
 
-         <div class="nota-regiao" style="margin-top:16px">
-           <b>Antes de instalar, faça um backup.</b> O aplicativo instalado guarda os dados em um lugar
-           separado do navegador — sua coleção não atravessa sozinha. Baixe o backup aqui, instale, abra o
-           app pelo ícone e restaure lá dentro. Leva um minuto e você não perde nada.
-         </div>`}
+      ${iphone && !safari ? `<div class="dg-problema erro" style="margin-bottom:14px">
+        Você está em outro navegador. No iPhone, <b>só o Safari</b> põe na tela de início.
+        Copie o endereço aqui embaixo e abra no Safari.</div>` : ""}
 
-    <div class="pergunta-acoes" style="margin-top:16px">
-      <button class="btn" id="inst-backup">${instalado ? "Restaurar um backup" : "Fazer backup agora"}</button>
-      ${instalado ? "" : `<button class="btn ghost" id="inst-copiar">Copiar o endereço</button>`}
-    </div>
+      <div class="instalar-passos">
+        <div class="ip-passo">
+          <span class="ip-num">1</span>
+          <div>
+            <b>Toque no botão de compartilhar</b>
+            <small>É o quadradinho com a seta para cima, na barra de baixo do Safari.</small>
+            ${svgBarraSafari()}
+          </div>
+        </div>
+        <div class="ip-passo">
+          <span class="ip-num">2</span>
+          <div>
+            <b>Role a lista e toque em “Adicionar à Tela de Início”</b>
+            <small>Ela fica abaixo de “Copiar” e “Adicionar aos Favoritos” — quase sempre é preciso
+            <b>arrastar a lista para cima</b> para ela aparecer. É esse passo que a maioria não acha.</small>
+            ${svgFolhaCompartilhar()}
+          </div>
+        </div>
+        <div class="ip-passo">
+          <span class="ip-num">3</span>
+          <div>
+            <b>Toque em “Adicionar”, no canto de cima</b>
+            <small>O ícone do Collector aparece na sua tela junto dos outros apps.
+            Abra por ele, não pelo Safari.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="nota-regiao" style="margin-top:16px">
+        <b>Faça o backup antes.</b> O aplicativo instalado guarda os dados em um lugar separado do Safari —
+        sua coleção não atravessa sozinha. Baixe aqui, instale, abra pelo ícone e restaure lá dentro.
+      </div>
+
+      <div class="pergunta-acoes" style="margin-top:14px">
+        <button class="btn" id="inst-backup">Fazer backup agora</button>
+        <button class="btn ghost" id="inst-copiar">Copiar o endereço</button>
+      </div>
+
+      <details class="avancado" style="margin-top:14px">
+        <summary>No Android é diferente</summary>
+        <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:8px 0 0">
+          No Chrome, o menu dos três pontinhos tem <b>Instalar aplicativo</b> — em um toque só.
+          Se não aparecer, use <b>Adicionar à tela inicial</b> no mesmo menu.</p>
+      </details>
+    `}
   </div>`);
 
-  document.getElementById("inst-backup").onclick = () => { closeModal(); abrirBackup(); };
+  const bk = document.getElementById("inst-backup");
+  if(bk) bk.onclick = () => { closeModal(); abrirBackup(); };
   const copiar = document.getElementById("inst-copiar");
   if(copiar) copiar.onclick = () => {
     const t = document.createElement("textarea");
     t.value = location.href.split("#")[0];
-    document.body.appendChild(t); t.select();
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0, 999999);
     try{ document.execCommand("copy"); toast("endereço copiado"); }catch(e){}
     t.remove();
   };
+}
+
+/* Desenhos do caminho no iPhone. São SVG à mão porque captura de tela de
+   iOS não se pode distribuir — e porque assim escala em qualquer tela. */
+function svgBarraSafari(){
+  return `
+  <svg class="ip-arte" viewBox="0 0 300 62" role="img" aria-label="barra de baixo do Safari, com o botão de compartilhar destacado">
+    <rect x="6" y="10" width="288" height="42" rx="21" fill="#1e222c" stroke="#2b3040"/>
+    <path d="M42 31h16M50 25l-8 6 8 6" stroke="#6b7280" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M96 31h-16M88 25l8 6-8 6" stroke="#3a3f4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="150" cy="31" r="19" fill="rgba(227,178,90,.16)" stroke="#e3b25a" stroke-width="1.5"/>
+    <path d="M150 22v16M144 27l6-6 6 6" stroke="#e3b25a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="143" y="34" width="14" height="9" rx="2.5" stroke="#e3b25a" stroke-width="2" fill="none"/>
+    <rect x="196" y="23" width="16" height="16" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
+    <rect x="246" y="23" width="14" height="14" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
+    <rect x="250" y="27" width="14" height="14" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
+    <text x="150" y="59" text-anchor="middle" fill="#e3b25a" font-size="9" font-family="system-ui">este aqui</text>
+  </svg>`;
+}
+function svgFolhaCompartilhar(){
+  const linha = (y, txt, icone) => `
+    <rect x="8" y="${y}" width="284" height="30" rx="8" fill="#171a22"/>
+    <text x="22" y="${y+19}" fill="#a7aec0" font-size="11" font-family="system-ui">${txt}</text>
+    <text x="272" y="${y+20}" fill="#4a5262" font-size="13" text-anchor="middle">${icone}</text>`;
+  return `
+  <svg class="ip-arte" viewBox="0 0 300 168" role="img" aria-label="lista do compartilhar com Adicionar à Tela de Início destacado">
+    <rect x="0" y="0" width="300" height="168" rx="14" fill="#101218" stroke="#2b3040"/>
+    <rect x="132" y="7" width="36" height="4" rx="2" fill="#3a3f4d"/>
+    ${linha(20, "Copiar", "⧉")}
+    ${linha(54, "Adicionar aos Favoritos", "★")}
+    <rect x="8" y="88" width="284" height="34" rx="8" fill="rgba(227,178,90,.16)" stroke="#e3b25a" stroke-width="1.5"/>
+    <text x="22" y="109" fill="#e3b25a" font-size="11.5" font-weight="600" font-family="system-ui">Adicionar à Tela de Início</text>
+    <text x="272" y="110" fill="#e3b25a" font-size="14" text-anchor="middle">⊞</text>
+    ${linha(130, "Marcação", "✎")}
+    <path d="M150 158c0-6 0-10 0-14M144 149l6-6 6 6" stroke="#e3b25a" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
 }
 
 /* ---------------- utils ---------------- */
