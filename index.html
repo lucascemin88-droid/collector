@@ -87,6 +87,24 @@
   .brand h1{margin:0;font-size:18px;letter-spacing:.2em;font-weight:700;color:var(--text)}
   .brand h1::first-letter{color:var(--accent)}
   .brand span{font-size:11px;color:var(--faint);letter-spacing:.06em}
+  /* ---- navegação em dois níveis: botão-mestre em cima, seções embaixo ---- */
+  nav.masters{
+    max-width:1400px;margin:0 auto;padding:2px 22px 0;display:flex;gap:6px;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  nav.masters::-webkit-scrollbar{display:none}
+  .master{
+    flex:0 0 auto;padding:9px 16px;min-height:38px;border-radius:10px 10px 0 0;
+    font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--text-3);
+    border:1px solid transparent;border-bottom:none;background:transparent;
+    transition:color var(--t-fast),background var(--t-fast);
+  }
+  .master:hover{color:var(--text)}
+  .master.on{
+    color:var(--accent);background:var(--surface-1);
+    border-color:var(--line);box-shadow:var(--lift);
+  }
+  .master .seta{font-size:9px;opacity:.6;margin-left:5px;vertical-align:1px}
   .games{display:flex;gap:6px;margin-left:4px}
   .game-pill{
     padding:6px 12px;border-radius:999px;border:1px solid var(--line);
@@ -117,9 +135,11 @@
 
   /* abas em pílula: no celular elas rolam de lado em vez de espremer */
   nav.tabs{
-    max-width:1400px;margin:0 auto;padding:0 22px 10px;display:flex;gap:4px;
+    max-width:1400px;margin:0 auto;padding:8px 22px 10px;display:flex;gap:4px;
     overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
+    border-top:1px solid var(--line);
   }
+  nav.tabs:empty{display:none}
   nav.tabs::-webkit-scrollbar{display:none}
   .tab{
     flex:0 0 auto;scroll-snap-align:start;
@@ -132,6 +152,85 @@
 
   main{max-width:1400px;margin:0 auto;
     padding:26px max(22px, env(safe-area-inset-left)) calc(80px + env(safe-area-inset-bottom))}
+
+  /* ---------------- Home: notícias ---------------- */
+  .noticias{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:4px}
+  .noticia{
+    display:flex;gap:12px;align-items:stretch;text-decoration:none;color:inherit;
+    background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--lift);
+    transition:transform var(--t-base),border-color var(--t-base),box-shadow var(--t-base);
+  }
+  .noticia:hover{transform:translateY(-2px);border-color:var(--accent-line);box-shadow:var(--shadow)}
+  .noticia .n-foto{flex:0 0 108px;background:var(--surface-2);position:relative}
+  .noticia .n-foto img{width:100%;height:100%;object-fit:cover;display:block}
+  .noticia .sem-foto{
+    width:100%;height:100%;display:grid;place-items:center;
+    font-size:26px;font-weight:700;color:var(--text-3);background:var(--surface-3);
+  }
+  .noticia .n-corpo{flex:1 1 auto;min-width:0;padding:12px 14px;display:flex;flex-direction:column;gap:5px}
+  .noticia .n-fonte{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+  .noticia h3{margin:0;font-size:14px;line-height:1.35;font-weight:600;color:var(--text)}
+  .noticia p{margin:0;font-size:12.5px;color:var(--text-2);line-height:1.45}
+  .noticia .n-quando{margin-top:auto;font-size:11.5px;color:var(--text-3)}
+  /* a primeira ocupa a linha inteira e mostra o resumo */
+  .noticia.grande{grid-column:1/-1;flex-direction:row}
+  .noticia.grande .n-foto{flex:0 0 42%;max-width:420px;min-height:190px;max-height:300px}
+  .noticia.grande h3{font-size:19px;line-height:1.25}
+  .noticia.grande .n-corpo{padding:18px 20px;gap:8px}
+  @media (max-width:640px){
+    .noticia.grande{flex-direction:column}
+    .noticia.grande .n-foto{flex:0 0 auto;max-width:none;width:100%;height:180px}
+    .noticia .n-foto{flex-basis:92px}
+  }
+
+  .atalhos-home{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:22px;
+  }
+  .atalho{
+    text-align:left;padding:14px 16px;border-radius:var(--radius);
+    background:var(--surface-1);border:1px solid var(--line);
+    display:flex;flex-direction:column;gap:3px;
+    transition:border-color var(--t-fast),background var(--t-fast);
+  }
+  .atalho:hover{border-color:var(--accent-line);background:var(--surface-2)}
+  .atalho b{font-size:13.5px;color:var(--text)}
+  .atalho span{font-size:12px;color:var(--text-3)}
+
+  /* ---------------- comunidade ---------------- */
+  .theme.publica{cursor:default;display:flex;flex-direction:column}
+  .theme.publica .theme-body{display:flex;flex-direction:column;flex:1 1 auto}
+  .theme.publica .theme-meta{margin-top:auto}
+
+  /* ---------------- ajustes ---------------- */
+  .bloco-cfg{
+    background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:18px 20px;margin-bottom:14px;box-shadow:var(--lift);
+  }
+  .bloco-cfg h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;
+    letter-spacing:.09em;color:var(--text-3);font-weight:700}
+  .temas-cor{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .tema-opc{
+    display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;
+    padding:12px 13px;border-radius:var(--radius);border:1px solid var(--line);
+    background:var(--surface-2);transition:border-color var(--t-fast);
+  }
+  .tema-opc:hover{border-color:var(--line-strong)}
+  .tema-opc.on{border-color:var(--accent);background:var(--accent-soft)}
+  .tema-opc b{font-size:13px;color:var(--text)}
+  .tema-opc>span:last-child{font-size:11.5px;color:var(--text-3)}
+  .tema-bolas{display:flex;gap:4px;margin-bottom:5px}
+  .tema-bolas i{width:15px;height:15px;border-radius:50%;border:1px solid var(--line-strong)}
+  .chave{display:flex;gap:11px;align-items:flex-start;padding:9px 0;cursor:pointer}
+  .chave+.chave{border-top:1px solid var(--line)}
+  .chave input{width:17px;height:17px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
+  .chave b{display:block;font-size:13.5px;font-weight:500;color:var(--text)}
+  .chave small{display:block;font-size:12px;color:var(--text-3);margin-top:1px}
+  .publicar-link{
+    display:block;margin-top:9px;font-size:11.5px;color:var(--text-3);
+    padding:5px 0 0;border-top:1px solid var(--line);
+  }
+  .publicar-link:hover{color:var(--accent)}
 
   /* ---------- generic ---------- */
   .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
@@ -297,6 +396,11 @@
     .kpis::-webkit-scrollbar{display:none}
     .kpis .kpi,.kpis .icon-btn{flex:0 0 auto}
     .game-pill{font-size:11.5px;padding:5px 10px}
+    .so-largo{display:none}
+    #btn-config{padding:8px 12px;font-size:15px;line-height:1}
+    nav.masters{padding:2px 14px 0}
+    nav.tabs{padding:6px 14px 8px}
+    .master{padding:8px 12px;font-size:13px}
   }
   @media (max-width:640px){
     .card .cap{flex-direction:column;align-items:flex-start;gap:0;padding:16px 7px 5px}
@@ -1019,32 +1123,18 @@
   <div class="top-inner">
     <div class="brand">
       <h1>COLLECTOR</h1>
-      <span>coleções de TCG</span>
-    </div>
-    <div class="games">
-      <button class="game-pill active">Magic</button>
-      <button class="game-pill soon" title="Em breve">Pokémon · em breve</button>
+      <span>Magic: The Gathering</span>
     </div>
     <div class="spacer"></div>
     <div class="kpis">
       <div class="kpi"><b id="kpi-cards">0</b><small>cartas na coleção</small></div>
       <div class="kpi"><b id="kpi-value">US$ 0</b><small>valor estimado</small></div>
-      <button class="icon-btn" id="btn-regiao">Global</button>
       <button class="icon-btn" id="btn-conta">Entrar</button>
-      <button class="icon-btn" id="btn-instalar">Instalar no celular</button>
-      <button class="icon-btn" id="btn-backup">Backup</button>
+      <button class="icon-btn" id="btn-config" title="Ajustes">⚙<span class="so-largo"> Ajustes</span></button>
     </div>
   </div>
-  <nav class="tabs">
-    <button class="tab active" data-view="themes">Temas prontos</button>
-    <button class="tab" data-view="minha">Minha coleção</button>
-    <button class="tab" data-view="mine">Minhas coleções</button>
-    <button class="tab" data-view="decks">Decks</button>
-    <button class="tab" data-view="chase">Chase cards</button>
-    <button class="tab" data-view="mesa">Mesa</button>
-    <button class="tab" data-view="catalogo">Catálogo</button>
-    <button class="tab" data-view="sets">Edições</button>
-  </nav>
+  <nav class="masters" id="masters"></nav>
+  <nav class="tabs" id="subtabs"></nav>
 </header>
 
 <main id="app"></main>
@@ -1219,7 +1309,9 @@ const STORE = "collector.mtg.v1";
 /* ---------------- estado persistido ---------------- */
 const blank = { owned:{}, custom:[], totals:{}, exclusoes:{}, inclusoes:{}, uniques:{}, selados:{}, capas:{},
                 decks:[], chase:{ grupos:[{ id:"geral", nome:"Quero comprar" }], cartas:[] },
-                mesa:{ eu:"", grupos:[], atual:null }, config:{ regiao:"global", acabamento:"normal" } };
+                mesa:{ eu:"", grupos:[], atual:null },
+                config:{ regiao:"global", acabamento:"normal", tema:"ouro",
+                         avisos:{ chase:true, noticias:false, colecao:false } } };
 let S = load();
 
 function load(){
@@ -1227,7 +1319,7 @@ function load(){
     const raw = localStorage.getItem(STORE);
     if(!raw) return structuredClone(blank);
     const lido = Object.assign(structuredClone(blank), JSON.parse(raw));
-    lido.config = Object.assign({ regiao:"global", acabamento:"normal" }, lido.config || {});
+    lido.config = Object.assign({ regiao:"global", acabamento:"normal", tema:"ouro" }, lido.config || {});
     lido.uniques = lido.uniques || {};
     return lido;
   }catch(e){ return structuredClone(blank); }
@@ -1701,22 +1793,77 @@ function renderKPIs(){
   document.getElementById("kpi-value").textContent = money(ownedValue());
 }
 
-/* ---------------- roteamento simples ---------------- */
-let view = { name:"themes", id:null };
+/* =====================================================================
+   NAVEGAÇÃO
+
+   Dois níveis. Em cima, quatro botões-mestre que dizem o que você quer
+   fazer: ler, colecionar, procurar, jogar. Embaixo, as seções daquele
+   assunto. Telas de dentro (uma coleção, uma edição, um deck) não ganham
+   botão — elas acendem o mestre a que pertencem, para você nunca perder
+   de vista onde está.
+   ===================================================================== */
+const MENU = [
+  { id:"home", nome:"Home", secoes:[
+      { v:"home", nome:"Notícias" } ] },
+
+  { id:"colecao", nome:"Coleção", secoes:[
+      { v:"themes",     nome:"Coleções temáticas" },
+      { v:"comunidade", nome:"Coleções da comunidade" },
+      { v:"mine",       nome:"Minhas coleções" },
+      { v:"minha",      nome:"Coleção completa" } ] },
+
+  { id:"buscador", nome:"Buscador", secoes:[
+      { v:"chase",    nome:"Chase cards" },
+      { v:"catalogo", nome:"Catálogo" },
+      { v:"sets",     nome:"Edições" } ] },
+
+  { id:"game", nome:"Game zone", secoes:[
+      { v:"decks", nome:"Decks" },
+      { v:"mesa",  nome:"Mesa" } ] },
+];
+
+/* telas de dentro → a qual mestre pertencem */
+const DONO_DA_TELA = {
+  collection:"colecao", set:"buscador", secretlair:"buscador", promos:"buscador",
+  deck:"game", config:null,
+};
+
+function mestreDaView(nome){
+  const dono = MENU.find(m => m.secoes.some(s => s.v === nome));
+  if(dono) return dono.id;
+  return DONO_DA_TELA[nome] !== undefined ? DONO_DA_TELA[nome] : null;
+}
+
+let view = { name:"home", id:null };
 const app = document.getElementById("app");
 
-document.querySelectorAll(".tab").forEach(t=>{
-  t.onclick = ()=>{ view = { name:t.dataset.view, id:null }; render(); };
-});
-function setTabs(){
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.classList.toggle("active", t.dataset.view===view.name);
+function pintarNav(){
+  const atual = mestreDaView(view.name);
+  const masters = document.getElementById("masters");
+  masters.innerHTML = MENU.map(m => `
+    <button class="master ${m.id===atual?"on":""}" data-master="${m.id}">${m.nome}${
+      m.secoes.length > 1 ? `<span class="seta">▾</span>` : ""}</button>`).join("");
+  masters.querySelectorAll("[data-master]").forEach(b => b.onclick = () => {
+    const m = MENU.find(x => x.id === b.dataset.master);
+    go(m.secoes[0].v);
   });
+
+  const barra = document.getElementById("subtabs");
+  const dono = MENU.find(m => m.id === atual);
+  // um mestre com uma seção só não precisa repetir o próprio nome embaixo
+  if(!dono || dono.secoes.length < 2){ barra.innerHTML = ""; return; }
+  barra.innerHTML = dono.secoes.map(s => `
+    <button class="tab ${s.v===view.name?"active":""}" data-view="${s.v}">${s.nome}</button>`).join("");
+  barra.querySelectorAll("[data-view]").forEach(b => b.onclick = () => go(b.dataset.view));
 }
+
 function go(name,id){ view={name,id}; render(); window.scrollTo({top:0,behavior:"smooth"}); }
 
 function render(){
-  setTabs(); renderKPIs();
+  pintarNav(); renderKPIs();
+  if(view.name==="home") return renderHome();
+  if(view.name==="comunidade") return renderComunidade();
+  if(view.name==="config") return renderConfig();
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
   if(view.name==="mine") return renderMine();
@@ -1730,6 +1877,441 @@ function render(){
   if(view.name==="secretlair") return renderSecretLair();
   if(view.name==="promos") return renderPromos();
   if(view.name==="collection") return renderCollection(view.id);
+}
+
+/* =====================================================================
+   TEMAS DE COR
+
+   Cada tema é um punhado de variáveis; o resto da folha de estilo já lê
+   dessas variáveis, então trocar tema é trocar quinze valores e nada mais.
+   São temas fechados de propósito: o usuário escolhe entre combinações
+   que eu já conferi, em vez de escolher cor por cor e acabar com texto
+   cinza sobre fundo cinza.
+   ===================================================================== */
+const TEMAS = {
+  ouro: { nome:"Ouro na noite", desc:"o de sempre", mostra:["#0a0b0e","#e3b25a"], vars:{} },
+
+  safira: { nome:"Safira", desc:"azul de ilha", mostra:["#080b12","#6fb6f0"], vars:{
+    "--bg":"#080b12", "--surface-1":"#0e1420", "--surface-2":"#151d2c", "--surface-3":"#1c2739",
+    "--accent":"#6fb6f0", "--accent-hover":"#9ed0ff", "--accent-dim":"#3b6a95",
+    "--accent-soft":"rgba(111,182,240,.13)", "--accent-line":"rgba(111,182,240,.40)",
+    "--accent-ink":"#0a1018" } },
+
+  floresta: { nome:"Floresta", desc:"verde de mata", mostra:["#080d0a","#5bd69b"], vars:{
+    "--bg":"#080d0a", "--surface-1":"#0e1712", "--surface-2":"#14201a", "--surface-3":"#1b2b22",
+    "--accent":"#5bd69b", "--accent-hover":"#8fe9bb", "--accent-dim":"#2f7a56",
+    "--accent-soft":"rgba(91,214,155,.13)", "--accent-line":"rgba(91,214,155,.40)",
+    "--accent-ink":"#08120c" } },
+
+  rubi: { nome:"Rubi", desc:"vermelho de montanha", mostra:["#100708","#f0705c"], vars:{
+    "--bg":"#100708", "--surface-1":"#1a0d0e", "--surface-2":"#241314", "--surface-3":"#2f1a1b",
+    "--accent":"#f0705c", "--accent-hover":"#ff9683", "--accent-dim":"#8a3c31",
+    "--accent-soft":"rgba(240,112,92,.13)", "--accent-line":"rgba(240,112,92,.40)",
+    "--accent-ink":"#160809" } },
+
+  pergaminho: { nome:"Pergaminho", desc:"claro, para o dia", mostra:["#f4f1ea","#8a6a1f"], vars:{
+    "--bg":"#f4f1ea", "--surface-1":"#fffdf8", "--surface-2":"#f0ece1", "--surface-3":"#e6e0d2",
+    "--line":"rgba(30,25,15,.10)", "--line-strong":"rgba(30,25,15,.22)",
+    "--text":"#20221f", "--text-2":"#55584f", "--text-3":"#7b7d73",
+    "--accent":"#8a6a1f", "--accent-hover":"#a8832c", "--accent-dim":"#c9b077",
+    "--accent-soft":"rgba(138,106,31,.11)", "--accent-line":"rgba(138,106,31,.36)",
+    "--accent-ink":"#fffdf8",
+    "--lift":"inset 0 1px 0 rgba(255,255,255,.7)",
+    "--shadow":"0 14px 34px -14px rgba(60,50,25,.35), 0 0 0 1px rgba(30,25,15,.07)" } },
+
+  contraste: { nome:"Alto contraste", desc:"para ler no sol", mostra:["#000000","#ffd400"], vars:{
+    "--bg":"#000000", "--surface-1":"#0b0b0b", "--surface-2":"#161616", "--surface-3":"#222222",
+    "--line":"rgba(255,255,255,.20)", "--line-strong":"rgba(255,255,255,.42)",
+    "--text":"#ffffff", "--text-2":"#d6d6d6", "--text-3":"#b0b0b0",
+    "--accent":"#ffd400", "--accent-hover":"#ffe863", "--accent-dim":"#9a8100",
+    "--accent-soft":"rgba(255,212,0,.16)", "--accent-line":"rgba(255,212,0,.55)",
+    "--accent-ink":"#000000" } },
+};
+
+function temaAtual(){ return (S.config && S.config.tema) || "ouro"; }
+
+function aplicarTema(id){
+  const t = TEMAS[id] || TEMAS.ouro;
+  const raiz = document.documentElement;
+  // limpa o tema anterior antes de pôr o novo, senão sobra variável solta
+  Object.keys(TEMAS).forEach(k => Object.keys(TEMAS[k].vars).forEach(v => raiz.style.removeProperty(v)));
+  Object.entries(t.vars).forEach(([k, v]) => raiz.style.setProperty(k, v));
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute("content", t.vars["--bg"] || "#0a0b0e");
+}
+
+/* =====================================================================
+   HOME — as notícias do dia
+
+   O app não reproduz matéria de ninguém: mostra manchete, imagem e fonte,
+   e o toque leva para o site de quem escreveu. Quem lê os feeds é o robô,
+   de quatro em quatro horas, porque nenhum site de Magic libera leitura
+   direta pelo navegador.
+
+   A última leva fica guardada aqui no aparelho: no metrô, a Home abre.
+   ===================================================================== */
+const NEWS_KEY = "collector.noticias";
+let noticias = { itens:null, em:0, erro:null, carregando:false };
+
+function noticiasGuardadas(){
+  try{
+    const g = JSON.parse(localStorage.getItem(NEWS_KEY) || "null");
+    return (g && Array.isArray(g.itens)) ? g : null;
+  }catch(e){ return null; }
+}
+
+async function carregarNoticias(forcar){
+  if(noticias.carregando) return;
+  if(!forcar && noticias.itens && Date.now() - noticias.em < 15*60*1000) return;
+  noticias.carregando = true;
+  try{
+    const linhas = await supa("news?select=id,url,source,source_name,title,summary,image,published_at"
+                            + "&order=published_at.desc&limit=40");
+    noticias = { itens:linhas, em:Date.now(), erro:null, carregando:false };
+    try{ localStorage.setItem(NEWS_KEY, JSON.stringify({ itens:linhas, em:noticias.em })); }catch(e){}
+  }catch(e){
+    noticias.carregando = false;
+    noticias.erro = e.message;
+  }
+  if(view.name === "home") renderHome();
+}
+
+const FONTE_COR = {
+  wizards:"#e3b25a", goldfish:"#5bd69b", hipsters:"#f0705c",
+  edhrec:"#6fb6f0", herald:"#b48ce0",
+};
+
+function quandoRelativo(iso){
+  const t = new Date(iso).getTime();
+  if(!t) return "";
+  const min = Math.round((Date.now() - t) / 60000);
+  if(min < 2) return "agora";
+  if(min < 60) return `há ${min} min`;
+  const h = Math.round(min/60);
+  if(h < 24) return `há ${h} h`;
+  const d = Math.round(h/24);
+  if(d === 1) return "ontem";
+  if(d < 30) return `há ${d} dias`;
+  return new Date(iso).toLocaleDateString("pt-BR", { day:"2-digit", month:"short" });
+}
+
+function noticiaHTML(n, grande){
+  const cor = FONTE_COR[n.source] || "var(--accent)";
+  const img = n.image
+    ? `<img src="${escapeHTML(n.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+    : `<div class="sem-foto">${escapeHTML((n.source_name||"?")[0])}</div>`;
+  return `
+  <a class="noticia ${grande?"grande":""}" href="${escapeHTML(n.url)}" target="_blank" rel="noopener noreferrer">
+    <div class="n-foto">${img}</div>
+    <div class="n-corpo">
+      <span class="n-fonte" style="color:${cor}">${escapeHTML(n.source_name)}</span>
+      <h3>${escapeHTML(n.title)}</h3>
+      ${grande && n.summary ? `<p>${escapeHTML(n.summary)}</p>` : ""}
+      <span class="n-quando">${quandoRelativo(n.published_at)}</span>
+    </div>
+  </a>`;
+}
+
+function renderHome(){
+  if(!noticias.itens){
+    const g = noticiasGuardadas();
+    if(g){ noticias.itens = g.itens; noticias.em = g.em; }
+  }
+  carregarNoticias();
+
+  const itens = noticias.itens || [];
+  const [primeira, ...resto] = itens;
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>O que aconteceu no Magic</h2>
+        <p>Manchetes da Wizards, do MTGGoldfish, do Hipsters of the Coast, do EDHREC e do Commander's Herald.
+        Tocar abre a matéria no site de quem escreveu.</p>
+      </div>
+      <button class="icon-btn" id="news-recarregar">atualizar</button>
+    </div>
+
+    ${itens.length ? `
+      <div class="noticias">
+        ${noticiaHTML(primeira, true)}
+        ${resto.map(n => noticiaHTML(n, false)).join("")}
+      </div>
+      <p class="status">${noticias.em ? "última atualização " + quandoRelativo(new Date(noticias.em).toISOString()) : ""}</p>
+    ` : noticias.erro ? `
+      <div class="empty">Não consegui buscar as notícias agora.<br>
+        <span style="color:var(--faint);font-size:12.5px">${escapeHTML(noticias.erro)}</span></div>
+    ` : `<div class="empty">Buscando as notícias…</div>`}
+
+    <div class="atalhos-home">
+      <button class="atalho" data-ir="minha"><b>Sua coleção</b><span>${ownedCount().toLocaleString("pt-BR")} cartas · ${money(ownedValue())}</span></button>
+      <button class="atalho" data-ir="chase"><b>Chase cards</b><span>${((S.chase||{}).cartas||[]).length} sendo vigiadas</span></button>
+      <button class="atalho" data-ir="decks"><b>Seus decks</b><span>${(S.decks||[]).length} montados</span></button>
+      <button class="atalho" data-ir="comunidade"><b>Comunidade</b><span>coleções que outros publicaram</span></button>
+    </div>`;
+
+  const rec = document.getElementById("news-recarregar");
+  if(rec) rec.onclick = () => { rec.textContent = "buscando…"; carregarNoticias(true); };
+  app.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => go(b.dataset.ir));
+}
+
+/* =====================================================================
+   COLEÇÕES DA COMUNIDADE
+
+   Publicar manda a DEFINIÇÃO da coleção (nome, busca ou lista de cartas).
+   O que você tem não sai daqui — quem segue conta o próprio progresso com
+   os próprios dados.
+
+   Seguir copia a definição para "Minhas coleções", marcada com quem fez.
+   Assim tudo o que já existe — progresso, capa, faltantes, chase — passa a
+   valer para ela sem uma linha nova de código.
+   ===================================================================== */
+let comunidade = { lista:null, sigo:[], erro:null, carregando:false };
+
+async function carregarComunidade(){
+  if(comunidade.carregando) return;
+  comunidade.carregando = true;
+  try{
+    comunidade.lista = await supa("public_collections?select=id,local_id,owner,name,descricao,icon,autor,"
+      + "cartas,seguidores,payload,updated_at&order=seguidores.desc,updated_at.desc&limit=60");
+    comunidade.erro = null;
+    if(logado()){
+      try{ comunidade.sigo = await rpc("my_follows", {}) || []; }catch(e){ comunidade.sigo = []; }
+    }
+  }catch(e){
+    comunidade.erro = e.message;
+  }
+  comunidade.carregando = false;
+  if(view.name === "comunidade") renderComunidade();
+}
+
+/* a coleção pública já está aqui dentro? (por seguir, ou por ser minha) */
+function localDaPublica(p){
+  return (S.custom || []).find(c => c.id === p.local_id
+    || (c.origem && c.origem.id === p.id));
+}
+
+function renderComunidade(){
+  if(!comunidade.lista && !comunidade.carregando) carregarComunidade();
+  const lista = comunidade.lista || [];
+  const minhasPublicadas = (S.custom || []).filter(c => c.publicada);
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Coleções da comunidade</h2>
+        <p>Metas que outros colecionadores montaram e publicaram, das mais seguidas para as menos.
+        Seguir traz a coleção para a sua lista — o seu progresso continua sendo só seu.</p>
+      </div>
+      <button class="icon-btn" id="com-atualizar">atualizar</button>
+    </div>
+
+    ${minhasPublicadas.length ? `
+      <section class="grupo-temas">
+        <h3 class="grupo-titulo">Publicadas por você<span>${minhasPublicadas.length}</span></h3>
+        <div class="theme-grid">${minhasPublicadas.map(customCardHTML).join("")}</div>
+      </section>` : ""}
+
+    ${lista.length ? `
+      <section class="grupo-temas">
+        <h3 class="grupo-titulo">Mais seguidas<span>${lista.length}</span></h3>
+        <div class="theme-grid">${lista.map(publicaCardHTML).join("")}</div>
+      </section>`
+    : comunidade.erro ? `<div class="empty">Não consegui buscar agora.<br>
+        <span style="color:var(--faint);font-size:12.5px">${escapeHTML(comunidade.erro)}</span></div>`
+    : comunidade.carregando ? `<div class="empty">Buscando…</div>`
+    : `<div class="empty">Ninguém publicou uma coleção ainda.<br>
+        Pode ser você: monte uma em <b>Minhas coleções</b> e toque em publicar.</div>`}`;
+
+  const at = document.getElementById("com-atualizar");
+  if(at) at.onclick = () => { comunidade.lista = null; carregarComunidade(); renderComunidade(); };
+  app.querySelectorAll("[data-open]").forEach(el => el.onclick = () => go("collection", el.dataset.open));
+  app.querySelectorAll("[data-seguir]").forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    seguirPublica(lista.find(p => p.id === b.dataset.seguir), b);
+  });
+}
+
+function publicaCardHTML(p){
+  const local = localDaPublica(p);
+  const seguindo = comunidade.sigo.includes(p.id) || !!local;
+  return `
+  <div class="theme publica" ${local ? `data-open="${local.id}"` : ""}>
+    ${capaHTML(local ? local.id : "pub-"+p.id, "linear-gradient(135deg,#26313f,#40566f)", p.icon || "⭐")}
+    <div class="theme-body">
+      <h3>${escapeHTML(p.name)}</h3>
+      <p>${escapeHTML(p.descricao || "")}</p>
+      <div class="theme-meta">
+        <span class="chip">${p.autor ? "por " + escapeHTML(p.autor) : "anônimo"}</span>
+        <span>${p.cartas ? p.cartas + " cartas · " : ""}${p.seguidores} seguindo</span>
+      </div>
+      <button class="btn ${seguindo?"ghost":""}" data-seguir="${p.id}" style="margin-top:10px;width:100%">
+        ${seguindo ? (local ? "Abrir na minha lista" : "Seguindo") : "Seguir"}
+      </button>
+    </div>
+  </div>`;
+}
+
+async function seguirPublica(p, botao){
+  if(!p) return;
+  const local = localDaPublica(p);
+  if(local) return go("collection", local.id);
+
+  if(!logado()){
+    toast("Entre na sua conta para seguir uma coleção");
+    return abrirConta();
+  }
+  botao.disabled = true; botao.textContent = "seguindo…";
+  try{
+    await rpc("follow_collection", { p_id:p.id, p_seguir:true });
+  }catch(e){
+    botao.disabled = false; botao.textContent = "Seguir";
+    return toast("Não consegui seguir: " + e.message);
+  }
+  // a definição vira uma coleção aqui dentro, com a marca de quem fez
+  const d = p.payload || {};
+  const nova = {
+    id:"s" + Date.now().toString(36), type:d.type || "query", name:p.name,
+    desc:p.descricao || d.desc || "", icon:p.icon || d.icon || "⭐",
+    q:d.q || null, order:"name", cards:d.cards || [], createdAt:Date.now(),
+    unique:d.unique || "cards",
+    origem:{ id:p.id, autor:p.autor || "", em:Date.now() },
+  };
+  S.custom.push(nova); save();
+  comunidade.sigo.push(p.id);
+  toast(`"${p.name}" entrou nas suas coleções`);
+  go("collection", nova.id);
+}
+
+/* publicar / despublicar uma coleção sua */
+async function publicarColecao(col){
+  if(!logado()){ toast("Entre na sua conta para publicar"); return abrirConta(); }
+  const total = col.type === "manual" ? (col.cards||[]).length : (S.totals[col.id] || 0);
+  const payload = { app:"collector", v:1, type:col.type || "query", q:col.q || null,
+                    cards:col.cards || [], unique:col.unique || "cards",
+                    icon:col.icon || "⭐", desc:col.desc || "" };
+  try{
+    await rpc("publish_collection", {
+      p_local_id: col.id, p_name: col.name, p_desc: col.desc || null,
+      p_icon: col.icon || "⭐", p_autor: (S.mesa && S.mesa.eu) || "",
+      p_payload: payload, p_cartas: total });
+    col.publicada = true; save();
+    toast("Publicada — já aparece para a comunidade");
+  }catch(e){ toast("Não consegui publicar: " + e.message); }
+  if(view.name === "comunidade"){ comunidade.lista = null; carregarComunidade(); }
+  render();
+}
+
+async function despublicarColecao(col){
+  try{
+    await rpc("unpublish_collection", { p_local_id: col.id });
+    col.publicada = false; save();
+    toast("Saiu da comunidade — continua aqui com você");
+  }catch(e){ toast("Não consegui tirar: " + e.message); }
+  if(view.name === "comunidade"){ comunidade.lista = null; carregarComunidade(); }
+  render();
+}
+
+/* =====================================================================
+   CONFIGURAÇÕES
+
+   Tudo o que era botão solto no cabeçalho virou uma tela só: conta,
+   aparência, avisos, região, instalação e backup. O cabeçalho ficou com
+   o que se usa toda hora; o resto mora aqui.
+   ===================================================================== */
+function avisos(){
+  S.config.avisos = Object.assign({ chase:true, noticias:false, colecao:false }, S.config.avisos || {});
+  return S.config.avisos;
+}
+
+function renderConfig(){
+  const a = avisos();
+  const t = temaAtual();
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div><h2>Ajustes</h2>
+      <p>Conta, aparência, avisos e cópia de segurança.</p></div>
+    </div>
+
+    <section class="bloco-cfg">
+      <h3>Conta</h3>
+      <div class="kv"><span>Situação</span><b>${logado()
+        ? escapeHTML(SESSAO.email) : "não está entrando em nenhuma conta"}</b></div>
+      ${logado() ? `<div class="kv"><span>Sincronização</span><b id="sync-estado-tela">${textoDoSync()}</b></div>` : ""}
+      <p class="dg-txt">${logado()
+        ? "Sua coleção sobe sozinha e volta em qualquer aparelho onde você entrar com este e-mail."
+        : "Sem conta o app funciona inteiro, mas os dados ficam só neste aparelho. Entrar guarda tudo e traz de volta em qualquer lugar."}</p>
+      <div class="pergunta-acoes">
+        <button class="btn" id="cfg-conta">${logado() ? "Ver a conta" : "Entrar"}</button>
+        ${logado() ? `<button class="btn ghost" id="cfg-sync">Sincronizar agora</button>` : ""}
+      </div>
+    </section>
+
+    <section class="bloco-cfg">
+      <h3>Aparência</h3>
+      <p class="dg-txt">Seis combinações prontas. A escolha vale para este aparelho e sobe junto com a sua conta.</p>
+      <div class="temas-cor">
+        ${Object.entries(TEMAS).map(([id, tema]) => `
+          <button class="tema-opc ${id===t?"on":""}" data-tema="${id}">
+            <span class="tema-bolas">
+              <i style="background:${tema.mostra[0]}"></i><i style="background:${tema.mostra[1]}"></i>
+            </span>
+            <b>${tema.nome}</b><span>${tema.desc}</span>
+          </button>`).join("")}
+      </div>
+    </section>
+
+    <section class="bloco-cfg">
+      <h3>Avisos</h3>
+      <p class="dg-txt">Guardo a sua escolha agora; o envio ainda não está ligado —
+      aviso que chega com o app fechado precisa de um servidor de envio, e isso vem numa próxima rodada.
+      Enquanto isso estes interruptores só ficam registrados, sem prometer nada.</p>
+      ${[["chase","Preço de chase card mexeu","quando uma carta que você está namorando sobe ou cai"],
+         ["noticias","Notícia grande do Magic","banimento, anúncio de coleção nova, spoiler oficial"],
+         ["colecao","Alguém seguiu sua coleção","quando uma coleção sua ganha seguidor"]]
+        .map(([k, titulo, txt]) => `
+          <label class="chave">
+            <input type="checkbox" data-aviso="${k}" ${a[k]?"checked":""}>
+            <span><b>${titulo}</b><small>${txt}</small></span>
+          </label>`).join("")}
+    </section>
+
+    <section class="bloco-cfg">
+      <h3>Região e moeda</h3>
+      <div class="kv"><span>Região</span><b>${regiao().nome} · ${regiao().simbolo}</b></div>
+      <div class="kv"><span>Fonte de preço</span><b>${regiao().fonte}</b></div>
+      <div class="pergunta-acoes"><button class="btn ghost" id="cfg-regiao">Trocar região</button></div>
+    </section>
+
+    <section class="bloco-cfg">
+      <h3>Este aparelho</h3>
+      <div class="kv"><span>Formato</span><b>${ehAppInstalado() ? "aplicativo instalado" : "aba do navegador"}</b></div>
+      <div class="kv"><span>Cartas guardadas aqui</span><b>${ownedCount()}</b></div>
+      <div class="pergunta-acoes">
+        <button class="btn ghost" id="cfg-instalar">Pôr na tela de início</button>
+        <button class="btn ghost" id="cfg-backup">Backup em arquivo</button>
+      </div>
+    </section>
+
+    <p class="status">Collector · dados de cartas e preços do Scryfall · sem afiliação com a Wizards of the Coast</p>`;
+
+  document.getElementById("cfg-conta").onclick = abrirConta;
+  const bs = document.getElementById("cfg-sync");
+  if(bs) bs.onclick = () => sincronizar("manual");
+  document.getElementById("cfg-regiao").onclick = abrirRegiao;
+  document.getElementById("cfg-instalar").onclick = abrirInstalar;
+  document.getElementById("cfg-backup").onclick = abrirBackup;
+
+  app.querySelectorAll("[data-tema]").forEach(b => b.onclick = () => {
+    S.config.tema = b.dataset.tema; save();
+    aplicarTema(S.config.tema);
+    renderConfig();
+    toast(`Tema ${TEMAS[S.config.tema].nome}`);
+  });
+  app.querySelectorAll("[data-aviso]").forEach(c => c.onchange = () => {
+    avisos()[c.dataset.aviso] = c.checked; save();
+  });
 }
 
 /* ---------------- view: temas ---------------- */
@@ -1834,6 +2416,11 @@ function renderMine(){
       : `<div class="theme-grid">${S.custom.map(customCardHTML).join("")}</div>`}`;
   document.getElementById("new-coll").onclick = openNewCollection;
   app.querySelectorAll("[data-open]").forEach(el=> el.onclick = ()=> go("collection", el.dataset.open));
+  app.querySelectorAll("[data-publicar]").forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const col = customById(b.dataset.publicar);
+    if(col) col.publicada ? despublicarColecao(col) : publicarColecao(col);
+  });
 }
 
 function customCardHTML(c){
@@ -1847,10 +2434,13 @@ function customCardHTML(c){
       <h3>${escapeHTML(c.name)}</h3>
       <p>${escapeHTML(c.desc||"")}</p>
       <div class="theme-meta">
-        <span class="chip">${c.type==="manual" ? "manual" : "busca"}</span>
+        <span class="chip">${c.origem ? "de " + escapeHTML(c.origem.autor || "outro colecionador")
+                                      : c.type==="manual" ? "manual" : "busca"}</span>
         <span>${total ? owned+" / "+total : "abrir →"}</span>
       </div>
       ${pct!==null ? `<div class="mini-bar"><i style="width:${pct}%"></i></div>` : ""}
+      ${c.origem ? "" : `<span class="publicar-link" data-publicar="${c.id}">${
+        c.publicada ? "★ publicada — tirar da comunidade" : "☆ publicar para a comunidade"}</span>`}
     </div>
   </button>`;
 }
@@ -7138,8 +7728,8 @@ function nomeDoAparelho(){
 }
 
 function pintarEstadoSync(){
-  const el = document.getElementById("sync-estado");
-  if(el) el.innerHTML = textoDoSync();
+  // o estado aparece em dois lugares: na janela da conta e na tela de Ajustes
+  document.querySelectorAll("#sync-estado, #sync-estado-tela").forEach(el => el.innerHTML = textoDoSync());
   pintarBotaoConta();
 }
 function textoDoSync(){
@@ -7192,6 +7782,7 @@ async function sincronizar(motivo){
 
       SYNC.sujo = false; SYNC.em = Date.now(); SYNC.estado = "ok";
       guardarSync();
+      aplicarTema(temaAtual());
       if(motivo === "entrou" || motivo === "manual") render();
     }catch(e){
       SYNC.estado = "erro";
@@ -7457,8 +8048,7 @@ function abrirBackup(){
     closeModal(); render(); toast("Dados restaurados");
   };
 }
-document.getElementById("btn-backup").onclick = abrirBackup;
-document.getElementById("btn-instalar").onclick = abrirInstalar;
+document.getElementById("btn-config").onclick = () => go("config");
 document.getElementById("btn-conta").onclick = abrirConta;
 
 /* =====================================================================
@@ -7613,12 +8203,7 @@ function toast(msg){
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
 
 /* ---------------- região ---------------- */
-function pintarBotaoRegiao(){
-  const b = document.getElementById("btn-regiao");
-  if(b) b.textContent = regiao().nome;
-}
-
-document.getElementById("btn-regiao").onclick = ()=>{
+function abrirRegiao(){
   const atual = S.config.regiao;
   modal(`<div class="modal-pad">
     <h3>Região da conta</h3>
@@ -7643,15 +8228,15 @@ document.getElementById("btn-regiao").onclick = ()=>{
       S.config.regiao = el.dataset.regiao;
       save();
       await carregarCambio();
-      closeModal(); pintarBotaoRegiao(); render();
+      closeModal(); render();
       toast(`Preços em ${regiao().simbolo} — ${regiao().nome}`);
     };
   });
-};
+}
 
 /* o câmbio chega depois; quando chegar, os preços em real se acertam sozinhos */
+aplicarTema(temaAtual());
 carregarCambio().then(()=>{ if(regiao().moeda === "BRL") render(); else renderKPIs(); });
-pintarBotaoRegiao();
 render();
 </script>
 </body>
