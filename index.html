@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Collector">
-<title>Collector — coleções de TCG</title>
+<title>Collector — Magic: The Gathering</title>
 <style>
   /* =================================================================
      Cor e forma.
@@ -1995,6 +1995,19 @@ function quandoRelativo(iso){
   return new Date(iso).toLocaleDateString("pt-BR", { day:"2-digit", month:"short" });
 }
 
+/* O resumo do feed costuma vir com o rodapé do WordPress grudado —
+   "The post X appeared first on Y", "Continue reading". Isso não é
+   notícia, é encanamento: sai antes de aparecer na tela. */
+function limparResumo(txt){
+  return String(txt || "")
+    .replace(/\s*The post\b[\s\S]*?appeared first on[\s\S]*$/i, "")
+    .replace(/\s*Continue reading[\s\S]*$/i, "")
+    .replace(/\s*Read (the rest|more)[\s\S]*$/i, "")
+    .replace(/\s*\[[.…]+\]\s*$/, "")
+    .replace(/\s*[.…]{2,}\s*$/, "…")
+    .trim();
+}
+
 function noticiaHTML(n, grande){
   const cor = FONTE_COR[n.source] || "var(--accent)";
   const img = n.image
@@ -2006,7 +2019,7 @@ function noticiaHTML(n, grande){
     <div class="n-corpo">
       <span class="n-fonte" style="color:${cor}">${escapeHTML(n.source_name)}</span>
       <h3>${escapeHTML(n.title)}</h3>
-      ${grande && n.summary ? `<p>${escapeHTML(n.summary)}</p>` : ""}
+      ${grande && limparResumo(n.summary) ? `<p>${escapeHTML(limparResumo(n.summary))}</p>` : ""}
       <span class="n-quando">${quandoRelativo(n.published_at)}</span>
     </div>
   </a>`;
