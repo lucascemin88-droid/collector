@@ -226,6 +226,60 @@
   .chave input{width:17px;height:17px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
   .chave b{display:block;font-size:13.5px;font-weight:500;color:var(--text)}
   .chave small{display:block;font-size:12px;color:var(--text-3);margin-top:1px}
+  .minha-copia{margin-top:16px;padding:13px 14px;border:1px solid var(--accent-line);
+    border-radius:var(--radius);background:var(--accent-soft)}
+  .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
+    letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  .mc-linha{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px}
+  .mc-linha .field span{display:block;font-size:11px;color:var(--text-3);margin-bottom:3px}
+  .mc-linha select,.mc-linha input{width:100%;padding:7px 9px;font-size:12.5px}
+  @media (max-width:640px){ .mc-linha{grid-template-columns:1fr 1fr} .mc-linha .field:last-child{grid-column:1/-1} }
+  .sobe{color:var(--pos)} .desce{color:var(--neg)}
+  .nao-achadas{display:flex;flex-direction:column;gap:3px;margin-top:9px;max-height:210px;
+    overflow-y:auto;font-size:12px;color:var(--text-2)}
+  .nao-achadas i{color:var(--text-3);font-style:normal}
+
+  /* ---------------- valorização ---------------- */
+  .bloco-val{margin-top:16px;padding:16px 18px;border:1px solid var(--line);
+    border-radius:var(--r-lg);background:var(--surface-1);box-shadow:var(--lift)}
+  .val-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .val-topo b{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3)}
+  .val-corpo{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .val-numeros{flex:0 0 auto}
+  .val-hoje{font-size:27px;font-weight:600;letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums}
+  .val-dif{font-size:14px;font-weight:600;margin-top:2px}
+  .val-dif span{font-weight:500;opacity:.75}
+  .val-desde{font-size:12px;color:var(--text-3);margin-top:3px}
+  .val-grafico{flex:1 1 260px;min-width:220px}
+  .val-grafico .spark{width:100%;height:74px}
+  .movers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:14px;
+    padding-top:14px;border-top:1px solid var(--line)}
+  .mv-col .flabel{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.09em;
+    color:var(--text-3);margin-bottom:7px}
+  .mover{display:flex;align-items:center;gap:9px;width:100%;padding:6px 7px;border-radius:var(--r-sm);
+    text-align:left;transition:background var(--t-fast)}
+  .mover:hover{background:var(--surface-2)}
+  .mover img,.mover .mv-sem{width:30px;height:42px;object-fit:cover;border-radius:3px;
+    flex:0 0 auto;background:var(--surface-3)}
+  .mv-nome{flex:1 1 auto;min-width:0;font-size:12.5px;color:var(--text);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mv-nome small{display:block;font-size:11px;color:var(--text-3)}
+  .mv-dif{flex:0 0 auto;font-size:12.5px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+  .mv-dif small{display:block;font-weight:500;font-size:11px;opacity:.8}
+  .lista-compras{margin-top:14px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+  .lc-linha{display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid var(--line)}
+  .lc-linha img,.lc-linha .mv-sem{width:30px;height:42px;object-fit:cover;border-radius:3px;
+    flex:0 0 auto;background:var(--surface-3)}
+  .lc-nome{flex:1 1 auto;min-width:0;font-size:13px;color:var(--text)}
+  .lc-nome small{display:block;font-size:11px;color:var(--text-3)}
+  .lc-preco{flex:0 0 auto;font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .icon-btn.sino{position:relative;font-size:15px;line-height:1;padding:8px 11px}
+  .cartao-previa{margin:8px 0 4px;border-radius:var(--radius);overflow:hidden;
+    background:var(--surface-2);min-height:180px;display:grid;place-items:center}
+  .cartao-previa img{width:100%;display:block}
+  .icon-btn.sino i{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;
+    border-radius:999px;background:var(--neg);color:#fff;font-size:10px;font-weight:700;
+    font-style:normal;display:grid;place-items:center;box-shadow:0 0 0 2px var(--bg)}
   .publicar-link{
     display:block;margin-top:9px;font-size:11.5px;color:var(--text-3);
     padding:5px 0 0;border-top:1px solid var(--line);
@@ -789,11 +843,6 @@
   .rc-raridades{display:flex;gap:12px;margin-left:auto;flex-wrap:wrap}
   .rc-rar{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
   .rc-rar i{width:9px;height:9px;border-radius:50%;display:inline-block}
-  .nota-camera{
-    margin-top:28px;font-size:12.5px;color:var(--faint);line-height:1.6;
-    border-top:1px solid var(--line);padding-top:16px;max-width:74ch;
-  }
-  .nota-camera b{color:var(--muted)}
   .toast-desfazer{display:flex;align-items:center;gap:14px}
   .toast-desfazer .btn{padding:5px 12px;font-size:12px}
 
@@ -1779,7 +1828,8 @@ async function hidratarColecao(){
 }
 /* conta cópias, não linhas: quem tem quatro Llanowar Elves iguais tem quatro cartas */
 function ownedCount(){ return Object.keys(S.owned).reduce((a,id)=>a+qtdDe(id),0); }
-function ownedValue(){ return Object.entries(S.owned).reduce((a,[id,c])=>a+(c.usd||0)*qtdDe(id),0); }
+/* o valor já desconta a condição de cada carta — ver CONDICOES */
+function ownedValue(){ return Object.keys(S.owned).reduce((a,id)=>a+valorUnitario(id)*qtdDe(id),0); }
 function money(v){
   const r = regiao();
   let valor = v, simbolo = "US$";
@@ -1810,7 +1860,8 @@ const MENU = [
       { v:"themes",     nome:"Coleções temáticas" },
       { v:"comunidade", nome:"Coleções da comunidade" },
       { v:"mine",       nome:"Minhas coleções" },
-      { v:"minha",      nome:"Coleção completa" } ] },
+      { v:"minha",      nome:"Coleção completa" },
+      { v:"troca",      nome:"Repetidas" } ] },
 
   { id:"buscador", nome:"Buscador", secoes:[
       { v:"chase",    nome:"Chase cards" },
@@ -1863,6 +1914,7 @@ function render(){
   pintarNav(); renderKPIs();
   if(view.name==="home") return renderHome();
   if(view.name==="comunidade") return renderComunidade();
+  if(view.name==="troca") return renderTroca();
   if(view.name==="config") return renderConfig();
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
@@ -2042,7 +2094,10 @@ function renderHome(){
         <p>Manchetes da Wizards, do MTGGoldfish, do Hipsters of the Coast, do EDHREC e do Commander's Herald.
         Tocar abre a matéria no site de quem escreveu.</p>
       </div>
-      <button class="icon-btn" id="news-recarregar">atualizar</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="icon-btn sino" id="sino" title="o que mudou">🔔</button>
+        <button class="icon-btn" id="news-recarregar">atualizar</button>
+      </div>
     </div>
 
     ${itens.length ? `
@@ -2065,6 +2120,10 @@ function renderHome(){
 
   const rec = document.getElementById("news-recarregar");
   if(rec) rec.onclick = () => { rec.textContent = "buscando…"; carregarNoticias(true); };
+  const sino = document.getElementById("sino");
+  if(sino) sino.onclick = abrirAvisos;
+  carregarAvisos();
+  pintarSino();
   app.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => go(b.dataset.ir));
 }
 
@@ -2304,6 +2363,7 @@ function renderConfig(){
       <div class="pergunta-acoes">
         <button class="btn ghost" id="cfg-instalar">Pôr na tela de início</button>
         <button class="btn ghost" id="cfg-backup">Backup em arquivo</button>
+        <button class="btn ghost" id="cfg-importar">Importar de outro app</button>
       </div>
     </section>
 
@@ -2315,6 +2375,7 @@ function renderConfig(){
   document.getElementById("cfg-regiao").onclick = abrirRegiao;
   document.getElementById("cfg-instalar").onclick = abrirInstalar;
   document.getElementById("cfg-backup").onclick = abrirBackup;
+  document.getElementById("cfg-importar").onclick = abrirImportar;
 
   app.querySelectorAll("[data-tema]").forEach(b => b.onclick = () => {
     S.config.tema = b.dataset.tema; save();
@@ -3594,7 +3655,11 @@ let minha = { f:FILTROS_MINHA(), selecao:new Set() };
 
 function cartasQueTenho(){
   return Object.entries(S.owned).map(([id, r]) =>
-    Object.assign(cartaDoResumo(id, r), { addedAt:r.at || 0, qtd:qtdDe(id) }));
+    Object.assign(cartaDoResumo(id, r), {
+      addedAt:r.at || 0, qtd:qtdDe(id),
+      cond:condDe(r), lang:langDe(r), pago:Number(r.pg) || 0,
+      unit:valorUnitario(id),                    // preço já com o desconto da condição
+    }));
 }
 const somaQtd = lista => lista.reduce((a,c) => a + (c.qtd || 1), 0);
 
@@ -3654,7 +3719,7 @@ async function renderMinha(){
   const filtradas = filtrarMinha(todas);
   const lista = minha.f.agrupar ? agruparIguais(filtradas) : filtradas;
   const f = minha.f;
-  const valor = filtradas.reduce((a,c) => a + (Number(c.usd)||0) * (c.qtd||1), 0);
+  const valor = filtradas.reduce((a,c) => a + (c.unit || 0) * (c.qtd||1), 0);
   const porRaridade = {};
   todas.forEach(c => porRaridade[c.rarity] = (porRaridade[c.rarity]||0) + (c.qtd||1));
   const setsQueTenho = [...new Map(todas.filter(c=>c.set).map(c => [c.set, c.setName || c.set.toUpperCase()])).entries()]
@@ -3667,25 +3732,38 @@ async function renderMinha(){
         <p>Toda carta que você marcou, venha de onde vier — do catálogo, de uma coleção temática ou
         adicionada aqui. É a mesma lista que faz as coleções temáticas já nascerem preenchidas.</p>
       </div>
-      <button class="btn" id="add-carta">+ Adicionar carta</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="add-carta">+ Adicionar carta</button>
+        <button class="btn ghost" id="importar-csv">Importar de outro app</button>
+        <button class="btn ghost" id="cartao-postar">Cartão para postar</button>
+      </div>
     </div>
 
     ${todas.length === 0 ? `
       <div class="empty">
         Você ainda não marcou nenhuma carta.<br>
         Vá no <b>Catálogo</b> ou abra uma <b>coleção temática</b> e clique nas cartas que você tem —
-        elas aparecem aqui.
+        elas aparecem aqui.<br><br>
+        Já tem coleção no Moxfield, Deckbox, Archidekt ou TCGplayer?
+        <b id="vazio-importar" style="color:var(--accent);cursor:pointer">Traga o CSV de lá</b>.
       </div>` : `
 
       <div class="resumo-colecao">
         <div class="rc"><b>${somaQtd(todas).toLocaleString("pt-BR")}</b><small>cartas${somaQtd(todas)!==todas.length?` · ${todas.length} diferentes`:""}</small></div>
-        <div class="rc"><b>${money(todas.reduce((a,c)=>a+(Number(c.usd)||0)*(c.qtd||1),0))}</b><small>valor total</small></div>
+        <div class="rc"><b>${money(todas.reduce((a,c)=>a+(c.unit||0)*(c.qtd||1),0))}</b><small>valor total</small></div>
+        ${temPrecoPago() ? (() => {
+          const pago = pagoTotal(), hoje = ownedValue(), dif = hoje - pago;
+          return `<div class="rc"><b class="${dif>=0?"sobe":"desce"}">${dif>=0?"+":"−"}${money(Math.abs(dif))}</b>
+            <small>sobre os ${money(pago)} que você pagou</small></div>`;
+        })() : ""}
         <div class="rc"><b>${setsQueTenho.length}</b><small>edições diferentes</small></div>
         <div class="rc-raridades">
           ${["mythic","rare","uncommon","common"].filter(r => porRaridade[r]).map(r => `
             <span class="rc-rar"><i class="rar-${r}"></i>${porRaridade[r]}</span>`).join("")}
         </div>
       </div>
+
+      ${blocoValorizacao()}
 
       <div class="filtros" style="margin-top:16px">
         <div class="fgrupo">
@@ -3755,13 +3833,14 @@ async function renderMinha(){
           cardHTML(c, c.copias, "", !minha.f.agrupar)).join("")}</div>
       ${lista.length === 0 ? `<div class="empty" style="margin-top:14px">Nenhuma carta com esses filtros.</div>` : ""}
     `}
-
-    <p class="nota-camera">
-      <b>Escanear pela câmera</b> — é o próximo passo grande, e é o único item da sua lista que não dá para
-      resolver só com programação: precisa de um modelo de visão rodando num servidor. Está separado no backlog.
-    </p>`;
+`;
 
   document.getElementById("add-carta").onclick = abrirAdicionarCarta;
+  ligarValorizacao();
+  if(!valorizacao.serie && !valorizacao.carregando) carregarValorizacao();
+  const bi = document.getElementById("importar-csv"); if(bi) bi.onclick = abrirImportar;
+  const bv = document.getElementById("vazio-importar"); if(bv) bv.onclick = abrirImportar;
+  const bp = document.getElementById("cartao-postar"); if(bp) bp.onclick = abrirCartaoDaColecao;
 
   ligarCartas(document.getElementById("grid"), id => lista.find(x => x.id === id), () => renderMinha());
   ligarQuantidades(document.getElementById("grid"), () => renderMinha());
@@ -5135,6 +5214,98 @@ const GRUPOS_DECK = [
   ["terreno",      "Terrenos",      c => /land/i.test(c.t)],
 ];
 
+/* =====================================================================
+   O DECK VIRA LISTA DE COMPRAS
+
+   Decks e chase cards já existiam e não se falavam. Aqui a conta é
+   simples e a comparação é POR NOME: quem tem o Sol Ring de qualquer
+   edição tem o Sol Ring do deck. Comparar por impressão exata só geraria
+   uma lista de compras cheia de carta que a pessoa já tem na mão.
+   ===================================================================== */
+function copiasQueTenho(nome){
+  const alvo = String(nome || "").toLowerCase();
+  return Object.entries(S.owned).reduce((a, [id, r]) =>
+    a + (String(r.n || "").toLowerCase() === alvo ? qtdDe(id) : 0), 0);
+}
+
+function faltamDoDeck(d){
+  const cartas = (d.cartas || []).concat(d.comandante ? [Object.assign({}, d.comandante, { qtd:1 })] : []);
+  const juntas = new Map();
+  cartas.forEach(c => {
+    const chave = String(c.n || "").toLowerCase();
+    const atual = juntas.get(chave);
+    if(atual) atual.precisa += (c.qtd || 1);
+    else juntas.set(chave, { carta:c, precisa:(c.qtd || 1) });
+  });
+
+  const fora = [];
+  juntas.forEach(({ carta, precisa }) => {
+    const tenho = copiasQueTenho(carta.n);
+    const falta = precisa - tenho;
+    if(falta > 0){
+      const p = precoLocal(deckParaCarta(carta));
+      fora.push({ carta, precisa, tenho, falta, unidade: p ? p.valor : 0 });
+    }
+  });
+  return fora.sort((a, b) => (b.unidade * b.falta) - (a.unidade * a.falta));
+}
+
+function abrirComprasDoDeck(d){
+  const faltam = faltamDoDeck(d);
+  const total = faltam.reduce((a, f) => a + f.unidade * f.falta, 0);
+  const copias = faltam.reduce((a, f) => a + f.falta, 0);
+  const noDeck = (d.cartas || []).reduce((a, c) => a + (c.qtd || 1), 0) + (d.comandante ? 1 : 0);
+
+  modal(`<div class="modal-pad">
+    <h3>O que falta para montar "${escapeHTML(d.nome)}"</h3>
+    ${!faltam.length ? `
+      <p style="color:var(--muted);font-size:13px;margin:8px 0 0">
+        Você já tem todas as ${noDeck} cartas deste deck. Pode montar hoje.</p>
+      <div class="pergunta-acoes"><button class="btn" id="cp-fechar">Fechar</button></div>
+    ` : `
+      <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+        Comparo por nome, não por impressão: se você tem o Sol Ring de qualquer edição,
+        ele não aparece aqui.</p>
+
+      <div class="kv"><span>Cartas do deck</span><b>${noDeck}</b></div>
+      <div class="kv"><span>Faltam</span><b>${copias} cópia${copias>1?"s":""} · ${faltam.length} carta${faltam.length>1?"s":""} diferente${faltam.length>1?"s":""}</b></div>
+      <div class="kv"><span>Custo estimado</span><b>${money(total)}</b></div>
+
+      <div class="lista-compras">
+        ${faltam.map(f => `
+          <div class="lc-linha">
+            ${f.carta.img ? `<img src="${escapeHTML(f.carta.img)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(f.carta.n)}
+              <small>${f.tenho ? `você tem ${f.tenho} de ${f.precisa}` : `precisa de ${f.precisa}`}</small></span>
+            <span class="lc-preco">${f.falta > 1 ? `${f.falta} × ` : ""}${f.unidade ? money(f.unidade) : "sem preço"}</span>
+          </div>`).join("")}
+      </div>
+
+      <div class="pergunta-acoes" style="margin-top:16px">
+        <button class="btn" id="cp-chase">Mandar as ${faltam.length} para os chase cards</button>
+        <button class="btn ghost" id="cp-fechar">Fechar</button>
+      </div>
+    `}
+  </div>`);
+
+  document.getElementById("cp-fechar").onclick = closeModal;
+  const bc = document.getElementById("cp-chase");
+  if(bc) bc.onclick = () => {
+    const c = chase();
+    // um grupo por deck: a lista de compras não se mistura com o resto
+    let grupo = c.grupos.find(g => g.deck === d.id);
+    if(!grupo){
+      grupo = { id:"g" + Date.now().toString(36), nome:`Faltam no ${d.nome}`, deck:d.id };
+      c.grupos.push(grupo);
+    }
+    let n = 0;
+    faltam.forEach(f => { if(porNoChase(deckParaCarta(f.carta), grupo.id)) n++; });
+    save(); closeModal();
+    toast(n ? `${n} carta${n>1?"s":""} em "${grupo.nome}"` : "essas cartas já estavam nos chase cards");
+    go("chase");
+  };
+}
+
 function renderDeck(id){
   const d = deckPorId(id);
   if(!d){ go("decks"); return; }
@@ -5159,6 +5330,7 @@ function renderDeck(id){
         ${FORMATOS.map(f => `<option value="${f.id}"${d.formato===f.id?" selected":""}>${f.nome}</option>`).join("")}
       </select>
       <div class="grow"></div>
+      <button class="btn ghost" id="deck-compras">O que falta comprar</button>
       <button class="btn ghost" id="deck-texto">Exportar lista</button>
       <button class="btn ghost" id="deck-excluir">Excluir</button>
     </div>
@@ -5177,6 +5349,7 @@ function renderDeck(id){
   const bc = document.getElementById("def-comandante");
   if(bc) bc.onclick = () => buscarParaDeck(d, { comandante:true });
   document.getElementById("deck-formato").onchange = e => { d.formato = e.target.value; save(); renderDeck(d.id); };
+  document.getElementById("deck-compras").onclick = () => abrirComprasDoDeck(d);
   document.getElementById("deck-texto").onclick = () => exportarDeck(d);
   document.getElementById("deck-excluir").onclick = () => {
     if(!confirm(`Excluir o deck "${d.nome}"? As cartas continuam na sua coleção.`)) return;
@@ -6733,6 +6906,83 @@ function modal(html){
 
 const RAR = { mythic:"#e06b2a", rare:"#d8a84e", uncommon:"#a9b6c6", common:"#6b7488", special:"#a13b8a", bonus:"#5aa9e6" };
 
+/* O bloco "a sua cópia": só aparece na carta que você tem. Condição e
+   idioma ficam aqui, e não na miniatura, porque é onde a pessoa está
+   olhando para a carta e sabe responder. */
+function blocoDaMinhaCopia(c){
+  const r = S.owned[c.id] || {};
+  const cond = condDe(r), lang = langDe(r);
+  const fator = fatorCondicao(cond);
+  const base = (r.fin === "foil" && r.usdF) ? r.usdF : (r.usd || 0);
+  const pago = Number(r.pg) || 0;
+  const vale = valorUnitario(c.id);
+
+  return `
+  <div class="minha-copia">
+    <span class="flabel">A sua cópia</span>
+    <div class="mc-linha">
+      <label class="field"><span>Condição</span>
+        <select id="mc-cond">
+          ${CONDICOES.map(([k, nome, txt]) => `
+            <option value="${k}" ${k===cond?"selected":""} title="${escapeHTML(txt)}">${k} · ${nome}</option>`).join("")}
+        </select>
+      </label>
+      <label class="field"><span>Idioma</span>
+        <select id="mc-lang">
+          ${IDIOMAS.map(([k, nome]) => `<option value="${k}" ${k===lang?"selected":""}>${nome}</option>`).join("")}
+        </select>
+      </label>
+      <label class="field"><span>Quanto você pagou</span>
+        <input type="number" id="mc-pago" min="0" step="0.01" inputmode="decimal"
+               placeholder="—" value="${pago ? pago : ""}">
+      </label>
+    </div>
+    <p class="dg-txt" id="mc-conta">${contaDaCopia(base, fator, cond, pago, vale)}</p>
+  </div>`;
+}
+
+function contaDaCopia(base, fator, cond, pago, vale){
+  const partes = [];
+  if(base){
+    partes.push(fator === 1
+      ? `Vale ${money(base)} — o preço de carta ${cond} do Scryfall.`
+      : `Carta ${cond} vale por volta de <b>${Math.round(fator*100)}%</b> de uma perfeita: ${money(base)} → <b>${money(vale)}</b>.
+         O desconto por desgaste é regra de bolso do mercado, não preço de fonte.`);
+  }
+  if(pago){
+    const dif = vale - pago;
+    partes.push(`Você pagou ${money(pago)} — ${dif >= 0
+      ? `<b class="sobe">${money(dif)} acima</b>` : `<b class="desce">${money(-dif)} abaixo</b>`} do preço de hoje.`);
+  }
+  partes.push(`O preço é o da impressão em inglês; idioma fica registrado, mas não mexe na conta.`);
+  return partes.join(" ");
+}
+
+function ligarMinhaCopia(c){
+  const cond = document.getElementById("mc-cond");
+  if(!cond) return;
+  const lang = document.getElementById("mc-lang");
+  const pago = document.getElementById("mc-pago");
+  const conta = document.getElementById("mc-conta");
+
+  const guardar = () => {
+    const r = S.owned[c.id];
+    if(!r) return;
+    r.cond = cond.value;
+    r.lang = lang.value;
+    const p = parseFloat(pago.value);
+    if(Number.isFinite(p) && p > 0){ r.pg = p; r.pgM = "USD"; }
+    else { delete r.pg; delete r.pgM; }
+    save(); renderKPIs();
+    const base = (r.fin === "foil" && r.usdF) ? r.usdF : (r.usd || 0);
+    conta.innerHTML = contaDaCopia(base, fatorCondicao(r.cond), r.cond, Number(r.pg)||0, valorUnitario(c.id));
+  };
+  cond.onchange = guardar;
+  lang.onchange = guardar;
+  pago.onchange = guardar;
+  pago.onblur = guardar;
+}
+
 function openCard(c){
   const own = isOwned(c.id);
   const manuals = S.custom.filter(x=>x.type==="manual");
@@ -6784,6 +7034,8 @@ function openCard(c){
         <div class="kv"><span>Artista</span><b>${escapeHTML(c.artist||"—")}</b></div>
         <div class="kv"><span>Lançamento</span><b>${c.released||"—"}</b></div>
 
+        ${own ? blocoDaMinhaCopia(c) : ""}
+
         <div class="lojas">
           <span class="flabel">Onde comprar</span>
           <div class="lojas-links">
@@ -6814,6 +7066,8 @@ function openCard(c){
       <div class="carregando">procurando…</div>
     </div>
   </div>`);
+
+  ligarMinhaCopia(c);
 
   document.getElementById("own-toggle").onclick = ()=>{
     toggleOwn(c); closeModal();
@@ -7555,6 +7809,855 @@ function restaurarBackup(obj){
   }
   save();
   return null;
+}
+
+/* =====================================================================
+   REPETIDAS E TROCA
+
+   A quantidade já estava implementada, e ela responde sozinha quem é
+   candidata a troca: tudo com mais de uma cópia. A primeira fica com
+   você; da segunda em diante é sobra.
+
+   Quem não quer trocar uma repetida marca e ela sai da lista — porque
+   ter quatro Llanowar Elves de propósito num deck não é ter três sobrando.
+   ===================================================================== */
+function repetidas(){
+  return Object.entries(S.owned)
+    .map(([id, r]) => ({ id, r, qtd: qtdDe(id), sobra: qtdDe(id) - 1 }))
+    .filter(x => x.sobra > 0 && !x.r.naoTroco)
+    .map(x => Object.assign(x, { unidade: valorUnitario(x.id) }))
+    .sort((a, b) => (b.unidade * b.sobra) - (a.unidade * a.sobra));
+}
+const guardadasSemTroca = () =>
+  Object.entries(S.owned).filter(([id, r]) => r.naoTroco && qtdDe(id) > 1).length;
+
+function renderTroca(){
+  const lista = repetidas();
+  const copias = lista.reduce((a, x) => a + x.sobra, 0);
+  const valor  = lista.reduce((a, x) => a + x.sobra * x.unidade, 0);
+  const guardadas = guardadasSemTroca();
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Repetidas</h2>
+        <p>Tudo que você tem em mais de uma cópia. A primeira é sua; da segunda em diante é sobra,
+        e é o que vale a pena levar para uma troca.</p>
+      </div>
+      ${lista.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn ghost" id="troca-texto">Copiar a lista</button>
+        <button class="btn" id="troca-publicar">Publicar na comunidade</button>
+      </div>` : ""}
+    </div>
+
+    ${!lista.length ? `
+      <div class="empty">Você não tem nenhuma repetida${guardadas ? ` que queira trocar` : ""}.<br>
+        <span style="color:var(--faint);font-size:12.5px">Assim que uma carta passar de uma cópia,
+        a sobra aparece aqui.</span>${guardadas ? `<br><br>
+        <span style="color:var(--faint);font-size:12.5px">${guardadas} repetida${guardadas>1?"s estão":" está"}
+        marcada${guardadas>1?"s":""} como "não troco".</span>` : ""}</div>
+    ` : `
+      <div class="resumo-colecao">
+        <div class="rc"><b>${copias}</b><small>cópias sobrando</small></div>
+        <div class="rc"><b>${lista.length}</b><small>cartas diferentes</small></div>
+        <div class="rc"><b>${money(valor)}</b><small>valor das sobras</small></div>
+      </div>
+
+      <div class="lista-compras" style="max-height:none;margin-top:18px">
+        ${lista.map(x => `
+          <div class="lc-linha">
+            ${x.r.img ? `<img src="${escapeHTML(x.r.img)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(x.r.n || "?")}
+              <small>${escapeHTML(x.r.sn || x.r.s || "")} · tenho ${x.qtd}, sobra${x.sobra>1?"m":""} ${x.sobra}
+              · ${condDe(x.r)}${langDe(x.r) !== "en" ? " · " + nomeIdioma(langDe(x.r)) : ""}</small></span>
+            <span class="lc-preco">${x.sobra > 1 ? `${x.sobra} × ` : ""}${money(x.unidade)}</span>
+            <button class="icon-btn" data-nao-troco="${x.id}" title="tirar da lista de troca">não troco</button>
+          </div>`).join("")}
+      </div>
+
+      ${guardadas ? `<p class="status">${guardadas} repetida${guardadas>1?"s":""} fora da lista por escolha sua ·
+        <b id="troca-voltar" style="color:var(--accent);cursor:pointer">trazer de volta</b></p>` : ""}
+    `}`;
+
+  app.querySelectorAll("[data-nao-troco]").forEach(b => b.onclick = () => {
+    const r = S.owned[b.dataset.naoTroco];
+    if(r){ r.naoTroco = 1; save(); renderTroca(); toast("fora da lista de troca"); }
+  });
+  const voltar = document.getElementById("troca-voltar");
+  if(voltar) voltar.onclick = () => {
+    Object.values(S.owned).forEach(r => delete r.naoTroco);
+    save(); renderTroca();
+  };
+  const bt = document.getElementById("troca-texto");
+  if(bt) bt.onclick = () => copiarListaDeTroca(lista);
+  const bp = document.getElementById("troca-publicar");
+  if(bp) bp.onclick = () => publicarTroca(lista);
+}
+
+function copiarListaDeTroca(lista){
+  const texto = lista.map(x => `${x.sobra} ${x.r.n} (${(x.r.s || "").toUpperCase()}) ${condDe(x.r)}`).join("\n");
+  modal(`<div class="modal-pad">
+    <h3>Lista de troca</h3>
+    <p style="color:var(--muted);font-size:13px">No formato que a maioria dos grupos e fóruns entende:
+    quantidade, nome, edição e condição.</p>
+    <textarea id="troca-txt" rows="12" style="font-family:ui-monospace,monospace;font-size:12.5px">${escapeHTML(texto)}</textarea>
+    <div class="pergunta-acoes"><button class="btn" id="troca-copiar">Copiar</button>
+      <button class="btn ghost" id="troca-fechar">Fechar</button></div>
+  </div>`);
+  document.getElementById("troca-fechar").onclick = closeModal;
+  document.getElementById("troca-copiar").onclick = () => {
+    const el = document.getElementById("troca-txt");
+    el.select(); el.setSelectionRange(0, 999999);
+    try{ document.execCommand("copy"); toast("lista copiada"); }catch(e){}
+  };
+}
+
+async function publicarTroca(lista){
+  if(!logado()){ toast("Entre na sua conta para publicar"); return abrirConta(); }
+  const cartas = lista.map(x => Object.assign(cartaDeDeck(cartaDoResumo(x.id, x.r), x.sobra), { qtd:x.sobra }));
+  const payload = { app:"collector", v:1, type:"manual", q:null, cards:cartas,
+                    unique:"prints", icon:"🔁", desc:"Lista de troca", troca:true };
+  try{
+    await rpc("publish_collection", {
+      p_local_id: "troca", p_name: `Troca de ${(S.mesa && S.mesa.eu) || "um colecionador"}`,
+      p_desc: `${lista.reduce((a,x)=>a+x.sobra,0)} cópias sobrando`,
+      p_icon: "🔁", p_autor: (S.mesa && S.mesa.eu) || "",
+      p_payload: payload, p_cartas: lista.length });
+    toast("Lista de troca publicada na comunidade");
+  }catch(e){ toast("Não consegui publicar: " + e.message); }
+}
+
+/* =====================================================================
+   CARTÃO PARA POSTAR
+
+   Uma imagem quadrada com o melhor da coleção, feita aqui mesmo no
+   aparelho — nada sobe para servidor nenhum. As artes vêm do Scryfall
+   com CORS liberado, então o canvas não fica "sujo" e a imagem pode ser
+   salva de verdade.
+   ===================================================================== */
+async function abrirCartaoDaColecao(){
+  const todas = cartasQueTenho();
+  if(!todas.length) return toast("marque algumas cartas antes");
+
+  modal(`<div class="modal-pad">
+    <h3>Cartão da sua coleção</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      Uma imagem quadrada com as nove cartas mais valiosas que você tem, o total e o progresso.
+      É montada aqui no seu aparelho — nada sobe para lugar nenhum.</p>
+    <div id="cartao-alvo" class="cartao-previa"><span class="carregando">montando…</span></div>
+    <div class="pergunta-acoes">
+      <button class="btn" id="cartao-baixar" disabled>Baixar a imagem</button>
+      <button class="btn ghost" id="cartao-fechar">Fechar</button>
+    </div>
+    <p class="dg-txt" id="cartao-dica"></p>
+  </div>`);
+  document.getElementById("cartao-fechar").onclick = closeModal;
+
+  const melhores = todas.slice().sort((a, b) => (b.unit || 0) - (a.unit || 0)).slice(0, 9);
+  const url = await desenharCartao(melhores, todas);
+  const alvo = document.getElementById("cartao-alvo");
+  if(!alvo || !alvo.isConnected) return;
+  alvo.innerHTML = `<img src="${url}" alt="cartão da coleção">`;
+
+  const baixar = document.getElementById("cartao-baixar");
+  baixar.disabled = false;
+  baixar.onclick = () => {
+    const a = document.createElement("a");
+    a.href = url; a.download = "minha-colecao.png";
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+  document.getElementById("cartao-dica").textContent = ehIPhone()
+    ? "No iPhone, toque e segure a imagem acima e escolha “Adicionar às Fotos”."
+    : "A imagem tem 1080 × 1080, o tamanho que o Instagram pede.";
+}
+
+function carregarImagem(src){
+  return new Promise(res => {
+    if(!src) return res(null);
+    const img = new Image();
+    img.crossOrigin = "anonymous";      // sem isto o canvas fica sujo e não dá para salvar
+    img.onload = () => res(img);
+    img.onerror = () => res(null);
+    img.src = src;
+  });
+}
+
+async function desenharCartao(melhores, todas){
+  const L = 1080, cv = document.createElement("canvas");
+  cv.width = L; cv.height = L;
+  const g = cv.getContext("2d");
+
+  const cor = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || "#000";
+  const fundo = cor("--bg") || "#0a0b0e", ouro = cor("--accent") || "#e3b25a";
+  const texto = cor("--text") || "#e8eaf0", fraco = cor("--text-3") || "#8a92a6";
+
+  g.fillStyle = fundo; g.fillRect(0, 0, L, L);
+
+  // grade 3×3 das artes, ocupando a metade de cima
+  const artes = await Promise.all(melhores.map(c => carregarImagem(c.arteCrop || c.small)));
+  const lado = 300, gap = 12, x0 = (L - (lado*3 + gap*2)) / 2, y0 = 118;
+  artes.forEach((img, i) => {
+    const x = x0 + (i % 3) * (lado + gap), y = y0 + Math.floor(i / 3) * (lado*0.72 + gap);
+    const alt = lado * 0.72;
+    g.save();
+    g.beginPath();
+    if(g.roundRect) g.roundRect(x, y, lado, alt, 10); else g.rect(x, y, lado, alt);
+    g.clip();
+    if(img){
+      const escala = Math.max(lado / img.width, alt / img.height);
+      g.drawImage(img, x + (lado - img.width*escala)/2, y + (alt - img.height*escala)/2,
+                  img.width*escala, img.height*escala);
+    } else {
+      g.fillStyle = "#1e222c"; g.fillRect(x, y, lado, alt);
+    }
+    g.restore();
+  });
+
+  const fonte = (t, p, c) => { g.font = `${p} ${t}px -apple-system, "Segoe UI", system-ui, sans-serif`; g.fillStyle = c; };
+
+  fonte(30, 700, ouro); g.textAlign = "left";
+  g.fillText("COLLECTOR", 60, 74);
+  fonte(20, 500, fraco);
+  g.fillText("Magic: The Gathering", 60, 102);
+
+  const base = y0 + 3*(lado*0.72) + 2*gap + 74;
+  fonte(76, 700, texto); g.textAlign = "center";
+  g.fillText(ownedCount().toLocaleString("pt-BR"), L/2 - 230, base);
+  fonte(22, 500, fraco); g.fillText("cartas", L/2 - 230, base + 34);
+
+  fonte(76, 700, ouro);
+  g.fillText(money(ownedValue()), L/2 + 90, base);
+  fonte(22, 500, fraco); g.fillText("valor estimado", L/2 + 90, base + 34);
+
+  const edicoes = new Set(todas.map(c => c.set).filter(Boolean)).size;
+  fonte(20, 500, fraco); g.textAlign = "center";
+  g.fillText(`${edicoes} edições diferentes · ${(S.decks||[]).length} decks montados`, L/2, base + 86);
+
+  g.strokeStyle = ouro; g.globalAlpha = .35;
+  g.strokeRect(28, 28, L-56, L-56);
+  g.globalAlpha = 1;
+
+  return cv.toDataURL("image/png");
+}
+
+/* =====================================================================
+   O QUE MUDOU DESDE A ÚLTIMA VEZ
+
+   Um sino que não inventa: ele compara o que existe agora com a hora em
+   que você fechou o app da última vez. Enquanto não houver servidor de
+   envio, é isto que dá para prometer — e é honesto, porque só fala de
+   coisa que já aconteceu.
+   ===================================================================== */
+let avisos_ = { movers:null, carregando:false };
+
+function vistoEm(){ return Number((S.config || {}).visto) || 0; }
+
+/* "já vi" zera de verdade: a hora avança, as variações de preço que eu
+   acabei de mostrar saem da conta, e os chase cards que chegaram no alvo
+   ficam marcados como avisados — senão o sino ficaria aceso para sempre
+   por causa de uma carta que continua no preço. */
+function marcarVisto(){
+  S.config.visto = Date.now();
+  S.config.avisosVistos = chaseNoAlvo().map(x => x.id);
+  avisos_.movers = [];
+  save();
+}
+
+async function carregarAvisos(){
+  if(avisos_.carregando || avisos_.movers) return;
+  const itens = itensDaColecao();
+  if(!itens.length) return;
+  avisos_.carregando = true;
+  try{
+    const dias = Math.max(1, Math.min(30, Math.ceil((Date.now() - (vistoEm() || Date.now())) / 86400000)));
+    avisos_.movers = await rpc("collection_movers", { p_itens: itens, p_dias: dias, p_limite: 4 }) || [];
+  }catch(e){ avisos_.movers = []; }
+  avisos_.carregando = false;
+  if(view.name === "home") pintarSino();
+}
+
+/* chase card que chegou no preço que você queria */
+function chaseNoAlvo(){
+  const jaAvisados = (S.config || {}).avisosVistos || [];
+  return ((S.chase || {}).cartas || []).filter(x => {
+    const alvo = Number(x.alvo) || 0;
+    if(!alvo || jaAvisados.includes(x.id)) return false;
+    const p = precoLocal(deckParaCarta(x));
+    return p && p.valor > 0 && p.valor <= alvo;
+  });
+}
+
+function contarAvisos(){
+  const desde = vistoEm();
+  const noticiasNovas = desde
+    ? (noticias.itens || []).filter(n => new Date(n.published_at).getTime() > desde).length : 0;
+  const mexeram = (avisos_.movers || []).length;
+  const naMira = chaseNoAlvo().length;
+  return { noticiasNovas, mexeram, naMira, total: noticiasNovas + mexeram + naMira };
+}
+
+function pintarSino(){
+  const el = document.getElementById("sino");
+  if(!el) return;
+  const c = contarAvisos();
+  el.innerHTML = `🔔${c.total ? `<i>${c.total > 9 ? "9+" : c.total}</i>` : ""}`;
+  el.title = c.total ? "o que mudou desde a última vez" : "nada novo desde a última vez";
+}
+
+function abrirAvisos(){
+  const c = contarAvisos();
+  const desde = vistoEm();
+  const novas = desde
+    ? (noticias.itens || []).filter(n => new Date(n.published_at).getTime() > desde) : [];
+  const mira = chaseNoAlvo();
+
+  modal(`<div class="modal-pad">
+    <h3>O que mudou</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      ${desde ? `Desde ${new Date(desde).toLocaleString("pt-BR", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" })}.`
+              : "Esta é a sua primeira visita — a partir de agora eu guardo o que muda entre uma e outra."}</p>
+
+    ${!c.total ? `<div class="empty">Nada novo por enquanto.</div>` : ""}
+
+    ${mira.length ? `
+      <section class="bloco-cfg">
+        <h3>Chegaram no preço que você queria</h3>
+        ${mira.map(x => {
+          const p = precoLocal(deckParaCarta(x));
+          return `<div class="lc-linha">
+            ${x.img ? `<img src="${escapeHTML(x.img)}" alt="">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(x.n)}<small>seu alvo era ${money(Number(x.alvo))}</small></span>
+            <span class="lc-preco sobe">${p ? formatarPreco(p) : ""}</span>
+          </div>`;
+        }).join("")}
+      </section>` : ""}
+
+    ${(avisos_.movers || []).length ? `
+      <section class="bloco-cfg">
+        <h3>Cartas suas que mexeram de preço</h3>
+        ${blocoMovers()}
+      </section>` : ""}
+
+    ${novas.length ? `
+      <section class="bloco-cfg">
+        <h3>${novas.length} notícia${novas.length>1?"s":""} nova${novas.length>1?"s":""}</h3>
+        ${novas.slice(0,6).map(n => `<div class="lc-linha">
+          <span class="lc-nome">${escapeHTML(n.title)}<small>${escapeHTML(n.source_name)}</small></span>
+        </div>`).join("")}
+      </section>` : ""}
+
+    <div class="pergunta-acoes"><button class="btn" id="av-ok">Entendi</button></div>
+  </div>`);
+
+  document.querySelectorAll("[data-carta]").forEach(b => b.onclick = () => {
+    const r = S.owned[b.dataset.carta];
+    if(r){ closeModal(); openCard(cartaDoResumo(b.dataset.carta, r)); }
+  });
+  document.getElementById("av-ok").onclick = () => { marcarVisto(); closeModal(); pintarSino(); };
+}
+
+/* =====================================================================
+   VALORIZAÇÃO DA COLEÇÃO
+
+   O robô arquiva o preço de todo dia desde 01/09/2026. Aqui a gente
+   pergunta ao banco quanto a SUA coleção valia em cada um desses dias.
+
+   A lista de cartas vai no corpo do pedido, não no banco: dá para ver a
+   própria valorização sem ter conta. Em compensação o banco não sabe a
+   condição das suas cartas, então o gráfico usa o preço de carta
+   perfeita — e a tela diz isso.
+
+   Duas honestidades que a tela precisa carregar:
+   - só entra no gráfico a carta que o robô acompanha; a tela mostra
+     quantas das suas estão cobertas;
+   - o arquivo é novo, então a linha começa curta. Melhor uma linha curta
+     e verdadeira do que uma longa e inventada.
+   ===================================================================== */
+let valorizacao = { serie:null, movers:null, cobertura:null, dias:30, carregando:false, erro:null };
+
+const itensDaColecao = () => Object.keys(S.owned).map(id => ({ id, q: qtdDe(id) }));
+
+async function carregarValorizacao(){
+  const itens = itensDaColecao();
+  if(!itens.length || valorizacao.carregando) return;
+  valorizacao.carregando = true; valorizacao.erro = null;
+  try{
+    const [serie, movers, cobertura] = await Promise.all([
+      rpc("collection_series",   { p_itens: itens, p_dias: valorizacao.dias }),
+      rpc("collection_movers",   { p_itens: itens, p_dias: valorizacao.dias, p_limite: 5 }),
+      rpc("collection_coverage", { p_itens: itens }),
+    ]);
+    valorizacao.serie = serie || [];
+    valorizacao.movers = movers || [];
+    valorizacao.cobertura = cobertura || null;
+  }catch(e){
+    valorizacao.erro = e.message;
+  }
+  valorizacao.carregando = false;
+  if(view.name === "minha") renderMinha();
+}
+
+function blocoValorizacao(){
+  const v = valorizacao;
+  if(!Object.keys(S.owned).length) return "";
+
+  const periodos = [[7,"7 dias"],[30,"30 dias"],[90,"3 meses"],[365,"tudo"]];
+  const barra = `<div class="toggles" id="val-periodo">
+      ${periodos.map(([d,n]) => `<button class="tog ${d===v.dias?"on":""}" data-dias="${d}">${n}</button>`).join("")}
+    </div>`;
+
+  if(v.erro) return `<section class="bloco-val"><div class="val-topo"><b>Valorização</b>${barra}</div>
+    <p class="dg-txt">Não consegui buscar o histórico agora — ${escapeHTML(v.erro)}</p></section>`;
+
+  if(!v.serie) return `<section class="bloco-val"><div class="val-topo"><b>Valorização</b>${barra}</div>
+    <p class="dg-txt">Buscando o histórico…</p></section>`;
+
+  const pontos = v.serie.map(l => ({ dia:l.dia, v:Number(l.usd) })).filter(p => p.v > 0);
+  const cob = v.cobertura || {};
+  const nota = cob.pedidas ? `${cob.com_historico} das suas ${cob.pedidas} cartas têm histórico arquivado` : "";
+
+  if(pontos.length < 2){
+    return `<section class="bloco-val">
+      <div class="val-topo"><b>Valorização</b>${barra}</div>
+      <p class="dg-txt">${pontos.length === 1
+        ? `O arquivo começou em ${cob.primeiro_dia || "01/09/2026"} e ainda tem um dia só das suas cartas.
+           A linha ganha forma sozinha nos próximos dias — cada dia que passa é um ponto a mais.`
+        : `Nenhuma das suas cartas entrou no arquivo diário ainda. Elas entram na próxima passagem do robô,
+           e a partir daí o gráfico começa.`}
+        ${nota ? `<br>${nota}.` : ""}</p>
+    </section>`;
+  }
+
+  const primeiro = pontos[0].v, ultimo = pontos[pontos.length-1].v;
+  const dif = ultimo - primeiro;
+  const pct = primeiro ? (dif / primeiro) * 100 : 0;
+
+  return `
+  <section class="bloco-val">
+    <div class="val-topo"><b>Valorização</b>${barra}</div>
+    <div class="val-corpo">
+      <div class="val-numeros">
+        <div class="val-hoje">${money(ultimo)}</div>
+        <div class="val-dif ${dif>=0?"sobe":"desce"}">
+          ${dif>=0?"▲":"▼"} ${money(Math.abs(dif))} <span>(${Math.abs(pct).toFixed(1)}%)</span>
+        </div>
+        <div class="val-desde">de ${money(primeiro)} em ${dataCurta(pontos[0].dia)}</div>
+      </div>
+      <div class="val-grafico">${sparkline(pontos)}</div>
+    </div>
+    <p class="dg-txt">
+      ${nota ? nota + ". " : ""}O gráfico usa o preço de carta perfeita, que é o que o arquivo guarda;
+      o valor total lá em cima já desconta a condição de cada uma das suas.
+    </p>
+    ${blocoMovers()}
+  </section>`;
+}
+
+function dataCurta(iso){
+  const d = new Date(iso + "T12:00:00");
+  return isNaN(d) ? iso : d.toLocaleDateString("pt-BR", { day:"2-digit", month:"short" });
+}
+
+function blocoMovers(){
+  const lista = valorizacao.movers || [];
+  if(!lista.length) return "";
+  const subiram = lista.filter(m => Number(m.dif) > 0);
+  const cairam  = lista.filter(m => Number(m.dif) < 0).reverse();
+  if(!subiram.length && !cairam.length) return "";
+
+  const linha = m => {
+    const r = S.owned[m.card_id];
+    if(!r) return "";
+    const dif = Number(m.dif), pct = Number(m.pct);
+    return `<button class="mover" data-carta="${m.card_id}">
+      ${r.img ? `<img src="${r.img}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+      <span class="mv-nome">${escapeHTML(r.n || "?")}<small>${escapeHTML(r.sn || r.s || "")}</small></span>
+      <span class="mv-dif ${dif>=0?"sobe":"desce"}">${dif>=0?"+":"−"}${money(Math.abs(dif))}
+        <small>${pct!=null?`${dif>=0?"+":"−"}${Math.abs(pct).toFixed(1)}%`:""}</small></span>
+    </button>`;
+  };
+
+  return `
+  <div class="movers">
+    ${subiram.length ? `<div class="mv-col"><span class="flabel">Subiram</span>${subiram.map(linha).join("")}</div>` : ""}
+    ${cairam.length  ? `<div class="mv-col"><span class="flabel">Caíram</span>${cairam.map(linha).join("")}</div>` : ""}
+  </div>`;
+}
+
+function ligarValorizacao(){
+  const barra = document.getElementById("val-periodo");
+  if(barra) barra.querySelectorAll("[data-dias]").forEach(b => b.onclick = () => {
+    valorizacao.dias = Number(b.dataset.dias);
+    valorizacao.serie = null; valorizacao.movers = null;
+    renderMinha();
+    carregarValorizacao();
+  });
+  app.querySelectorAll("[data-carta]").forEach(b => b.onclick = () => {
+    const r = S.owned[b.dataset.carta];
+    if(r) openCard(cartaDoResumo(b.dataset.carta, r));
+  });
+}
+
+/* =====================================================================
+   CONDIÇÃO, IDIOMA E PREÇO PAGO
+
+   Até aqui o valor estimado supunha que toda carta é NM em inglês. Isso é
+   uma ficção educada: uma carta jogada vale bem menos, e carta em
+   português é outro mercado.
+
+   Duas honestidades importantes nesta parte:
+
+   - Os multiplicadores de condição são REGRA DE BOLSO do mercado, não
+     preço de fonte nenhuma. Por isso ficam à vista na tela e a conta diz
+     que é estimativa. O Scryfall publica preço de carta NM; o desconto
+     por desgaste é convenção de loja.
+   - Idioma NÃO mexe no preço. Carta em português às vezes vale mais e às
+     vezes vale menos, e eu não tenho fonte para isso — então fica só
+     registrado, e a tela avisa que o preço é o da impressão em inglês.
+
+   Carta marcada antes desta versão continua valendo como NM em inglês,
+   que é o que ela já era na conta. Ninguém precisa arrumar nada.
+   ===================================================================== */
+const CONDICOES = [
+  ["NM",  "Perfeita",     "Near Mint — como saiu do pacote",            1.00],
+  ["SP",  "Quase perfeita","Slightly Played — desgaste de manuseio",     0.90],
+  ["MP",  "Jogada",       "Moderately Played — marcas visíveis",         0.75],
+  ["HP",  "Muito jogada", "Heavily Played — desgaste forte",             0.55],
+  ["DMG", "Danificada",   "Damaged — dobra, rasgo ou dano de água",      0.35],
+];
+const IDIOMAS = [
+  ["en", "Inglês"], ["pt", "Português"], ["es", "Espanhol"], ["ja", "Japonês"],
+  ["de", "Alemão"], ["fr", "Francês"], ["it", "Italiano"], ["ru", "Russo"],
+  ["ko", "Coreano"], ["zhs", "Chinês"],
+];
+
+const condDe  = r => (r && r.cond) || "NM";
+const langDe  = r => (r && r.lang) || "en";
+const fatorCondicao = cond => (CONDICOES.find(c => c[0] === cond) || CONDICOES[0])[3];
+const nomeCondicao  = cond => (CONDICOES.find(c => c[0] === cond) || CONDICOES[0])[1];
+const nomeIdioma    = lang => (IDIOMAS.find(i => i[0] === lang) || IDIOMAS[0])[1];
+
+function normalizarCondicao(t){
+  const s = String(t || "").trim().toLowerCase();
+  if(!s) return "";
+  if(/^(nm|m|mint|near ?mint|nova|perfeita)$/.test(s)) return "NM";
+  if(/^(sp|lp|light(ly)? ?played|slight(ly)? ?played|excellent|good)$/.test(s)) return "SP";
+  if(/^(mp|moderate(ly)? ?played|played)$/.test(s)) return "MP";
+  if(/^(hp|heav(il)?y ?played|poor)$/.test(s)) return "HP";
+  if(/^(dmg|damaged|danificada)$/.test(s)) return "DMG";
+  return "";
+}
+function normalizarIdioma(t){
+  const s = String(t || "").trim().toLowerCase();
+  if(!s) return "";
+  const mapa = { en:"en", english:"en", ingles:"en", "inglês":"en",
+                 pt:"pt", "pt-br":"pt", portuguese:"pt", "português":"pt", portugues:"pt",
+                 es:"es", spanish:"es", "espanhol":"es",
+                 ja:"ja", jp:"ja", japanese:"ja", "japonês":"ja",
+                 de:"de", german:"de", fr:"fr", french:"fr",
+                 it:"it", italian:"it", ru:"ru", russian:"ru",
+                 ko:"ko", korean:"ko", zhs:"zhs", chinese:"zhs" };
+  return mapa[s] || "";
+}
+
+/* preço unitário de uma carta que você tem, já com o desconto da condição */
+function valorUnitario(id){
+  const r = S.owned[id];
+  if(!r) return 0;
+  const base = (r.fin === "foil" && r.usdF) ? r.usdF : (r.usd || 0);
+  return base * fatorCondicao(condDe(r));
+}
+/* quanto você pagou, em dólar, somando todas as cópias */
+function pagoTotal(){
+  return Object.entries(S.owned).reduce((a, [id, r]) => a + (Number(r.pg) || 0) * qtdDe(id), 0);
+}
+function temPrecoPago(){ return Object.values(S.owned).some(r => Number(r.pg) > 0); }
+
+/* =====================================================================
+   IMPORTAR DE OUTRO APLICATIVO
+
+   Quem já tem coleção no Moxfield, no Deckbox, no Archidekt, no TCGplayer
+   ou no MTGGoldfish não vai remarcar três mil cartas na mão. Todos eles
+   exportam CSV, e todos põem as mesmas coisas em colunas de nome
+   diferente — então a gente lê pelo NOME DA COLUNA, não pela posição, e
+   aceita os apelidos de cada um.
+
+   Depois de ler, cada linha precisa virar uma carta de verdade. A ordem
+   de tentativa vai do mais exato para o mais frouxo:
+
+     1. id do Scryfall, quando o arquivo traz (Archidekt e Moxfield trazem)
+     2. edição + número de coleção — identifica a impressão exata
+     3. nome + edição
+     4. só o nome — aí o Scryfall escolhe uma impressão qualquer
+
+   E nada é gravado antes de você ver o que casou e o que não casou. Uma
+   importação que apaga a coleção da pessoa é pior do que importação
+   nenhuma.
+   ===================================================================== */
+
+/* apelidos de coluna → o que a gente precisa */
+const COLUNAS = {
+  qtd:    ["count", "quantity", "qty", "quantidade", "amount"],
+  nome:   ["name", "card", "card name", "simple name", "nome"],
+  set:    ["edition", "set", "set name", "edition name", "set code", "edition code", "set id"],
+  setCode:["set code", "edition code", "set id"],
+  numero: ["collector number", "card number", "number", "collector_number"],
+  id:     ["scryfall id", "scryfall_id", "scryfallid"],
+  foil:   ["foil", "finish", "printing", "premium"],
+  cond:   ["condition", "condicao", "condição"],
+  lang:   ["language", "lang", "idioma"],
+  pago:   ["purchase price", "my price", "price", "preco pago", "preço pago", "purchase_price"],
+};
+
+/* Um CSV de verdade tem vírgula dentro de aspas ("Ach! Hans, Run!") e aspas
+   dobradas. Fazer isso na mão é chato mas é curto, e evita uma biblioteca. */
+function lerCSV(texto){
+  texto = String(texto || "").replace(/^﻿/, "");           // BOM do Excel
+  const primeira = (texto.split(/\r?\n/)[0] || "");
+  // alguns exports em português usam ponto e vírgula
+  const sep = (primeira.match(/;/g) || []).length > (primeira.match(/,/g) || []).length ? ";" : ",";
+
+  const linhas = [];
+  let campo = "", linha = [], dentro = false;
+  for(let i = 0; i < texto.length; i++){
+    const ch = texto[i];
+    if(dentro){
+      if(ch === '"'){
+        if(texto[i+1] === '"'){ campo += '"'; i++; }
+        else dentro = false;
+      } else campo += ch;
+    } else if(ch === '"'){ dentro = true; }
+    else if(ch === sep){ linha.push(campo); campo = ""; }
+    else if(ch === "\n"){ linha.push(campo); linhas.push(linha); linha = []; campo = ""; }
+    else if(ch !== "\r"){ campo += ch; }
+  }
+  if(campo || linha.length){ linha.push(campo); linhas.push(linha); }
+  return linhas.filter(l => l.some(c => String(c).trim() !== ""));
+}
+
+function mapearColunas(cabecalho){
+  const limpo = cabecalho.map(c => String(c).trim().toLowerCase());
+  const achar = apelidos => {
+    for(const a of apelidos){ const i = limpo.indexOf(a); if(i >= 0) return i; }
+    return -1;
+  };
+  const mapa = {};
+  Object.entries(COLUNAS).forEach(([k, apelidos]) => { mapa[k] = achar(apelidos); });
+  return mapa;
+}
+
+const FOIL_SIM = /^(foil|yes|true|1|sim|etched|foil etched)$/i;
+
+function linhasDoArquivo(texto){
+  const linhas = lerCSV(texto);
+  if(linhas.length < 2) return { erro:"esse arquivo não parece um CSV com cabeçalho" };
+  const mapa = mapearColunas(linhas[0]);
+  if(mapa.nome < 0 && mapa.id < 0)
+    return { erro:"não achei uma coluna de nome de carta (nem de id do Scryfall) no cabeçalho" };
+
+  const pega = (l, i) => (i >= 0 && l[i] !== undefined) ? String(l[i]).trim() : "";
+  const fora = [];
+  for(let i = 1; i < linhas.length; i++){
+    const l = linhas[i];
+    const nome = pega(l, mapa.nome);
+    const id = pega(l, mapa.id);
+    if(!nome && !id) continue;
+    const q = parseInt(pega(l, mapa.qtd), 10);
+    const foilCru = pega(l, mapa.foil);
+    fora.push({
+      nome, id,
+      set: (pega(l, mapa.setCode) || pega(l, mapa.set)).trim(),
+      numero: pega(l, mapa.numero).replace(/^0+(?=\d)/, ""),
+      qtd: Number.isFinite(q) && q > 0 ? q : 1,
+      foil: FOIL_SIM.test(foilCru),
+      cond: normalizarCondicao(pega(l, mapa.cond)),
+      lang: normalizarIdioma(pega(l, mapa.lang)),
+      pago: precoDoTexto(pega(l, mapa.pago)),
+      linha: i + 1,
+    });
+  }
+  return { itens:fora, colunas:mapa };
+}
+
+function precoDoTexto(t){
+  if(!t) return 0;
+  const n = parseFloat(String(t).replace(/[^\d.,-]/g, "").replace(/\.(?=\d{3}\b)/g, "").replace(",", "."));
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
+/* Identificadores no formato que o /cards/collection do Scryfall entende.
+   Um pedido leva 75 por vez. */
+function identificadorDe(it){
+  if(it.id && /^[0-9a-f-]{30,}$/i.test(it.id)) return { id: it.id };
+  const set = (it.set || "").toLowerCase();
+  // sigla de edição tem 3 a 5 letras/números; "Bloomburrow" por extenso não serve aqui
+  const sigla = /^[a-z0-9]{3,5}$/.test(set) ? set : "";
+  if(sigla && it.numero) return { set: sigla, collector_number: it.numero };
+  if(sigla && it.nome)   return { name: it.nome, set: sigla };
+  return { name: it.nome };
+}
+
+async function casarComOScryfall(itens, aoAndar){
+  const achadas = new Map();     // índice do item → carta normalizada
+  const naoAchadas = [];
+  for(let i = 0; i < itens.length; i += 75){
+    const lote = itens.slice(i, i + 75);
+    let j = null;
+    try{
+      const r = await fetch(`${API}/cards/collection`, {
+        method:"POST", headers:{ "Content-Type":"application/json", Accept:"application/json" },
+        body: JSON.stringify({ identifiers: lote.map(identificadorDe) })
+      });
+      if(r.ok) j = await r.json();
+    }catch(e){}
+    if(!j){ lote.forEach(it => naoAchadas.push(it)); }
+    else {
+      const porNome = new Map();
+      (j.data || []).map(normalize).forEach(c => {
+        achadas.set(c.id, c);
+        const chave = c.name.toLowerCase();
+        if(!porNome.has(chave)) porNome.set(chave, []);
+        porNome.get(chave).push(c);
+      });
+      // o Scryfall devolve as cartas fora de ordem: cada item procura a sua
+      lote.forEach(it => {
+        const ident = identificadorDe(it);
+        let c = null;
+        if(ident.id) c = achadas.get(ident.id) || null;
+        if(!c){
+          const cands = porNome.get((it.nome || "").toLowerCase()) || [];
+          c = cands.find(x => ident.set && x.set.toLowerCase() === ident.set
+                              && (!ident.collector_number || String(x.num) === ident.collector_number))
+              || cands.find(x => ident.set && x.set.toLowerCase() === ident.set)
+              || cands[0] || null;
+        }
+        if(c) it.carta = c; else naoAchadas.push(it);
+      });
+    }
+    if(aoAndar) aoAndar(Math.min(i + 75, itens.length), itens.length);
+    await sleep(PAGE_DELAY);
+  }
+  return { casadas: itens.filter(it => it.carta), naoAchadas };
+}
+
+function abrirImportar(){
+  modal(`<div class="modal-pad">
+    <h3>Trazer coleção de outro aplicativo</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      Exporte a sua coleção em <b>CSV</b> e solte o arquivo aqui. Entendo os formatos do
+      <b>Moxfield</b>, <b>Deckbox</b>, <b>Archidekt</b>, <b>TCGplayer</b> e <b>MTGGoldfish</b> —
+      e qualquer outro que tenha uma coluna de nome de carta.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 16px">
+      Nada é gravado antes de você ver o que casou e o que não casou.</p>
+
+    <label class="btn" style="cursor:pointer">Escolher o arquivo CSV
+      <input type="file" id="imp-arquivo" accept=".csv,text/csv,text/plain" hidden></label>
+
+    <div class="status" id="imp-status" style="margin-top:14px"></div>
+    <div id="imp-resultado"></div>
+  </div>`);
+
+  document.getElementById("imp-arquivo").onchange = async e => {
+    const arq = e.target.files && e.target.files[0];
+    if(!arq) return;
+    const st = document.getElementById("imp-status");
+    st.textContent = "lendo o arquivo…";
+    const texto = await arq.text();
+    const lido = linhasDoArquivo(texto);
+    if(lido.erro){ st.textContent = lido.erro; return; }
+    if(!lido.itens.length){ st.textContent = "o arquivo não tem nenhuma linha de carta"; return; }
+
+    st.textContent = `${lido.itens.length} linhas — procurando as cartas no Scryfall…`;
+    const { casadas, naoAchadas } = await casarComOScryfall(lido.itens, (feito, total) => {
+      st.textContent = `procurando as cartas no Scryfall… ${feito} de ${total}`;
+    });
+    st.textContent = "";
+    mostrarPrevia(arq.name, casadas, naoAchadas, lido.colunas);
+  };
+}
+
+function mostrarPrevia(nomeArquivo, casadas, naoAchadas, colunas){
+  const copias = casadas.reduce((a, it) => a + it.qtd, 0);
+  const novas  = casadas.filter(it => !isOwned(it.carta.id)).length;
+  const jaTinha = casadas.length - novas;
+  const valor = casadas.reduce((a, it) => a + (Number(it.carta.usd) || 0) * it.qtd, 0);
+  const temCond = colunas.cond >= 0, temPago = colunas.pago >= 0;
+
+  document.getElementById("imp-resultado").innerHTML = `
+    <div class="kv"><span>Arquivo</span><b>${escapeHTML(nomeArquivo)}</b></div>
+    <div class="kv"><span>Cartas encontradas</span><b>${casadas.length} linhas · ${copias} cópias</b></div>
+    <div class="kv"><span>Novas para você</span><b>${novas}</b></div>
+    <div class="kv"><span>Você já tinha</span><b>${jaTinha}</b></div>
+    <div class="kv"><span>Valor estimado do que entra</span><b>${money(valor)}</b></div>
+    ${temCond ? `<div class="kv"><span>Condição</span><b>vem no arquivo</b></div>` : ""}
+    ${temPago ? `<div class="kv"><span>Preço pago</span><b>vem no arquivo</b></div>` : ""}
+
+    ${naoAchadas.length ? `
+      <details class="avancado" open>
+        <summary>${naoAchadas.length} linha${naoAchadas.length>1?"s":""} que eu não consegui identificar</summary>
+        <div class="nao-achadas">
+          ${naoAchadas.slice(0,60).map(it => `<span>linha ${it.linha}: ${escapeHTML(it.nome || it.id || "?")}${
+            it.set ? ` <i>(${escapeHTML(it.set)})</i>` : ""}</span>`).join("")}
+          ${naoAchadas.length > 60 ? `<span>…e mais ${naoAchadas.length - 60}</span>` : ""}
+        </div>
+        <p class="dg-txt">Costuma ser carta de outro jogo, token, ou nome escrito de um jeito que o
+        Scryfall não reconhece. Essas linhas simplesmente não entram — nada do que você já tem é mexido.</p>
+      </details>` : ""}
+
+    ${jaTinha ? `
+      <div class="fgrupo" style="margin-top:14px">
+        <span class="flabel">Para as cartas que você já tem</span>
+        <div class="toggles">
+          <button class="tog on" data-modo="arquivo">usar a quantidade do arquivo</button>
+          <button class="tog" data-modo="somar">somar às minhas</button>
+          <button class="tog" data-modo="pular">não mexer</button>
+        </div>
+      </div>` : ""}
+
+    <div class="pergunta-acoes" style="margin-top:16px">
+      <button class="btn" id="imp-confirmar">Trazer ${casadas.length} carta${casadas.length>1?"s":""}</button>
+      <button class="btn ghost" id="imp-cancelar">Cancelar</button>
+    </div>`;
+
+  let modo = "arquivo";
+  document.querySelectorAll("[data-modo]").forEach(b => b.onclick = () => {
+    modo = b.dataset.modo;
+    document.querySelectorAll("[data-modo]").forEach(x => x.classList.toggle("on", x === b));
+  });
+  document.getElementById("imp-cancelar").onclick = closeModal;
+  document.getElementById("imp-confirmar").onclick = () => {
+    const n = aplicarImportacao(casadas, modo);
+    closeModal(); render();
+    toast(`${n} carta${n>1?"s":""} entraram na sua coleção`);
+  };
+}
+
+function aplicarImportacao(casadas, modo){
+  let mexidas = 0;
+  casadas.forEach(it => {
+    const c = it.carta;
+    const jaTinha = isOwned(c.id);
+    if(jaTinha && modo === "pular") return;
+
+    const antes = S.owned[c.id] || {};
+    const registro = Object.assign(resumoCarta(c), {
+      at: antes.at || Date.now(),
+      fin: it.foil ? "foil" : (antes.fin || "normal"),
+    });
+    const qAntes = jaTinha ? qtdDe(c.id) : 0;
+    registro.q = modo === "somar" ? qAntes + it.qtd : it.qtd;
+    if(it.cond) registro.cond = it.cond;
+    else if(antes.cond) registro.cond = antes.cond;
+    if(it.lang) registro.lang = it.lang;
+    else if(antes.lang) registro.lang = antes.lang;
+    if(it.pago) { registro.pg = it.pago; registro.pgM = "USD"; }
+    else if(antes.pg){ registro.pg = antes.pg; registro.pgM = antes.pgM; }
+
+    S.owned[c.id] = registro;
+    mexidas++;
+  });
+  save(); renderKPIs();
+  return mexidas;
 }
 
 /* =====================================================================
