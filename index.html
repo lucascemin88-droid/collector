@@ -244,6 +244,77 @@
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
     letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  /* ---------------- ficha do deck ---------------- */
+  .deck-ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+  .ficha-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:16px 18px;box-shadow:var(--lift)}
+  .ficha-bloco .flabel{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.09em;
+    color:var(--text-3);margin-bottom:9px}
+  .ficha-topo{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .ficha-topo .flabel{margin-bottom:0}
+  .bracket-topo{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .bracket-num{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;
+    font-size:26px;font-weight:700;color:var(--accent-ink);background:var(--accent);flex:0 0 auto}
+  .bracket-topo b{display:block;font-size:16px;color:var(--text)}
+  .bracket-topo span{font-size:12.5px;color:var(--text-3)}
+  .combos{display:flex;flex-direction:column;gap:9px}
+  .combo{position:relative;padding:10px 30px 10px 12px;border:1px solid var(--line);
+    border-radius:var(--radius);background:var(--surface-2)}
+  .combo-cartas{font-size:12.5px;color:var(--text)}
+  .combo p{margin:5px 0 0;font-size:12.5px;color:var(--text-2)}
+  .combo-fora,.pt-fora{position:absolute;top:7px;right:8px;color:var(--text-3);font-size:15px;line-height:1}
+  .combo-fora:hover,.pt-fora:hover{color:var(--neg)}
+  .partidas{display:flex;flex-direction:column;gap:2px}
+  .partida{position:relative;display:flex;align-items:center;gap:11px;padding:7px 30px 7px 4px;
+    border-bottom:1px solid var(--line)}
+  .pt-res{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;flex:0 0 auto;
+    font-size:12px;font-weight:700;background:var(--neg-soft);color:var(--neg)}
+  .partida.ganhou .pt-res{background:rgba(91,214,155,.14);color:var(--pos)}
+  .pt-info{flex:1 1 auto;min-width:0;font-size:12.5px;color:var(--text-2)}
+  .pt-info small{display:block;font-size:11px;color:var(--text-3)}
+  .pt-fora{position:static;margin-left:auto}
+  .lc-linha.fechado{opacity:.5}
+  .diario{margin-top:14px}
+  .diario-linhas{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+  .diario-linha{display:flex;align-items:center;gap:11px}
+  .dr-mes{flex:0 0 62px;font-size:12px;color:var(--text-3)}
+  .dr-barra{flex:1 1 auto;height:9px;border-radius:999px;background:var(--surface-3);overflow:hidden}
+  .dr-barra i{display:block;height:100%;background:var(--accent);opacity:.75}
+  .dr-num{flex:0 0 auto;font-size:12.5px;color:var(--text);text-align:right;min-width:110px}
+  .dr-num small{display:block;font-size:11px;color:var(--text-3)}
+  .slab-foto{border-radius:var(--radius);overflow:hidden;background:var(--surface-2);
+    min-height:120px;display:grid;place-items:center;margin-bottom:10px}
+  .slab-foto img{width:100%;display:block}
+  .sg-grupo{margin-top:14px}
+  .sg-grupo .grupo-titulo{font-size:12px}
+  .sg-linhas{display:flex;flex-direction:column;gap:1px}
+  .sg-linha{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:6px 4px;
+    border-bottom:1px solid var(--line);transition:background var(--t-fast)}
+  .sg-linha:hover{background:var(--surface-2)}
+  .sg-linha img,.sg-linha .mv-sem{width:30px;height:42px;object-fit:cover;border-radius:3px;
+    flex:0 0 auto;background:var(--surface-3)}
+  .sg-mais{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700}
+  .sg-linha.posta{opacity:.55}
+  .card.escolhida{outline:2px solid var(--accent);outline-offset:1px}
+  .escolher-versao{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;
+    background:rgba(10,11,14,.72);border:1px solid var(--line-strong);color:var(--text-2);
+    font-size:12px;line-height:1;display:grid;place-items:center}
+  .escolher-versao:hover{color:var(--accent);border-color:var(--accent)}
+  .tag-tenho{position:absolute;top:6px;left:6px;font-size:10px;padding:2px 6px;border-radius:999px;
+    background:var(--accent);color:var(--accent-ink);font-weight:700}
+  .dl-versao{font-size:13px}
+  .entendi.fora{margin-top:8px}
+  .entendi.fora .flabel{color:var(--neg)}
+  .lido.fora{border-color:rgba(240,112,92,.38);background:var(--neg-soft);color:var(--neg)}
+  .lido.nao-entendi{border-color:var(--line-strong);color:var(--text-3);font-style:italic}
+  .mc-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .mc-topo .flabel{margin-bottom:0}
+  .mc-qtd{display:flex;align-items:center;gap:8px}
+  .mc-qtd button{width:26px;height:26px;border-radius:7px;border:1px solid var(--line-strong);
+    background:var(--surface-2);color:var(--text);font-size:15px;line-height:1}
+  .mc-qtd button:hover{border-color:var(--accent);color:var(--accent)}
+  .mc-qtd b{min-width:22px;text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
   .mc-linha{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px}
   .mc-linha .field span{display:block;font-size:11px;color:var(--text-3);margin-bottom:3px}
   .mc-linha select,.mc-linha input{width:100%;padding:7px 9px;font-size:12.5px}
@@ -1767,6 +1838,7 @@ function normalize(c){
     ci:(c.color_identity || []).join("").toLowerCase(),
     produz:(c.produced_mana || []).join("").toLowerCase(),
     legal:c.legalities || null,
+    gc:c.game_changer === true,          // lista oficial de Game Changers do Commander
     edhrec:c.edhrec_rank || null,
     cores:(c.colors || (c.card_faces && c.card_faces[0] && c.card_faces[0].colors) || []).join("").toLowerCase(),
     mv:(c.cmc === undefined ? null : c.cmc)
@@ -1875,7 +1947,8 @@ const MENU = [
       { v:"comunidade", nome:"Coleções da comunidade" },
       { v:"mine",       nome:"Minhas coleções" },
       { v:"minha",      nome:"Coleção completa" },
-      { v:"troca",      nome:"Repetidas" } ] },
+      { v:"troca",      nome:"Repetidas" },
+      { v:"especiais",  nome:"Graduadas e assinadas" } ] },
 
   { id:"buscador", nome:"Buscador", secoes:[
       { v:"chase",    nome:"Chase cards" },
@@ -1885,6 +1958,9 @@ const MENU = [
   { id:"game", nome:"Game zone", secoes:[
       { v:"decks", nome:"Decks" },
       { v:"mesa",  nome:"Mesa" } ] },
+
+  { id:"mercado", nome:"Mercado", secoes:[
+      { v:"mercado", nome:"Anúncios" } ] },
 ];
 
 /* telas de dentro → a qual mestre pertencem */
@@ -1929,6 +2005,8 @@ function render(){
   if(view.name==="home") return renderHome();
   if(view.name==="comunidade") return renderComunidade();
   if(view.name==="troca") return renderTroca();
+  if(view.name==="especiais") return renderEspeciais();
+  if(view.name==="mercado") return renderMercado();
   if(view.name==="config") return renderConfig();
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
@@ -1955,7 +2033,9 @@ function render(){
    cinza sobre fundo cinza.
    ===================================================================== */
 const TEMAS = {
-  ouro: { nome:"Ouro na noite", desc:"o de sempre", mostra:["#0a0b0e","#e3b25a"], vars:{} },
+  sistema: { nome:"Como o aparelho", desc:"segue o modo escuro", mostra:["#0C0A11","#f4f1ea"], vars:{} },
+
+  ouro: { nome:"Ouro na noite", desc:"o de sempre", mostra:["#0C0A11","#D9A441"], vars:{} },
 
   safira: { nome:"Safira", desc:"azul de ilha", mostra:["#080b12","#6fb6f0"], vars:{
     "--bg":"#080b12", "--surface-1":"#0e1420", "--surface-2":"#151d2c", "--surface-3":"#1c2739",
@@ -1996,14 +2076,23 @@ const TEMAS = {
 
 function temaAtual(){ return (S.config && S.config.tema) || "ouro"; }
 
-function aplicarTema(id){
+/* "Como o aparelho" não é um tema: é uma escolha que aponta para outro.
+   Claro vira Pergaminho, escuro vira o de sempre. */
+function temaEfetivo(){
+  const id = temaAtual();
+  if(id !== "sistema") return id;
+  return matchMedia("(prefers-color-scheme: light)").matches ? "pergaminho" : "ouro";
+}
+
+function aplicarTema(){
+  const id = temaEfetivo();
   const t = TEMAS[id] || TEMAS.ouro;
   const raiz = document.documentElement;
   // limpa o tema anterior antes de pôr o novo, senão sobra variável solta
   Object.keys(TEMAS).forEach(k => Object.keys(TEMAS[k].vars).forEach(v => raiz.style.removeProperty(v)));
   Object.entries(t.vars).forEach(([k, v]) => raiz.style.setProperty(k, v));
   const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute("content", t.vars["--bg"] || "#0a0b0e");
+  if(meta) meta.setAttribute("content", t.vars["--bg"] || "#0C0A11");
 }
 
 /* =====================================================================
@@ -2378,7 +2467,10 @@ function renderConfig(){
         <button class="btn ghost" id="cfg-instalar">Pôr na tela de início</button>
         <button class="btn ghost" id="cfg-backup">Backup em arquivo</button>
         <button class="btn ghost" id="cfg-importar">Importar de outro app</button>
+        <button class="btn ghost" id="cfg-exportar">Exportar em CSV</button>
       </div>
+      <p class="dg-txt">O CSV sai no formato que o Moxfield, o Deckbox e os outros leem — e que a
+      importação daqui também entende. O que é seu vai embora com você quando quiser.</p>
     </section>
 
     <p class="status">Collector · dados de cartas e preços do Scryfall · sem afiliação com a Wizards of the Coast</p>`;
@@ -2390,10 +2482,11 @@ function renderConfig(){
   document.getElementById("cfg-instalar").onclick = abrirInstalar;
   document.getElementById("cfg-backup").onclick = abrirBackup;
   document.getElementById("cfg-importar").onclick = abrirImportar;
+  document.getElementById("cfg-exportar").onclick = exportarColecao;
 
   app.querySelectorAll("[data-tema]").forEach(b => b.onclick = () => {
     S.config.tema = b.dataset.tema; save();
-    aplicarTema(S.config.tema);
+    aplicarTema();
     renderConfig();
     toast(`Tema ${TEMAS[S.config.tema].nome}`);
   });
@@ -2623,6 +2716,8 @@ async function renderCollection(id){
       ${def.type ? `<button class="btn ghost" id="edit-coll">Editar</button>` : ""}
       ${excluidasDe(def.id).length ? `<button class="btn ghost" id="restore-coll">Restaurar ${excluidasDe(def.id).length} removida${excluidasDe(def.id).length>1?"s":""}</button>` : ""}
       ${def.type ? `<button class="btn ghost" id="del-coll">Excluir</button>` : ""}
+      ${def.type ? `<button class="btn ${def.publicada ? "ghost" : ""}" id="pub-coll">${
+        def.publicada ? "★ publicada — tirar" : "Publicar na comunidade"}</button>` : ""}
       <button class="btn ghost" id="share-coll">Compartilhar</button>
     </div>
     <div class="cards" id="grid">${skeletons(12)}</div>
@@ -2659,6 +2754,8 @@ async function renderCollection(id){
     go("collection", def.id);
   };
   document.getElementById("share-coll").onclick = ()=> shareCollection(def);
+  const bPub = document.getElementById("pub-coll");
+  if(bPub) bPub.onclick = () => def.publicada ? despublicarColecao(def) : publicarColecao(def);
 
   if(isManual){ cur.total = def.cards.length; paintGrid(); paintProgress(); return; }
   await loadMore();
@@ -3657,6 +3754,14 @@ function combinarPartes(partes){
 function queryDasPartes(partes){
   const q = partes.map(p => p.q).filter(Boolean).join(" ");
   return q || "game:paper";
+}
+
+/* Cada exclusão vira uma negação separada: "sem as verdes" e "sem as comuns"
+   tiram verde OU comum, e não só as que são verdes E comuns ao mesmo tempo. */
+function queryComExclusoes(partes, fora){
+  const dentro = queryDasPartes(partes);
+  const negadas = (fora || []).map(p => p.q).filter(Boolean).map(q => `-(${q})`).join(" ");
+  return negadas ? `${dentro} ${negadas}` : dentro;
 }
 
 
@@ -4950,7 +5055,7 @@ function cartaDeDeck(c, qtd){
     cores:c.cores || "", ci:c.ci || c.cores || "", produz:c.produz || "",
     mana:c.mana || "", oracle:c.oracle || "",
     img:c.small, big:c.normal, usd:Number(c.usd) || 0, eur:Number(c.eur) || 0,
-    legal:c.legal || null, qtd:qtd || 1,
+    legal:c.legal || null, gc:!!c.gc, qtd:qtd || 1,
   };
 }
 /* volta ao formato que o resto do app entende (openCard, preço, links) */
@@ -5344,15 +5449,22 @@ function renderDeck(id){
         ${FORMATOS.map(f => `<option value="${f.id}"${d.formato===f.id?" selected":""}>${f.nome}</option>`).join("")}
       </select>
       <div class="grow"></div>
+      <button class="btn ghost" id="deck-sugestoes">Sugestões</button>
       <button class="btn ghost" id="deck-compras">O que falta comprar</button>
       <button class="btn ghost" id="deck-texto">Exportar lista</button>
       <button class="btn ghost" id="deck-excluir">Excluir</button>
     </div>
 
-    <div class="deck-layout">
+    <div class="seg" id="deck-abas" style="margin-bottom:14px">
+      <button class="active" data-aba="cartas">Cartas</button>
+      <button data-aba="ficha">Ficha do deck</button>
+    </div>
+
+    <div class="deck-layout" id="deck-area-cartas">
       <div class="deck-cartas" id="deck-cartas"></div>
       <aside class="deck-lado" id="deck-diagnostico"></aside>
-    </div>`;
+    </div>
+    <div id="deck-ficha" class="deck-ficha" hidden></div>`;
 
   document.getElementById("voltar-decks").onclick = () => go("decks");
   const nome = document.getElementById("deck-nome");
@@ -5363,11 +5475,22 @@ function renderDeck(id){
   const bc = document.getElementById("def-comandante");
   if(bc) bc.onclick = () => buscarParaDeck(d, { comandante:true });
   document.getElementById("deck-formato").onchange = e => { d.formato = e.target.value; save(); renderDeck(d.id); };
+  document.getElementById("deck-sugestoes").onclick = () => abrirSugestoes(d);
   document.getElementById("deck-compras").onclick = () => abrirComprasDoDeck(d);
   document.getElementById("deck-texto").onclick = () => exportarDeck(d);
   document.getElementById("deck-excluir").onclick = () => {
     if(!confirm(`Excluir o deck "${d.nome}"? As cartas continuam na sua coleção.`)) return;
     S.decks = decks().filter(x => x.id !== d.id); save(); go("decks");
+  };
+
+  const abas = document.getElementById("deck-abas");
+  abas.onclick = e => {
+    const b = e.target.closest("[data-aba]"); if(!b) return;
+    abas.querySelectorAll("[data-aba]").forEach(x => x.classList.toggle("active", x === b));
+    const ficha = b.dataset.aba === "ficha";
+    document.getElementById("deck-area-cartas").hidden = ficha;
+    document.getElementById("deck-ficha").hidden = !ficha;
+    if(ficha) pintarFichaDoDeck(d);
   };
 
   pintarDeck(d);
@@ -5417,6 +5540,7 @@ function linhaDeCarta(c, d){
     <span class="dl-acoes">
       ${c.ehComandante ? "" : `<button class="dl-menos" title="tirar uma">−</button>
       <button class="dl-mais" title="mais uma">+</button>`}
+      <button class="dl-versao" title="trocar a versão desta carta">⇄</button>
       <button class="dl-info" title="detalhes">i</button>
       <button class="dl-fora" title="tirar do deck">×</button>
     </span>
@@ -5444,7 +5568,269 @@ function ligarLinhasDoDeck(d){
       const c = ehCmd ? d.comandante : achar();
       if(c) openCard(deckParaCarta(c));
     });
+    bt(".dl-versao", () => {
+      const c = ehCmd ? d.comandante : achar();
+      if(c) escolherVersaoNoDeck(d, c, ehCmd);
+    });
   });
+}
+
+/* =====================================================================
+   BRACKET DO COMMANDER
+
+   Os brackets são o sistema oficial da Wizards para dizer o quanto um
+   deck de Commander é forte, de 1 (Exhibition) a 5 (cEDH). Os critérios
+   são poucos e claros: quantas Game Changers, se tem negação de terreno
+   em massa, turnos extras, tutores e combo de duas cartas.
+
+   A parte que costuma envelhecer — QUAIS cartas são Game Changers — a
+   gente não guarda: o Scryfall marca cada carta com `game_changer`, e é
+   dali que vem a conta. Quando a Wizards mexer na lista, o app acompanha
+   sozinho, sem eu tocar em nada. (Eram 53 cartas quando isto foi escrito.)
+
+   O que o app NÃO faz é adivinhar combo de duas cartas: isso depende de
+   ler interação entre cartas, e chutar aqui daria bracket errado. Então
+   essas três perguntas quem responde é você, e a resposta fica guardada
+   no deck.
+   ===================================================================== */
+const BRACKETS = [
+  [1, "Exhibition", "Ultracasual. Tema acima de ganhar."],
+  [2, "Core",       "O nível de um precon de fábrica."],
+  [3, "Upgraded",   "Precon turbinado, com cartas escolhidas a dedo."],
+  [4, "Optimized",  "Seus decks mais fortes, sem foco em metagame."],
+  [5, "cEDH",       "Competitivo de verdade, jogando o metagame."],
+];
+
+/* padrões de texto que a própria carta declara — estes dá para ver sem chutar */
+const TURNO_EXTRA = /take an extra turn|takes an extra turn/i;
+const TERRA_EM_MASSA = /destroy all lands|each player sacrifices? (a|all) lands?|destroy target land.*(each|all)/i;
+const TUTOR = /search your library for (a|an|up to|two|three)/i;
+
+function brackDoDeck(d){
+  const todas = cartasDoDeck(d);
+  const gc = todas.filter(c => c.gc);
+  const turnos = todas.filter(c => TURNO_EXTRA.test(c.oracle || ""));
+  const terras = todas.filter(c => TERRA_EM_MASSA.test(c.oracle || ""));
+  const tutores = todas.filter(c => TUTOR.test(c.oracle || ""));
+  const resp = (d.bracketResp || {});          // o que o dono respondeu
+
+  let nivel, porque;
+  if(resp.combo === "cedh"){ nivel = 5; porque = "você marcou o deck como competitivo de metagame"; }
+  else if(gc.length > 3 || terras.length || resp.combo === "cedo" || (resp.turnos === "encadeia")){
+    nivel = 4;
+    porque = gc.length > 3 ? `${gc.length} Game Changers (acima de 3)`
+           : terras.length ? "tem negação de terreno em massa"
+           : resp.combo === "cedo" ? "você marcou que tem combo de duas cartas cedo"
+           : "você marcou que encadeia turnos extras";
+  }
+  else if(gc.length > 0 || resp.combo === "tarde" || tutores.length > 3){
+    nivel = 3;
+    porque = gc.length ? `${gc.length} Game Changer${gc.length>1?"s":""} (até 3 cabe no 3)`
+           : resp.combo === "tarde" ? "combo de duas cartas só no fim de jogo"
+           : `${tutores.length} tutores`;
+  }
+  else if(turnos.length || tutores.length){ nivel = 2; porque = "sem Game Changers, com peças fortes soltas"; }
+  else { nivel = 1; porque = "sem Game Changers, sem tutor, sem turno extra"; }
+
+  return { nivel, porque, gc, turnos, terras, tutores, respondeu: !!d.bracketResp };
+}
+
+function blocoBracket(d){
+  if(!formatoDe(d.formato).comandante) return "";
+  const b = brackDoDeck(d);
+  const [n, nome, desc] = BRACKETS[b.nivel - 1];
+  const resp = d.bracketResp || {};
+
+  return `
+  <section class="ficha-bloco">
+    <div class="bracket-topo">
+      <div class="bracket-num">${n}</div>
+      <div>
+        <b>${nome}</b>
+        <span>${desc}</span>
+      </div>
+    </div>
+    <p class="dg-txt">${escapeHTML(b.porque)}.
+      ${b.gc.length ? `Game Changers: ${b.gc.map(c => escapeHTML(c.n)).join(", ")}.` : ""}
+      ${b.terras.length ? `Negação de terreno: ${b.terras.map(c => escapeHTML(c.n)).join(", ")}.` : ""}
+      ${b.turnos.length ? `Turnos extras: ${b.turnos.map(c => escapeHTML(c.n)).join(", ")}.` : ""}
+      ${b.tutores.length ? `${b.tutores.length} tutor${b.tutores.length>1?"es":""}.` : ""}
+    </p>
+    <div class="fgrupo" style="margin-top:10px">
+      <span class="flabel">Combo de duas cartas — só você sabe</span>
+      <div class="toggles" id="bk-combo">
+        ${[["nao","não tem"],["tarde","tem, só no fim de jogo"],["cedo","tem, e ganha cedo"],["cedh","é cEDH"]]
+          .map(([v,t]) => `<button class="tog ${((resp.combo||"nao")===v)?"on":""}" data-combo="${v}">${t}</button>`).join("")}
+      </div>
+    </div>
+    <div class="fgrupo" style="margin-top:8px">
+      <span class="flabel">Turnos extras</span>
+      <div class="toggles" id="bk-turnos">
+        ${[["poucos","poucos e soltos"],["encadeia","encadeia um atrás do outro"]]
+          .map(([v,t]) => `<button class="tog ${((resp.turnos||"poucos")===v)?"on":""}" data-turnos="${v}">${t}</button>`).join("")}
+      </div>
+    </div>
+    <p class="dg-txt">A lista de Game Changers vem do Scryfall, que segue a lista oficial —
+      quando a Wizards mexer nela, isto aqui acompanha sozinho.</p>
+  </section>`;
+}
+
+/* =====================================================================
+   A FICHA DO DECK
+
+   O que não cabe na lista de cartas: por que o deck existe, quais são os
+   combos, em que bracket ele está e como ele vem se saindo.
+
+   O histórico vem de dois lugares e diz de qual: a partida registrada na
+   Mesa entra sozinha (quando o deck usado bate com um deck seu), e quem
+   jogou sem a Mesa anota na mão. Nada é inventado — cada linha mostra de
+   onde veio.
+   ===================================================================== */
+function anotarPartida(d, p){
+  d.partidas = d.partidas || [];
+  d.partidas.unshift(Object.assign({ id:"p"+Date.now().toString(36), em:Date.now() }, p));
+  d.partidas = d.partidas.slice(0, 300);
+  save();
+}
+
+function placarDoDeck(d){
+  const ps = d.partidas || [];
+  const v = ps.filter(p => p.venceu).length;
+  return { jogos:ps.length, vitorias:v, pct: ps.length ? Math.round(100*v/ps.length) : null };
+}
+
+function pintarFichaDoDeck(d){
+  const alvo = document.getElementById("deck-ficha");
+  if(!alvo) return;
+  const pl = placarDoDeck(d);
+  const combos = d.combos || [];
+
+  alvo.innerHTML = `
+    <section class="ficha-bloco">
+      <span class="flabel">Sobre este deck</span>
+      <textarea id="fd-desc" rows="3" placeholder="o que ele quer fazer, como ele ganha, o que odeia enfrentar">${escapeHTML(d.descricao || "")}</textarea>
+    </section>
+
+    <section class="ficha-bloco">
+      <div class="ficha-topo">
+        <span class="flabel">Combos</span>
+        <button class="icon-btn" id="fd-combo-novo">+ combo</button>
+      </div>
+      ${combos.length ? `<div class="combos">${combos.map((c,i) => `
+        <div class="combo" data-i="${i}">
+          <div class="combo-cartas">${(c.cartas||[]).map(n => `<span class="chip">${escapeHTML(n)}</span>`).join(" + ")}</div>
+          ${c.como ? `<p>${escapeHTML(c.como)}</p>` : ""}
+          <button class="combo-fora" title="tirar">×</button>
+        </div>`).join("")}</div>`
+      : `<p class="dg-txt">Nenhum combo anotado. Serve para lembrar você — e para responder a pergunta do bracket com honestidade.</p>`}
+    </section>
+
+    ${blocoBracket(d)}
+
+    <section class="ficha-bloco">
+      <div class="ficha-topo">
+        <span class="flabel">Partidas</span>
+        <button class="icon-btn" id="fd-partida">+ anotar partida</button>
+      </div>
+      ${pl.jogos ? `
+        <div class="resumo-colecao" style="margin-bottom:12px">
+          <div class="rc"><b>${pl.jogos}</b><small>partidas</small></div>
+          <div class="rc"><b>${pl.vitorias}</b><small>vitórias</small></div>
+          <div class="rc"><b>${pl.pct}%</b><small>aproveitamento</small></div>
+        </div>
+        <div class="partidas">
+          ${(d.partidas||[]).slice(0,20).map(p => `
+            <div class="partida ${p.venceu?"ganhou":""}">
+              <span class="pt-res">${p.venceu ? "V" : "D"}</span>
+              <span class="pt-info">${new Date(p.em).toLocaleDateString("pt-BR",{day:"2-digit",month:"short"})}
+                ${p.jogadores ? ` · ${p.jogadores} jogadores` : ""}${p.minutos ? ` · ${p.minutos} min` : ""}
+                <small>${p.origem === "mesa" ? "veio da Mesa" : "anotada na mão"}${p.nota ? " · " + escapeHTML(p.nota) : ""}</small></span>
+              <button class="pt-fora" data-partida="${p.id}" title="apagar">×</button>
+            </div>`).join("")}
+        </div>`
+      : `<p class="dg-txt">Sem partidas ainda. Quando você registrar uma partida na <b>Mesa</b> usando este deck,
+         ela aparece aqui sozinha — ou anote na mão.</p>`}
+    </section>`;
+
+  const desc = document.getElementById("fd-desc");
+  desc.onblur = () => { d.descricao = desc.value.trim(); save(); };
+
+  document.getElementById("fd-combo-novo").onclick = () => novoCombo(d);
+  alvo.querySelectorAll(".combo-fora").forEach((b, i) => b.onclick = () => {
+    d.combos.splice(Number(b.closest(".combo").dataset.i), 1); save(); pintarFichaDoDeck(d);
+  });
+  document.getElementById("fd-partida").onclick = () => anotarPartidaNaMao(d);
+  alvo.querySelectorAll("[data-partida]").forEach(b => b.onclick = () => {
+    d.partidas = (d.partidas||[]).filter(p => p.id !== b.dataset.partida); save(); pintarFichaDoDeck(d);
+  });
+  ["combo","turnos"].forEach(campo => {
+    const caixa = document.getElementById("bk-" + campo);
+    if(!caixa) return;
+    caixa.querySelectorAll(`[data-${campo}]`).forEach(b => b.onclick = () => {
+      d.bracketResp = Object.assign({}, d.bracketResp, { [campo]: b.dataset[campo] });
+      save(); pintarFichaDoDeck(d);
+    });
+  });
+}
+
+function novoCombo(d){
+  const nomes = cartasDoDeck(d).map(c => c.n);
+  modal(`<div class="modal-pad">
+    <h3>Anotar um combo</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      Quais cartas, e o que acontece quando elas se encontram.</p>
+    <label class="field"><span>Cartas (separadas por vírgula)</span>
+      <input type="text" id="cb-cartas" list="cb-lista" placeholder="ex.: Dockside Extortionist, Temur Sabertooth"></label>
+    <datalist id="cb-lista">${nomes.map(n => `<option value="${escapeHTML(n)}"></option>`).join("")}</datalist>
+    <label class="field"><span>Como funciona</span>
+      <textarea id="cb-como" rows="3" placeholder="ex.: mana infinita, e daí sai o Comet Storm"></textarea></label>
+    <div class="pergunta-acoes">
+      <button class="btn" id="cb-ok">Salvar</button>
+      <button class="btn ghost" id="cb-cancelar">Cancelar</button>
+    </div>
+  </div>`);
+  document.getElementById("cb-cancelar").onclick = closeModal;
+  document.getElementById("cb-ok").onclick = () => {
+    const cartas = document.getElementById("cb-cartas").value.split(",").map(x => x.trim()).filter(Boolean);
+    if(!cartas.length) return toast("escreva pelo menos uma carta");
+    d.combos = d.combos || [];
+    d.combos.push({ cartas, como: document.getElementById("cb-como").value.trim() });
+    save(); closeModal(); pintarFichaDoDeck(d);
+  };
+}
+
+function anotarPartidaNaMao(d){
+  modal(`<div class="modal-pad">
+    <h3>Anotar partida</h3>
+    <div class="dupla">
+      <label class="field"><span>Resultado</span>
+        <select id="ap-res"><option value="1">venci</option><option value="0">perdi</option></select></label>
+      <label class="field"><span>Jogadores</span>
+        <input type="number" id="ap-jog" min="2" max="8" value="4"></label>
+    </div>
+    <div class="dupla">
+      <label class="field"><span>Duração (minutos)</span><input type="number" id="ap-min" min="0" placeholder="opcional"></label>
+      <label class="field"><span>Quando</span><input type="date" id="ap-dia" value="${new Date().toISOString().slice(0,10)}"></label>
+    </div>
+    <label class="field"><span>Anotação</span><input type="text" id="ap-nota" placeholder="opcional"></label>
+    <div class="pergunta-acoes">
+      <button class="btn" id="ap-ok">Salvar</button>
+      <button class="btn ghost" id="ap-cancelar">Cancelar</button>
+    </div>
+  </div>`);
+  document.getElementById("ap-cancelar").onclick = closeModal;
+  document.getElementById("ap-ok").onclick = () => {
+    const dia = document.getElementById("ap-dia").value;
+    anotarPartida(d, {
+      venceu: document.getElementById("ap-res").value === "1",
+      jogadores: Number(document.getElementById("ap-jog").value) || null,
+      minutos: Number(document.getElementById("ap-min").value) || null,
+      nota: document.getElementById("ap-nota").value.trim(),
+      origem: "mao",
+      em: dia ? new Date(dia + "T12:00:00").getTime() : Date.now(),
+    });
+    closeModal(); pintarFichaDoDeck(d);
+  };
 }
 
 function pintarResumoDoDeck(d){
@@ -5613,11 +5999,203 @@ function buscarParaDeck(d, opcoes = {}){
           el.classList.add("no-deck");
           toast(`${c.name} entrou no deck`);
         };
+        /* põe a carta e já abre as impressões: quem liga para a arte
+           escolhe na hora, quem não liga só clica na carta e segue */
+        const bv = document.createElement("button");
+        bv.className = "escolher-versao";
+        bv.title = "pôr no deck escolhendo a versão";
+        bv.textContent = "⇄";
+        bv.onclick = ev => {
+          ev.stopPropagation();
+          if(soComandante){ d.comandante = cartaDeDeck(c, 1); save(); }
+          else porNoDeck(d, c);
+          const posta = soComandante ? d.comandante : (d.cartas || []).find(x => x.id === c.id);
+          if(posta) escolherVersaoNoDeck(d, posta, soComandante);
+        };
+        el.appendChild(bv);
       });
     }catch(e){
       if(meu === busca && grade.isConnected){ status.textContent = "erro na busca"; grade.innerHTML = ""; }
     }
   }
+}
+
+/* =====================================================================
+   QUAL IMPRESSÃO VAI NO DECK
+
+   Duas cartas com o mesmo nome não são a mesma coisa para quem monta
+   deck: muda a arte, muda a moldura e muda muito o preço. Aqui a pessoa
+   escolhe qual versão vai — na hora de pôr, ou depois, pelo ⇄ da linha.
+
+   O que troca é só a impressão: quantidade, comandante e posição no deck
+   ficam como estavam.
+   ===================================================================== */
+async function escolherVersaoNoDeck(d, carta, ehComandante){
+  modal(`<div class="modal-pad">
+    <h3>Versão de ${escapeHTML(carta.n)}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      Todas as impressões desta carta. A escolhida é a que aparece no deck e a que conta no preço.</p>
+    <div class="cards" id="vd-grade">${skeletons(8)}</div>
+  </div>`);
+
+  let versoes = [];
+  try{
+    const json = await scryPage(`!"${carta.n.replace(/"/g, "")}"`, "prints", "released", 1, "auto");
+    versoes = (json.data || []).map(normalize);
+  }catch(e){}
+  const grade = document.getElementById("vd-grade");
+  if(!grade || !grade.isConnected) return;
+  if(!versoes.length){ grade.innerHTML = `<div class="empty">Não consegui buscar as impressões agora.</div>`; return; }
+
+  grade.innerHTML = versoes.map(v => `
+    <div class="card ${v.id === carta.id ? "escolhida" : ""}" data-id="${v.id}">
+      ${v.small ? `<img loading="lazy" src="${escapeHTML(v.small)}" alt="${escapeHTML(v.name)}">`
+                : `<div class="sem-arte">${escapeHTML(v.name)}</div>`}
+      <div class="cap">
+        <span class="cap-nome">${simboloDoSet(v.set, v.setName)} ${escapeHTML(v.setName || v.set)}</span>
+        <span class="cap-preco">${v.usd ? money(Number(v.usd)) : "—"}</span>
+      </div>
+      ${isOwned(v.id) ? `<span class="tag-tenho">você tem</span>` : ""}
+    </div>`).join("");
+
+  grade.querySelectorAll(".card").forEach(el => el.onclick = () => {
+    const nova = versoes.find(x => x.id === el.dataset.id);
+    if(!nova) return;
+    const antes = ehComandante ? d.comandante : (d.cartas || []).find(x => x.id === carta.id);
+    if(!antes) return;
+    const trocada = cartaDeDeck(nova, antes.qtd || 1);
+    if(ehComandante) d.comandante = trocada;
+    else d.cartas = d.cartas.map(x => x.id === carta.id ? trocada : x);
+    save(); closeModal(); renderDeck(d.id);
+    toast(`Agora é a versão de ${nova.setName || nova.set}`);
+  });
+}
+
+/* =====================================================================
+   SUGESTÕES POR OBJETIVO
+
+   Duas fontes se encontram aqui. O QUE sugerir vem do EDHREC, pelo robô:
+   as cartas que as pessoas de fato jogam com aquele comandante. Em que
+   GAVETA cada uma cai — ramp, compra, remoção — sai do texto de regra da
+   própria carta, lido do Scryfall.
+
+   Isso evita os dois erros comuns: sugerir carta boa que ninguém joga com
+   aquele comandante, e jogar uma lista solta de cem nomes sem dizer para
+   que serve cada um.
+
+   O que a tela não esconde: comandante que ninguém usou ainda não tem
+   lista, e ela chega na próxima passagem do robô.
+   ===================================================================== */
+const OBJETIVOS = [
+  ["ramp", "Rampa de mana", c => /\badd \{|search your library for (a|up to \w+) .{0,20}land/i.test(c.oracle || "")
+                                  && !/^land/i.test(c.type || "")],
+  ["compra", "Compra de cartas", c => /draw (a|one|two|three|four|X|that many) card/i.test(c.oracle || "")],
+  ["remocao", "Remoção pontual", c => /(destroy|exile) target/i.test(c.oracle || "")],
+  ["varredura", "Varredura", c => /(destroy|exile) all|each (creature|player sacrifices)/i.test(c.oracle || "")],
+  ["protecao", "Proteção e resposta", c => /counter target|hexproof|indestructible|protection from/i.test(c.oracle || "")],
+  ["terreno", "Terrenos", c => /^land|\bland\b/i.test((c.type || "").split("—")[0] || "")],
+];
+
+function slugComandante(nome){
+  return String(nome || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/['']/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+    .split("--")[0];
+}
+
+async function abrirSugestoes(d){
+  const fmt = formatoDe(d.formato);
+  if(!fmt.comandante || !d.comandante)
+    return toast("as sugestões saem do comandante — escolha um primeiro");
+
+  modal(`<div class="modal-pad">
+    <h3>O que costuma entrar com ${escapeHTML(d.comandante.n)}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      As cartas que outras pessoas jogam com este comandante, separadas pelo que elas fazem.
+      O que já está no deck fica de fora.</p>
+    <div class="status" id="sg-status">buscando…</div>
+    <div id="sg-corpo"></div>
+  </div>`);
+
+  const status = document.getElementById("sg-status");
+  const slug = slugComandante(d.comandante.n);
+  let linhas = [];
+  try{
+    linhas = await supa(`commander_cards?commander=eq.${encodeURIComponent(slug)}`
+                      + `&select=card_name,decks,potencial,sinergia&order=decks.desc&limit=160`);
+  }catch(e){
+    status.textContent = "não consegui buscar agora — " + e.message;
+    return;
+  }
+  if(!status.isConnected) return;
+  if(!linhas.length){
+    status.innerHTML = `Ainda não tenho a lista deste comandante. O robô busca as listas dos comandantes
+      que aparecem nos decks guardados — <b>este entra na próxima passagem</b>, e amanhã a sugestão está aqui.`;
+    return;
+  }
+
+  // tira o que já está no deck antes de gastar chamada no Scryfall
+  const noDeck = new Set(cartasDoDeck(d).map(c => String(c.n).toLowerCase()));
+  const faltando = linhas.filter(l => !noDeck.has(String(l.card_name).toLowerCase()));
+  status.textContent = `lendo ${faltando.length} cartas…`;
+
+  const porNome = new Map(faltando.map(l => [l.card_name.toLowerCase(), l]));
+  const cartas = [];
+  for(let i = 0; i < faltando.length; i += 75){
+    const lote = faltando.slice(i, i + 75).map(l => ({ name: l.card_name }));
+    try{
+      const r = await fetch(`${API}/cards/collection`, {
+        method:"POST", headers:{ "Content-Type":"application/json", Accept:"application/json" },
+        body: JSON.stringify({ identifiers: lote })
+      });
+      if(r.ok){ const j = await r.json(); (j.data || []).map(normalize).forEach(c => cartas.push(c)); }
+    }catch(e){}
+    await sleep(PAGE_DELAY);
+  }
+  if(!status.isConnected) return;
+
+  // dentro da identidade de cor do comandante, e nada que eu já tenha no deck
+  const ci = (d.comandante.ci || "").split("");
+  const validas = cartas.filter(c => !(c.ci || "").split("").some(x => x && !ci.includes(x)));
+
+  const usadas = new Set();
+  const grupos = OBJETIVOS.map(([chave, titulo, casa]) => {
+    const itens = validas.filter(c => !usadas.has(c.id) && casa(c));
+    itens.forEach(c => usadas.add(c.id));
+    itens.sort((a, b) => (porNome.get(b.name.toLowerCase())?.decks || 0)
+                       - (porNome.get(a.name.toLowerCase())?.decks || 0));
+    return { chave, titulo, itens: itens.slice(0, 8) };
+  }).filter(g => g.itens.length);
+
+  status.textContent = "";
+  document.getElementById("sg-corpo").innerHTML = grupos.map(g => `
+    <section class="sg-grupo">
+      <h4 class="grupo-titulo">${g.titulo}<span>${g.itens.length}</span></h4>
+      <div class="sg-linhas">
+        ${g.itens.map(c => {
+          const l = porNome.get(c.name.toLowerCase()) || {};
+          const pct = l.potencial ? Math.round(100 * (l.decks || 0) / l.potencial) : null;
+          return `<button class="sg-linha" data-id="${c.id}">
+            ${c.small ? `<img src="${escapeHTML(c.small)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(c.name)}
+              <small>${pct !== null ? `${pct}% dos decks` : `${l.decks || 0} decks`}${
+                isOwned(c.id) ? " · você tem" : ""}</small></span>
+            <span class="lc-preco">${c.usd ? money(Number(c.usd)) : "—"}</span>
+            <span class="sg-mais">+</span>
+          </button>`;
+        }).join("")}
+      </div>
+    </section>`).join("") || `<div class="empty">Nada de novo — você já tem no deck o que costuma entrar.</div>`;
+
+  document.querySelectorAll(".sg-linha").forEach(el => el.onclick = () => {
+    const c = validas.find(x => x.id === el.dataset.id);
+    if(!c) return;
+    porNoDeck(d, c);
+    el.classList.add("posta");
+    el.querySelector(".sg-mais").textContent = "✓";
+    toast(`${c.name} entrou no deck`);
+  });
 }
 
 function porNoDeck(d, carta){
@@ -6663,6 +7241,22 @@ function registrarPartida(dados){
         p_notes: document.getElementById("rp-nota").value.trim() || null,
         p_players: jogadores,
       });
+      /* a mesma partida também vira histórico do SEU deck, aqui no
+         aparelho: a mesa guarda no servidor, mas o deck precisa disso
+         offline e sem depender de abrir o grupo de novo */
+      const eu = (mesa().grupos.find(g => g.code === mesa().atual) || {}).membroId;
+      const minha = jogadores.find(j => j.member_id === eu);
+      if(minha && minha.deck_name){
+        const meu = decks().find(x => x.nome.toLowerCase() === minha.deck_name.toLowerCase());
+        if(meu) anotarPartida(meu, {
+          venceu: minha.won,
+          formato: document.getElementById("rp-formato").value,
+          minutos: Number(document.getElementById("rp-minutos").value) || null,
+          jogadores: jogadores.length,
+          nota: document.getElementById("rp-nota").value.trim() || "",
+          origem: "mesa",
+        });
+      }
       cron.acumulado = 0; cron.rodando = false;
       closeModal(); mesaView.dados = null; renderMesa();
       toast("partida registrada");
@@ -6933,7 +7527,14 @@ function blocoDaMinhaCopia(c){
 
   return `
   <div class="minha-copia">
-    <span class="flabel">A sua cópia</span>
+    <div class="mc-topo">
+      <span class="flabel">${qtdDe(c.id) > 1 ? "As suas cópias" : "A sua cópia"}</span>
+      <div class="mc-qtd">
+        <button class="mc-menos" title="tirar uma">−</button>
+        <b id="mc-num">${qtdDe(c.id)}</b>
+        <button class="mc-mais" title="pôr mais uma">+</button>
+      </div>
+    </div>
     <div class="mc-linha">
       <label class="field"><span>Condição</span>
         <select id="mc-cond">
@@ -6952,6 +7553,8 @@ function blocoDaMinhaCopia(c){
       </label>
     </div>
     <p class="dg-txt" id="mc-conta">${contaDaCopia(base, fator, cond, pago, vale)}</p>
+    <button class="icon-btn" id="mc-slab" style="margin-top:8px">
+      ${ehGraduada(r) || ehAssinada(r) ? "Editar graduação e assinatura" : "É graduada ou assinada?"}</button>
   </div>`;
 }
 
@@ -6975,6 +7578,24 @@ function contaDaCopia(base, fator, cond, pago, vale){
 function ligarMinhaCopia(c){
   const cond = document.getElementById("mc-cond");
   if(!cond) return;
+
+  const caixa = document.querySelector(".minha-copia");
+  const num = document.getElementById("mc-num");
+  const mexer = n => {
+    const nova = qtdDe(c.id) + n;
+    if(nova <= 0){                    // zerar é o mesmo que não ter mais a carta
+      definirQtd(c.id, 0); closeModal();
+      if(view.name === "minha") renderMinha(); else render();
+      return toast(`${c.name} saiu da sua coleção`);
+    }
+    definirQtd(c.id, nova);
+    num.textContent = nova;
+    caixa.querySelector(".flabel").textContent = nova > 1 ? "As suas cópias" : "A sua cópia";
+  };
+  caixa.querySelector(".mc-menos").onclick = () => mexer(-1);
+  caixa.querySelector(".mc-mais").onclick  = () => mexer(1);
+  const bs = document.getElementById("mc-slab");
+  if(bs) bs.onclick = () => abrirSlab(c);
   const lang = document.getElementById("mc-lang");
   const pago = document.getElementById("mc-pago");
   const conta = document.getElementById("mc-conta");
@@ -7043,8 +7664,6 @@ function openCard(c){
           <span class="rarity-dot" style="background:${RAR[c.rarity]||"#666"}"></span>${escapeHTML(c.setName||"")} · #${c.num} · ${c.rarity}
         </div>
         ${c.oracle?`<div class="oracle">${escapeHTML(c.oracle)}</div>`:""}
-        <div class="kv"><span>Tipo</span><b>${escapeHTML(c.type||"—")}</b></div>
-        <div class="kv"><span>Custo</span><b>${escapeHTML(c.mana||"—")}</b></div>
         <div class="kv"><span>Artista</span><b>${escapeHTML(c.artist||"—")}</b></div>
         <div class="kv"><span>Lançamento</span><b>${c.released||"—"}</b></div>
 
@@ -7474,12 +8093,14 @@ async function carregarImpressoes(c){
   }
 }
 
-let criar = { frase:"", respostas:{}, removidas:[], q:"", partes:[], duvidas:[], contando:false };
+let criar = { frase:"", fraseFora:"", respostas:{}, removidas:[], q:"",
+              partes:[], partesFora:[], naoEntendiFora:[], duvidas:[], contando:false };
 
 function openNewCollection(preset={}){
   const ed = preset.editar || null;
-  criar = { frase:(ed && ed.frase) || "", respostas:{}, removidas:[], q:(ed && ed.q) || preset.query || "",
-            partes:[], duvidas:[], contando:false, editando:ed };
+  criar = { frase:(ed && ed.frase) || "", fraseFora:(ed && ed.fraseFora) || "",
+            respostas:{}, removidas:[], q:(ed && ed.q) || preset.query || "",
+            partes:[], partesFora:[], naoEntendiFora:[], duvidas:[], contando:false, editando:ed };
 
   modal(`<div class="modal-pad">
     <h3>${ed ? "Editar coleção" : "Nova coleção"}</h3>
@@ -7504,6 +8125,11 @@ function openNewCollection(preset={}){
          "cartas míticas acima de 50 dólares"]
         .map(e => `<button class="ex" data-ex="${escapeHTML(e)}">${escapeHTML(e)}</button>`).join("")}
     </div>
+
+    <label class="field" style="margin-top:12px"><span>E o que fica de fora (opcional)</span>
+      <textarea id="c-fora" rows="2" placeholder="ex.: as verdes, as comuns, as de antes de 2015">${escapeHTML(criar.fraseFora)}</textarea>
+      <small>Serve para recortar: "todo o Hobbit" em cima, "as verdes" aqui, e a coleção vira o Hobbit sem verde.</small>
+    </label>
 
     <div id="c-leitura" class="leitura"></div>
 
@@ -7538,11 +8164,17 @@ function openNewCollection(preset={}){
   </div>`);
 
   const frase = document.getElementById("c-frase");
+  const fora = document.getElementById("c-fora");
   const nome = document.getElementById("c-name");
   let timer;
   frase.addEventListener("input", () => {
     criar.frase = frase.value;
     if(!nome.dataset.tocado) nome.value = tituloDaFrase(frase.value);
+    clearTimeout(timer);
+    timer = setTimeout(lerFrase, 350);
+  });
+  fora.addEventListener("input", () => {
+    criar.fraseFora = fora.value;
     clearTimeout(timer);
     timer = setTimeout(lerFrase, 350);
   });
@@ -7590,7 +8222,16 @@ function lerFrase(){
   });
   criar.partes = partes.filter(p => !criar.removidas.includes(p.id));
   criar.duvidas = pendentes;
-  criar.q = queryDasPartes(partes);
+
+  /* O que fica de fora usa o mesmo interpretador. A diferença é que aqui
+     não vale a pena perguntar: se eu não entendi um pedaço da exclusão, é
+     mais honesto dizer "não entendi isto" do que abrir outra rodada de
+     perguntas no meio da tela. */
+  const leituraFora = interpretar(criar.fraseFora || "");
+  criar.partesFora = leituraFora.partes;
+  criar.naoEntendiFora = leituraFora.duvidas.map(d => d.pergunta);
+
+  criar.q = queryComExclusoes(criar.partes, criar.partesFora);
   const campo = document.getElementById("c-q");
   if(campo) campo.value = criar.q;
   pintarLeitura();
@@ -7615,6 +8256,16 @@ function pintarLeitura(){
     : (criar.duvidas.length ? ""
         : `<div class="entendi"><span class="carregando">ainda não reconheci nada — tente citar cor, tipo, ano, edição ou raridade</span></div>`);
 
+  const forasHTML = (criar.partesFora.length || criar.naoEntendiFora.length)
+    ? `<div class="entendi fora">
+         <span class="flabel">Fica de fora</span>
+         <div class="chips-lidos">
+           ${criar.partesFora.map(p => `<span class="lido fora">− ${escapeHTML(p.rotulo)}</span>`).join("")}
+           ${criar.naoEntendiFora.length
+             ? `<span class="lido nao-entendi" title="reescreva citando cor, tipo, ano, edição ou raridade">não entendi um pedaço</span>` : ""}
+         </div>
+       </div>` : "";
+
   const perguntas = criar.duvidas.map(d => {
     const marcadas = criar.rascunho && criar.rascunho[d.id] ? criar.rascunho[d.id] : [];
     return `
@@ -7632,7 +8283,7 @@ function pintarLeitura(){
     </div>`;
   }).join("");
 
-  alvo.innerHTML = chips + perguntas + `<div class="preview-contagem" id="c-contagem"></div>`;
+  alvo.innerHTML = chips + forasHTML + perguntas + `<div class="preview-contagem" id="c-contagem"></div>`;
 
   alvo.querySelectorAll(".pergunta").forEach(el => {
     el.onclick = e => {
@@ -7711,7 +8362,8 @@ function salvarColecao(tipo){
     if(!col) return toast("coleção não encontrada");
     registrarDesfazer(`editar ${col.name}`, { custom: JSON.parse(JSON.stringify(S.custom)) });
     Object.assign(col, { name:nome, icon:icone, desc:desc || criar.frase.trim(),
-                         frase:criar.frase.trim(), q: col.type === "query" ? q : null,
+                         frase:criar.frase.trim(), fraseFora:criar.fraseFora.trim(),
+                         q: col.type === "query" ? q : null,
                          unique: document.getElementById("c-unique").value });
     definirUnique(col.id, document.getElementById("c-unique").value);
     save(); closeModal(); go("collection", col.id);
@@ -7721,7 +8373,7 @@ function salvarColecao(tipo){
   const c = {
     id:"c" + Date.now().toString(36), type:tipo, name:nome,
     desc: desc || (tipo === "query" ? criar.frase.trim() : ""),
-    frase: criar.frase.trim(), icon:icone,
+    frase: criar.frase.trim(), fraseFora: criar.fraseFora.trim(), icon:icone,
     q: tipo === "query" ? q : null, order:"name", cards:[], createdAt:Date.now(),
     unique: (document.getElementById("c-unique") || {}).value || "cards"
   };
@@ -7955,9 +8607,14 @@ async function abrirCartaoDaColecao(){
 
   modal(`<div class="modal-pad">
     <h3>Cartão da sua coleção</h3>
-    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
-      Uma imagem quadrada com as nove cartas mais valiosas que você tem, o total e o progresso.
-      É montada aqui no seu aparelho — nada sobe para lugar nenhum.</p>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 12px">
+      Montado aqui no seu aparelho, com as suas cartas mais valiosas — nada sobe para lugar nenhum.</p>
+
+    <div class="toggles" id="cartao-formato" style="margin-bottom:12px">
+      <button class="tog on" data-formato="quadrado">Quadrado · feed</button>
+      <button class="tog" data-formato="story">Vertical · story</button>
+    </div>
+
     <div id="cartao-alvo" class="cartao-previa"><span class="carregando">montando…</span></div>
     <div class="pergunta-acoes">
       <button class="btn" id="cartao-baixar" disabled>Baixar a imagem</button>
@@ -7967,22 +8624,36 @@ async function abrirCartaoDaColecao(){
   </div>`);
   document.getElementById("cartao-fechar").onclick = closeModal;
 
-  const melhores = todas.slice().sort((a, b) => (b.unit || 0) - (a.unit || 0)).slice(0, 9);
-  const url = await desenharCartao(melhores, todas);
-  const alvo = document.getElementById("cartao-alvo");
-  if(!alvo || !alvo.isConnected) return;
-  alvo.innerHTML = `<img src="${url}" alt="cartão da coleção">`;
+  let formato = "quadrado";
+  const montar = async () => {
+    const alvo = document.getElementById("cartao-alvo");
+    if(!alvo) return;
+    alvo.innerHTML = `<span class="carregando">montando…</span>`;
+    const baixar = document.getElementById("cartao-baixar");
+    baixar.disabled = true;
 
-  const baixar = document.getElementById("cartao-baixar");
-  baixar.disabled = false;
-  baixar.onclick = () => {
-    const a = document.createElement("a");
-    a.href = url; a.download = "minha-colecao.png";
-    document.body.appendChild(a); a.click(); a.remove();
+    const melhores = todas.slice().sort((a, b) => (b.unit || 0) - (a.unit || 0)).slice(0, 9);
+    const url = await desenharCartao(melhores, todas, formato);
+    if(!alvo.isConnected) return;
+    alvo.innerHTML = `<img src="${url}" alt="cartão da coleção">`;
+    baixar.disabled = false;
+    baixar.onclick = () => {
+      const a = document.createElement("a");
+      a.href = url; a.download = `minha-colecao-${formato}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    document.getElementById("cartao-dica").textContent = ehIPhone()
+      ? "No iPhone, toque e segure a imagem acima e escolha “Adicionar às Fotos”."
+      : formato === "story" ? "1080 × 1920 — o tamanho de story." : "1080 × 1080 — o tamanho do feed.";
   };
-  document.getElementById("cartao-dica").textContent = ehIPhone()
-    ? "No iPhone, toque e segure a imagem acima e escolha “Adicionar às Fotos”."
-    : "A imagem tem 1080 × 1080, o tamanho que o Instagram pede.";
+
+  document.getElementById("cartao-formato").onclick = e => {
+    const b = e.target.closest("[data-formato]"); if(!b) return;
+    formato = b.dataset.formato;
+    document.querySelectorAll("[data-formato]").forEach(x => x.classList.toggle("on", x === b));
+    montar();
+  };
+  montar();
 }
 
 function carregarImagem(src){
@@ -7996,59 +8667,146 @@ function carregarImagem(src){
   });
 }
 
-async function desenharCartao(melhores, todas){
-  const L = 1080, cv = document.createElement("canvas");
-  cv.width = L; cv.height = L;
+/* desenha uma imagem preenchendo o retângulo, cortando o excesso */
+function cobrir(g, img, x, y, l, a){
+  const e = Math.max(l / img.width, a / img.height);
+  g.drawImage(img, x + (l - img.width*e)/2, y + (a - img.height*e)/2, img.width*e, img.height*e);
+}
+function caixaRedonda(g, x, y, l, a, r){
+  if(g.roundRect){ g.beginPath(); g.roundRect(x, y, l, a, r); return; }
+  g.beginPath(); g.rect(x, y, l, a);
+}
+
+async function desenharCartao(melhores, todas, formato){
+  const L = 1080, A = formato === "story" ? 1920 : 1080;
+  const cv = document.createElement("canvas");
+  cv.width = L; cv.height = A;
   const g = cv.getContext("2d");
 
-  const cor = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || "#000";
-  const fundo = cor("--bg") || "#0a0b0e", ouro = cor("--accent") || "#e3b25a";
-  const texto = cor("--text") || "#e8eaf0", fraco = cor("--text-3") || "#8a92a6";
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const fundo = css("--bg") || "#0a0b0e";
+  const ouro  = css("--accent") || "#e3b25a";
+  const texto = css("--text") || "#e8eaf0";
+  const fraco = css("--text-3") || "#8a92a6";
+  const claro = /^#(f|e|d)/i.test(fundo);            // tema claro? o véu muda de cor
+  const veu = claro ? "255,255,255" : "10,11,14";
 
-  g.fillStyle = fundo; g.fillRect(0, 0, L, L);
+  const fonte = (t, peso, cor) => {
+    g.font = `${peso} ${t}px -apple-system, "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif`;
+    g.fillStyle = cor;
+  };
 
-  // grade 3×3 das artes, ocupando a metade de cima
+  g.fillStyle = fundo; g.fillRect(0, 0, L, A);
+
   const artes = await Promise.all(melhores.map(c => carregarImagem(c.arteCrop || c.small)));
-  const lado = 300, gap = 12, x0 = (L - (lado*3 + gap*2)) / 2, y0 = 118;
-  artes.forEach((img, i) => {
-    const x = x0 + (i % 3) * (lado + gap), y = y0 + Math.floor(i / 3) * (lado*0.72 + gap);
-    const alt = lado * 0.72;
+  const comArte = artes.filter(Boolean);
+
+  /* fundo: a arte da carta mais cara, ampliada e apagada atrás de tudo.
+     Sem blur nativo em navegador antigo, o véu escuro sozinho já resolve. */
+  if(comArte[0]){
     g.save();
-    g.beginPath();
-    if(g.roundRect) g.roundRect(x, y, lado, alt, 10); else g.rect(x, y, lado, alt);
-    g.clip();
-    if(img){
-      const escala = Math.max(lado / img.width, alt / img.height);
-      g.drawImage(img, x + (lado - img.width*escala)/2, y + (alt - img.height*escala)/2,
-                  img.width*escala, img.height*escala);
-    } else {
-      g.fillStyle = "#1e222c"; g.fillRect(x, y, lado, alt);
-    }
+    try{ g.filter = "blur(26px)"; }catch(e){}
+    cobrir(g, comArte[0], -40, -40, L + 80, A + 80);
     g.restore();
+    const grad = g.createLinearGradient(0, 0, 0, A);
+    grad.addColorStop(0,   `rgba(${veu},.82)`);
+    grad.addColorStop(.45, `rgba(${veu},.93)`);
+    grad.addColorStop(1,   `rgba(${veu},.99)`);
+    g.fillStyle = grad; g.fillRect(0, 0, L, A);
+  }
+
+  /* A conta de espaço é de baixo para cima: primeiro reservo rodapé, linha
+     da carta mais cara e números; o que sobra é a altura da grade. Assim
+     nada nunca escreve por cima de nada, em qualquer um dos dois formatos. */
+  const margem = 64;
+  const rodapeY = A - margem + 6;
+  const maisValiosaY = rodapeY - 46;
+  const numerosY = maisValiosaY - (formato === "story" ? 88 : 78);
+  /* ------------------------------------------------ cabeçalho */
+  fonte(26, 800, ouro);
+  g.textAlign = "left";
+  g.letterSpacing = "6px";
+  g.fillText("COLLECTOR", margem, margem + 30);
+  g.letterSpacing = "0px";
+  fonte(19, 500, fraco);
+  g.fillText("Magic: The Gathering", margem, margem + 62);
+
+  /* ------------------------------------------------ grade de artes */
+  const cols = 3, gap = 14;
+  const lado = (L - margem*2 - gap*(cols-1)) / cols;
+  const linhas = Math.min(3, Math.ceil(artes.length / cols)) || 1;
+  const topoDaGrade = margem + (formato === "story" ? 180 : 132);
+  const baseDaGrade = numerosY - 76;                           // 76 = respiro acima dos números
+  const espacoDaGrade = baseDaGrade - topoDaGrade;
+  const alt = Math.max(60, Math.min(lado * 0.74, (espacoDaGrade - gap*(linhas-1)) / linhas));
+  const alturaDaGrade = linhas * alt + gap * (linhas - 1);
+  // no story sobra muito espaço: a grade fica centrada em vez de encostada no topo
+  const gradeY = topoDaGrade + Math.max(0, (espacoDaGrade - alturaDaGrade) / 2);
+
+  artes.forEach((img, i) => {
+    if(i >= cols*linhas) return;
+    const x = margem + (i % cols) * (lado + gap);
+    const y = gradeY + Math.floor(i / cols) * (alt + gap);
+    g.save();
+    caixaRedonda(g, x, y, lado, alt, 12);
+    g.clip();
+    if(img) cobrir(g, img, x, y, lado, alt);
+    else { g.fillStyle = claro ? "#e6e0d2" : "#1e222c"; g.fillRect(x, y, lado, alt); }
+    g.restore();
+    g.strokeStyle = `rgba(${claro ? "0,0,0" : "255,255,255"},.10)`;
+    g.lineWidth = 1.5;
+    caixaRedonda(g, x + .75, y + .75, lado - 1.5, alt - 1.5, 12);
+    g.stroke();
   });
 
-  const fonte = (t, p, c) => { g.font = `${p} ${t}px -apple-system, "Segoe UI", system-ui, sans-serif`; g.fillStyle = c; };
 
-  fonte(30, 700, ouro); g.textAlign = "left";
-  g.fillText("COLLECTOR", 60, 74);
-  fonte(20, 500, fraco);
-  g.fillText("Magic: The Gathering", 60, 102);
 
-  const base = y0 + 3*(lado*0.72) + 2*gap + 74;
-  fonte(76, 700, texto); g.textAlign = "center";
-  g.fillText(ownedCount().toLocaleString("pt-BR"), L/2 - 230, base);
-  fonte(22, 500, fraco); g.fillText("cartas", L/2 - 230, base + 34);
-
-  fonte(76, 700, ouro);
-  g.fillText(money(ownedValue()), L/2 + 90, base);
-  fonte(22, 500, fraco); g.fillText("valor estimado", L/2 + 90, base + 34);
-
+  /* ------------------------------------------------ números */
   const edicoes = new Set(todas.map(c => c.set).filter(Boolean)).size;
-  fonte(20, 500, fraco); g.textAlign = "center";
-  g.fillText(`${edicoes} edições diferentes · ${(S.decks||[]).length} decks montados`, L/2, base + 86);
+  const blocos = [
+    [ownedCount().toLocaleString("pt-BR"), "cartas", texto],
+    [money(ownedValue()),                  "valor estimado", ouro],
+    [String(edicoes),                      edicoes === 1 ? "edição" : "edições", texto],
+  ];
+  const baseY = numerosY;
 
-  g.strokeStyle = ouro; g.globalAlpha = .35;
-  g.strokeRect(28, 28, L-56, L-56);
+  g.textAlign = "center";
+  const larguraBloco = (L - margem*2) / blocos.length;
+  blocos.forEach(([valor, rotulo, cor], i) => {
+    const cx = margem + larguraBloco * (i + .5);
+    fonte(formato === "story" ? 62 : 52, 700, cor);
+    g.fillText(valor, cx, baseY);
+    fonte(18, 500, fraco);
+    g.letterSpacing = "1.5px";
+    g.fillText(rotulo.toUpperCase(), cx, baseY + 32);
+    g.letterSpacing = "0px";
+    if(i < blocos.length - 1){
+      g.strokeStyle = `rgba(${claro ? "0,0,0" : "255,255,255"},.10)`;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(margem + larguraBloco*(i+1), baseY - 44);
+      g.lineTo(margem + larguraBloco*(i+1), baseY + 28);
+      g.stroke();
+    }
+  });
+
+  /* ------------------------------------------------ a mais cara, com nome */
+  if(melhores[0]){
+    fonte(19, 500, fraco);
+    g.textAlign = "center";
+    const linha = `a mais valiosa: ${melhores[0].name} · ${money(melhores[0].unit || 0)}`;
+    g.fillText(linha.length > 58 ? linha.slice(0, 57) + "…" : linha, L/2, maisValiosaY);
+  }
+
+  /* ------------------------------------------------ rodapé */
+  fonte(16, 500, fraco);
+  g.textAlign = "center";
+  g.fillText(new Date().toLocaleDateString("pt-BR", { day:"2-digit", month:"long", year:"numeric" }),
+             L/2, rodapeY);
+
+  /* moldura fina */
+  g.strokeStyle = ouro; g.globalAlpha = .28; g.lineWidth = 2;
+  caixaRedonda(g, 26, 26, L - 52, A - 52, 18); g.stroke();
   g.globalAlpha = 1;
 
   return cv.toDataURL("image/png");
@@ -8264,7 +9022,51 @@ function blocoValorizacao(){
       o valor total lá em cima já desconta a condição de cada uma das suas.
     </p>
     ${blocoMovers()}
+    ${blocoDiario()}
   </section>`;
+}
+
+/* O que entrou em cada mês, a partir da data em que a carta foi marcada.
+   Não é estimativa: é o carimbo que o app já guardava em cada carta. */
+function diarioDaColecao(){
+  const meses = new Map();
+  Object.entries(S.owned).forEach(([id, r]) => {
+    if(!r.at) return;
+    const d = new Date(r.at);
+    const chave = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    const m = meses.get(chave) || { chave, cartas:0, copias:0, valor:0, pago:0 };
+    m.cartas++; m.copias += qtdDe(id);
+    m.valor += valorUnitario(id) * qtdDe(id);
+    m.pago  += (Number(r.pg) || 0) * qtdDe(id);
+    meses.set(chave, m);
+  });
+  return [...meses.values()].sort((a,b) => b.chave.localeCompare(a.chave)).slice(0, 18);
+}
+
+function blocoDiario(){
+  const meses = diarioDaColecao();
+  if(meses.length < 2) return "";
+  const maior = Math.max(...meses.map(m => m.copias)) || 1;
+  const mes = c => {
+    const [a, m] = c.split("-");
+    return new Date(Number(a), Number(m)-1, 1).toLocaleDateString("pt-BR", { month:"short", year:"2-digit" });
+  };
+  return `
+  <details class="avancado diario">
+    <summary>Diário da coleção — o que entrou mês a mês</summary>
+    <div class="diario-linhas">
+      ${meses.map(m => `
+        <div class="diario-linha">
+          <span class="dr-mes">${mes(m.chave)}</span>
+          <span class="dr-barra"><i style="width:${Math.round(100*m.copias/maior)}%"></i></span>
+          <span class="dr-num">${m.copias} carta${m.copias>1?"s":""}
+            <small>${money(m.valor)}${m.pago ? ` · pagou ${money(m.pago)}` : ""}</small></span>
+        </div>`).join("")}
+    </div>
+    <p class="dg-txt">Conta pela data em que você marcou a carta aqui — não pela data em que ela foi comprada.
+    Quem importou a coleção de outro app vê tudo caindo no mês da importação, e isso é o certo:
+    o app não inventa uma data que não tem.</p>
+  </details>`;
 }
 
 function dataCurta(iso){
@@ -8386,6 +9188,552 @@ function pagoTotal(){
   return Object.entries(S.owned).reduce((a, [id, r]) => a + (Number(r.pg) || 0) * qtdDe(id), 0);
 }
 function temPrecoPago(){ return Object.values(S.owned).some(r => Number(r.pg) > 0); }
+
+/* =====================================================================
+   MERCADO INTERNO
+
+   Um quadro de anúncios, e só. O app aproxima quem tem de quem quer, e
+   NÃO toca no dinheiro — o combinado é entre as duas pessoas, como já
+   acontece nos grupos de troca. Isso é decisão de projeto: intermediar
+   pagamento é outra atividade inteira, com empresa, gateway, estorno e
+   disputa para mediar.
+
+   Duas coisas que a tela precisa deixar claras, e deixa:
+   - o contato só aparece para quem entrou na conta (senão robô coleta);
+   - não existe nota de reputação. O que existe é quantos anúncios a
+     própria pessoa marcou como fechados, com essas palavras.
+   ===================================================================== */
+let mercado = { lista:null, carregando:false, erro:null, f:{ texto:"", tipo:"", so:"ativo" } };
+
+async function carregarMercado(){
+  if(mercado.carregando) return;
+  mercado.carregando = true;
+  try{
+    mercado.lista = await supa("market_listings?select=id,seller,card_id,card_name,set_code,set_name,"
+      + "img,cond,lang,finish,slab,tipo,preco,moeda,quer,obs,cidade,status,created_at"
+      + "&order=created_at.desc&limit=200");
+    mercado.erro = null;
+  }catch(e){ mercado.erro = e.message; }
+  mercado.carregando = false;
+  if(view.name === "mercado") renderMercado();
+}
+
+const precoDoAnuncio = a => {
+  if(a.preco == null) return "";
+  const n = Number(a.preco);
+  return (a.moeda === "BRL" ? "R$ " : a.moeda === "EUR" ? "€ " : "US$ ")
+       + n.toLocaleString("pt-BR", { minimumFractionDigits:2, maximumFractionDigits:2 });
+};
+
+function renderMercado(){
+  if(!mercado.lista && !mercado.carregando) carregarMercado();
+  const f = mercado.f;
+  const todos = mercado.lista || [];
+  const meus = logado() ? todos.filter(a => a.seller === SESSAO.user_id) : [];
+
+  const filtrados = todos.filter(a => {
+    if(f.so === "ativo" && a.status !== "ativo") return false;
+    if(f.tipo && a.tipo !== f.tipo && a.tipo !== "ambos") return false;
+    if(f.texto){
+      const t = semAcento(f.texto);
+      if(!semAcento(a.card_name).includes(t) && !semAcento(a.cidade || "").includes(t)) return false;
+    }
+    return true;
+  });
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Mercado</h2>
+        <p>Anúncios de colecionador para colecionador. O app <b>não intermedia pagamento</b>:
+        ele mostra a carta e o contato, e o combinado é entre vocês dois.</p>
+      </div>
+      <button class="btn" id="mk-anunciar">Anunciar uma carta</button>
+    </div>
+
+    <div class="filtros" style="margin-bottom:16px">
+      <div class="fgrupo">
+        <label class="field"><span>Buscar por carta ou cidade</span>
+          <input type="search" id="mk-texto" value="${escapeHTML(f.texto)}" placeholder="ex.: Sol Ring, Curitiba"></label>
+      </div>
+      <div class="fgrupo">
+        <span class="flabel">Tipo</span>
+        <div class="toggles" id="mk-tipo">
+          ${[["","tudo"],["venda","à venda"],["troca","para troca"]].map(([v,t]) =>
+            `<button class="tog ${f.tipo===v?"on":""}" data-tipo="${v}">${t}</button>`).join("")}
+        </div>
+      </div>
+      <div class="fgrupo">
+        <span class="flabel">Situação</span>
+        <div class="toggles" id="mk-so">
+          ${[["ativo","só os ativos"],["","todos"]].map(([v,t]) =>
+            `<button class="tog ${f.so===v?"on":""}" data-so="${v}">${t}</button>`).join("")}
+        </div>
+      </div>
+    </div>
+
+    ${meus.length ? `<section class="grupo-temas">
+      <h3 class="grupo-titulo">Seus anúncios<span>${meus.length}</span></h3>
+      <div class="lista-compras" style="max-height:none">${meus.map(a => linhaDoAnuncio(a, true)).join("")}</div>
+    </section>` : ""}
+
+    ${mercado.erro ? `<div class="empty">Não consegui buscar agora.<br>
+        <span style="color:var(--faint);font-size:12.5px">${escapeHTML(mercado.erro)}</span></div>`
+    : mercado.carregando && !todos.length ? `<div class="empty">Buscando…</div>`
+    : !filtrados.length ? `<div class="empty">Nenhum anúncio com esses filtros.<br>
+        <span style="color:var(--faint);font-size:12.5px">Pode ser o primeiro: anuncie uma repetida sua.</span></div>`
+    : `<section class="grupo-temas">
+        <h3 class="grupo-titulo">Anúncios<span>${filtrados.length}</span></h3>
+        <div class="lista-compras" style="max-height:none">${filtrados.map(a => linhaDoAnuncio(a, false)).join("")}</div>
+      </section>`}
+
+    <p class="dg-txt" style="margin-top:18px">
+      <b>Combinem com cuidado.</b> O Collector não participa do negócio, não guarda dinheiro e não tem
+      como devolver nada se algo der errado. Combine forma de envio e pagamento direto com a pessoa,
+      e prefira quem você já conhece do seu grupo.</p>`;
+
+  const texto = document.getElementById("mk-texto");
+  texto.oninput = () => {
+    f.texto = texto.value;
+    const pos = texto.selectionStart;
+    renderMercado();
+    const novo = document.getElementById("mk-texto");
+    if(novo){ novo.focus(); novo.setSelectionRange(pos, pos); }
+  };
+  document.getElementById("mk-tipo").onclick = e => {
+    const b = e.target.closest("[data-tipo]"); if(!b) return;
+    f.tipo = b.dataset.tipo; renderMercado();
+  };
+  document.getElementById("mk-so").onclick = e => {
+    const b = e.target.closest("[data-so]"); if(!b) return;
+    f.so = b.dataset.so; renderMercado();
+  };
+  document.getElementById("mk-anunciar").onclick = () => escolherCartaParaAnunciar();
+
+  app.querySelectorAll("[data-contato]").forEach(b => b.onclick = () => verContato(b.dataset.contato));
+  app.querySelectorAll("[data-mk-editar]").forEach(b => b.onclick = () => {
+    const a = todos.find(x => x.id === b.dataset.mkEditar);
+    if(a) formDeAnuncio(a);
+  });
+  app.querySelectorAll("[data-mk-status]").forEach(b => b.onclick = async () => {
+    try{
+      await rpc("market_status", { p_id:b.dataset.mkStatus, p_status:b.dataset.valor });
+      mercado.lista = null; carregarMercado(); renderMercado();
+    }catch(e){ toast("não consegui: " + e.message); }
+  });
+  app.querySelectorAll("[data-mk-apagar]").forEach(b => b.onclick = async () => {
+    if(!confirm("Apagar este anúncio?")) return;
+    try{
+      await rpc("market_delete", { p_id:b.dataset.mkApagar });
+      mercado.lista = null; carregarMercado(); renderMercado();
+      toast("anúncio apagado");
+    }catch(e){ toast("não consegui: " + e.message); }
+  });
+}
+
+function linhaDoAnuncio(a, meu){
+  const slab = a.slab && a.slab.grad
+    ? ` · ${(GRADUADORAS.find(g=>g[0]===a.slab.grad)||["","?"])[1]} ${escapeHTML(a.slab.nota||"")}` : "";
+  return `
+  <div class="lc-linha ${a.status !== "ativo" ? "fechado" : ""}">
+    ${a.img ? `<img src="${escapeHTML(a.img)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+    <span class="lc-nome">${escapeHTML(a.card_name)}
+      <small>${escapeHTML(a.set_name || a.set_code || "")}${a.cond ? " · " + escapeHTML(a.cond) : ""}${
+        a.finish === "foil" ? " · foil" : ""}${slab}${a.cidade ? " · " + escapeHTML(a.cidade) : ""}
+        ${a.status !== "ativo" ? ` · <b>${a.status}</b>` : ""}
+        ${a.quer ? `<br>aceita em troca: ${escapeHTML(a.quer)}` : ""}
+        ${a.obs ? `<br>${escapeHTML(a.obs)}` : ""}</small></span>
+    <span class="lc-preco">${a.tipo === "troca" ? "troca" : precoDoAnuncio(a)}</span>
+    ${meu ? `
+      <button class="icon-btn" data-mk-editar="${a.id}">editar</button>
+      ${a.status === "ativo"
+        ? `<button class="icon-btn" data-mk-status="${a.id}" data-valor="fechado">marcar fechado</button>`
+        : `<button class="icon-btn" data-mk-status="${a.id}" data-valor="ativo">reabrir</button>`}
+      <button class="icon-btn" data-mk-apagar="${a.id}">apagar</button>`
+    : `<button class="icon-btn" data-contato="${a.id}">falar com o dono</button>`}
+  </div>`;
+}
+
+async function verContato(id){
+  if(!logado()){
+    toast("Entre na sua conta para ver o contato");
+    return abrirConta();
+  }
+  let dados = null;
+  try{ dados = await rpc("market_contact", { p_id:id }); }
+  catch(e){ return toast("não consegui: " + e.message); }
+
+  const desde = dados.anuncia_desde
+    ? new Date(dados.anuncia_desde).toLocaleDateString("pt-BR", { month:"long", year:"numeric" }) : null;
+
+  modal(`<div class="modal-pad">
+    <h3>Falar com quem anunciou</h3>
+    <div class="kv"><span>Contato</span><b>${escapeHTML(dados.contato || "não informou")}</b></div>
+    <div class="kv"><span>Anúncios que essa pessoa marcou como fechados</span><b>${dados.fechados_declarados}</b></div>
+    ${desde ? `<div class="kv"><span>Fechou o primeiro em</span><b>${desde}</b></div>` : ""}
+    <div class="nota-regiao" style="margin-top:14px">
+      <b>Esse número não é uma avaliação.</b> É só quantas vezes a própria pessoa marcou um anúncio dela
+      como fechado — ninguém confirmou nada. O Collector não participa do negócio e não tem como
+      desfazer nada se der errado.
+    </div>
+    <div class="pergunta-acoes"><button class="btn" id="mkc-ok">Entendi</button></div>
+  </div>`);
+  document.getElementById("mkc-ok").onclick = closeModal;
+}
+
+function escolherCartaParaAnunciar(){
+  if(!logado()){ toast("Entre na sua conta para anunciar"); return abrirConta(); }
+  const minhas = cartasQueTenho().sort((a,b) => (b.unit||0) - (a.unit||0));
+  if(!minhas.length) return toast("marque alguma carta na sua coleção primeiro");
+
+  const repetidasPrimeiro = minhas.slice().sort((a,b) => (b.qtd - 1) - (a.qtd - 1));
+  modal(`<div class="modal-pad">
+    <h3>Qual carta você quer anunciar?</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 12px">
+      As suas repetidas aparecem primeiro — são as que sobram de verdade.</p>
+    <input type="search" id="mk-busca" placeholder="filtrar pelo nome…">
+    <div class="lista-compras" id="mk-escolha" style="max-height:340px;margin-top:10px"></div>
+  </div>`);
+
+  const pintar = () => {
+    const t = semAcento(document.getElementById("mk-busca").value || "");
+    const lista = repetidasPrimeiro.filter(c => !t || semAcento(c.name).includes(t)).slice(0, 60);
+    document.getElementById("mk-escolha").innerHTML = lista.map(c => `
+      <button class="lc-linha" data-escolher="${c.id}" style="width:100%;text-align:left">
+        ${c.small ? `<img src="${escapeHTML(c.small)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+        <span class="lc-nome">${escapeHTML(c.name)}
+          <small>${escapeHTML(c.setName || c.set || "")} · ${c.cond}${c.qtd > 1 ? ` · você tem ${c.qtd}` : ""}</small></span>
+        <span class="lc-preco">${money(c.unit || 0)}</span>
+      </button>`).join("") || `<div class="empty">nada com esse nome</div>`;
+    document.querySelectorAll("[data-escolher]").forEach(b => b.onclick = () => {
+      const c = minhas.find(x => x.id === b.dataset.escolher);
+      if(c) formDeAnuncio(null, c);
+    });
+  };
+  document.getElementById("mk-busca").oninput = pintar;
+  pintar();
+}
+
+function formDeAnuncio(anuncio, carta){
+  const r = carta ? (S.owned[carta.id] || {}) : {};
+  const a = anuncio || {};
+  const nome = a.card_name || (carta && carta.name) || "";
+
+  modal(`<div class="modal-pad">
+    <h3>${anuncio ? "Editar anúncio" : "Anunciar " + escapeHTML(nome)}</h3>
+
+    <div class="fgrupo">
+      <span class="flabel">O que você quer fazer</span>
+      <div class="toggles" id="an-tipo">
+        ${[["venda","vender"],["troca","trocar"],["ambos","vender ou trocar"]].map(([v,t]) =>
+          `<button class="tog ${((a.tipo||"venda")===v)?"on":""}" data-antipo="${v}">${t}</button>`).join("")}
+      </div>
+    </div>
+
+    <div class="dupla" id="an-preco-linha">
+      <label class="field"><span>Preço</span>
+        <input type="number" id="an-preco" min="0" step="0.01" value="${a.preco != null ? a.preco : ""}" placeholder="ex.: 180,00"></label>
+      <label class="field"><span>Moeda</span>
+        <select id="an-moeda">
+          ${[["BRL","Real"],["USD","Dólar"],["EUR","Euro"]].map(([v,t]) =>
+            `<option value="${v}"${(a.moeda||"BRL")===v?" selected":""}>${t}</option>`).join("")}
+        </select></label>
+    </div>
+
+    <label class="field"><span>O que você aceita em troca (opcional)</span>
+      <input type="text" id="an-quer" value="${escapeHTML(a.quer || "")}" placeholder="ex.: duals, fetchlands, ou cartas do meu chase"></label>
+    <label class="field"><span>Observação (opcional)</span>
+      <input type="text" id="an-obs" value="${escapeHTML(a.obs || "")}" placeholder="ex.: só retirada em mãos, carta em sleeve desde 2019"></label>
+    <div class="dupla">
+      <label class="field"><span>Cidade</span>
+        <input type="text" id="an-cidade" value="${escapeHTML(a.cidade || "")}" placeholder="ex.: Curitiba"></label>
+      <label class="field"><span>Seu contato</span>
+        <input type="text" id="an-contato" placeholder="ex.: @seu_usuario no Discord"></label>
+    </div>
+
+    <div class="nota-regiao" style="margin-top:14px">
+      <b>O contato só aparece para quem entrou na conta</b> — a lista de anúncios é aberta, mas o seu
+      contato não fica exposto na página. Ponha o canal que você prefere; e-mail e telefone só se você
+      quiser mesmo.
+    </div>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="an-ok">${anuncio ? "Salvar" : "Publicar anúncio"}</button>
+      <button class="btn ghost" id="an-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="an-status"></div>
+  </div>`);
+
+  let tipo = a.tipo || "venda";
+  const ajustarPreco = () => {
+    document.getElementById("an-preco-linha").style.display = tipo === "troca" ? "none" : "";
+  };
+  document.getElementById("an-tipo").onclick = e => {
+    const b = e.target.closest("[data-antipo]"); if(!b) return;
+    tipo = b.dataset.antipo;
+    document.querySelectorAll("[data-antipo]").forEach(x => x.classList.toggle("on", x === b));
+    ajustarPreco();
+  };
+  ajustarPreco();
+
+  document.getElementById("an-cancelar").onclick = closeModal;
+  document.getElementById("an-ok").onclick = async () => {
+    const st = document.getElementById("an-status");
+    const preco = parseFloat(document.getElementById("an-preco").value);
+    if(tipo !== "troca" && !(preco > 0)){ st.textContent = "anúncio de venda precisa de preço"; return; }
+    st.textContent = "publicando…";
+    try{
+      await rpc("market_publish", {
+        p_id: anuncio ? a.id : null,
+        p_carta: anuncio ? { card_name: a.card_name } : {
+          card_id: carta.id, card_name: carta.name, set_code: carta.set, set_name: carta.setName,
+          img: carta.small, cond: r.cond || "NM", lang: r.lang || "en", finish: r.fin || "normal",
+          slab: r.slab || null,
+        },
+        p_tipo: tipo,
+        p_preco: tipo === "troca" ? null : preco,
+        p_moeda: document.getElementById("an-moeda").value,
+        p_quer: document.getElementById("an-quer").value,
+        p_obs: document.getElementById("an-obs").value,
+        p_cidade: document.getElementById("an-cidade").value,
+        p_contato: document.getElementById("an-contato").value,
+      });
+      closeModal();
+      mercado.lista = null; carregarMercado();
+      go("mercado");
+      toast(anuncio ? "anúncio atualizado" : "anúncio publicado");
+    }catch(e){ st.textContent = "não consegui: " + e.message; }
+  };
+}
+
+/* =====================================================================
+   CARTAS GRADUADAS E ASSINADAS
+
+   Uma carta dentro de um slab não é a mesma carta solta: ela vale por
+   outra régua, e o que dá credibilidade a ela é o número do certificado,
+   que qualquer um confere no site da graduadora.
+
+   Por isso o app guarda graduadora, nota e certificado — e monta o link
+   de verificação sozinho. O que ele NÃO faz é estimar preço de carta
+   graduada: isso depende de leilão e de população, não do preço de carta
+   solta do Scryfall. A tela diz isso em vez de inventar um número.
+
+   A foto fica no seu aparelho, em base64, e é reduzida antes de guardar:
+   uma foto de celular inteira estouraria o espaço do navegador sozinha.
+   ===================================================================== */
+const GRADUADORAS = [
+  ["psa",  "PSA",  n => `https://www.psacard.com/cert/${n}`],
+  ["bgs",  "BGS",  n => `https://www.beckett.com/grading/card-lookup?certNumber=${n}`],
+  ["cgc",  "CGC",  n => `https://www.cgccards.com/certlookup/${n}/`],
+  ["sgc",  "SGC",  n => `https://gosgc.com/pop/certcheck/?cert=${n}`],
+  ["tag",  "TAG",  n => `https://my.taggrading.com/card/${n}`],
+  ["outra","Outra", () => ""],
+];
+const NOTAS = ["10","9.5","9","8.5","8","7","6","5","4","3","2","1"];
+
+const ehGraduada = r => !!(r && r.slab && r.slab.grad);
+const ehAssinada = r => !!(r && r.assinada && r.assinada.por);
+
+function linkDoCertificado(slab){
+  const g = GRADUADORAS.find(x => x[0] === (slab || {}).grad);
+  const n = String((slab || {}).cert || "").replace(/\D/g, "");
+  return (g && n) ? g[2](n) : "";
+}
+
+/* uma foto de celular tem uns 4 MB; aqui ela vira ~60 KB antes de entrar
+   no armazenamento, que é pequeno e é compartilhado com a coleção inteira */
+function encolherFoto(arquivo, ladoMax = 640){
+  return new Promise(res => {
+    const leitor = new FileReader();
+    leitor.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const e = Math.min(1, ladoMax / Math.max(img.width, img.height));
+        const cv = document.createElement("canvas");
+        cv.width = Math.round(img.width * e); cv.height = Math.round(img.height * e);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        res(cv.toDataURL("image/jpeg", 0.72));
+      };
+      img.onerror = () => res(null);
+      img.src = leitor.result;
+    };
+    leitor.onerror = () => res(null);
+    leitor.readAsDataURL(arquivo);
+  });
+}
+
+function abrirSlab(c){
+  const r = S.owned[c.id] || {};
+  const slab = r.slab || {};
+  const ass = r.assinada || {};
+
+  modal(`<div class="modal-pad">
+    <h3>Graduação e assinatura</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      ${escapeHTML(c.name)} — ${escapeHTML(c.setName || c.set || "")}</p>
+
+    <section class="ficha-bloco">
+      <span class="flabel">Carta graduada</span>
+      <div class="dupla">
+        <label class="field"><span>Graduadora</span>
+          <select id="sl-grad">
+            <option value="">não é graduada</option>
+            ${GRADUADORAS.map(([k, nome]) => `<option value="${k}"${slab.grad===k?" selected":""}>${nome}</option>`).join("")}
+          </select></label>
+        <label class="field"><span>Nota</span>
+          <select id="sl-nota">
+            <option value="">—</option>
+            ${NOTAS.map(n => `<option value="${n}"${slab.nota===n?" selected":""}>${n}</option>`).join("")}
+          </select></label>
+      </div>
+      <label class="field"><span>Número do certificado</span>
+        <input type="text" id="sl-cert" inputmode="numeric" value="${escapeHTML(slab.cert || "")}"
+               placeholder="o número gravado no slab"></label>
+      <div id="sl-link" class="dg-txt"></div>
+    </section>
+
+    <section class="ficha-bloco">
+      <span class="flabel">Carta assinada</span>
+      <div class="dupla">
+        <label class="field"><span>Assinada por</span>
+          <input type="text" id="sl-por" value="${escapeHTML(ass.por || "")}" placeholder="ex.: Rebecca Guay"></label>
+        <label class="field"><span>Onde ou quando</span>
+          <input type="text" id="sl-onde" value="${escapeHTML(ass.onde || "")}" placeholder="ex.: MagicCon 2025"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="sl-auten" ${ass.autenticada?"checked":""}>
+        <span>tem autenticação de terceiro</span></label>
+    </section>
+
+    <section class="ficha-bloco">
+      <span class="flabel">Foto sua</span>
+      <div class="slab-foto" id="sl-previa">${r.foto
+        ? `<img src="${r.foto}" alt="foto da carta">`
+        : `<span class="carregando">nenhuma foto</span>`}</div>
+      <div class="pergunta-acoes">
+        <label class="btn ghost" style="cursor:pointer">Escolher foto
+          <input type="file" id="sl-foto" accept="image/*" hidden></label>
+        ${r.foto ? `<button class="btn ghost" id="sl-tirar-foto">Tirar a foto</button>` : ""}
+      </div>
+      <p class="dg-txt">A foto fica só neste aparelho (e sobe junto com a sua conta, se você tiver uma).
+        Ela é reduzida antes de ser guardada.</p>
+    </section>
+
+    <p class="dg-txt"><b>Sobre o preço:</b> carta graduada tem mercado próprio, que depende de leilão e de
+      quantas existem com aquela nota. O app continua mostrando o preço da carta solta e não tenta
+      adivinhar quanto vale o slab.</p>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="sl-ok">Salvar</button>
+      <button class="btn ghost" id="sl-cancelar">Cancelar</button>
+    </div>
+  </div>`);
+
+  const pintarLink = () => {
+    const alvo = document.getElementById("sl-link");
+    const link = linkDoCertificado({ grad:document.getElementById("sl-grad").value,
+                                     cert:document.getElementById("sl-cert").value });
+    alvo.innerHTML = link
+      ? `Confira no site da graduadora: <a href="${link}" target="_blank" rel="noopener">verificar este certificado ↗</a>`
+      : `Com graduadora e número, aparece aqui o link para conferir o certificado.`;
+  };
+  ["sl-grad","sl-cert"].forEach(id => { document.getElementById(id).oninput = pintarLink;
+                                        document.getElementById(id).onchange = pintarLink; });
+  pintarLink();
+
+  let fotoNova = undefined;
+  document.getElementById("sl-foto").onchange = async e => {
+    const arq = e.target.files && e.target.files[0];
+    if(!arq) return;
+    const previa = document.getElementById("sl-previa");
+    previa.innerHTML = `<span class="carregando">reduzindo…</span>`;
+    fotoNova = await encolherFoto(arq);
+    previa.innerHTML = fotoNova ? `<img src="${fotoNova}" alt="foto da carta">`
+                                : `<span class="carregando">não consegui ler essa imagem</span>`;
+  };
+  const bt = document.getElementById("sl-tirar-foto");
+  if(bt) bt.onclick = () => { fotoNova = null;
+    document.getElementById("sl-previa").innerHTML = `<span class="carregando">nenhuma foto</span>`; };
+
+  document.getElementById("sl-cancelar").onclick = closeModal;
+  document.getElementById("sl-ok").onclick = () => {
+    const reg = S.owned[c.id];
+    if(!reg){ closeModal(); return toast("marque a carta como sua primeiro"); }
+    const grad = document.getElementById("sl-grad").value;
+    if(grad) reg.slab = { grad, nota:document.getElementById("sl-nota").value,
+                          cert:document.getElementById("sl-cert").value.trim() };
+    else delete reg.slab;
+
+    const por = document.getElementById("sl-por").value.trim();
+    if(por) reg.assinada = { por, onde:document.getElementById("sl-onde").value.trim(),
+                             autenticada: document.getElementById("sl-auten").checked };
+    else delete reg.assinada;
+
+    if(fotoNova !== undefined){ if(fotoNova) reg.foto = fotoNova; else delete reg.foto; }
+    save(); closeModal(); render();
+    toast("guardado");
+  };
+}
+
+/* ---------------- a tela: cartas especiais ---------------- */
+function renderEspeciais(){
+  const todas = Object.entries(S.owned).map(([id, r]) => ({ id, r }));
+  const graduadas = todas.filter(x => ehGraduada(x.r));
+  const assinadas = todas.filter(x => ehAssinada(x.r) && !ehGraduada(x.r));
+  const valor = graduadas.concat(assinadas).reduce((a, x) => a + valorUnitario(x.id) * qtdDe(x.id), 0);
+
+  const linha = x => {
+    const link = linkDoCertificado(x.r.slab);
+    return `
+    <div class="lc-linha">
+      ${x.r.foto || x.r.img ? `<img src="${x.r.foto || x.r.img}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+      <span class="lc-nome">${escapeHTML(x.r.n || "?")}
+        <small>${escapeHTML(x.r.sn || x.r.s || "")}${
+          ehGraduada(x.r) ? ` · <b>${(GRADUADORAS.find(g=>g[0]===x.r.slab.grad)||["","?"])[1]} ${escapeHTML(x.r.slab.nota||"")}</b>` : ""}${
+          ehAssinada(x.r) ? ` · assinada por ${escapeHTML(x.r.assinada.por)}${x.r.assinada.autenticada ? " (autenticada)" : ""}` : ""}</small></span>
+      ${link ? `<a class="lc-preco" href="${link}" target="_blank" rel="noopener">conferir ↗</a>` : ""}
+      <button class="icon-btn" data-slab="${x.id}">editar</button>
+    </div>`;
+  };
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Graduadas e assinadas</h2>
+        <p>As cartas que valem por outra régua: dentro de um slab, ou com assinatura do artista.
+        O número do certificado vira link de conferência no site da graduadora.</p>
+      </div>
+      <button class="btn ghost" id="esp-marcar">Marcar uma carta</button>
+    </div>
+
+    ${(graduadas.length + assinadas.length) === 0 ? `
+      <div class="empty">Nenhuma carta marcada ainda.<br>
+        <span style="color:var(--faint);font-size:12.5px">Abra uma carta da sua coleção e use
+        <b>Graduação e assinatura</b> — ou o botão aí em cima.</span></div>
+    ` : `
+      <div class="resumo-colecao">
+        <div class="rc"><b>${graduadas.length}</b><small>graduadas</small></div>
+        <div class="rc"><b>${assinadas.length}</b><small>assinadas</small></div>
+        <div class="rc"><b>${money(valor)}</b><small>valor das cartas soltas</small></div>
+      </div>
+      <p class="dg-txt" style="margin-top:10px">O valor acima é o da carta solta. Slab tem mercado próprio,
+      que depende de leilão e de população — e o app não inventa esse número.</p>
+
+      ${graduadas.length ? `<section class="grupo-temas">
+        <h3 class="grupo-titulo">Graduadas<span>${graduadas.length}</span></h3>
+        <div class="lista-compras" style="max-height:none">${graduadas.map(linha).join("")}</div>
+      </section>` : ""}
+      ${assinadas.length ? `<section class="grupo-temas">
+        <h3 class="grupo-titulo">Assinadas<span>${assinadas.length}</span></h3>
+        <div class="lista-compras" style="max-height:none">${assinadas.map(linha).join("")}</div>
+      </section>` : ""}
+    `}`;
+
+  app.querySelectorAll("[data-slab]").forEach(b => b.onclick = () => {
+    const r = S.owned[b.dataset.slab];
+    if(r) abrirSlab(cartaDoResumo(b.dataset.slab, r));
+  });
+  document.getElementById("esp-marcar").onclick = () => go("minha");
+}
 
 /* =====================================================================
    IMPORTAR DE OUTRO APLICATIVO
@@ -8912,7 +10260,7 @@ async function sincronizar(motivo){
 
       SYNC.sujo = false; SYNC.em = Date.now(); SYNC.estado = "ok";
       guardarSync();
-      aplicarTema(temaAtual());
+      aplicarTema();
       if(motivo === "entrou" || motivo === "manual") render();
     }catch(e){
       SYNC.estado = "erro";
@@ -9094,6 +10442,41 @@ if(logado()){
   if(veioDoLink) setTimeout(() => { toast("Você entrou — sincronizando a sua coleção"); sincronizar("entrou"); }, 200);
   else sincronizar("abriu");
   setInterval(() => { if(logado() && SYNC.sujo) sincronizar("mudou"); }, 120000);
+}
+
+/* =====================================================================
+   LEVAR OS DADOS EMBORA
+
+   Quem trouxe a coleção de outro app tem que poder levá-la para o
+   próximo. O formato é o do Moxfield, que é o que a maioria lê — e é o
+   mesmo que a importação daqui entende, então dá para ir e voltar.
+   ===================================================================== */
+function csvDaColecao(){
+  const escapar = v => {
+    const t = String(v == null ? "" : v);
+    return /[",\n;]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+  };
+  const cab = ["Count","Name","Edition","Collector Number","Condition","Language",
+               "Foil","Purchase Price","Scryfall ID"];
+  const linhas = Object.entries(S.owned).map(([id, r]) => [
+    qtdDe(id), r.n || "", (r.s || "").toLowerCase(), r.num || "",
+    condDe(r), langDe(r), r.fin === "foil" ? "foil" : "",
+    r.pg ? Number(r.pg).toFixed(2) : "", id,
+  ].map(escapar).join(","));
+  return [cab.join(","), ...linhas].join("\n");
+}
+
+function exportarColecao(){
+  const csv = csvDaColecao();
+  const linhas = Object.keys(S.owned).length;
+  const blob = new Blob(["\ufeff" + csv], { type:"text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `collector-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast(`${linhas} linha${linhas>1?"s":""} exportadas`);
 }
 
 function abrirBackup(){
@@ -9365,7 +10748,11 @@ function abrirRegiao(){
 }
 
 /* o câmbio chega depois; quando chegar, os preços em real se acertam sozinhos */
-aplicarTema(temaAtual());
+aplicarTema();
+// quem escolheu "como o aparelho" acompanha a troca no meio do uso
+matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+  if(temaAtual() === "sistema") aplicarTema();
+});
 carregarCambio().then(()=>{ if(regiao().moeda === "BRL") render(); else renderKPIs(); });
 render();
 </script>
