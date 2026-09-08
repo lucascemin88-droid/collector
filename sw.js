@@ -1,5 +1,5 @@
 /* =====================================================================
-   Service worker do Collector.
+   Service worker do Velvo.
 
    Duas regras, e só:
 
@@ -14,7 +14,7 @@
    de preço é pior que dado nenhum.
    ===================================================================== */
 
-const VERSAO = "collector-v1";
+const VERSAO = "velvo-v2";
 const CASCA = VERSAO + "-casca";
 const ARTES = VERSAO + "-artes";
 const MAX_ARTES = 400;
@@ -25,6 +25,10 @@ const ESSENCIAIS = [
   "./manifest.webmanifest",
   "./icone-192.png",
   "./icone-512.png",
+  "./fontes/archivo.woff2",
+  "./fontes/plex-mono-400.woff2",
+  "./fontes/plex-mono-500.woff2",
+  "./fontes/plex-mono-600.woff2",
 ];
 
 self.addEventListener("install", e => {

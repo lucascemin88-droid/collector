@@ -93,14 +93,15 @@
     position:sticky;top:0;z-index:40;
     padding-top:env(safe-area-inset-top);
     backdrop-filter:blur(10px) saturate(140%);
-    background:rgba(10,11,14,.88);
+    background:rgba(12,10,17,.88);
     border-bottom:1px solid var(--line);
   }
   .top-inner{max-width:1400px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-  .brand{display:flex;align-items:baseline;gap:10px}
-  .brand h1{margin:0;font-size:18px;letter-spacing:.2em;font-weight:700;color:var(--text)}
-  .brand h1::first-letter{color:var(--accent)}
-  .brand span{font-size:11px;color:var(--faint);letter-spacing:.06em}
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand .gema{color:var(--accent);flex:none;display:block}
+  .brand h1{margin:0;font-family:var(--font-display);font-size:16px;letter-spacing:.24em;
+    font-weight:800;font-stretch:118%;color:var(--text)}
+  .brand span{font-size:11px;color:var(--faint);letter-spacing:.04em}
   /* ---- navegação em dois níveis: botão-mestre em cima, seções embaixo ---- */
   nav.masters{
     max-width:1400px;margin:0 auto;padding:2px 22px 0;display:flex;gap:6px;
@@ -133,7 +134,8 @@
     text-align:left;padding:5px 12px;display:flex;flex-direction:column-reverse;gap:1px;
     background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--lift);
   }
-  .kpi b{display:block;font-size:17px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+  .kpi b{display:block;font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+    font-size:16px;font-weight:600;letter-spacing:-.01em;line-height:1.15}
   .kpi small{color:var(--faint);font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
   .icon-btn{
     padding:8px 13px;border-radius:var(--r-sm);border:1px solid var(--line);
@@ -298,7 +300,7 @@
   .sg-linha.posta{opacity:.55}
   .card.escolhida{outline:2px solid var(--accent);outline-offset:1px}
   .escolher-versao{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;
-    background:rgba(10,11,14,.72);border:1px solid var(--line-strong);color:var(--text-2);
+    background:rgba(12,10,17,.72);border:1px solid var(--line-strong);color:var(--text-2);
     font-size:12px;line-height:1;display:grid;place-items:center}
   .escolher-versao:hover{color:var(--accent);border-color:var(--accent)}
   .tag-tenho{position:absolute;top:6px;left:6px;font-size:10px;padding:2px 6px;border-radius:999px;
@@ -373,7 +375,7 @@
 
   /* ---------- generic ---------- */
   .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
-  .section-head h2{margin:0;font-size:20px;font-weight:600;letter-spacing:-.015em}
+  .section-head h2{margin:0;font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em}
   .section-head p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.55;max-width:62ch}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
@@ -422,11 +424,11 @@
   .theme:hover{transform:translateY(-3px);border-color:var(--gold-dim);box-shadow:var(--shadow)}
   .theme-cover{height:96px;position:relative;display:flex;align-items:center;justify-content:center;font-size:34px}
   /* rebaixa a capa colorida para ela não competir com a arte das cartas */
-  .theme-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,11,14,.25),rgba(10,11,14,.6))}
+  .theme-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,10,17,.25),rgba(12,10,17,.6))}
   .theme-cover>*{position:relative;z-index:1}
   /* capa escolhida pelo usuário: a arte da carta ocupa a faixa inteira */
   .theme-cover.com-arte{background-size:cover;background-position:center 32%;background-color:var(--surface-2)}
-  .theme-cover.com-arte::after{background:linear-gradient(180deg,transparent 45%,rgba(10,11,14,.75))}
+  .theme-cover.com-arte::after{background:linear-gradient(180deg,transparent 45%,rgba(12,10,17,.75))}
   .ico-capa{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
   .capa-atual{
     display:flex;align-items:center;gap:12px;padding:10px;margin-bottom:18px;
@@ -452,13 +454,13 @@
   }
   .coll-head .ico{font-size:40px;line-height:1;flex:0 0 auto}
   .coll-head .ico:has(.ico-capa){width:104px;height:74px;border-radius:10px;overflow:hidden}
-  .coll-head h2{margin:0 0 4px;font-size:20px}
+  .coll-head h2{margin:0 0 4px;font-family:var(--font-display);font-size:20px;font-weight:700}
   .coll-head p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
   .progress-wrap{min-width:250px;flex:1}
   .bar{height:9px;border-radius:999px;background:var(--surface2);overflow:hidden;margin:8px 0 6px;border:1px solid var(--line)}
   .bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
   .progress-num{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
-  .progress-num b{color:var(--gold);font-size:15px;font-variant-numeric:tabular-nums}
+  .progress-num b{color:var(--gold);font-family:var(--font-mono);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
 
   .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
   .toolbar .grow{flex:1;min-width:200px}
@@ -478,10 +480,10 @@
   .card img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity var(--t-base)}
   /* o que você não tem vira fantasma limpo, não cinza lamacento */
   .card:not(.owned) img{filter:grayscale(1) contrast(.92);opacity:.45}
-  .card.owned{box-shadow:0 0 0 1px var(--accent-line)}
+  .card.owned{box-shadow:0 0 0 1.5px rgba(79,191,139,.55)}
   @media (hover:hover){
     .card:hover{transform:scale(1.035);z-index:2;box-shadow:0 0 0 1px var(--line-strong),0 12px 28px -10px rgba(0,0,0,.8)}
-    .card.owned:hover{box-shadow:0 0 0 1.5px var(--accent),0 12px 28px -10px rgba(0,0,0,.8)}
+    .card.owned:hover{box-shadow:0 0 0 2px var(--pos),0 12px 28px -10px rgba(0,0,0,.8)}
     .card:hover img{filter:none;opacity:1}
   }
   .card .tick{
@@ -491,7 +493,7 @@
     backdrop-filter:blur(4px);opacity:0;transition:opacity var(--t-fast);
   }
   .card:hover .tick,.card:focus-within .tick,.card.owned .tick{opacity:1}
-  .card.owned .tick{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .card.owned .tick{background:var(--pos);color:var(--bg);border-color:transparent}
   .card .info{
     position:absolute;right:7px;top:7px;width:24px;height:24px;border-radius:50%;
     background:rgba(10,12,16,.78);border:1px solid var(--line2);color:var(--muted);
@@ -552,7 +554,7 @@
     main{padding:18px 16px 70px}
     nav.tabs{padding:0 16px 10px}
   }
-  .card .cap-preco{flex:0 0 auto;font-size:10.5px;color:var(--gold);font-variant-numeric:tabular-nums}
+  .card .cap-preco{flex:0 0 auto;font-family:var(--font-mono);font-size:10px;color:var(--gold);font-variant-numeric:tabular-nums}
   .card:not(.owned) .cap-preco{color:var(--gold-dim)}
   .card-skel{border-radius:4.75% / 3.4%;aspect-ratio:488/680;background:linear-gradient(100deg,var(--surface-1) 30%,var(--surface-2) 50%,var(--surface-1) 70%);background-size:220% 100%;animation:sk 1.2s infinite}
   @keyframes sk{from{background-position:180% 0}to{background-position:-40% 0}}
@@ -676,7 +678,7 @@
     height:104px;background-size:cover;background-position:center 22%;background-color:var(--surface-2);
     display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;
   }
-  .deck-capa::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,11,14,.7))}
+  .deck-capa::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(12,10,17,.7))}
   .deck-corpo{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
   .deck-corpo h3{margin:0;font-size:15px;font-weight:600}
   .deck-meta{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--faint);flex-wrap:wrap}
@@ -1256,8 +1258,13 @@
 <header class="top">
   <div class="top-inner">
     <div class="brand">
-      <h1>COLLECTOR</h1>
-      <span>Magic: The Gathering</span>
+      <svg class="gema" viewBox="0 0 48 48" width="19" height="19" aria-hidden="true" focusable="false">
+        <path d="M13 11 H35 L44 21 L24 44 L4 21 Z" fill="currentColor"/>
+        <path d="M4 21 H44 M13 21 L24 44 M35 21 L24 44" fill="none" stroke="var(--bg)"
+          stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      <h1>VELVO</h1>
+      <span>Coleção e Deck MTG</span>
     </div>
     <div class="spacer"></div>
     <div class="kpis">
@@ -1276,7 +1283,7 @@
 
 <script>
 /* ============================================================
-   Collector — protótipo v0.1
+   Velvo — coleção e deck de Magic (codinome do repo: collector)
    Dados: Scryfall API (https://scryfall.com) — uso não comercial,
    sem afiliação com a Wizards of the Coast.
    ============================================================ */
@@ -2043,20 +2050,20 @@ const TEMAS = {
     "--accent-soft":"rgba(111,182,240,.13)", "--accent-line":"rgba(111,182,240,.40)",
     "--accent-ink":"#0a1018" } },
 
-  floresta: { nome:"Floresta", desc:"verde de mata", mostra:["#080d0a","#5bd69b"], vars:{
+  floresta: { nome:"Floresta", desc:"verde de mata", mostra:["#080d0a","#4FBF8B"], vars:{
     "--bg":"#080d0a", "--surface-1":"#0e1712", "--surface-2":"#14201a", "--surface-3":"#1b2b22",
-    "--accent":"#5bd69b", "--accent-hover":"#8fe9bb", "--accent-dim":"#2f7a56",
+    "--accent":"#4FBF8B", "--accent-hover":"#8fe9bb", "--accent-dim":"#2f7a56",
     "--accent-soft":"rgba(91,214,155,.13)", "--accent-line":"rgba(91,214,155,.40)",
     "--accent-ink":"#08120c" } },
 
-  rubi: { nome:"Rubi", desc:"vermelho de montanha", mostra:["#100708","#f0705c"], vars:{
+  rubi: { nome:"Rubi", desc:"vermelho de montanha", mostra:["#100708","#E05B5B"], vars:{
     "--bg":"#100708", "--surface-1":"#1a0d0e", "--surface-2":"#241314", "--surface-3":"#2f1a1b",
-    "--accent":"#f0705c", "--accent-hover":"#ff9683", "--accent-dim":"#8a3c31",
+    "--accent":"#E05B5B", "--accent-hover":"#ff9683", "--accent-dim":"#8a3c31",
     "--accent-soft":"rgba(240,112,92,.13)", "--accent-line":"rgba(240,112,92,.40)",
     "--accent-ink":"#160809" } },
 
   pergaminho: { nome:"Pergaminho", desc:"claro, para o dia", mostra:["#f4f1ea","#8a6a1f"], vars:{
-    "--bg":"#f4f1ea", "--surface-1":"#fffdf8", "--surface-2":"#f0ece1", "--surface-3":"#e6e0d2",
+    "--bg":"#f4f1ea", "--surface-1":"#fffdf8", "--surface-2":"#f0ece1", "--surface-3":"#EDE9F4",
     "--line":"rgba(30,25,15,.10)", "--line-strong":"rgba(30,25,15,.22)",
     "--text":"#20221f", "--text-2":"#55584f", "--text-3":"#7b7d73",
     "--accent":"#8a6a1f", "--accent-hover":"#a8832c", "--accent-dim":"#c9b077",
@@ -2132,7 +2139,7 @@ async function carregarNoticias(forcar){
 }
 
 const FONTE_COR = {
-  wizards:"#e3b25a", goldfish:"#5bd69b", hipsters:"#f0705c",
+  wizards:"#D9A441", goldfish:"#4FBF8B", hipsters:"#E05B5B",
   edhrec:"#6fb6f0", herald:"#b48ce0",
 };
 
@@ -2473,7 +2480,7 @@ function renderConfig(){
       importação daqui também entende. O que é seu vai embora com você quando quiser.</p>
     </section>
 
-    <p class="status">Collector · dados de cartas e preços do Scryfall · sem afiliação com a Wizards of the Coast</p>`;
+    <p class="status">Velvo é conteúdo de fã não oficial, permitido pela Fan Content Policy. Não aprovado nem endossado pela Wizards. Parte do material usado é propriedade da Wizards of the Coast. ©Wizards of the Coast LLC. Cartas e preços do Scryfall.</p>`;
 
   document.getElementById("cfg-conta").onclick = abrirConta;
   const bs = document.getElementById("cfg-sync");
@@ -8684,12 +8691,12 @@ async function desenharCartao(melhores, todas, formato){
   const g = cv.getContext("2d");
 
   const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-  const fundo = css("--bg") || "#0a0b0e";
-  const ouro  = css("--accent") || "#e3b25a";
+  const fundo = css("--bg") || "#0C0A11";
+  const ouro  = css("--accent") || "#D9A441";
   const texto = css("--text") || "#e8eaf0";
   const fraco = css("--text-3") || "#8a92a6";
   const claro = /^#(f|e|d)/i.test(fundo);            // tema claro? o véu muda de cor
-  const veu = claro ? "255,255,255" : "10,11,14";
+  const veu = claro ? "255,255,255" : "12,10,17";
 
   const fonte = (t, peso, cor) => {
     g.font = `${peso} ${t}px -apple-system, "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif`;
@@ -8719,17 +8726,37 @@ async function desenharCartao(melhores, todas, formato){
      da carta mais cara e números; o que sobra é a altura da grade. Assim
      nada nunca escreve por cima de nada, em qualquer um dos dois formatos. */
   const margem = 64;
-  const rodapeY = A - margem + 6;
+  const rodapeY = A - margem - 20;
   const maisValiosaY = rodapeY - 46;
   const numerosY = maisValiosaY - (formato === "story" ? 88 : 78);
   /* ------------------------------------------------ cabeçalho */
-  fonte(26, 800, ouro);
+  /* a gema, desenhada na malha de 48 e escalada para a caixa pedida */
+  const gema = (gx, gy, s, cor) => {
+    const u = k => k * s / 48;
+    g.save(); g.translate(gx, gy);
+    g.beginPath();
+    g.moveTo(u(13), u(11)); g.lineTo(u(35), u(11)); g.lineTo(u(44), u(21));
+    g.lineTo(u(24), u(44)); g.lineTo(u(4), u(21)); g.closePath();
+    g.fillStyle = cor; g.fill();
+    g.strokeStyle = fundo; g.lineWidth = u(2); g.lineJoin = "round"; g.lineCap = "round";
+    g.beginPath();
+    g.moveTo(u(4), u(21));  g.lineTo(u(44), u(21));
+    g.moveTo(u(13), u(11)); g.lineTo(u(13), u(21));
+    g.moveTo(u(35), u(11)); g.lineTo(u(35), u(21));
+    g.moveTo(u(13), u(21)); g.lineTo(u(24), u(44));
+    g.moveTo(u(35), u(21)); g.lineTo(u(24), u(44));
+    g.stroke();
+    g.restore();
+  };
+  gema(margem, margem - 5, 45, ouro);
+  const marcaX = margem + 60;
+  fonte(26, 800, texto);
   g.textAlign = "left";
   g.letterSpacing = "6px";
-  g.fillText("COLLECTOR", margem, margem + 30);
+  g.fillText("VELVO", marcaX, margem + 30);
   g.letterSpacing = "0px";
   fonte(19, 500, fraco);
-  g.fillText("Magic: The Gathering", margem, margem + 62);
+  g.fillText("Coleção e Deck MTG", marcaX, margem + 62);
 
   /* ------------------------------------------------ grade de artes */
   const cols = 3, gap = 14;
@@ -8751,7 +8778,7 @@ async function desenharCartao(melhores, todas, formato){
     caixaRedonda(g, x, y, lado, alt, 12);
     g.clip();
     if(img) cobrir(g, img, x, y, lado, alt);
-    else { g.fillStyle = claro ? "#e6e0d2" : "#1e222c"; g.fillRect(x, y, lado, alt); }
+    else { g.fillStyle = claro ? "#EDE9F4" : "#201B2C"; g.fillRect(x, y, lado, alt); }
     g.restore();
     g.strokeStyle = `rgba(${claro ? "0,0,0" : "255,255,255"},.10)`;
     g.lineWidth = 1.5;
@@ -8803,6 +8830,15 @@ async function desenharCartao(melhores, todas, formato){
   g.textAlign = "center";
   g.fillText(new Date().toLocaleDateString("pt-BR", { day:"2-digit", month:"long", year:"numeric" }),
              L/2, rodapeY);
+
+  /* aviso da Fan Content Policy: esta peca publica arte da Wizards fora do app */
+  g.font = '14px "IBM Plex Mono", ui-monospace, Menlo, monospace';
+  g.fillStyle = fraco;
+  g.textAlign = "center";
+  g.fillText("Velvo is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards.",
+             L/2, rodapeY + 26);
+  g.fillText("Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.",
+             L/2, rodapeY + 43);
 
   /* moldura fina */
   g.strokeStyle = ouro; g.globalAlpha = .28; g.lineWidth = 2;
@@ -10672,34 +10708,34 @@ function abrirInstalar(){
 function svgBarraSafari(){
   return `
   <svg class="ip-arte" viewBox="0 0 300 62" role="img" aria-label="barra de baixo do Safari, com o botão de compartilhar destacado">
-    <rect x="6" y="10" width="288" height="42" rx="21" fill="#1e222c" stroke="#2b3040"/>
+    <rect x="6" y="10" width="288" height="42" rx="21" fill="#201B2C" stroke="#2C2539"/>
     <path d="M42 31h16M50 25l-8 6 8 6" stroke="#6b7280" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M96 31h-16M88 25l8 6-8 6" stroke="#3a3f4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="150" cy="31" r="19" fill="rgba(227,178,90,.16)" stroke="#e3b25a" stroke-width="1.5"/>
-    <path d="M150 22v16M144 27l6-6 6 6" stroke="#e3b25a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="143" y="34" width="14" height="9" rx="2.5" stroke="#e3b25a" stroke-width="2" fill="none"/>
+    <circle cx="150" cy="31" r="19" fill="rgba(227,178,90,.16)" stroke="#D9A441" stroke-width="1.5"/>
+    <path d="M150 22v16M144 27l6-6 6 6" stroke="#D9A441" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="143" y="34" width="14" height="9" rx="2.5" stroke="#D9A441" stroke-width="2" fill="none"/>
     <rect x="196" y="23" width="16" height="16" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
     <rect x="246" y="23" width="14" height="14" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
     <rect x="250" y="27" width="14" height="14" rx="2.5" stroke="#6b7280" stroke-width="2" fill="none"/>
-    <text x="150" y="59" text-anchor="middle" fill="#e3b25a" font-size="9" font-family="system-ui">este aqui</text>
+    <text x="150" y="59" text-anchor="middle" fill="#D9A441" font-size="9" font-family="system-ui">este aqui</text>
   </svg>`;
 }
 function svgFolhaCompartilhar(){
   const linha = (y, txt, icone) => `
-    <rect x="8" y="${y}" width="284" height="30" rx="8" fill="#171a22"/>
+    <rect x="8" y="${y}" width="284" height="30" rx="8" fill="#171320"/>
     <text x="22" y="${y+19}" fill="#a7aec0" font-size="11" font-family="system-ui">${txt}</text>
     <text x="272" y="${y+20}" fill="#4a5262" font-size="13" text-anchor="middle">${icone}</text>`;
   return `
   <svg class="ip-arte" viewBox="0 0 300 168" role="img" aria-label="lista do compartilhar com Adicionar à Tela de Início destacado">
-    <rect x="0" y="0" width="300" height="168" rx="14" fill="#101218" stroke="#2b3040"/>
+    <rect x="0" y="0" width="300" height="168" rx="14" fill="#120F18" stroke="#2C2539"/>
     <rect x="132" y="7" width="36" height="4" rx="2" fill="#3a3f4d"/>
     ${linha(20, "Copiar", "⧉")}
     ${linha(54, "Adicionar aos Favoritos", "★")}
-    <rect x="8" y="88" width="284" height="34" rx="8" fill="rgba(227,178,90,.16)" stroke="#e3b25a" stroke-width="1.5"/>
-    <text x="22" y="109" fill="#e3b25a" font-size="11.5" font-weight="600" font-family="system-ui">Adicionar à Tela de Início</text>
-    <text x="272" y="110" fill="#e3b25a" font-size="14" text-anchor="middle">⊞</text>
+    <rect x="8" y="88" width="284" height="34" rx="8" fill="rgba(227,178,90,.16)" stroke="#D9A441" stroke-width="1.5"/>
+    <text x="22" y="109" fill="#D9A441" font-size="11.5" font-weight="600" font-family="system-ui">Adicionar à Tela de Início</text>
+    <text x="272" y="110" fill="#D9A441" font-size="14" text-anchor="middle">⊞</text>
     ${linha(130, "Marcação", "✎")}
-    <path d="M150 158c0-6 0-10 0-14M144 149l6-6 6 6" stroke="#e3b25a" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M150 158c0-6 0-10 0-14M144 149l6-6 6 6" stroke="#D9A441" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 }
 
