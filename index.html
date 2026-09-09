@@ -246,6 +246,97 @@
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
     letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  /* ---------------- primeira abertura ---------------- */
+  .primeira{max-width:620px}
+  .pa-opcoes{display:grid;gap:10px}
+  .pa-op{text-align:left;padding:14px 16px;border-radius:var(--r-lg);cursor:pointer;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--text)}
+  .pa-op:hover{border-color:var(--accent-line);background:var(--accent-soft)}
+  .pa-op b{display:block;font-size:14.5px;margin-bottom:4px}
+  .pa-op span{font-size:12.5px;line-height:1.55;color:var(--text-2)}
+
+  /* ---------------- retrato da coleção ---------------- */
+  .retrato{margin-top:22px}
+  .ret-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+  .ret-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:14px 16px;box-shadow:var(--lift)}
+  .ret-linha{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:9px;align-items:center;
+    padding:3px 0;font-size:12.5px}
+  .ret-linha > span{color:var(--text-2);display:flex;align-items:center;gap:6px;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap}
+  .ret-linha > span i.rar-mythic,.ret-linha > span i[class^="rar-"]{width:8px;height:8px;border-radius:50%;
+    display:inline-block;flex:none}
+  .ret-linha b{font-family:var(--font-mono,ui-monospace,monospace);font-size:12px;font-weight:600;
+    font-variant-numeric:tabular-nums;text-align:right;min-width:44px}
+  .ret-barra{height:8px;border-radius:4px;background:var(--surface-3);overflow:hidden}
+  .ret-barra i{display:block;height:100%;background:var(--accent);border-radius:4px}
+  .ret-obs{margin:9px 0 0;font-size:11.5px;line-height:1.5;color:var(--text-3)}
+  .ret-kv{padding:7px 0;border-bottom:1px solid var(--line)}
+  .ret-kv:last-of-type{border-bottom:0}
+  .ret-kv span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3)}
+  .ret-kv b{font-size:13.5px}
+  .ret-kv small{display:block;font-size:11.5px;color:var(--text-3)}
+  .ret-curva{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;align-items:end;height:104px;
+    margin-top:4px}
+  .cv-col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:4px}
+  .cv-barra{flex:1;display:flex;align-items:flex-end}
+  .cv-barra i{display:block;width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px}
+  .cv-col span{text-align:center;font-size:10px;color:var(--text-3)}
+
+  /* ---------------- busca única ---------------- */
+  .busca-tudo #bt-termo{font-size:17px;padding:12px 14px}
+  .bt-lista{display:flex;flex-direction:column;gap:4px;margin-top:12px;max-height:52vh;overflow:auto}
+  .bt-item{display:flex;align-items:center;gap:10px;text-align:left;width:100%;padding:8px 10px;
+    background:transparent;border:1px solid transparent;border-radius:var(--r-sm);color:var(--text);
+    cursor:pointer}
+  .bt-item:hover,.bt-item:focus{background:var(--surface-2);border-color:var(--line)}
+  .bt-item img,.bt-sem{width:28px;height:39px;border-radius:3px;flex:none;object-fit:cover;
+    background:var(--surface-3);display:grid;place-items:center;color:var(--text-3);font-size:15px}
+  .bt-txt{min-width:0}
+  .bt-txt b{display:block;font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .bt-txt small{font-size:11px;color:var(--text-3)}
+  .bt-catalogo{border-top:1px solid var(--line);border-radius:0 0 var(--r-sm) var(--r-sm);margin-top:6px;
+    padding-top:12px}
+
+  /* ---------------- conferência em massa ---------------- */
+  .conf-caixa{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:12px;
+    background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:16px;box-shadow:var(--lift)}
+  .conf-caixa #cf-nome{font-size:17px;padding:12px 14px}
+  @media (max-width:560px){ .conf-caixa{grid-template-columns:1fr} }
+  .conf-opcoes{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;
+    margin-top:12px}
+  .conf-op{display:flex;align-items:center;gap:9px;text-align:left;padding:8px 10px;
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);
+    color:var(--text);cursor:pointer}
+  .conf-op:hover{border-color:var(--accent-line)}
+  .conf-op img{width:28px;height:39px;object-fit:cover;border-radius:3px;flex:none}
+  .conf-op span{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .conf-op small{display:block;font-size:10.5px;color:var(--text-3)}
+
+  /* ---------------- resultado da partida ---------------- */
+  .res-lista{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+  .res-linha{display:grid;grid-template-columns:38px minmax(0,1fr) auto auto;gap:10px;align-items:center;
+    padding:8px 11px;border-radius:var(--r-sm);background:var(--surface-2);border:1px solid var(--line)}
+  .res-linha.campeao{border-color:var(--accent-line);background:var(--accent-soft)}
+  .res-linha.fora{opacity:.62}
+  .res-lugar{font-family:var(--font-mono,ui-monospace,monospace);font-size:15px;font-weight:600;
+    text-align:center;color:var(--text-2)}
+  .res-linha.campeao .res-lugar{color:var(--accent)}
+  .res-nome{font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .res-estado{font-size:11px;color:var(--text-3);white-space:nowrap}
+  .res-selo{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--accent-ink);background:var(--accent);padding:3px 8px;border-radius:8px}
+  .rel-jog.fora{opacity:.55;border-style:dashed}
+  @media (max-width:560px){
+    .res-linha{grid-template-columns:32px minmax(0,1fr) auto}
+    .res-estado{display:none}
+  }
+
+  .grade-mais{grid-column:1/-1;padding:14px 0;text-align:center;font-size:12px;color:var(--text-3)}
+  .grade-mais:empty{padding:0}
+
   /* ---------------- cruzamento de trocas ---------------- */
   .troca-cartao{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
     padding:14px 16px;margin-bottom:12px;box-shadow:var(--lift)}
@@ -1445,6 +1536,7 @@
     <div class="kpis">
       <div class="kpi"><b id="kpi-cards">0</b><small>cartas na coleção</small></div>
       <div class="kpi"><b id="kpi-value">US$ 0</b><small>valor estimado</small></div>
+      <button class="icon-btn" id="btn-buscar-tudo" title="Buscar em tudo (barra /)">⌕<span class="so-largo"> Buscar</span></button>
       <button class="icon-btn" id="btn-conta">Entrar</button>
       <button class="icon-btn" id="btn-config" title="Ajustes">⚙<span class="so-largo"> Ajustes</span></button>
     </div>
@@ -1629,6 +1721,53 @@ const blank = { owned:{}, custom:[], totals:{}, exclusoes:{}, inclusoes:{}, uniq
                 config:{ regiao:"global", acabamento:"normal", tema:"ouro",
                          avisos:{ chase:true, noticias:false, colecao:false } } };
 let S = load();
+/* limpa os campos deriváveis de quem já tinha coleção antes desta versão */
+if(enxugarColecao()) setTimeout(salvarAgora, 0);
+
+/* =====================================================================
+   A COLEÇÃO PRECISA EXISTIR EM ALGUM LUGAR ALÉM DESTE APARELHO
+
+   Tudo vive no `localStorage`. O navegador pode limpar os dados de um
+   site — a pessoa limpando, o sistema apertado de espaço, o app
+   desinstalado sem querer — e aí a coleção some. Isso não é hipótese
+   remota: é a falha mais provável deste app.
+
+   Duas defesas, e o app é honesto sobre a diferença entre elas:
+
+   - CONTA: quem entra tem a coleção subindo sozinha a cada mudança. É a
+     proteção de verdade, porque não depende de o aparelho sobreviver.
+   - ARQUIVO: um download que a pessoa guarda. Funciona sem conta, mas
+     só existe se alguém lembrar de baixar — por isso o app conta os dias
+     e avisa quando faz tempo demais.
+
+   O que o app NÃO faz é dizer "seus dados estão seguros" sem nenhuma das
+   duas: sem conta e sem arquivo, a tela diz exatamente isso.
+   ===================================================================== */
+const DIAS_SEM_BACKUP = 14;
+
+function marcarBackupFeito(){
+  S.config.ultimoBackup = Date.now();
+  salvarAgora();
+}
+/* quantos dias desde a última proteção real: conta ou arquivo */
+function estadoDaProtecao(){
+  const arquivo = Number(S.config.ultimoBackup) || 0;
+  const naConta = logado() && SYNC.em && !SYNC.sujo ? SYNC.em : 0;
+  const ultima = Math.max(arquivo, naConta);
+  const dias = ultima ? Math.floor((Date.now() - ultima) / 86400000) : null;
+  // só é problema quando existe coleção para perder
+  const descoberto = ownedCount() > 0 && (ultima === 0 || dias >= DIAS_SEM_BACKUP);
+  /* o aviso é de uma situação, não de um acontecimento: ele não some
+     porque você leu. Mas repetir todo dia vira ruído, então quem clicou
+     "entendi" fica 7 dias sem ouvir de novo — e o alerta continua à
+     vista, sem contador, em Ajustes. */
+  const avisadoEm = Number(S.config.avisoBackupVistoEm) || 0;
+  return {
+    naConta: !!naConta, arquivo, ultima, dias, descoberto,
+    cartas: ownedCount(),
+    cobrar: descoberto && Date.now() - avisadoEm > 7*86400000,
+  };
+}
 
 function load(){
   try{
@@ -1640,12 +1779,47 @@ function load(){
     return lido;
   }catch(e){ return structuredClone(blank); }
 }
-function save(){
-  try{ localStorage.setItem(STORE, JSON.stringify(S)); }
+/* =====================================================================
+   GRAVAR SEM TRAVAR A TELA
+
+   `save()` serializa a coleção inteira. Com 5.000 cartas isso é ~2 MB de
+   JSON, e chamar a cada toque no + de quantidade travava o dedo na tela.
+
+   Agora a gravação é ESPAÇADA: a memória muda na hora (é dela que a tela
+   lê), e o disco recebe no máximo uma vez a cada 400 ms. Duas garantias
+   para ninguém perder nada:
+
+   - `salvarAgora()` grava na marra, e é o que roda quando a aba some,
+     quando o app vai para segundo plano e antes de fechar;
+   - qualquer leitura que dependa do disco (backup, exportação) chama
+     `salvarAgora()` antes.
+
+   `save()` continua sendo o nome usado em todo o app — quem chama não
+   precisa saber de nada disso.
+   ===================================================================== */
+let gravacao = { pendente:false, timer:null, em:0 };
+
+function salvarAgora(){
+  clearTimeout(gravacao.timer);
+  gravacao.timer = null;
+  gravacao.pendente = false;
+  try{
+    localStorage.setItem(STORE, JSON.stringify(S));
+    gravacao.em = Date.now();
+  }
   catch(e){ toast("Não consegui salvar (armazenamento cheio ou bloqueado)"); }
+}
+
+function save(){
+  gravacao.pendente = true;
+  if(!gravacao.timer) gravacao.timer = setTimeout(salvarAgora, 400);
   // quem está logado tem a mudança levada para a conta alguns segundos depois
   if(typeof agendarSync === "function") agendarSync();
 }
+
+/* a aba pode sumir sem aviso: é aqui que a gravação pendente vira disco */
+addEventListener("visibilitychange", () => { if(document.hidden && gravacao.pendente) salvarAgora(); });
+addEventListener("pagehide", () => { if(gravacao.pendente) salvarAgora(); });
 
 /* ---------------- coleções temáticas prontas ---------------- */
 /* =====================================================================
@@ -2032,24 +2206,63 @@ function isOwned(id){ return !!S.owned[id]; }
 
 /* O que fica guardado de cada carta que você tem. É o bastante para a aba
    "Minha coleção" funcionar sozinha, sem consultar o Scryfall a cada abertura. */
+/* =====================================================================
+   O QUE FICA GUARDADO DE CADA CARTA
+
+   Tudo isto vive no `localStorage`, que no Safari tem teto de uns 5 MB
+   por site. Então a régua é simples: campo que pode ser DERIVADO não é
+   guardado. Três saíram:
+
+   - `big` (imagem grande) — é a mesma URL da pequena com `/normal/` no
+     lugar de `/small/`. O Scryfall serve os dois tamanhos no mesmo
+     caminho, e a URL é longa: era o campo mais caro da lista.
+   - `url` (página no Scryfall) — `scryfall.com/card/<set>/<número>`
+     resolve para a carta certa; o slug do nome é enfeite.
+   - `promos` vazio — a esmagadora maioria das cartas não tem promo
+     nenhuma, e `"promos":[]` em cada uma custa espaço à toa. Quando a
+     carta TEM promo, o campo continua guardado: é o que dá "surge foil"
+     e "sem borda" no lugar de "foil".
+
+   `enxugarColecao()` limpa esses campos de quem já tinha a coleção
+   marcada antes desta versão.
+   ===================================================================== */
+const imagemGrande = small => String(small || "").replace("/small/", "/normal/");
+const paginaNoScryfall = r =>
+  r && r.s && r.num ? `https://scryfall.com/card/${r.s}/${encodeURIComponent(r.num)}` : "";
+
 function resumoCarta(c){
-  return { n:c.name, s:c.set, sn:c.setName, num:c.num, r:c.rarity, t:c.type,
+  const r = { n:c.name, s:c.set, sn:c.setName, num:c.num, r:c.rarity, t:c.type,
            c:c.cores || "", mv:(c.mv === undefined ? null : c.mv),
-           img:c.small, big:c.normal, art:c.artist, url:c.url,
+           img:c.small, art:c.artist,
            usd:Number(c.usd) || 0, eur:Number(c.eur) || 0,
            usdF:Number(c.usdFoil) || 0, eurF:Number(c.eurFoil) || 0,
-           fin:c.acabamentoEscolhido || "normal", promos:c.promos || [], arte:c.arte || null,
+           fin:c.acabamentoEscolhido || "normal", arte:c.arte || null,
            crop:c.arteCrop || null,
            ano:(c.released || "").slice(0,4), at:Date.now() };
+  if((c.promos || []).length) r.promos = c.promos;
+  return r;
 }
 function cartaDoResumo(id, r){
   return { id, name:r.n, set:r.s, setName:r.sn, num:r.num, rarity:r.r, type:r.t,
-           cores:r.c || "", mv:r.mv, small:r.img, normal:r.big || r.img,
+           cores:r.c || "", mv:r.mv, small:r.img, normal:r.big || imagemGrande(r.img),
            usd:r.usd || null, eur:r.eur || null,
-           usdFoil:r.usdF || null, eurFoil:r.eurF || null, artist:r.art, url:r.url,
+           usdFoil:r.usdF || null, eurFoil:r.eurF || null, artist:r.art,
+           url:r.url || paginaNoScryfall(r),
            acabamentoEscolhido:r.fin || "normal", promos:r.promos || [], arte:r.arte || null,
            arteCrop:r.crop || null,
            released:r.ano ? `${r.ano}-01-01` : "", mana:"", oracle:"", compra:null, impressoesUri:null };
+}
+
+/* tira de quem já tinha coleção os campos que hoje são derivados.
+   Roda uma vez por abertura e só grava se realmente mudou alguma coisa. */
+function enxugarColecao(){
+  let mexeu = 0;
+  Object.values(S.owned || {}).forEach(r => {
+    if(r.big !== undefined){ delete r.big; mexeu++; }
+    if(r.url !== undefined){ delete r.url; mexeu++; }
+    if(Array.isArray(r.promos) && !r.promos.length){ delete r.promos; mexeu++; }
+  });
+  return mexeu;
 }
 function toggleOwn(card){
   if(S.owned[card.id]) delete S.owned[card.id];
@@ -2129,6 +2342,7 @@ const MENU = [
       { v:"comunidade", nome:"Coleções da comunidade" },
       { v:"mine",       nome:"Minhas coleções" },
       { v:"minha",      nome:"Coleção completa" },
+      { v:"conferencia",nome:"Conferir em massa" },
       { v:"troca",      nome:"Repetidas" },
       { v:"especiais",  nome:"Graduadas e assinadas" } ] },
 
@@ -2194,6 +2408,7 @@ function render(){
   if(view.name==="config") return renderConfig();
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
+  if(view.name==="conferencia") return renderConferencia();
   if(view.name==="mine") return renderMine();
   if(view.name==="decks") return renderDecks();
   if(view.name==="deck") return renderDeck(view.id);
@@ -2749,6 +2964,17 @@ function renderConfig(){
       <h3>Este aparelho</h3>
       <div class="kv"><span>Formato</span><b>${ehAppInstalado() ? "aplicativo instalado" : "aba do navegador"}</b></div>
       <div class="kv"><span>Cartas guardadas aqui</span><b>${ownedCount()}</b></div>
+      ${(() => {
+        const p = estadoDaProtecao();
+        return `<div class="kv"><span>Cópia fora deste aparelho</span><b class="${
+          p.descoberto ? "desce" : p.ultima ? "sobe" : ""}">${
+          p.naConta ? "na sua conta, a cada mudança"
+          : p.ultima ? "arquivo de " + escapeHTML(quandoRelativo(new Date(p.ultima).toISOString()))
+          : "nenhuma"}</b></div>
+        ${p.descoberto ? `<p class="dg-txt" style="color:var(--neg)">
+          <b>A sua coleção só existe aqui.</b> Se o navegador limpar os dados do site, não há de onde
+          recuperar. Entrar numa conta resolve sozinho; o arquivo resolve enquanto você lembrar.</p>` : ""}`;
+      })()}
       <div class="pergunta-acoes">
         <button class="btn ghost" id="cfg-instalar">Pôr na tela de início</button>
         <button class="btn ghost" id="cfg-backup">Backup em arquivo</button>
@@ -3097,8 +3323,62 @@ function paintGrid(){
       : "Nenhuma carta com esse filtro."}</div>`;
     return;
   }
-  grid.innerHTML = list.map(c => cardHTML(c)).join("");
-  ligarCartas(grid, id => cur.cards.find(c => c.id === id), () => { paintGrid(); paintProgress(); });
+  const porId = new Map(cur.cards.map(c => [c.id, c]));
+  pintarGradeAosPoucos(grid, list, c => cardHTML(c),
+    caixa => ligarCartas(caixa, id => porId.get(id), () => { paintGrid(); paintProgress(); }));
+}
+
+/* =====================================================================
+   PINTAR A GRADE AOS POUCOS
+
+   Cinco mil cartas de uma vez são cinco mil nós no DOM: um segundo de
+   tela travada no desktop, vários no telefone. Aqui a grade sai em lotes
+   e o próximo lote só é montado quando você chega perto do fim da rolagem.
+
+   Duas sutilezas que valem o comentário:
+
+   - os cliques são ligados numa CAIXA à parte antes de os nós entrarem na
+     grade. Ligar de novo na grade inteira a cada lote seria trabalho
+     crescente — no fim, ligar 5.000 cartas quarenta vezes;
+   - sem `IntersectionObserver` (navegador velho, ou um teste que mede o
+     total) a função pinta tudo de uma vez, e não some com nada.
+   ===================================================================== */
+const LOTE_GRADE = 120;
+
+function pintarGradeAosPoucos(grid, lista, html, ligar){
+  if(!grid) return;
+  grid.innerHTML = "";
+  const sentinela = document.createElement("div");
+  sentinela.className = "grade-mais";
+  grid.appendChild(sentinela);
+
+  let i = 0, obs = null;
+  const proximo = () => {
+    const parte = lista.slice(i, i + LOTE_GRADE);
+    i += parte.length;
+    if(parte.length){
+      const caixa = document.createElement("div");
+      caixa.innerHTML = parte.map(html).join("");
+      if(ligar) ligar(caixa);
+      while(caixa.firstChild) grid.insertBefore(caixa.firstChild, sentinela);
+    }
+    if(i >= lista.length){
+      sentinela.remove();
+      if(obs) obs.disconnect();
+    } else {
+      sentinela.textContent = `mais ${(lista.length - i).toLocaleString("pt-BR")} carregando…`;
+    }
+  };
+
+  if(typeof IntersectionObserver === "function"){
+    obs = new IntersectionObserver(entradas => {
+      if(entradas.some(e => e.isIntersecting)) proximo();
+    }, { rootMargin:"800px" });
+    obs.observe(sentinela);
+    proximo();
+  } else {
+    while(i < lista.length) proximo();
+  }
 }
 
 function cardHTML(c, copias, selo, comQtd){
@@ -4188,6 +4468,7 @@ async function renderMinha(){
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn" id="add-carta">+ Adicionar carta</button>
+        <button class="btn ghost" id="conferir-massa">Conferir em massa</button>
         <button class="btn ghost" id="importar-csv">Importar de outro app</button>
         <button class="btn ghost" id="cartao-postar">Cartão para postar</button>
       </div>
@@ -4218,6 +4499,8 @@ async function renderMinha(){
       </div>
 
       ${blocoValorizacao()}
+
+      ${blocoRetrato()}
 
       <div class="filtros" style="margin-top:16px">
         <div class="fgrupo">
@@ -4299,21 +4582,30 @@ async function renderMinha(){
         <button class="btn ghost" id="m-limpar">Limpar filtros</button>
       </div>
 
-      <div class="cards com-qtd" id="grid">${lista.map(c =>
-          cardHTML(c, c.copias, "", !minha.f.agrupar)).join("")}</div>
+      <div class="cards com-qtd" id="grid"></div>
       ${lista.length === 0 ? `<div class="empty" style="margin-top:14px">Nenhuma carta com esses filtros.</div>` : ""}
     `}
 `;
 
   document.getElementById("add-carta").onclick = abrirAdicionarCarta;
+  const bcm = document.getElementById("conferir-massa");
+  if(bcm) bcm.onclick = () => go("conferencia");
   ligarValorizacao();
   if(!valorizacao.serie && !valorizacao.carregando) carregarValorizacao();
   const bi = document.getElementById("importar-csv"); if(bi) bi.onclick = abrirImportar;
   const bv = document.getElementById("vazio-importar"); if(bv) bv.onclick = abrirImportar;
   const bp = document.getElementById("cartao-postar"); if(bp) bp.onclick = abrirCartaoDaColecao;
 
-  ligarCartas(document.getElementById("grid"), id => lista.find(x => x.id === id), () => renderMinha());
-  ligarQuantidades(document.getElementById("grid"), () => renderMinha());
+  /* mapa em vez de find: com 5.000 cartas, procurar na lista a cada
+     ligação era trabalho quadrático */
+  const porIdNaLista = new Map(lista.map(c => [c.id, c]));
+  pintarGradeAosPoucos(
+    document.getElementById("grid"), lista,
+    c => cardHTML(c, c.copias, "", !minha.f.agrupar),
+    caixa => {
+      ligarCartas(caixa, id => porIdNaLista.get(id), () => renderMinha());
+      ligarQuantidades(caixa, () => renderMinha());
+    });
 
   const liga = (id, campo, evento="input") => {
     const el = document.getElementById(id);
@@ -4375,6 +4667,545 @@ function enviarParaColecao(lista){
     save(); closeModal();
     toast(novas ? `${novas} carta${novas>1?"s":""} em ${col.name}` : "todas já estavam lá");
   };
+}
+
+/* =====================================================================
+   CONFERÊNCIA EM MASSA
+
+   Cadastrar 500 cartas clicando uma a uma é o motivo pelo qual a coleção
+   de muita gente nunca sai do papel. Aqui a mão não sai do teclado:
+   digita o nome, Enter, próxima. Quem está com o fichário aberto na
+   frente da TV consegue passar o fichário inteiro.
+
+   Quatro decisões que fazem a diferença nesse ritmo:
+
+   - "3 sol ring" entra como três cópias. O número na frente é o jeito
+     natural de falar e evita apertar + três vezes.
+   - Dá para TRAVAR UMA EDIÇÃO. Conferindo um fichário de Bloomburrow,
+     toda carta digitada vira a impressão daquela edição, sem escolher
+     edição 300 vezes.
+   - A carta entra na hora, com a linha aparecendo no topo — e cada linha
+     tem desfazer. Confirmar antes de cada uma mataria o ritmo; não poder
+     voltar atrás seria pior.
+   - Quando o nome é ambíguo, as opções aparecem para clicar e o campo
+     continua focado. Nada de modal no meio da digitação.
+   ===================================================================== */
+let conferencia = { linhas:[], set:"", buscando:false, opcoes:[], termo:"" };
+
+function renderConferencia(){
+  const c = conferencia;
+  const total = c.linhas.reduce((a, l) => a + l.qtd, 0);
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Conferir a coleção</h2>
+        <p>Digite o nome e aperte Enter. A carta entra na hora e a próxima já pode ser digitada —
+        é para passar o fichário inteiro sem tirar a mão do teclado.</p>
+      </div>
+      <button class="btn ghost" id="cf-sair">Voltar para a coleção</button>
+    </div>
+
+    <div class="conf-caixa">
+      <label class="field"><span>Nome da carta</span>
+        <input type="text" id="cf-nome" autocomplete="off" autocapitalize="none" spellcheck="false"
+               placeholder="ex.: sol ring — ou &quot;3 sol ring&quot; para três cópias"></label>
+      <label class="field"><span>Travar a edição (opcional)</span>
+        <input type="text" id="cf-set" maxlength="6" autocomplete="off" autocapitalize="characters"
+               value="${escapeHTML(c.set)}" placeholder="ex.: BLB"></label>
+    </div>
+    <div class="status" id="cf-status">${c.set
+      ? `tudo o que você digitar entra como carta de <b>${escapeHTML(c.set.toUpperCase())}</b>`
+      : "a edição fica em branco: entra a impressão mais recente que o Scryfall achar"}</div>
+
+    <div id="cf-opcoes" class="conf-opcoes"></div>
+
+    <div class="toolbar" style="margin-top:16px">
+      <span class="status" style="margin:0">${total
+        ? `${total} carta${total > 1 ? "s" : ""} nesta sessão · ${c.linhas.length} linha${c.linhas.length > 1 ? "s" : ""}`
+        : "nada ainda"}</span>
+      <div class="grow"></div>
+      ${c.linhas.length ? `<button class="icon-btn" id="cf-limpar">limpar a lista da tela</button>` : ""}
+    </div>
+
+    <div class="lista-compras" style="max-height:none" id="cf-lista">
+      ${c.linhas.length ? c.linhas.map((l, i) => `
+        <div class="lc-linha">
+          ${l.img ? `<img src="${escapeHTML(l.img)}" alt="" loading="lazy">` : `<span class="mv-sem"></span>`}
+          <span class="lc-nome">${escapeHTML(l.nome)}
+            <small>${escapeHTML(l.setName || l.set || "")}${l.qtd > 1 ? ` · ${l.qtd} cópias` : ""}${
+              l.jaTinha ? ` · você já tinha ${l.jaTinha}` : ""}</small></span>
+          <span class="lc-preco">${l.usd ? money(Number(l.usd)) : "—"}</span>
+          <button class="icon-btn" data-desfazer="${i}">desfazer</button>
+        </div>`).join("")
+      : `<div class="empty">O que você for marcando aparece aqui, com desfazer em cada linha.</div>`}
+    </div>`;
+
+  const campo = document.getElementById("cf-nome");
+  const setCampo = document.getElementById("cf-set");
+  document.getElementById("cf-sair").onclick = () => go("minha");
+  const limpar = document.getElementById("cf-limpar");
+  if(limpar) limpar.onclick = () => { conferencia.linhas = []; renderConferencia(); };
+
+  setCampo.onchange = () => {
+    conferencia.set = setCampo.value.trim().toLowerCase();
+    renderConferencia();
+  };
+  campo.onkeydown = e => {
+    if(e.key !== "Enter") return;
+    e.preventDefault();
+    const texto = campo.value.trim();
+    if(!texto) return;
+    campo.value = "";
+    conferir(texto);
+  };
+  campo.focus();
+
+  app.querySelectorAll("[data-desfazer]").forEach(b => b.onclick = () => {
+    desfazerConferencia(Number(b.dataset.desfazer));
+  });
+  const ops = document.getElementById("cf-opcoes");
+  if(ops) ops.onclick = e => {
+    const b = e.target.closest("[data-op]");
+    if(!b) return;
+    const carta = conferencia.opcoes[Number(b.dataset.op)];
+    if(carta) marcarNaConferencia(carta, conferencia.qtdPendente || 1);
+    conferencia.opcoes = []; conferencia.qtdPendente = 0;
+    renderConferencia();
+  };
+}
+
+/* "3 sol ring" -> { qtd:3, nome:"sol ring" } */
+function lerLinhaDeConferencia(texto){
+  const m = /^(\d{1,3})\s*[xX]?\s+(.+)$/.exec(texto);
+  return m ? { qtd:Math.min(99, Number(m[1])), nome:m[2].trim() } : { qtd:1, nome:texto };
+}
+
+async function conferir(texto){
+  const { qtd, nome } = lerLinhaDeConferencia(texto);
+  const st = document.getElementById("cf-status");
+  const ops = document.getElementById("cf-opcoes");
+  if(st) st.textContent = `procurando ${nome}…`;
+  if(ops) ops.innerHTML = "";
+
+  const partes = [`name:"${nome}"`];
+  if(conferencia.set) partes.push(`set:${conferencia.set}`);
+  try{
+    const json = await scryPage(partes.join(" "), "cards", "released", 1, "desc");
+    const achadas = (json.data || []).map(normalize);
+    if(!achadas.length){
+      if(st) st.innerHTML = `<span style="color:var(--neg)">não achei "${escapeHTML(nome)}"${
+        conferencia.set ? ` em ${escapeHTML(conferencia.set.toUpperCase())}` : ""}</span>`;
+      return;
+    }
+    /* nome exato ganha de nome parecido: quem digita "counterspell" quer
+       Counterspell, não Counterspell Bug */
+    const exatas = achadas.filter(c => semAcento(c.name) === semAcento(nome));
+    const lista = exatas.length ? exatas : achadas;
+    if(lista.length === 1 || exatas.length === 1){
+      marcarNaConferencia(lista[0], qtd);
+      renderConferencia();
+      return;
+    }
+    conferencia.opcoes = lista.slice(0, 8);
+    conferencia.qtdPendente = qtd;
+    if(st) st.textContent = `${lista.length} cartas com esse nome — escolha qual`;
+    if(ops) ops.innerHTML = conferencia.opcoes.map((c, i) => `
+      <button class="conf-op" data-op="${i}">
+        ${c.small ? `<img src="${escapeHTML(c.small)}" alt="" loading="lazy">` : ""}
+        <span>${escapeHTML(c.name)}<small>${escapeHTML(c.setName || c.set || "")}</small></span>
+      </button>`).join("");
+  }catch(e){
+    if(st) st.innerHTML = `<span style="color:var(--neg)">não consegui buscar agora</span>`;
+  }
+}
+
+function marcarNaConferencia(carta, qtd){
+  const jaTinha = qtdDe(carta.id);
+  if(!S.owned[carta.id]) S.owned[carta.id] = resumoCarta(carta);
+  definirQtd(carta.id, jaTinha + qtd);
+  conferencia.linhas.unshift({ id:carta.id, nome:carta.name, set:carta.set,
+    setName:carta.setName, img:carta.small, usd:carta.usd, qtd, jaTinha });
+  conferencia.linhas = conferencia.linhas.slice(0, 200);
+  save();
+}
+
+function desfazerConferencia(i){
+  const l = conferencia.linhas[i];
+  if(!l) return;
+  definirQtd(l.id, Math.max(0, qtdDe(l.id) - l.qtd));
+  conferencia.linhas.splice(i, 1);
+  save();
+  renderConferencia();
+  toast(`${l.nome} desfeita`);
+}
+
+/* =====================================================================
+   BUSCA ÚNICA
+
+   O app cresceu para sete lugares onde se procura: catálogo, coleção,
+   decks, edições, chase, mercado e trocas. Quem sabe o que quer não devia
+   ter que lembrar em qual deles isso mora.
+
+   Este campo procura em tudo o que já está no aparelho — carta da sua
+   coleção, deck, coleção temática ou própria, edição, chase card — e
+   responde na hora, sem rede. A busca no catálogo inteiro do Scryfall
+   continua sendo a do Buscador, e aparece aqui como último item: "buscar
+   <termo> no catálogo", que é o que fazer quando a carta ainda não é sua.
+
+   Atalho: `/` de qualquer tela (menos dentro de um campo de texto).
+   ===================================================================== */
+function resultadosDaBusca(termo){
+  const t = semAcento(termo).trim();
+  if(t.length < 2) return [];
+  const achados = [];
+  const cabe = (texto) => semAcento(texto || "").includes(t);
+
+  (S.decks || []).forEach(d => {
+    if(cabe(d.nome)) achados.push({ tipo:"Deck", nome:d.nome,
+      detalhe:`${formatoDe(d.formato).nome} · ${totalDoDeck(d)} cartas`,
+      ir:() => go("deck", d.id) });
+  });
+
+  (S.custom || []).forEach(c => {
+    if(cabe(c.name)) achados.push({ tipo:"Sua coleção", nome:c.name,
+      detalhe:c.desc || "", ir:() => go("collection", c.id) });
+  });
+
+  THEMES.forEach(c => {
+    if(cabe(c.name)) achados.push({ tipo:"Coleção temática", nome:c.name,
+      detalhe:c.grupo || "", ir:() => go("collection", c.id) });
+  });
+
+  ((S.chase || {}).cartas || []).forEach(x => {
+    if(cabe(x.n)) achados.push({ tipo:"Chase card", nome:x.n, img:x.img,
+      detalhe:"na sua lista de caça", ir:() => go("chase") });
+  });
+
+  /* as cartas que você tem vêm por último entre os "seus", mas são o que
+     a pessoa procura na maioria das vezes — então entram no topo */
+  const minhas = [];
+  Object.entries(S.owned).forEach(([id, r]) => {
+    if(minhas.length >= 8) return;
+    if(!cabe(r.n)) return;
+    minhas.push({ tipo:"Na sua coleção", nome:r.n, img:r.img,
+      detalhe:`${r.sn || r.s || ""}${qtdDe(id) > 1 ? ` · ${qtdDe(id)} cópias` : ""}${
+        r.loc ? ` · ${r.loc}` : ""}`,
+      ir:() => openCard(cartaDoResumo(id, r)) });
+  });
+
+  (listaDeSets() || []).forEach(x => {
+    if(achados.length > 40) return;
+    if(cabe(x.name) || semAcento(x.code) === t) achados.push({ tipo:"Edição", nome:x.name,
+      detalhe:(x.code || "").toUpperCase(), ir:() => go("set", x.code) });
+  });
+
+  return [...minhas, ...achados].slice(0, 24);
+}
+
+/* as edições já carregadas, quando houver — a busca não vai à rede */
+function listaDeSets(){
+  try{ return (typeof SETS !== "undefined" && SETS && SETS.length) ? SETS : []; }
+  catch(e){ return []; }
+}
+
+let buscaTudo = { termo:"" };
+
+/* =====================================================================
+   RETRATO DA COLEÇÃO
+
+   Todo o dado já está no aparelho — cor, raridade, edição, ano, custo de
+   mana. Falta só olhar para ele junto.
+
+   Três cuidados para não virar gráfico bonito e mentiroso:
+
+   - CONTA CÓPIA, não linha. Quem tem seis Sol Ring tem seis cartas, e é
+     assim que as barras somam.
+   - CARTA MULTICOLOR entra em cada cor que ela tem, e a tela diz isso —
+     senão a soma das cores não bate com o total e ninguém entende por quê.
+   - O ANO é o da IMPRESSÃO que você tem, não o da estreia da carta. Uma
+     reimpressão de 2024 de uma carta de 1994 conta em 2024, e a tela
+     avisa, porque as duas leituras são legítimas e só uma está aqui.
+   ===================================================================== */
+const NOMES_DE_COR = { w:"Branco", u:"Azul", b:"Preto", r:"Vermelho", g:"Verde" };
+
+function retratoDaColecao(){
+  const cartas = cartasQueTenho();
+  const total = somaQtd(cartas);
+  if(!total) return null;
+
+  const cores = { w:0, u:0, b:0, r:0, g:0 }, multi = { n:0 }, incolor = { n:0 };
+  const raridade = {}, porSet = {}, porDecada = {}, curva = {};
+  let maisAntiga = null, maisCara = null;
+
+  cartas.forEach(c => {
+    const q = c.qtd || 1;
+    const cor = (c.cores || "").replace(/[^wubrg]/g, "");
+    if(!cor) incolor.n += q;
+    else {
+      cor.split("").forEach(x => { if(cores[x] !== undefined) cores[x] += q; });
+      if(cor.length > 1) multi.n += q;
+    }
+    raridade[c.rarity] = (raridade[c.rarity] || 0) + q;
+    if(c.set) porSet[c.set] = { nome:c.setName || c.set.toUpperCase(),
+                                n:((porSet[c.set] || {}).n || 0) + q };
+    const ano = Number((c.released || "").slice(0, 4));
+    if(ano){
+      const dec = Math.floor(ano / 10) * 10;
+      porDecada[dec] = (porDecada[dec] || 0) + q;
+      if(!maisAntiga || ano < Number((maisAntiga.released || "").slice(0, 4))) maisAntiga = c;
+    }
+    /* terreno não tem custo e entupiria a coluna do zero */
+    if(c.mv != null && !/land/i.test(c.type || "")){
+      const chave = Math.min(8, Math.round(c.mv));
+      curva[chave] = (curva[chave] || 0) + q;
+    }
+    if(!maisCara || (c.unit || 0) > (maisCara.unit || 0)) maisCara = c;
+  });
+
+  const emOrdem = obj => Object.entries(obj).sort((a, b) => b[1] - a[1]);
+  return {
+    total, diferentes:cartas.length,
+    cores, multi:multi.n, incolor:incolor.n,
+    raridade, curva,
+    sets: Object.entries(porSet).map(([code, x]) => ({ code, ...x })).sort((a, b) => b.n - a.n),
+    decadas: Object.entries(porDecada).sort((a, b) => Number(a[0]) - Number(b[0])),
+    maisAntiga, maisCara,
+    emOrdem,
+  };
+}
+
+function barra(valor, teto, cor){
+  const pct = teto ? Math.max(2, Math.round(100 * valor / teto)) : 0;
+  return `<i style="width:${pct}%${cor ? `;background:${cor}` : ""}"></i>`;
+}
+
+function blocoRetrato(){
+  const r = retratoDaColecao();
+  if(!r) return "";
+  const corHex = { w:"var(--m-w, #EFE5C8)", u:"var(--m-u, #4E8FD1)", b:"var(--m-b, #7A6E8C)",
+                   r:"var(--m-r, #D4544A)", g:"var(--m-g, #4E9E68)" };
+  const tetoCor = Math.max(...Object.values(r.cores), r.incolor, 1);
+  const tetoCurva = Math.max(...Object.values(r.curva), 1);
+  const tetoDec = Math.max(...r.decadas.map(d => d[1]), 1);
+  const rarNome = { mythic:"Mítica", rare:"Rara", uncommon:"Incomum", common:"Comum" };
+
+  return `
+  <section class="retrato" id="retrato">
+    <h3 class="grupo-titulo">Retrato da coleção<span>${r.total.toLocaleString("pt-BR")}</span></h3>
+
+    <div class="ret-grade">
+      <div class="ret-bloco">
+        <span class="flabel">Por cor</span>
+        ${Object.entries(NOMES_DE_COR).map(([k, nome]) => `
+          <div class="ret-linha"><span>${nome}</span>
+            <div class="ret-barra">${barra(r.cores[k], tetoCor, corHex[k])}</div>
+            <b>${r.cores[k].toLocaleString("pt-BR")}</b></div>`).join("")}
+        <div class="ret-linha"><span>Incolor</span>
+          <div class="ret-barra">${barra(r.incolor, tetoCor, "var(--m-c, #8E8A99)")}</div>
+          <b>${r.incolor.toLocaleString("pt-BR")}</b></div>
+        <p class="ret-obs">Carta de duas cores entra nas duas — por isso a soma passa do total.
+          ${r.multi ? `<b>${r.multi.toLocaleString("pt-BR")}</b> são multicoloridas.` : ""}</p>
+      </div>
+
+      <div class="ret-bloco">
+        <span class="flabel">Por raridade</span>
+        ${["mythic","rare","uncommon","common"].filter(k => r.raridade[k]).map(k => `
+          <div class="ret-linha"><span><i class="rar-${k}"></i>${rarNome[k]}</span>
+            <div class="ret-barra">${barra(r.raridade[k], Math.max(...Object.values(r.raridade)))}</div>
+            <b>${r.raridade[k].toLocaleString("pt-BR")}</b></div>`).join("")}
+        <p class="ret-obs">${(() => {
+          const raras = (r.raridade.mythic || 0) + (r.raridade.rare || 0);
+          return `${Math.round(100 * raras / r.total)}% da sua coleção é rara ou mítica.`;
+        })()}</p>
+      </div>
+
+      <div class="ret-bloco">
+        <span class="flabel">Custo de mana</span>
+        <div class="ret-curva">
+          ${Array.from({ length:9 }, (_, i) => `
+            <div class="cv-col" title="${r.curva[i] || 0} cartas de custo ${i}${i === 8 ? " ou mais" : ""}">
+              <div class="cv-barra"><i style="height:${Math.round(100 * (r.curva[i] || 0) / tetoCurva)}%"></i></div>
+              <span>${i === 8 ? "8+" : i}</span>
+            </div>`).join("")}
+        </div>
+        <p class="ret-obs">Só as cartas que não são terreno — terreno não tem custo e ocuparia
+          a coluna do zero sozinho.</p>
+      </div>
+
+      <div class="ret-bloco">
+        <span class="flabel">Por década de impressão</span>
+        ${r.decadas.map(([dec, n]) => `
+          <div class="ret-linha"><span>${dec}s</span>
+            <div class="ret-barra">${barra(n, tetoDec)}</div>
+            <b>${n.toLocaleString("pt-BR")}</b></div>`).join("") ||
+          `<p class="ret-obs">Sem data de impressão nas suas cartas.</p>`}
+        <p class="ret-obs">É o ano da <b>impressão que você tem</b>, não o da estreia da carta: uma
+          reimpressão nova de uma carta velha conta no ano da reimpressão.</p>
+      </div>
+
+      <div class="ret-bloco">
+        <span class="flabel">Edições que mais aparecem</span>
+        ${r.sets.slice(0, 6).map(x => `
+          <div class="ret-linha"><span>${escapeHTML(x.nome)}</span>
+            <div class="ret-barra">${barra(x.n, r.sets[0].n)}</div>
+            <b>${x.n.toLocaleString("pt-BR")}</b></div>`).join("")}
+        <p class="ret-obs">${r.sets.length} edições diferentes no total.</p>
+      </div>
+
+      <div class="ret-bloco">
+        <span class="flabel">Destaques</span>
+        ${r.maisCara ? `<div class="ret-kv"><span>A mais valiosa</span>
+          <b>${escapeHTML(r.maisCara.name)}</b>
+          <small>${escapeHTML(r.maisCara.setName || "")} · ${money(r.maisCara.unit || 0)}</small></div>` : ""}
+        ${r.maisAntiga ? `<div class="ret-kv"><span>A impressão mais antiga</span>
+          <b>${escapeHTML(r.maisAntiga.name)}</b>
+          <small>${escapeHTML(r.maisAntiga.setName || "")} · ${escapeHTML((r.maisAntiga.released || "").slice(0,4))}</small></div>` : ""}
+        <div class="ret-kv"><span>Cartas diferentes</span>
+          <b>${r.diferentes.toLocaleString("pt-BR")}</b>
+          <small>de ${r.total.toLocaleString("pt-BR")} cópias no total</small></div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* =====================================================================
+   PRIMEIRA ABERTURA
+
+   Quem instala hoje cai numa tela de notícias com todo o resto vazio:
+   sem coleção, sem deck, sem chase. Tudo o que resolve isso já existe no
+   app — a importação de CSV, as coleções temáticas, a conferência em
+   massa — mas está espalhado por três telas que a pessoa ainda não sabe
+   que existem.
+
+   Então esta tela não é um tutorial: são os três caminhos de verdade,
+   com o nome do que cada um faz. Ela aparece uma vez, some para sempre
+   depois de qualquer escolha (inclusive "só quero olhar"), e nunca
+   aparece para quem já tem carta marcada — quem já usa o app não precisa
+   ser apresentado a ele.
+   ===================================================================== */
+function precisaDaPrimeiraAbertura(){
+  if(S.config.jaEntrou) return false;
+  if(ownedCount() > 0) return false;         // veio de backup ou de outra conta
+  if((S.decks || []).length) return false;
+  return true;
+}
+function marcarPrimeiraAberturaVista(){
+  S.config.jaEntrou = Date.now();
+  salvarAgora();
+}
+
+function abrirPrimeiraAbertura(){
+  modal(`<div class="modal-pad primeira">
+    <h3>Bem-vindo ao Velvo</h3>
+    <p style="color:var(--muted);font-size:13.5px;margin:6px 0 18px">
+      O Velvo guarda <b>quais cartas você tem</b> e <b>quais você ainda quer</b> — e mostra o que
+      isso vale, o que anda mudando de preço e o que falta para fechar o que você está montando.
+      Por onde você quer começar?</p>
+
+    <div class="pa-opcoes">
+      <button class="pa-op" data-pa="importar">
+        <b>Já tenho lista em outro app</b>
+        <span>Moxfield, Deckbox, Archidekt, TCGplayer — traga o CSV e a coleção nasce pronta.
+        É o caminho mais rápido e o app mostra a prévia antes de gravar nada.</span>
+      </button>
+      <button class="pa-op" data-pa="conferir">
+        <b>Vou cadastrar do fichário</b>
+        <span>Digita o nome, Enter, próxima. Feito para passar o fichário inteiro sem tirar a mão
+        do teclado — dá para travar a edição e escrever "3 sol ring".</span>
+      </button>
+      <button class="pa-op" data-pa="tema">
+        <b>Quero colecionar alguma coisa</b>
+        <span>Escolha uma coleção temática pronta — todos os dragões, o set inteiro do Hobbit,
+        as Game Changers — e vá marcando o que já tem.</span>
+      </button>
+      <button class="pa-op" data-pa="deck">
+        <b>Vim montar um deck</b>
+        <span>Commander, Pauper, Modern. O app confere o formato, calcula o bracket e diz o que
+        falta comprar.</span>
+      </button>
+    </div>
+
+    <div class="nota-regiao" style="margin-top:16px">
+      <b>Nada disso é obrigatório agora.</b> O que você marcar fica <b>neste aparelho</b>; entrar
+      numa conta (sem senha, só o e-mail) faz a coleção subir sozinha e voltar em qualquer outro.
+    </div>
+
+    <div class="pergunta-acoes">
+      <button class="btn ghost" id="pa-depois">Só quero olhar por enquanto</button>
+    </div>
+  </div>`);
+
+  const escolher = onde => {
+    marcarPrimeiraAberturaVista();
+    closeModal();
+    if(onde === "importar") abrirImportar();
+    else if(onde === "conferir") go("conferencia");
+    else if(onde === "tema") go("themes");
+    else if(onde === "deck") go("decks");
+  };
+  document.querySelectorAll("[data-pa]").forEach(b => b.onclick = () => escolher(b.dataset.pa));
+  document.getElementById("pa-depois").onclick = () => { marcarPrimeiraAberturaVista(); closeModal(); };
+}
+
+function abrirBuscaTudo(){
+  modal(`<div class="modal-pad busca-tudo">
+    <h3>Buscar em tudo</h3>
+    <label class="field"><span>Carta, deck, coleção ou edição</span>
+      <input type="text" id="bt-termo" autocomplete="off" spellcheck="false"
+             value="${escapeHTML(buscaTudo.termo)}" placeholder="ex.: Sol Ring, Atraxa, Bloomburrow"></label>
+    <div id="bt-lista" class="bt-lista"></div>
+  </div>`);
+  const campo = document.getElementById("bt-termo");
+  const lista = document.getElementById("bt-lista");
+  let atuais = [];
+
+  const pintar = () => {
+    const termo = campo.value.trim();
+    buscaTudo.termo = termo;
+    if(termo.length < 2){
+      lista.innerHTML = `<p class="dg-txt">Digite pelo menos duas letras. Isto procura no que já está
+        neste aparelho — sua coleção, decks, coleções e edições — e responde sem internet.</p>`;
+      return;
+    }
+    atuais = resultadosDaBusca(termo);
+    lista.innerHTML = `
+      ${atuais.map((r, i) => `
+        <button class="bt-item" data-i="${i}">
+          ${r.img ? `<img src="${escapeHTML(r.img)}" alt="" loading="lazy">` : `<span class="bt-sem"></span>`}
+          <span class="bt-txt"><b>${escapeHTML(r.nome)}</b>
+            <small>${escapeHTML(r.tipo)}${r.detalhe ? " · " + escapeHTML(r.detalhe) : ""}</small></span>
+        </button>`).join("")}
+      <button class="bt-item bt-catalogo" data-catalogo="1">
+        <span class="bt-sem">⌕</span>
+        <span class="bt-txt"><b>Buscar "${escapeHTML(termo)}" no catálogo</b>
+          <small>todas as cartas que existem, não só as suas</small></span>
+      </button>`;
+  };
+
+  lista.onclick = e => {
+    const b = e.target.closest("[data-i],[data-catalogo]");
+    if(!b) return;
+    closeModal();
+    if(b.dataset.catalogo){
+      cat = { ...cat, f:{ ...FILTROS_VAZIOS(), texto:buscaTudo.termo }, cards:[], page:1, buscou:false };
+      go("catalogo");
+      return;
+    }
+    const r = atuais[Number(b.dataset.i)];
+    if(r) r.ir();
+  };
+  campo.oninput = pintar;
+  campo.onkeydown = e => {
+    if(e.key === "Enter"){
+      e.preventDefault();
+      const primeiro = lista.querySelector(".bt-item");
+      if(primeiro) primeiro.click();
+    }
+  };
+  campo.focus();
+  campo.select();
+  pintar();
 }
 
 function abrirAdicionarCarta(){
@@ -8186,8 +9017,15 @@ function abrirRegrasDePontuacao(dados){
 }
 
 /* ---------------- registrar partida ---------------- */
-function registrarPartida(dados){
+function registrarPartida(dados, daMesa){
   const membros = dados.members || [];
+  /* casa os jogadores do contador de vida com os membros do grupo pelo
+     nome — é o que a pessoa digitou nos dois lugares */
+  const lugarPorMembro = {};
+  (daMesa || []).forEach(x => {
+    const m = membros.find(y => semAcento(y.name) === semAcento(x.nome));
+    if(m) lugarPorMembro[m.id] = x.lugar;
+  });
   if(!membros.length) return toast("o grupo ainda não tem jogadores");
   const meusDecks = decks().map(d => d.nome);
 
@@ -8196,6 +9034,9 @@ function registrarPartida(dados){
     <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
       Marque quem jogou, com que deck, e quem venceu. A ordem de jogo e o tempo são opcionais —
       se você usou o cronômetro ou o relógio da mesa, o tempo já vem preenchido.</p>
+    ${Object.keys(lugarPorMembro).length ? `<div class="nota-regiao" style="margin-bottom:14px">
+      <b>A colocação veio do contador de vida</b>, pela ordem em que a mesa foi caindo. Confira antes
+      de salvar — quem não bateu de nome com o grupo ficou em branco.</div>` : ""}
     ${regrasDoGrupo(dados).modo === "colocacao" ? `
       <div class="nota-regiao" style="margin-bottom:14px">
         <b>Este grupo pontua a colocação inteira.</b> Preencha o campo <b>lugar</b> de cada um —
@@ -8224,8 +9065,10 @@ function registrarPartida(dados){
           <label class="check"><input type="checkbox" class="rp-tem" checked><span>${escapeHTML(m.name)}</span></label>
           <input type="text" class="rp-deck" list="rp-decks" placeholder="deck usado (opcional)">
           <input type="number" class="rp-seat" min="1" max="12" placeholder="ordem" title="ordem de jogo sorteada">
-          <input type="number" class="rp-lugar" min="1" max="16" placeholder="lugar" title="colocação: 1 é quem venceu">
-          <label class="check rp-venceu-lbl"><input type="radio" name="rp-venceu" class="rp-venceu" value="${m.id}">
+          <input type="number" class="rp-lugar" min="1" max="16" placeholder="lugar" title="colocação: 1 é quem venceu"
+                 value="${lugarPorMembro[m.id] || ""}">
+          <label class="check rp-venceu-lbl"><input type="radio" name="rp-venceu" class="rp-venceu" value="${m.id}"
+                 ${lugarPorMembro[m.id] === 1 ? "checked" : ""}>
             <span>venceu</span></label>
         </div>`).join("")}
     </div>
@@ -8329,7 +9172,10 @@ function registrarPartida(dados){
    parte do app que roda com o celular no meio da mesa.
    ===================================================================== */
 
-let vida = { jogadores:[], formato:"commander" };
+/* `mortos` é a ORDEM em que a mesa foi caindo: o primeiro a morrer é o
+   último colocado. É daqui que sai a colocação da partida sem ninguém
+   ter que anotar nada no meio do jogo. */
+let vida = { jogadores:[], formato:"commander", mortos:[] };
 let cron = { rodando:false, inicio:0, acumulado:0, timer:null };
 
 /* =====================================================================
@@ -8351,7 +9197,7 @@ let cron = { rodando:false, inicio:0, acumulado:0, timer:null };
    ===================================================================== */
 let relogio = {
   modo:"cima", inicialMin:25, incremento:0,
-  atual:null, desde:0, gasto:{}, credito:{}, estourou:{}, timer:null,
+  atual:null, desde:0, gasto:{}, credito:{}, estourou:{}, parado:{}, timer:null,
 };
 
 const relInicial = () => Math.max(0, Math.round(relogio.inicialMin * 60));
@@ -8378,6 +9224,8 @@ function relFechar(){
   relogio.atual = null;
 }
 function relDarAVez(id){
+  const quem = vida.jogadores.find(j => j.id === id);
+  if(quem && estaMorto(quem)){ toast(`${quem.nome} já saiu da partida`); return; }
   if(relogio.atual === id){ relFechar(); relPintar(); return; }
   relFechar();
   relogio.atual = id;
@@ -8386,14 +9234,16 @@ function relDarAVez(id){
   relPintar();
 }
 function relProximo(){
-  const ordem = vida.jogadores.map(j => j.id);
+  /* quem já saiu da partida não recebe a vez de novo */
+  const vivos = vida.jogadores.filter(j => !estaMorto(j)).map(j => j.id);
+  const ordem = vivos.length ? vivos : vida.jogadores.map(j => j.id);
   if(!ordem.length) return;
   const i = ordem.indexOf(relogio.atual);
   relDarAVez(ordem[(i + 1) % ordem.length]);
 }
 function relZerar(){
   relFechar();
-  relogio.gasto = {}; relogio.credito = {}; relogio.estourou = {};
+  relogio.gasto = {}; relogio.credito = {}; relogio.estourou = {}; relogio.parado = {};
   relogio.atual = null;
   relPintar();
 }
@@ -8432,11 +9282,14 @@ function relPintar(){
   vida.jogadores.forEach(j => {
     const el = grade.querySelector(`[data-rel="${j.id}"]`);
     if(!el) return;
+    const fora = estaMorto(j);
     el.classList.toggle("na-vez", relogio.atual === j.id);
     el.classList.toggle("estourou", !!relogio.estourou[j.id]);
+    el.classList.toggle("fora", fora);
     el.querySelector(".rel-nome").textContent = j.nome;
     el.querySelector(".rel-tempo").textContent = relSinal(relMostrar(j.id));
     el.querySelector(".rel-rot").textContent =
+      fora ? "fora da partida" :
       relogio.atual === j.id ? "na vez" :
       relogio.estourou[j.id] ? "tempo esgotado" :
       relogio.modo === "baixo" ? "restam" : "usou";
@@ -8449,6 +9302,66 @@ function vidaInicial(){ return vida.formato === "commander" ? 40 : 20; }
 
 function novoJogadorDeVida(nome){
   return { id:"j"+Math.random().toString(36).slice(2,7), nome, vida:vidaInicial(), veneno:0, cmd:{} };
+}
+/* as três formas de sair da partida, no mesmo lugar */
+const estaMorto = j => j.vida <= 0 || j.veneno >= 10 ||
+  Object.values(j.cmd || {}).some(v => v >= 21);
+
+/* =====================================================================
+   MORREU: O RELÓGIO PARA E A COLOCAÇÃO SE ESCREVE SOZINHA
+
+   Enquanto o contador de vida e o relógio eram duas coisas separadas, o
+   relógio de quem já tinha morrido continuava correndo — e ninguém anota
+   colocação no meio de uma partida de Commander.
+
+   Agora o contador avisa: quem zera a vida (ou toma 10 de veneno, ou 21
+   de um comandante) sai da mesa. Se era a vez dele, o relógio passa
+   sozinho para o próximo; e a ordem das mortes vira a colocação, de trás
+   para frente. Quem sobra vivo é o vencedor.
+
+   A colocação é sugestão, não sentença: a tela deixa mudar antes de
+   registrar, porque partida acaba por concessão, por acordo e por
+   engano de contagem.
+   ===================================================================== */
+function conferirMortes(){
+  vida.mortos = vida.mortos || [];
+  let mudou = false;
+  vida.jogadores.forEach(j => {
+    const morto = estaMorto(j);
+    const jaAnotado = vida.mortos.includes(j.id);
+    if(morto && !jaAnotado){
+      vida.mortos.push(j.id);
+      mudou = true;
+      /* o relógio dele para na hora; se era a vez dele, passa adiante */
+      if(relogio.atual === j.id){
+        const vivos = vida.jogadores.filter(x => !estaMorto(x));
+        relFechar();
+        if(vivos.length) relDarAVez(vivos[0].id);
+      }
+      relogio.parado = relogio.parado || {};
+      relogio.parado[j.id] = true;
+      toast(`${j.nome} saiu da partida`);
+    }
+    /* voltou a ter vida (erro de contagem acontece): volta para a mesa */
+    if(!morto && jaAnotado){
+      vida.mortos = vida.mortos.filter(x => x !== j.id);
+      if(relogio.parado) delete relogio.parado[j.id];
+      mudou = true;
+    }
+  });
+  if(mudou) relPintar();
+  return mudou;
+}
+
+/* colocação sugerida: quem sobrou vivo em 1º, e os mortos na ordem
+   inversa da morte. Devolve [{ id, nome, lugar }] */
+function colocacaoDaMesa(){
+  const vivos = vida.jogadores.filter(j => !estaMorto(j));
+  const mortos = (vida.mortos || [])
+    .map(id => vida.jogadores.find(j => j.id === id))
+    .filter(Boolean)
+    .reverse();                       // o último a morrer fica na frente
+  return [...vivos, ...mortos].map((j, i) => ({ id:j.id, nome:j.nome, lugar:i + 1 }));
 }
 function garantirJogadores(){
   if(!vida.jogadores.length){
@@ -8522,6 +9435,16 @@ function blocoFerramentas(){
     </section>
 
     <section class="ferr-bloco">
+      <div class="ferr-topo">
+        <span class="flabel" style="margin:0">Resultado da partida</span>
+        <div class="ferr-acoes">
+          <button class="btn" id="res-registrar">Registrar esta partida</button>
+        </div>
+      </div>
+      <div id="resultado-mesa"></div>
+    </section>
+
+    <section class="ferr-bloco">
       <div class="ferr-topo"><span class="flabel" style="margin:0">Quem começa</span>
         <div class="ferr-acoes"><button class="btn ghost" id="sortear-ordem">Sortear ordem</button></div>
       </div>
@@ -8541,7 +9464,7 @@ function blocoFerramentas(){
 
 function painelDeVida(j){
   const perigo = j.vida <= 5 || j.veneno >= 10 || Object.values(j.cmd).some(v => v >= 21);
-  const morto = j.vida <= 0 || j.veneno >= 10 || Object.values(j.cmd).some(v => v >= 21);
+  const morto = estaMorto(j);
   return `
   <div class="painel-vida ${morto?"morto":perigo?"perigo":""}" data-j="${j.id}">
     <div class="pv-nome" contenteditable="true" spellcheck="false">${escapeHTML(j.nome)}</div>
@@ -8634,6 +9557,28 @@ function ligarFerramentas(){
     if(b) b.textContent = "Começar";
   };
 
+  pintarResultado();
+  const breg = document.getElementById("res-registrar");
+  if(breg) breg.onclick = () => {
+    const dados = mesaView.dados;
+    if(!dados || !(dados.members || []).length)
+      return toast("entre num grupo para registrar a partida no ranking");
+    registrarPartida(dados, colocacaoDaMesa());
+  };
+  const grade2 = document.getElementById("resultado-mesa");
+  if(grade2) grade2.onclick = e => {
+    const b = e.target.closest("[data-venceu]");
+    if(!b) return;
+    /* marcar o vencedor na mão: os outros passam a ser "fora" na ordem
+       em que já estavam, e quem estava vivo e não venceu vai para o fim */
+    const id = b.dataset.venceu;
+    const outros = vida.jogadores.filter(j => j.id !== id).map(j => j.id);
+    const jaMortos = (vida.mortos || []).filter(x => outros.includes(x));
+    const vivosPerdedores = outros.filter(x => !jaMortos.includes(x));
+    vida.mortos = [...jaMortos, ...vivosPerdedores.reverse()];
+    pintarResultado();
+  };
+
   /* relógio dos jogadores */
   const modo = document.getElementById("rel-modo");
   if(modo) modo.onclick = e => {
@@ -8695,10 +9640,47 @@ function ligarFerramentas(){
   };
 }
 
+/* o quadro do resultado: colocação sugerida e o vencedor à mão */
+function pintarResultado(){
+  const alvo = document.getElementById("resultado-mesa");
+  if(!alvo) return;
+  const ordem = colocacaoDaMesa();
+  const vivos = vida.jogadores.filter(j => !estaMorto(j)).length;
+  if(!vida.jogadores.length){
+    alvo.innerHTML = `<p class="dg-txt" style="margin:0">Ponha os jogadores no contador de vida —
+      a colocação sai da ordem em que a mesa for caindo.</p>`;
+    return;
+  }
+  const acabou = vivos <= 1 && vida.jogadores.length > 1;
+  alvo.innerHTML = `
+    <div class="res-lista">
+      ${ordem.map(x => {
+        const j = vida.jogadores.find(y => y.id === x.id) || {};
+        const fora = estaMorto(j);
+        return `<div class="res-linha ${x.lugar === 1 ? "campeao" : ""} ${fora ? "fora" : ""}">
+          <span class="res-lugar">${x.lugar}º</span>
+          <span class="res-nome">${escapeHTML(x.nome)}</span>
+          <span class="res-estado">${fora ? "fora da partida" : "ainda na mesa"}</span>
+          ${x.lugar === 1 ? `<span class="res-selo">vencedor</span>`
+            : `<button class="icon-btn" data-venceu="${x.id}">venceu</button>`}
+        </div>`;
+      }).join("")}
+    </div>
+    <p class="dg-txt">
+      ${acabou
+        ? `<b>Sobrou um: a partida acabou.</b> A colocação abaixo é a ordem inversa das mortes.`
+        : `A colocação vai se escrevendo sozinha conforme a mesa cai: <b>o primeiro a morrer é o
+           último colocado</b>. Se a partida acabar por concessão ou acordo, marque o vencedor na
+           mão — o resto se ajeita.`}
+      Registrar leva isto para o ranking do grupo, junto com o tempo e os decks.</p>`;
+}
+
 function repintarVidas(){
+  conferirMortes();                    // é aqui que o relógio fica sabendo
   const grade = document.getElementById("vidas");
   if(!grade) return;
   grade.innerHTML = vida.jogadores.map(j => painelDeVida(j)).join("");
+  pintarResultado();
   ligarFerramentas();
 }
 
@@ -10478,8 +11460,9 @@ function contarAvisos(){
   const naMira = chaseNoAlvo().length;
   const aVenda = chaseNoMercado().length;
   const reimpressas = reimpressoesMinhas().length;
-  return { noticiasNovas, mexeram, naMira, aVenda, reimpressas,
-           total: noticiasNovas + mexeram + naMira + aVenda + reimpressas };
+  const semCopia = estadoDaProtecao().cobrar ? 1 : 0;
+  return { noticiasNovas, mexeram, naMira, aVenda, reimpressas, semCopia,
+           total: noticiasNovas + mexeram + naMira + aVenda + reimpressas + semCopia };
 }
 
 function pintarSino(){
@@ -10498,6 +11481,7 @@ function abrirAvisos(){
   const mira = chaseNoAlvo();
   const aVenda = chaseNoMercado();
   const reimpressas = reimpressoesMinhas();
+  const prot = estadoDaProtecao();
 
   modal(`<div class="modal-pad">
     <h3>O que mudou</h3>
@@ -10518,6 +11502,21 @@ function abrirAvisos(){
             <span class="lc-preco sobe">${p ? formatarPreco(p) : ""}</span>
           </div>`;
         }).join("")}
+      </section>` : ""}
+
+    ${prot.descoberto ? `
+      <section class="bloco-cfg">
+        <h3>A sua coleção só existe neste aparelho</h3>
+        <p class="dg-txt" style="margin:0 0 10px">
+          São <b>${prot.cartas.toLocaleString("pt-BR")} cartas</b> guardadas só aqui${
+            prot.ultima ? `, e a última cópia fora daqui foi ${escapeHTML(quandoRelativo(new Date(prot.ultima).toISOString()))}`
+                        : ", sem nenhuma cópia em outro lugar"}.
+          Se o navegador limpar os dados do site, não há de onde recuperar.
+          <b>Entrar numa conta</b> resolve sozinho — a coleção passa a subir a cada mudança, sem senha.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="av-conta">Entrar e proteger</button>
+          <button class="btn ghost" id="av-backup">Baixar o arquivo agora</button>
+        </div>
       </section>` : ""}
 
     ${reimpressas.length ? `
@@ -10579,6 +11578,12 @@ function abrirAvisos(){
   });
   const bm = document.getElementById("av-mercado");
   if(bm) bm.onclick = () => { marcarVisto(); closeModal(); go("mercado"); };
+  const bc = document.getElementById("av-conta");
+  if(bc) bc.onclick = () => { closeModal(); abrirConta(); };
+  const bb = document.getElementById("av-backup");
+  if(bb) bb.onclick = () => { closeModal(); abrirBackup(); };
+  /* ver o aviso silencia por uma semana; a linha em Ajustes continua lá */
+  if(prot.cobrar){ S.config.avisoBackupVistoEm = Date.now(); save(); }
   document.getElementById("av-ok").onclick = () => { marcarVisto(); closeModal(); pintarSino(); };
 }
 
@@ -12383,7 +13388,9 @@ function exportarColecao(){
 }
 
 function abrirBackup(){
+  salvarAgora();                       // o que estava esperando entra no pacote
   const p = pacoteDeBackup();
+  const prot = estadoDaProtecao();
   const codigo = (() => { try{ return btoa(unescape(encodeURIComponent(JSON.stringify(p)))); }catch(e){ return ""; } })();
 
   modal(`<div class="modal-pad">
@@ -12398,6 +13405,19 @@ function abrirBackup(){
     <div class="kv"><span>Chase cards</span><b>${((S.chase||{}).cartas||[]).length}</b></div>
     <div class="kv"><span>Grupos de mesa</span><b>${((S.mesa||{}).grupos||[]).length}</b></div>
     <div class="kv"><span>Tamanho do backup</span><b>${tamanhoDoBackup()}</b></div>
+    <div class="kv"><span>Última cópia fora deste aparelho</span><b>${
+      prot.ultima ? quandoRelativo(new Date(prot.ultima).toISOString()) : "nunca"}</b></div>
+
+    <div class="nota-regiao" style="margin-top:14px">
+      ${prot.naConta
+        ? `<b>A sua conta já guarda uma cópia.</b> Ela sobe sozinha a cada mudança, então mesmo que
+           este aparelho suma a coleção volta ao entrar em outro. O arquivo aqui é a segunda cópia,
+           a que não depende de nada nem de ninguém.`
+        : `<b>Hoje a sua coleção só existe neste aparelho.</b> Se o navegador limpar os dados do site
+           — você limpando, o telefone sem espaço, o app apagado sem querer — não há de onde
+           recuperar. <b>Entrar numa conta</b> resolve isso sozinho, sem senha; baixar o arquivo
+           resolve enquanto você lembrar de baixar.`}
+    </div>
 
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 12px">
       <button class="btn" id="bk-arquivo">Baixar arquivo</button>
@@ -12428,6 +13448,7 @@ function abrirBackup(){
     a.download = `collector-backup-${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    marcarBackupFeito();
     toast("Backup baixado");
   };
 
@@ -12466,6 +13487,19 @@ function abrirBackup(){
 }
 document.getElementById("btn-config").onclick = () => go("config");
 document.getElementById("btn-conta").onclick = abrirConta;
+document.getElementById("btn-buscar-tudo").onclick = abrirBuscaTudo;
+
+/* "/" abre a busca de qualquer tela — menos quando você já está digitando
+   em algum campo, senão a barra some do texto */
+addEventListener("keydown", e => {
+  if(e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
+  const alvo = e.target;
+  const digitando = alvo && (alvo.tagName === "INPUT" || alvo.tagName === "TEXTAREA" ||
+                             alvo.tagName === "SELECT" || alvo.isContentEditable);
+  if(digitando) return;
+  e.preventDefault();
+  abrirBuscaTudo();
+});
 
 /* =====================================================================
    Instalação na tela de início
@@ -12658,6 +13692,10 @@ matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
 });
 carregarCambio().then(()=>{ if(regiao().moeda === "BRL") render(); else renderKPIs(); });
 render();
+
+/* a primeira abertura vem depois da tela pintada, para a pessoa ver o app
+   por trás e entender que ela está entrando em algo, não sendo barrada */
+if(precisaDaPrimeiraAbertura()) setTimeout(abrirPrimeiraAbertura, 500);
 </script>
 </body>
 </html>
