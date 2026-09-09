@@ -246,6 +246,112 @@
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
     letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  /* ---------------- cruzamento de trocas ---------------- */
+  .troca-cartao{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:14px 16px;margin-bottom:12px;box-shadow:var(--lift)}
+  .troca-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    flex-wrap:wrap;margin-bottom:12px}
+  .troca-topo b{display:block;font-size:14.5px}
+  .troca-topo span{font-size:11.5px;color:var(--text-3)}
+  .troca-obs{margin:6px 0 0;font-size:12px;color:var(--text-2);max-width:60ch}
+  .troca-lados{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .troca-lado .flabel{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px}
+  .troca-lado .flabel em{font-style:normal;font-size:13px;font-weight:700;color:var(--accent);
+    letter-spacing:0;text-transform:none}
+  .troca-item{display:flex;align-items:center;gap:8px;padding:3px 0}
+  .troca-item img{width:26px;height:36px;object-fit:cover;border-radius:3px;flex:none}
+  .troca-item span{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .troca-item small{display:block;font-size:10.5px;color:var(--text-3)}
+  .troca-mais{margin:4px 0 0;font-size:11.5px;color:var(--text-3)}
+
+  /* ---------------- decklist de torneio ---------------- */
+  .modal-folha{max-width:860px}
+  .folha{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .folha-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+    padding-bottom:12px;border-bottom:1px solid var(--line-strong)}
+  .folha-cab h1{margin:0;font-family:var(--font-display,inherit);font-size:20px;font-weight:700}
+  .folha-cab p{margin:3px 0 0;font-size:12.5px;color:var(--text-2)}
+  .folha-total{text-align:center;flex:none;padding:6px 12px;border-radius:var(--r-sm);
+    border:1px solid var(--line-strong)}
+  .folha-total b{display:block;font-family:var(--font-mono,ui-monospace,monospace);font-size:22px;
+    font-weight:600;line-height:1}
+  .folha-total span{font-size:10px;color:var(--text-3)}
+  .folha-total.errado{border-color:var(--neg)} .folha-total.errado b{color:var(--neg)}
+  .folha-campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:14px 0}
+  .folha-alerta{margin:0 0 12px;padding:9px 12px;border-radius:var(--r-sm);font-size:12.5px;
+    line-height:1.5;background:var(--neg-soft);border:1px solid var(--neg);color:var(--text)}
+  .folha-colunas{columns:2;column-gap:26px}
+  @media (max-width:620px){ .folha-colunas{columns:1} }
+  .folha-colunas section{break-inside:avoid;margin-bottom:12px}
+  .folha h2{margin:0 0 5px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;
+    color:var(--text-3);border-bottom:1px solid var(--line);padding-bottom:3px}
+  .folha h2 span{float:right;color:var(--text-2)}
+  .folha-linha{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;font-size:12.5px;
+    padding:1.5px 0}
+  .fl-q{font-family:var(--font-mono,ui-monospace,monospace);text-align:right;color:var(--text-2)}
+  .fl-n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fl-n i{font-style:normal;color:var(--text-3);font-size:11px}
+  .fl-s{font-family:var(--font-mono,ui-monospace,monospace);font-size:10.5px;color:var(--text-3)}
+  .folha-reservas{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-strong)}
+  .folha-obs{margin:8px 0 0;font-size:11.5px;color:var(--text-3)}
+  .folha-rodape{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--text-3)}
+
+  /* na impressão sai só a folha, em preto no branco */
+  @media print{
+    body.imprimindo > *:not(#modal-root){display:none !important}
+    body.imprimindo #modal-root .overlay{position:static;background:none;padding:0;display:block}
+    body.imprimindo #modal-root .modal,
+    body.imprimindo #modal-root .modal-pad{max-width:none;width:auto;box-shadow:none;border:0;
+      background:#fff;color:#000;padding:0;max-height:none;overflow:visible}
+    body.imprimindo #modal-root h3,
+    body.imprimindo #modal-root .modal-pad > p,
+    body.imprimindo .nao-imprimir{display:none !important}
+    body.imprimindo .folha{background:#fff;color:#000;border:0;padding:0}
+    body.imprimindo .folha h1,.folha-cab p,.folha h2,.fl-q,.fl-s,.folha-obs,.folha-rodape{color:#000}
+    body.imprimindo .folha-cab,.folha-total,.folha-reservas,.folha h2,.folha-rodape{border-color:#999}
+    body.imprimindo .folha-alerta{background:#fff;border:1px solid #000;color:#000}
+    body.imprimindo .folha-campos .field span{color:#333}
+    body.imprimindo .folha-campos input{border:0;border-bottom:1px solid #999;background:#fff;color:#000}
+    @page{margin:14mm}
+  }
+
+  /* ---------------- calendário de lançamentos ---------------- */
+  .lanc-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+  .lanc{display:grid;gap:3px;text-align:left;padding:13px 14px;border-radius:var(--radius);
+    background:var(--surface-1);border:1px solid var(--line);color:var(--text);cursor:pointer;
+    box-shadow:var(--lift);position:relative}
+  .lanc:hover{border-color:var(--accent-line)}
+  .lanc-ico{position:absolute;top:12px;right:12px;width:20px;height:20px;opacity:.55;
+    filter:invert(1) grayscale(1)}
+  .lanc-nome{font-size:13.5px;font-weight:600;padding-right:26px}
+  .lanc-data{font-family:var(--font-mono,ui-monospace,monospace);font-size:11.5px;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  .lanc-pre{font-size:11px;color:var(--text-3)}
+
+  /* ---------------- matriz de confrontos ---------------- */
+  .cf-rolagem{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .cf-tabela{border-collapse:separate;border-spacing:4px;min-width:100%}
+  .cf-tabela th{font-weight:600;font-size:11.5px;color:var(--text-2);text-align:left;padding:4px 8px;
+    white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+  .cf-tabela thead th span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--text-3)}
+  .cf-tabela td{padding:0}
+  .cf-cel{display:grid;grid-template-columns:auto auto auto;justify-content:center;align-items:baseline;
+    gap:3px;min-width:74px;padding:9px 8px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+  .cf-cel b{font-size:15px;font-weight:600}
+  .cf-cel i{font-style:normal;font-size:11px;color:var(--text-3)}
+  .cf-cel small{grid-column:1/-1;font-size:9.5px;color:var(--text-3);text-align:center}
+  .cf-cel.bom{border-color:rgba(79,191,139,.45)} .cf-cel.bom b:first-child{color:var(--pos)}
+  .cf-cel.ruim{border-color:rgba(224,91,91,.4)} .cf-cel.ruim b:last-of-type{color:var(--neg)}
+  .cf-cel.vazia{display:block;text-align:center;color:var(--text-3);background:transparent;border-style:dashed}
+
+  .etiq-local{position:absolute;left:6px;bottom:34px;z-index:3;max-width:calc(100% - 12px);
+    padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;letter-spacing:.01em;
+    background:rgba(12,10,17,.82);border:1px solid var(--line-strong);color:var(--text-2);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
   /* ---------------- relógio dos jogadores ---------------- */
   .rel-config{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px}
   .relogio-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
@@ -2036,7 +2142,8 @@ const MENU = [
       { v:"mesa",  nome:"Mesa" } ] },
 
   { id:"mercado", nome:"Mercado", secoes:[
-      { v:"mercado", nome:"Anúncios" } ] },
+      { v:"mercado", nome:"Anúncios" },
+      { v:"trocas",  nome:"Trocas casadas" } ] },
 ];
 
 /* telas de dentro → a qual mestre pertencem */
@@ -2083,6 +2190,7 @@ function render(){
   if(view.name==="troca") return renderTroca();
   if(view.name==="especiais") return renderEspeciais();
   if(view.name==="mercado") return renderMercado();
+  if(view.name==="trocas") return renderTrocas();
   if(view.name==="config") return renderConfig();
   if(view.name==="themes") return renderThemes();
   if(view.name==="minha") return renderMinha();
@@ -2256,6 +2364,99 @@ function noticiaHTML(n, grande){
   </a>`;
 }
 
+/* =====================================================================
+   CALENDÁRIO DE LANÇAMENTOS
+
+   O Scryfall publica as edições com data — inclusive as que ainda não
+   saíram. É a única coisa no app que dá motivo para abrir fora da hora
+   de comprar: pré-release tem data marcada e todo mundo esquece.
+
+   Três decisões:
+   - só edição de verdade (`expansion`, `core`, `draft_innovation`,
+     `commander`, `masters`) — o Scryfall lista dezenas de "sets" que são
+     promo, token e memorabilia, e isso entupiria a tela;
+   - a data de pré-release é a do lançamento menos 8 dias (sexta anterior),
+     que é a regra da Wizards há anos — e a tela diz que é estimativa,
+     porque a Wizards não publica isso num campo;
+   - fica guardado por 12 horas: é lista que muda uma vez por mês.
+   ===================================================================== */
+let lancamentos = { itens:null, carregando:false, em:0 };
+/* os mesmos tipos que a tela de Edições chama de "principais" */
+const TIPOS_DE_LANCAMENTO = ["expansion", "core", "draft_innovation", "commander", "masters"];
+
+async function carregarLancamentos(){
+  if(lancamentos.carregando) return;
+  try{
+    const g = JSON.parse(localStorage.getItem("collector.sets") || "null");
+    if(g && Date.now() - g.em < 12*3600*1000){ lancamentos.itens = g.itens; lancamentos.em = g.em; return; }
+  }catch(e){}
+  lancamentos.carregando = true;
+  try{
+    const r = await fetch(`${API}/sets`);
+    if(!r.ok) throw new Error("sets " + r.status);
+    const j = await r.json();
+    const hoje = new Date().toISOString().slice(0, 10);
+    lancamentos.itens = (j.data || [])
+      .filter(x => TIPOS_DE_LANCAMENTO.includes(x.set_type) && x.released_at && !x.digital)
+      .filter(x => x.released_at >= hoje)
+      .sort((a, b) => a.released_at.localeCompare(b.released_at))
+      .slice(0, 6)
+      .map(x => ({ code:x.code, nome:x.name, dia:x.released_at, icone:x.icon_svg_uri,
+                   cartas:x.card_count || 0 }));
+    lancamentos.em = Date.now();
+    try{ localStorage.setItem("collector.sets",
+      JSON.stringify({ itens:lancamentos.itens, em:lancamentos.em })); }catch(e){}
+  }catch(e){ lancamentos.itens = lancamentos.itens || []; }
+  lancamentos.carregando = false;
+  if(view.name === "home") pintarLancamentos();
+}
+
+const diasAte = dia => Math.ceil((Date.parse(dia + "T12:00:00Z") - Date.now()) / 86400000);
+/* pré-release é a sexta anterior ao lançamento — 8 dias antes, na prática */
+const preDe = dia => new Date(Date.parse(dia + "T12:00:00Z") - 8*86400000).toISOString().slice(0, 10);
+const diaCurto = dia => new Date(dia + "T12:00:00Z")
+  .toLocaleDateString("pt-BR", { day:"2-digit", month:"short" });
+
+function blocoLancamentos(){
+  const itens = lancamentos.itens;
+  if(itens === null) return `<div id="lancamentos"></div>`;
+  if(!itens.length) return `<div id="lancamentos"></div>`;
+  return `<div id="lancamentos">
+    <h3 class="grupo-titulo" style="margin-top:26px">O que vem por aí<span>${itens.length}</span></h3>
+    <div class="lanc-grade">
+      ${itens.map(x => {
+        const faltam = diasAte(x.dia);
+        const pre = preDe(x.dia);
+        const faltamPre = diasAte(pre);
+        return `<button class="lanc" data-set="${escapeHTML(x.code)}">
+          ${x.icone ? `<img class="lanc-ico" src="${escapeHTML(x.icone)}" alt="" loading="lazy">` : ""}
+          <span class="lanc-nome">${escapeHTML(x.nome)}</span>
+          <span class="lanc-data">${diaCurto(x.dia)}${
+            faltam > 0 ? ` · em ${faltam} dia${faltam > 1 ? "s" : ""}` : " · hoje"}</span>
+          ${faltamPre > 0
+            ? `<span class="lanc-pre">pré-release por volta de ${diaCurto(pre)}</span>`
+            : faltam > 0 ? `<span class="lanc-pre">pré-release já passou</span>` : ""}
+        </button>`;
+      }).join("")}
+    </div>
+    <p class="dg-txt">Datas de lançamento do Scryfall. A do pré-release é <b>estimativa</b> — a sexta
+    anterior, que é como a Wizards costuma marcar; ela não publica essa data num campo, então confira
+    com a sua loja antes de contar com ela. Tocar abre a edição no Buscador.</p>
+  </div>`;
+}
+
+function pintarLancamentos(){
+  const alvo = document.getElementById("lancamentos");
+  if(!alvo) return;
+  alvo.outerHTML = blocoLancamentos();
+  ligarLancamentos();
+}
+function ligarLancamentos(){
+  document.querySelectorAll("[data-set]").forEach(b => b.onclick = () => {
+    go("set", b.dataset.set);
+  });
+}
+
 function renderHome(){
   if(!noticias.itens){
     const g = noticiasGuardadas();
@@ -2290,6 +2491,8 @@ function renderHome(){
         <span style="color:var(--faint);font-size:12.5px">${escapeHTML(noticias.erro)}</span></div>
     ` : `<div class="empty">Buscando as notícias…</div>`}
 
+    ${blocoLancamentos()}
+
     <div class="atalhos-home">
       <button class="atalho" data-ir="minha"><b>Sua coleção</b><span>${ownedCount().toLocaleString("pt-BR")} cartas · ${money(ownedValue())}</span></button>
       <button class="atalho" data-ir="chase"><b>Chase cards</b><span>${((S.chase||{}).cartas||[]).length} sendo vigiadas</span></button>
@@ -2302,6 +2505,13 @@ function renderHome(){
   const sino = document.getElementById("sino");
   if(sino) sino.onclick = abrirAvisos;
   carregarAvisos();
+  ligarLancamentos();
+  carregarLancamentos();
+  /* o sino cruza o chase com os anúncios: sem a lista em memória ele
+     contaria zero e só descobriria depois que você abrisse o Mercado */
+  if(!mercado.lista && !mercado.carregando)
+    carregarMercado().then(() => pintarSino());
+  carregarReimpressoes();
   pintarSino();
   app.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => go(b.dataset.ir));
 }
@@ -2896,8 +3106,15 @@ function cardHTML(c, copias, selo, comQtd){
   const n = Number(copias);
   copias = Number.isFinite(n) && n > 1 ? n : 0;
   const qtd = own ? qtdDe(c.id) : 0;
+  /* o lugar só aparece quando você está justamente procurando por lugar —
+     nas outras telas seria mais uma etiqueta em cima da arte */
+  const onde = own ? ((S.owned[c.id] || {}).loc || "") : "";
+  const mostrarOnde = onde && view.name === "minha" &&
+                      (minha.f.local || minha.f.ordem === "local");
   return `
-  <div class="card ${own?"owned":""}" data-id="${c.id}" title="${escapeHTML(c.name)} — clique para marcar">
+  <div class="card ${own?"owned":""}" data-id="${c.id}" title="${escapeHTML(c.name)}${
+    onde ? " — guardada em " + escapeHTML(onde) : ""} — clique para marcar">
+    ${mostrarOnde ? `<span class="etiq-local">${escapeHTML(onde)}</span>` : ""}
     ${copias > 1 ? `<span class="copias">×${copias}</span>` : ""}
     ${selo ? `<span class="copias selo-edicoes">${escapeHTML(selo)}</span>` : ""}
     ${["foil","etched"].includes(c.acabamentoEscolhido) ? `<span class="marca-foil">${nomeAcabamento(c, c.acabamentoEscolhido)}</span>` : ""}
@@ -3845,14 +4062,47 @@ function queryComExclusoes(partes, fora){
    view: minha coleção — tudo o que você tem, num lugar só
    ===================================================================== */
 
-const FILTROS_MINHA = () => ({ texto:"", cores:[], raridades:[], tipos:[], set:"", precoDe:"", precoAte:"", ordem:"recentes", agrupar:false });
+const FILTROS_MINHA = () => ({ texto:"", cores:[], raridades:[], tipos:[], set:"", precoDe:"", precoAte:"",
+                               local:"", ordem:"recentes", agrupar:false });
+
+/* =====================================================================
+   ONDE A CARTA ESTÁ GUARDADA
+
+   O app sabia que você tem a carta e não sabia onde ela está. Para quem
+   passou de mil cartas, essa é a diferença entre achar a carta e virar
+   a casa do avesso.
+
+   É um texto livre de propósito: fichário, caixa, gaveta, "no deck do
+   Atraxa", "emprestada" — cada um organiza do seu jeito, e o app não
+   inventa uma taxonomia que ninguém pediu. O que ele faz é lembrar os
+   lugares que você já usou e oferecer de volta, para "Fichário azul" e
+   "fichario azul" não virarem dois lugares diferentes.
+   ===================================================================== */
+function locaisUsados(){
+  const conta = new Map();
+  Object.values(S.owned).forEach(r => {
+    const l = (r.loc || "").trim();
+    if(!l) return;
+    conta.set(l, (conta.get(l) || 0) + 1);
+  });
+  return [...conta.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(x => x[0]);
+}
+function contagemPorLocal(){
+  const conta = new Map();
+  Object.entries(S.owned).forEach(([id, r]) => {
+    const l = (r.loc || "").trim();
+    if(!l) return;
+    conta.set(l, (conta.get(l) || 0) + qtdDe(id));
+  });
+  return [...conta.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
 let minha = { f:FILTROS_MINHA(), selecao:new Set() };
 
 function cartasQueTenho(){
   return Object.entries(S.owned).map(([id, r]) =>
     Object.assign(cartaDoResumo(id, r), {
       addedAt:r.at || 0, qtd:qtdDe(id),
-      cond:condDe(r), lang:langDe(r), pago:Number(r.pg) || 0,
+      cond:condDe(r), lang:langDe(r), pago:Number(r.pg) || 0, loc:(r.loc || ""),
       unit:valorUnitario(id),                    // preço já com o desconto da condição
     }));
 }
@@ -3878,8 +4128,13 @@ function filtrarMinha(lista){
   const f = minha.f;
   const t = semAcento(f.texto).trim();
   let out = lista.filter(c => {
-    if(t && !semAcento(c.name).includes(t) && !semAcento(c.setName || "").includes(t)) return false;
+    if(t && !semAcento(c.name).includes(t) && !semAcento(c.setName || "").includes(t)
+         && !semAcento(c.loc || "").includes(t)) return false;
     if(f.set && c.set !== f.set) return false;
+    if(f.local){
+      if(f.local === "__sem__"){ if((c.loc || "").trim()) return false; }
+      else if((c.loc || "") !== f.local) return false;
+    }
     if(f.raridades.length && !f.raridades.includes(c.rarity)) return false;
     if(f.cores.length){
       const cor = c.cores || "";
@@ -3904,6 +4159,10 @@ function filtrarMinha(lista){
     caras:    (a,b) => (Number(b.usd)||0) - (Number(a.usd)||0),
     baratas:  (a,b) => (Number(a.usd)||0) - (Number(b.usd)||0),
     set:      (a,b) => (a.setName||"").localeCompare(b.setName||"") || a.name.localeCompare(b.name),
+    /* quem não anotou o lugar vai para o fim: a lista serve para achar
+       carta, e carta sem lugar não ajuda ninguém a achar nada */
+    local:    (a,b) => (a.loc ? 0 : 1) - (b.loc ? 0 : 1)
+                    || (a.loc||"").localeCompare(b.loc||"") || a.name.localeCompare(b.name),
     antigas:  (a,b) => (a.released||"").localeCompare(b.released||""),
   };
   return out.sort(ordens[minha.f.ordem] || ordens.recentes);
@@ -4001,6 +4260,21 @@ async function renderMinha(){
             <input type="number" id="m-precoate" min="0" step="0.01" placeholder="US$ máx." value="${f.precoAte}">
           </div>
         </div>
+        ${(() => {
+          const locais = contagemPorLocal();
+          const semLocal = somaQtd(todas) - locais.reduce((a, l) => a + l[1], 0);
+          if(!locais.length) return "";
+          return `<div class="fgrupo">
+            <span class="flabel">Onde está guardada</span>
+            <select id="m-local">
+              <option value="">qualquer lugar</option>
+              ${locais.map(([nome, n]) => `<option value="${escapeHTML(nome)}"${
+                f.local === nome ? " selected" : ""}>${escapeHTML(nome)} (${n})</option>`).join("")}
+              ${semLocal > 0 ? `<option value="__sem__"${
+                f.local === "__sem__" ? " selected" : ""}>sem lugar anotado (${semLocal})</option>` : ""}
+            </select>
+          </div>`;
+        })()}
         <div class="fgrupo">
           <span class="flabel">Exibição</span>
           <label class="check"><input type="checkbox" id="m-agrupar" ${f.agrupar?"checked":""}>
@@ -4008,7 +4282,8 @@ async function renderMinha(){
           <span class="flabel" style="margin-top:12px">Ordenar</span>
           <select id="m-ordem">
             ${[["recentes","adicionadas por último"],["nome","nome (A-Z)"],["caras","mais caras"],
-               ["baratas","mais baratas"],["set","por edição"],["antigas","mais antigas"]]
+               ["baratas","mais baratas"],["set","por edição"],["local","por onde está guardada"],
+               ["antigas","mais antigas"]]
               .map(([v,n]) => `<option value="${v}"${f.ordem===v?" selected":""}>${n}</option>`).join("")}
           </select>
         </div>
@@ -4045,6 +4320,7 @@ async function renderMinha(){
     if(el) el.addEventListener(evento, () => { minha.f[campo] = el.value; renderMinha(); });
   };
   liga("m-texto","texto"); liga("m-set","set","change"); liga("m-ordem","ordem","change");
+  liga("m-local","local","change");
   const agr = document.getElementById("m-agrupar");
   if(agr) agr.onchange = () => { minha.f.agrupar = agr.checked; renderMinha(); };
   liga("m-precode","precoDe"); liga("m-precoate","precoAte");
@@ -5579,6 +5855,7 @@ function renderDeck(id){
       <button class="btn ghost" id="deck-sugestoes">Sugestões</button>
       <button class="btn ghost" id="deck-compras">O que falta comprar</button>
       <button class="btn ghost" id="deck-texto">Exportar lista</button>
+      <button class="btn ghost" id="deck-folha">Decklist para imprimir</button>
       <button class="btn ghost" id="deck-excluir">Excluir</button>
     </div>
 
@@ -5608,6 +5885,7 @@ function renderDeck(id){
   document.getElementById("deck-sugestoes").onclick = () => abrirSugestoes(d);
   document.getElementById("deck-compras").onclick = () => abrirComprasDoDeck(d);
   document.getElementById("deck-texto").onclick = () => exportarDeck(d);
+  document.getElementById("deck-folha").onclick = () => abrirFolhaDeTorneio(d);
   document.getElementById("deck-excluir").onclick = () => {
     if(!confirm(`Excluir o deck "${d.nome}"? As cartas continuam na sua coleção.`)) return;
     S.decks = decks().filter(x => x.id !== d.id); save(); go("decks");
@@ -6419,6 +6697,127 @@ function porNoDeck(d, carta){
   }
   save();
   if(view.name === "deck") pintarDeck(d);
+}
+
+/* =====================================================================
+   DECKLIST DE TORNEIO
+
+   A lista de texto do Moxfield serve para importar em outro site; não
+   serve para entregar na mesa do juiz. A folha oficial pede outra coisa:
+   nome do jogador, formato, evento, data, e as cartas agrupadas por tipo
+   com o total conferido em cima.
+
+   Como o app é um arquivo só e roda offline, quem gera o PDF é o próprio
+   navegador: a folha é montada em HTML com estilo de impressão e o botão
+   chama a impressão do sistema. No iPhone é Compartilhar → Imprimir →
+   pinçar para "Salvar em PDF". Sem biblioteca, sem servidor, e sai igual
+   no computador e no telefone.
+
+   O total é CONFERIDO na folha, não escondido: se o deck tiver 98 cartas
+   a folha diz 98 e avisa em vermelho que o formato pede 100. Chegar na
+   mesa com lista errada é game loss, e o app tem como avisar antes.
+   ===================================================================== */
+function folhaDeTorneio(d){
+  const fmt = formatoDe(d.formato);
+  const todas = cartasDoDeck(d);
+  const usadas = new Set();
+  const secoes = GRUPOS_DECK.map(([chave, titulo, casa]) => {
+    const itens = todas.filter(c => !usadas.has(c) && casa(c));
+    itens.forEach(c => usadas.add(c));
+    return { titulo, itens:itens.sort((a, b) => a.n.localeCompare(b.n)) };
+  }).filter(x => x.itens.length);
+  const sobrou = todas.filter(c => !usadas.has(c));
+  if(sobrou.length) secoes.push({ titulo:"Outras", itens:sobrou });
+
+  const total = totalDoDeck(d);
+  const reservas = reservasDo(d);
+  const soma = lista => lista.reduce((a, c) => a + (c.qtd || 1), 0);
+  const dia = new Date().toLocaleDateString("pt-BR");
+
+  return `
+  <div class="folha" id="folha-torneio">
+    <div class="folha-cab">
+      <div>
+        <h1>${escapeHTML(d.nome)}</h1>
+        <p>${escapeHTML(fmt.nome)}${d.comandante ? ` · comandante: ${escapeHTML(d.comandante.n)}` : ""}</p>
+      </div>
+      <div class="folha-total ${total === fmt.cartas ? "" : "errado"}">
+        <b>${total}</b><span>de ${fmt.cartas}</span>
+      </div>
+    </div>
+
+    <div class="folha-campos">
+      <label class="field"><span>Seu nome</span>
+        <input type="text" id="ft-nome" value="${escapeHTML(mesa().eu || "")}" placeholder="nome completo"></label>
+      <label class="field"><span>Evento</span>
+        <input type="text" id="ft-evento" placeholder="ex.: Liga de sexta — loja X"></label>
+      <label class="field"><span>Data</span>
+        <input type="text" id="ft-data" value="${dia}"></label>
+    </div>
+
+    ${total !== fmt.cartas ? `<p class="folha-alerta">
+      Este deck tem <b>${total}</b> cartas e ${escapeHTML(fmt.nome)} pede <b>${fmt.cartas}</b>.
+      Lista com número errado é game loss na maioria dos eventos — confira antes de entregar.</p>` : ""}
+    ${fmt.singleton && (() => {
+      const repetidas = (d.cartas || []).filter(c => (c.qtd || 1) > 1 && !/basic/i.test(c.t || ""));
+      return repetidas.length ? `<p class="folha-alerta">
+        ${escapeHTML(fmt.nome)} é singleton e este deck tem cópia repetida de
+        <b>${repetidas.map(c => escapeHTML(c.n)).join(", ")}</b>.</p>` : "";
+    })()}
+
+    <div class="folha-colunas">
+      ${secoes.map(sec => `
+        <section>
+          <h2>${escapeHTML(sec.titulo)} <span>${soma(sec.itens)}</span></h2>
+          ${sec.itens.map(c => `<div class="folha-linha">
+            <span class="fl-q">${c.qtd || 1}</span>
+            <span class="fl-n">${escapeHTML(c.n)}${c.ehComandante ? " <i>(comandante)</i>" : ""}</span>
+            <span class="fl-s">${escapeHTML((c.s || "").toUpperCase())}</span>
+          </div>`).join("")}
+        </section>`).join("")}
+    </div>
+
+    ${reservas.length ? `
+      <div class="folha-reservas">
+        <h2>Reservas <span>${soma(reservas)}</span></h2>
+        ${reservas.map(c => `<div class="folha-linha">
+          <span class="fl-q">${c.qtd || 1}</span>
+          <span class="fl-n">${escapeHTML(c.n)}</span>
+          <span class="fl-s">${escapeHTML((c.s || "").toUpperCase())}</span>
+        </div>`).join("")}
+        <p class="folha-obs">Commander não tem sideboard de torneio: esta lista é o seu banco de
+        trocas. Só entregue esta parte se o evento pedir.</p>
+      </div>` : ""}
+
+    <p class="folha-rodape">Assinatura: ______________________________
+      &nbsp;&nbsp; Mesa: ______ &nbsp;&nbsp; Gerado no Velvo em ${dia}</p>
+  </div>`;
+}
+
+function abrirFolhaDeTorneio(d){
+  modal(`<div class="modal-pad modal-folha">
+    <h3>Decklist para entregar</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Preencha o nome e o evento e mande imprimir. No iPhone: <b>Compartilhar → Imprimir</b> e,
+      na tela da impressão, pinçar a miniatura para abrir e <b>Salvar em PDF</b>.</p>
+    ${folhaDeTorneio(d)}
+    <div class="pergunta-acoes nao-imprimir">
+      <button class="btn" id="ft-imprimir">Imprimir / salvar em PDF</button>
+      <button class="btn ghost" id="ft-fechar">Fechar</button>
+    </div>
+  </div>`);
+  document.getElementById("ft-fechar").onclick = closeModal;
+  document.getElementById("ft-imprimir").onclick = () => {
+    /* o campo digitado não vira atributo sozinho, e sem isso a impressão
+       sai com o campo vazio */
+    ["ft-nome", "ft-evento", "ft-data"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.setAttribute("value", el.value);
+    });
+    document.body.classList.add("imprimindo");
+    window.print();
+    setTimeout(() => document.body.classList.remove("imprimindo"), 800);
+  };
 }
 
 function exportarDeck(d){
@@ -7311,13 +7710,14 @@ function pintarMesa(){
       <button class="btn" id="mesa-partida">+ Registrar partida</button>
       <div class="grow"></div>
       <div class="toggles" id="mesa-abas">
-        ${[["ranking","Ranking"],["historico","Histórico"],["ferramentas","Ferramentas da mesa"]]
+        ${[["ranking","Ranking"],["confrontos","Confrontos"],["historico","Histórico"],["ferramentas","Ferramentas da mesa"]]
           .map(([id,nome]) => `<button class="tog ${mesaView.aba===id?"on":""}" data-a="${id}">${nome}</button>`).join("")}
       </div>
     </div>
 
     <div id="mesa-aba">${
       mesaView.aba === "historico" ? blocoHistorico(dados) :
+      mesaView.aba === "confrontos" ? blocoConfrontos(dados) :
       mesaView.aba === "ferramentas" ? blocoFerramentas() :
       blocoRanking(rank)}</div>`;
 
@@ -7386,6 +7786,128 @@ function blocoRanking(rank){
     </div>
     <p class="dg-txt" style="margin-top:12px">Toque em um jogador para ver o histórico de decks dele:
     quantas vezes usou cada um, quanto ganhou e quantos pontos tirou com cada deck.</p>`;
+}
+
+/* =====================================================================
+   CONFRONTOS — quem ganha de quem
+
+   Numa mesa de quatro não existe "A venceu B": existe um vencedor e três
+   que não venceram. Então a conta aqui é honesta sobre o que mede:
+   **em quantas partidas os dois estiveram juntos, e quantas cada um
+   venceu**. Não é um placar de duelo, e a tela diz isso — chamar de
+   "vitórias contra fulano" numa mesa de quatro seria inventar um duelo
+   que não aconteceu.
+
+   Partida em que nenhum dos dois venceu conta como jogada junto e não
+   soma para ninguém: alguém de fora ganhou, e essa informação existe.
+   ===================================================================== */
+function confrontosDoGrupo(dados){
+  const nomes = {};
+  (dados.members || []).forEach(m => nomes[m.id] = m.name);
+  const par = {};   // "a|b" -> { juntos, venceuA, venceuB, outro }
+  const chave = (a, b) => a < b ? a + "|" + b : b + "|" + a;
+
+  (dados.matches || []).forEach(p => {
+    const js = (p.players || []).filter(j => nomes[j.member_id]);
+    for(let i = 0; i < js.length; i++){
+      for(let k = i + 1; k < js.length; k++){
+        const a = js[i], b = js[k];
+        const c = chave(a.member_id, b.member_id);
+        const e = par[c] = par[c] || { juntos:0, vit:{}, outro:0 };
+        e.juntos++;
+        if(a.won) e.vit[a.member_id] = (e.vit[a.member_id] || 0) + 1;
+        else if(b.won) e.vit[b.member_id] = (e.vit[b.member_id] || 0) + 1;
+        else e.outro++;
+      }
+    }
+  });
+  return { nomes, par, chave };
+}
+
+function blocoConfrontos(dados){
+  const membros = (dados.members || []).slice();
+  const { par, chave } = confrontosDoGrupo(dados);
+  if(membros.length < 2) return `<div class="empty">Confronto precisa de pelo menos dois jogadores no grupo.</div>`;
+  if(!Object.keys(par).length) return `<div class="empty">Nenhuma partida registrada ainda —
+    é dela que sai quem já jogou com quem.</div>`;
+
+  const celula = (a, b) => {
+    if(a.id === b.id) return `<span class="cf-cel vazia">—</span>`;
+    const e = par[chave(a.id, b.id)];
+    if(!e) return `<span class="cf-cel vazia" title="nunca jogaram na mesma mesa">·</span>`;
+    const meu = e.vit[a.id] || 0, dele = e.vit[b.id] || 0;
+    const forte = meu > dele ? "bom" : dele > meu ? "ruim" : "";
+    return `<span class="cf-cel ${forte}" title="${escapeHTML(a.name)} ${meu} × ${dele} ${escapeHTML(b.name)} em ${e.juntos} partida${e.juntos>1?"s":""} juntos${
+      e.outro ? ` — ${e.outro} venceu outra pessoa` : ""}">
+      <b>${meu}</b><i>×</i><b>${dele}</b><small>${e.juntos}j</small></span>`;
+  };
+
+  return `
+    <p class="dg-txt" style="margin-bottom:14px">
+      <b>Isto não é placar de duelo.</b> Numa mesa de quatro não existe "A venceu B": existe um vencedor
+      e três que não venceram. Cada quadrinho mostra <b>quantas partidas os dois jogaram juntos</b> e
+      quantas cada um venceu — quando quem ganhou foi um terceiro, a partida conta como jogada junto e
+      não soma para nenhum dos dois. Leia a linha: <b>o número da esquerda é de quem está na linha</b>.</p>
+
+    <div class="cf-rolagem">
+      <table class="cf-tabela">
+        <thead><tr><th></th>${membros.map(m =>
+          `<th><span>${escapeHTML(m.name)}</span></th>`).join("")}</tr></thead>
+        <tbody>
+          ${membros.map(a => `<tr>
+            <th>${escapeHTML(a.name)}</th>
+            ${membros.map(b => `<td>${celula(a, b)}</td>`).join("")}
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+
+    ${blocoConfrontoDeDecks(dados)}`;
+}
+
+/* o mesmo cruzamento, mas por deck: é o que a mesa comenta de verdade
+   ("contra o Krenko dele eu não ganho") */
+function blocoConfrontoDeDecks(dados){
+  const nomes = {};
+  (dados.members || []).forEach(m => nomes[m.id] = m.name);
+  const linhas = {};
+  (dados.matches || []).forEach(p => {
+    const js = (p.players || []).filter(j => j.deck_name && nomes[j.member_id]);
+    js.forEach(j => {
+      const k = j.member_id + "|" + j.deck_name;
+      const l = linhas[k] = linhas[k] || { dono:nomes[j.member_id], deck:j.deck_name,
+                                           jogos:0, vitorias:0, contra:{} };
+      l.jogos++;
+      if(j.won) l.vitorias++;
+      const vencedor = js.find(x => x.won && x.member_id !== j.member_id);
+      if(vencedor){
+        const c = `${vencedor.deck_name} (${nomes[vencedor.member_id]})`;
+        l.contra[c] = (l.contra[c] || 0) + 1;
+      }
+    });
+  });
+  const lista = Object.values(linhas).filter(l => l.jogos >= 2)
+    .sort((a, b) => b.jogos - a.jogos || b.vitorias - a.vitorias);
+  if(!lista.length) return "";
+
+  return `
+    <h3 class="grupo-titulo" style="margin-top:24px">Por deck<span>${lista.length}</span></h3>
+    <div class="rank-tabela decks-jog">
+      <div class="rank-cab"><span>deck</span><span>J</span><span>V</span><span>%</span><span></span><span>quem mais te ganhou</span></div>
+      ${lista.map(l => {
+        const pior = Object.entries(l.contra).sort((a, b) => b[1] - a[1])[0];
+        return `<div class="rank-linha">
+          <span class="rank-nome">${escapeHTML(l.deck)}<em style="color:var(--text-3)"> · ${escapeHTML(l.dono)}</em></span>
+          <span class="rank-num">${l.jogos}</span>
+          <span class="rank-num">${l.vitorias}</span>
+          <span class="rank-num destaque">${Math.round(100*l.vitorias/l.jogos)}%</span>
+          <span class="rank-num"></span>
+          <span class="rank-deck">${pior ? escapeHTML(pior[0]) + " (" + pior[1] + ")" : "—"}</span>
+        </div>`;
+      }).join("")}
+    </div>
+    <p class="dg-txt" style="margin-top:10px">Só aparecem decks com duas partidas ou mais — com uma só,
+    a porcentagem seria 0% ou 100% e não diria nada.</p>`;
 }
 
 /* ---------------- histórico de decks de um jogador ---------------- */
@@ -8262,6 +8784,12 @@ function blocoDaMinhaCopia(c){
                placeholder="—" value="${pago ? pago : ""}">
       </label>
     </div>
+    <label class="field" style="margin-top:10px"><span>Onde está guardada</span>
+      <input type="text" id="mc-onde" list="locais-usados" autocomplete="off"
+             placeholder="ex.: fichário azul · página 12" value="${escapeHTML(r.loc || "")}">
+    </label>
+    <datalist id="locais-usados">${locaisUsados().map(l =>
+      `<option value="${escapeHTML(l)}"></option>`).join("")}</datalist>
     <p class="dg-txt" id="mc-conta">${contaDaCopia(base, fator, cond, pago, vale)}</p>
     <button class="icon-btn" id="mc-slab" style="margin-top:8px">
       ${ehGraduada(r) || ehAssinada(r) ? "Editar graduação e assinatura" : "É graduada ou assinada?"}</button>
@@ -8308,6 +8836,7 @@ function ligarMinhaCopia(c){
   if(bs) bs.onclick = () => abrirSlab(c);
   const lang = document.getElementById("mc-lang");
   const pago = document.getElementById("mc-pago");
+  const onde = document.getElementById("mc-onde");
   const conta = document.getElementById("mc-conta");
 
   const guardar = () => {
@@ -8318,6 +8847,8 @@ function ligarMinhaCopia(c){
     const p = parseFloat(pago.value);
     if(Number.isFinite(p) && p > 0){ r.pg = p; r.pgM = "USD"; }
     else { delete r.pg; delete r.pgM; }
+    const l = (onde.value || "").trim().slice(0, 80);
+    if(l) r.loc = l; else delete r.loc;
     save(); renderKPIs();
     const base = (r.fin === "foil" && r.usdF) ? r.usdF : (r.usd || 0);
     conta.innerHTML = contaDaCopia(base, fatorCondicao(r.cond), r.cond, Number(r.pg)||0, valorUnitario(c.id));
@@ -8326,6 +8857,8 @@ function ligarMinhaCopia(c){
   lang.onchange = guardar;
   pago.onchange = guardar;
   pago.onblur = guardar;
+  onde.onchange = guardar;
+  onde.onblur = guardar;
 }
 
 function openCard(c){
@@ -9207,6 +9740,258 @@ function repetidas(){
 const guardadasSemTroca = () =>
   Object.entries(S.owned).filter(([id, r]) => r.naoTroco && qtdDe(id) > 1).length;
 
+/* =====================================================================
+   CRUZAMENTO DE TROCAS
+
+   O mercado (anúncios) já dizia quem TEM. Faltava quem QUER — e sem os
+   dois lados, achar uma troca dependia de duas pessoas abrirem a lista
+   uma da outra no mesmo dia.
+
+   Cada pessoa publica UM cartão com as duas listas: as repetidas (o que
+   sobra) e os chase cards (o que procura). O cruzamento é feito aqui, no
+   aparelho, comparando por NOME — troca de Magic é "você tem essa
+   carta?", não "você tem essa impressão?"; recusar por edição diferente
+   esconderia a troca que interessa. A edição de cada carta aparece na
+   lista para você julgar antes de combinar.
+
+   O que a tela mostra são as DUAS direções separadas, sem inventar um
+   "casamento perfeito": quantas cartas suas ele procura, e quantas dele
+   você procura. Quem decide se a troca é justa são as duas pessoas.
+   ===================================================================== */
+let trocas = { lista:null, carregando:false, erro:"", meu:null };
+
+async function carregarTrocas(){
+  if(trocas.carregando) return;
+  trocas.carregando = true;
+  try{
+    trocas.lista = await supa("trade_posts?select=owner,apelido,cidade,obs,tenho,quero,"
+      + "n_tenho,n_quero,updated_at&order=updated_at.desc&limit=200");
+    trocas.meu = logado() ? (trocas.lista || []).find(x => x.owner === SESSAO.user_id) || null : null;
+    trocas.erro = "";
+  }catch(e){ trocas.erro = e.message; }
+  trocas.carregando = false;
+  if(view.name === "trocas") renderTrocas();
+}
+
+/* o que eu levaria para uma troca, e o que eu procuro — do jeito que vai
+   para o servidor: nome, edição e imagem, nada de quantidade paga nem de
+   onde a carta está guardada */
+function minhasParaTroca(){
+  return repetidas().slice(0, 400).map(x => ({
+    id:x.id, n:x.r.n || "", s:x.r.s || "", sn:x.r.sn || "", img:x.r.img || "",
+    q:x.sobra, cond:condDe(x.r),
+  }));
+}
+function meusProcurados(){
+  return ((chase() || {}).cartas || []).slice(0, 400).map(x => ({
+    id:x.id, n:x.n || "", img:x.img || "",
+  }));
+}
+
+/* cruza a minha lista com a de cada pessoa. A comparação é por nome, sem
+   acento e sem caixa — o mesmo critério dos dois lados. */
+function cruzarTrocas(){
+  const eu = logado() ? SESSAO.user_id : null;
+  const tenho = new Map(minhasParaTroca().map(c => [semAcento(c.n), c]));
+  const quero = new Map(meusProcurados().map(c => [semAcento(c.n), c]));
+
+  return (trocas.lista || [])
+    .filter(p => p.owner !== eu)
+    .map(p => {
+      const dele = (p.tenho || []), procura = (p.quero || []);
+      const euTenhoQueEleQuer = procura
+        .map(c => tenho.get(semAcento(c.n || "")))
+        .filter(Boolean);
+      const eleTemQueEuQuero = dele
+        .filter(c => quero.has(semAcento(c.n || "")));
+      return { pessoa:p, dou:euTenhoQueEleQuer, recebo:eleTemQueEuQuero,
+               casadas: Math.min(euTenhoQueEleQuer.length, eleTemQueEuQuero.length),
+               total: euTenhoQueEleQuer.length + eleTemQueEuQuero.length };
+    })
+    .sort((a, b) => b.casadas - a.casadas || b.total - a.total);
+}
+
+function renderTrocas(){
+  if(!trocas.lista && !trocas.carregando) carregarTrocas();
+  const pares = cruzarTrocas();
+  const comCasamento = pares.filter(p => p.dou.length && p.recebo.length);
+  const soUmLado = pares.filter(p => (p.dou.length || p.recebo.length) && !(p.dou.length && p.recebo.length));
+  const semNada = pares.length - comCasamento.length - soUmLado.length;
+  const meu = trocas.meu;
+
+  const cartaoDaPessoa = par => `
+    <section class="troca-cartao">
+      <div class="troca-topo">
+        <div>
+          <b>${escapeHTML(par.pessoa.apelido)}</b>
+          <span>${par.pessoa.cidade ? escapeHTML(par.pessoa.cidade) + " · " : ""}${
+            par.pessoa.n_tenho} para trocar · ${par.pessoa.n_quero} procurando</span>
+          ${par.pessoa.obs ? `<p class="troca-obs">${escapeHTML(par.pessoa.obs)}</p>` : ""}
+        </div>
+        <button class="btn ghost" data-troca-contato="${escapeHTML(par.pessoa.owner)}">falar</button>
+      </div>
+      <div class="troca-lados">
+        <div class="troca-lado">
+          <span class="flabel">Você tem, ela procura<em>${par.dou.length}</em></span>
+          ${par.dou.length ? par.dou.slice(0, 12).map(c => `
+            <div class="troca-item">${c.img ? `<img src="${escapeHTML(c.img)}" alt="" loading="lazy">` : ""}
+              <span>${escapeHTML(c.n)}<small>${escapeHTML(c.sn || c.s || "")}${
+                c.q > 1 ? ` · ${c.q} sobrando` : ""}</small></span></div>`).join("")
+            + (par.dou.length > 12 ? `<p class="troca-mais">e mais ${par.dou.length - 12}</p>` : "")
+            : `<p class="troca-mais">nada por enquanto</p>`}
+        </div>
+        <div class="troca-lado">
+          <span class="flabel">Ela tem, você procura<em>${par.recebo.length}</em></span>
+          ${par.recebo.length ? par.recebo.slice(0, 12).map(c => `
+            <div class="troca-item">${c.img ? `<img src="${escapeHTML(c.img)}" alt="" loading="lazy">` : ""}
+              <span>${escapeHTML(c.n)}<small>${escapeHTML(c.sn || c.s || "")}${
+                c.q > 1 ? ` · ${c.q} sobrando` : ""}</small></span></div>`).join("")
+            + (par.recebo.length > 12 ? `<p class="troca-mais">e mais ${par.recebo.length - 12}</p>` : "")
+            : `<p class="troca-mais">nada por enquanto</p>`}
+        </div>
+      </div>
+    </section>`;
+
+  app.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h2>Trocas casadas</h2>
+        <p>Cruzamento entre as <b>repetidas</b> de cada um e os <b>chase cards</b> de cada um.
+        Quem publica o cartão de troca entra nesta lista; o cruzamento é feito no seu aparelho.</p>
+      </div>
+      <button class="btn" id="tr-publicar">${meu ? "Atualizar meu cartão" : "Publicar meu cartão"}</button>
+    </div>
+
+    ${meu ? `<div class="nota-regiao" style="margin-bottom:16px">
+      Seu cartão está no ar como <b>${escapeHTML(meu.apelido)}</b>: ${meu.n_tenho} para trocar,
+      ${meu.n_quero} procurando, atualizado ${escapeHTML(quandoRelativo(meu.updated_at))}.
+      <button class="icon-btn" id="tr-tirar" style="margin-left:8px">tirar do ar</button>
+    </div>` : `<div class="nota-regiao" style="margin-bottom:16px">
+      <b>Você ainda não publicou.</b> Dá para folhear a lista assim mesmo, mas o cruzamento só fica
+      completo dos dois lados quando você publica o que tem e o que procura — é ele que faz alguém
+      achar você.
+    </div>`}
+
+    ${trocas.erro ? `<div class="empty">Não consegui buscar agora.<br>
+        <span style="color:var(--faint);font-size:12.5px">${escapeHTML(trocas.erro)}</span></div>`
+    : trocas.carregando && !pares.length ? `<div class="empty">Buscando…</div>`
+    : !pares.length ? `<div class="empty">Ninguém publicou cartão de troca ainda.<br>
+        <span style="color:var(--faint);font-size:12.5px">Pode ser o primeiro.</span></div>`
+    : `
+      ${comCasamento.length ? `
+        <h3 class="grupo-titulo">Troca dos dois lados<span>${comCasamento.length}</span></h3>
+        ${comCasamento.map(cartaoDaPessoa).join("")}` : ""}
+
+      ${soUmLado.length ? `
+        <h3 class="grupo-titulo" style="margin-top:24px">Só um lado combina<span>${soUmLado.length}</span></h3>
+        <p class="dg-txt" style="margin-bottom:10px">Aqui a troca direta não fecha: ou você tem o que
+        a pessoa procura e ela não tem o que você procura, ou o contrário. Ainda assim serve — muita
+        troca vira compra ou entra numa roda de três.</p>
+        ${soUmLado.map(cartaoDaPessoa).join("")}` : ""}
+
+      ${semNada ? `<p class="dg-txt" style="margin-top:18px">
+        Outras ${semNada} pessoa${semNada > 1 ? "s publicaram" : " publicou"} cartão de troca e
+        nada bateu com as suas listas${!meu ? " — publique o seu e a conta melhora" : ""}.</p>` : ""}
+    `}`;
+
+  document.getElementById("tr-publicar").onclick = abrirCartaoDeTroca;
+  const tirar = document.getElementById("tr-tirar");
+  if(tirar) tirar.onclick = async () => {
+    if(!confirm("Tirar o seu cartão de troca do ar? As suas cartas continuam aqui no aparelho.")) return;
+    try{
+      await rpc("trade_delete", {});
+      trocas.lista = null; trocas.meu = null;
+      await carregarTrocas(); renderTrocas();
+      toast("cartão retirado");
+    }catch(e){ toast("não consegui: " + e.message); }
+  };
+  app.querySelectorAll("[data-troca-contato]").forEach(b =>
+    b.onclick = () => verContatoDeTroca(b.dataset.trocaContato));
+}
+
+async function verContatoDeTroca(owner){
+  if(!logado()){ toast("Entre na sua conta para ver o contato"); return abrirConta(); }
+  let dados = null;
+  try{ dados = await rpc("trade_contact", { p_owner:owner }); }
+  catch(e){ return toast("não consegui: " + e.message); }
+  modal(`<div class="modal-pad">
+    <h3>Falar sobre a troca</h3>
+    <div class="kv"><span>Contato</span><b>${escapeHTML(dados.contato || "não informou")}</b></div>
+    <div class="nota-regiao" style="margin-top:14px">
+      O Velvo não participa da troca e não tem como desfazer nada se der errado. Combine o envio
+      direto com a pessoa, confira a condição das cartas antes, e prefira quem você já conhece.
+    </div>
+    <div class="pergunta-acoes"><button class="btn" id="tc-ok">Entendi</button></div>
+  </div>`);
+  document.getElementById("tc-ok").onclick = closeModal;
+}
+
+function abrirCartaoDeTroca(){
+  if(!logado()){ toast("Entre na sua conta para publicar"); return abrirConta(); }
+  const meu = trocas.meu || {};
+  const tenho = minhasParaTroca(), quero = meusProcurados();
+
+  modal(`<div class="modal-pad">
+    <h3>${trocas.meu ? "Atualizar meu cartão de troca" : "Publicar meu cartão de troca"}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Vão as suas <b>repetidas</b> (${tenho.length}) e os seus <b>chase cards</b> (${quero.length}).
+      Repetida marcada como "não troco" fica de fora. Nada mais da sua coleção é publicado:
+      nem quantidade total, nem quanto você pagou, nem onde a carta está guardada.</p>
+
+    ${!tenho.length && !quero.length ? `<div class="empty">Você ainda não tem repetidas nem chase
+      cards — sem uma das duas listas não há o que cruzar.</div>` : ""}
+
+    <div class="dupla">
+      <label class="field"><span>Como você quer aparecer</span>
+        <input type="text" id="tr-apelido" maxlength="40"
+               value="${escapeHTML(meu.apelido || (mesa().eu || ""))}" placeholder="ex.: Lucas C."></label>
+      <label class="field"><span>Cidade</span>
+        <input type="text" id="tr-cidade" maxlength="80"
+               value="${escapeHTML(meu.cidade || "")}" placeholder="ex.: Curitiba"></label>
+    </div>
+    <label class="field"><span>Observação (opcional)</span>
+      <input type="text" id="tr-obs" maxlength="300" value="${escapeHTML(meu.obs || "")}"
+             placeholder="ex.: só troco em mãos, ou envio por Sedex com rastreio"></label>
+    <label class="field"><span>Seu contato</span>
+      <input type="text" id="tr-contato" placeholder="ex.: @seu_usuario no Discord"></label>
+
+    <div class="nota-regiao" style="margin-top:14px">
+      <b>O contato só aparece para quem entrou na conta.</b> A lista de trocas é aberta para folhear
+      sem conta, mas o contato não fica exposto na página.
+    </div>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="tr-ok" ${!tenho.length && !quero.length ? "disabled" : ""}>
+        ${trocas.meu ? "Atualizar" : "Publicar"}</button>
+      <button class="btn ghost" id="tr-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="tr-status"></div>
+  </div>`);
+
+  document.getElementById("tr-cancelar").onclick = closeModal;
+  document.getElementById("tr-ok").onclick = async () => {
+    const st = document.getElementById("tr-status");
+    const apelido = document.getElementById("tr-apelido").value.trim();
+    if(!apelido){ st.textContent = "escolha um apelido"; return; }
+    st.textContent = "publicando…";
+    try{
+      await rpc("trade_publish", {
+        p_apelido: apelido,
+        p_cidade: document.getElementById("tr-cidade").value,
+        p_obs: document.getElementById("tr-obs").value,
+        p_tenho: tenho,
+        p_quero: quero,
+        p_contato: document.getElementById("tr-contato").value,
+      });
+      closeModal();
+      trocas.lista = null;
+      await carregarTrocas();
+      go("trocas");
+      toast("cartão de troca publicado");
+    }catch(e){ st.textContent = "não consegui: " + e.message; }
+  };
+}
+
 function renderTroca(){
   const lista = repetidas();
   const copias = lista.reduce((a, x) => a + x.sobra, 0);
@@ -9598,13 +10383,103 @@ function chaseNoAlvo(){
   });
 }
 
+/* =====================================================================
+   REIMPRESSÃO DE CARTA SUA
+
+   É o único aviso do app que chega ANTES do preço se mexer: reimpressão
+   anunciada hoje derruba a cópia antiga nas semanas seguintes. Todo o
+   resto que o app avisa — movers, alvo de preço — só existe depois que o
+   mercado já se mexeu.
+
+   O robô acha as reimpressões no bulk do Scryfall e grava em `reprints`.
+   Aqui o cruzamento é POR NOME: em Magic o nome identifica a carta, e o
+   que interessa é "reimprimiram uma carta que eu tenho", não "essa
+   impressão específica". A tela mostra qual das suas cópias é a antiga.
+
+   O que o app NÃO diz é quanto vai cair. Isso depende de tiragem, demanda
+   e de a edição ser de varejo ou de colecionador, e não existe fonte para
+   isso aqui. Diz "tende a cair", que é o que se sabe.
+   ===================================================================== */
+let reimpressoes = { linhas:null, carregando:false };
+
+async function carregarReimpressoes(){
+  if(reimpressoes.carregando || reimpressoes.linhas) return;
+  reimpressoes.carregando = true;
+  try{
+    reimpressoes.linhas = await supa("reprints?select=oracle_id,card_name,new_set,new_set_name,"
+      + "new_card_id,img,released_at,printings_before,first_printed"
+      + "&order=released_at.desc&limit=300");
+  }catch(e){ reimpressoes.linhas = []; }
+  reimpressoes.carregando = false;
+  pintarSino();
+}
+
+/* as reimpressões que tocam a sua coleção ou o seu chase */
+function reimpressoesMinhas(){
+  const linhas = reimpressoes.linhas || [];
+  if(!linhas.length) return [];
+  const meus = new Map();      // nome -> { copias, maisAntiga }
+  Object.entries(S.owned).forEach(([id, r]) => {
+    const nome = semAcento(r.n || "");
+    if(!nome) return;
+    const e = meus.get(nome) || { nome:r.n, copias:0, edicoes:new Set(), chase:false };
+    e.copias += qtdDe(id);
+    if(r.sn || r.s) e.edicoes.add(r.sn || String(r.s).toUpperCase());
+    meus.set(nome, e);
+  });
+  ((chase() || {}).cartas || []).forEach(x => {
+    const nome = semAcento(x.n || "");
+    if(!nome) return;
+    const e = meus.get(nome) || { nome:x.n, copias:0, edicoes:new Set(), chase:false };
+    e.chase = true;
+    meus.set(nome, e);
+  });
+
+  return linhas
+    .map(l => ({ linha:l, meu:meus.get(semAcento(l.card_name || "")) }))
+    .filter(x => x.meu)
+    .slice(0, 12);
+}
+
+/* =====================================================================
+   CARTA DO SEU CHASE À VENDA NO MERCADO
+
+   O mercado já sabia quem TEM; o chase já sabia o que você QUER. Faltava
+   ligar os dois: sem isso, achar a carta que você caça dependia de você
+   abrir o mercado e lembrar de procurar.
+
+   O casamento é pelo id da impressão quando existe, e pelo nome quando
+   não — chase card muitas vezes é "quero essa carta", não "quero essa
+   impressão", e recusar por edição diferente esconderia a oferta que
+   interessa. A tela mostra a edição do anúncio para você julgar.
+   ===================================================================== */
+function chaseNoMercado(){
+  const c = chase();
+  const meus = (c.cartas || []);
+  if(!meus.length || !(mercado.lista || []).length) return [];
+  const porId = new Map(meus.map(x => [x.id, x]));
+  const porNome = new Map(meus.map(x => [semAcento(x.n || ""), x]));
+  const achados = [];
+  (mercado.lista || []).forEach(a => {
+    if(a.status !== "ativo") return;
+    if(logado() && a.seller === SESSAO.user_id) return;      // o seu próprio anúncio não é notícia
+    const meu = porId.get(a.card_id) || porNome.get(semAcento(a.card_name || ""));
+    if(!meu) return;
+    achados.push({ anuncio:a, chase:meu, mesmaImpressao: meu.id === a.card_id });
+  });
+  return achados;
+}
+
 function contarAvisos(){
   const desde = vistoEm();
   const noticiasNovas = desde
     ? (noticias.itens || []).filter(n => new Date(n.published_at).getTime() > desde).length : 0;
   const mexeram = (avisos_.movers || []).length;
   const naMira = chaseNoAlvo().length;
-  return { noticiasNovas, mexeram, naMira, total: noticiasNovas + mexeram + naMira };
+  const aVenda = chaseNoMercado().length;
+  const reimpressas = reimpressoesMinhas().length;
+  return { noticiasNovas, mexeram, naMira, aVenda, reimpressas,
+           total: noticiasNovas + mexeram + naMira + aVenda + reimpressas };
 }
 
 function pintarSino(){
@@ -9621,6 +10496,8 @@ function abrirAvisos(){
   const novas = desde
     ? (noticias.itens || []).filter(n => new Date(n.published_at).getTime() > desde) : [];
   const mira = chaseNoAlvo();
+  const aVenda = chaseNoMercado();
+  const reimpressas = reimpressoesMinhas();
 
   modal(`<div class="modal-pad">
     <h3>O que mudou</h3>
@@ -9641,6 +10518,42 @@ function abrirAvisos(){
             <span class="lc-preco sobe">${p ? formatarPreco(p) : ""}</span>
           </div>`;
         }).join("")}
+      </section>` : ""}
+
+    ${reimpressas.length ? `
+      <section class="bloco-cfg">
+        <h3>Reimpressão de carta sua</h3>
+        <p class="dg-txt" style="margin:0 0 10px">Carta reimpressa <b>tende a cair</b> nas semanas
+        seguintes. Quanto, depende de tiragem e demanda — o app não tem essa fonte e não vai chutar
+        um número. Se você pensava em vender, é a hora de olhar.</p>
+        ${reimpressas.map(({ linha, meu }) => `
+          <div class="lc-linha">
+            ${linha.img ? `<img src="${escapeHTML(linha.img)}" alt="">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(linha.card_name)}
+              <small>saiu de novo em ${escapeHTML(linha.new_set_name || linha.new_set)} · ${
+                escapeHTML(quandoRelativo(linha.released_at + "T12:00:00Z"))}${
+                meu.copias ? ` · você tem ${meu.copias}${
+                  meu.edicoes.size ? " de " + escapeHTML([...meu.edicoes].slice(0,2).join(", ")) : ""}`
+                : " · está no seu chase"}</small></span>
+            <span class="lc-preco">${linha.printings_before >= 1
+              ? `${linha.printings_before + 1}ª impressão` : ""}</span>
+          </div>`).join("")}
+      </section>` : ""}
+
+    ${aVenda.length ? `
+      <section class="bloco-cfg">
+        <h3>Carta do seu chase à venda aqui</h3>
+        ${aVenda.slice(0, 8).map(x => `
+          <div class="lc-linha">
+            ${x.anuncio.img ? `<img src="${escapeHTML(x.anuncio.img)}" alt="">` : `<span class="mv-sem"></span>`}
+            <span class="lc-nome">${escapeHTML(x.anuncio.card_name)}
+              <small>${escapeHTML(x.anuncio.set_name || x.anuncio.set_code || "")}${
+                x.anuncio.cond ? " · " + escapeHTML(x.anuncio.cond) : ""}${
+                x.anuncio.cidade ? " · " + escapeHTML(x.anuncio.cidade) : ""}${
+                x.mesmaImpressao ? "" : " · outra impressão"}</small></span>
+            <span class="lc-preco">${x.anuncio.tipo === "troca" ? "troca" : precoDoAnuncio(x.anuncio)}</span>
+          </div>`).join("")}
+        <button class="btn ghost" id="av-mercado" style="margin-top:10px">Ver no mercado</button>
       </section>` : ""}
 
     ${(avisos_.movers || []).length ? `
@@ -9664,6 +10577,8 @@ function abrirAvisos(){
     const r = S.owned[b.dataset.carta];
     if(r){ closeModal(); openCard(cartaDoResumo(b.dataset.carta, r)); }
   });
+  const bm = document.getElementById("av-mercado");
+  if(bm) bm.onclick = () => { marcarVisto(); closeModal(); go("mercado"); };
   document.getElementById("av-ok").onclick = () => { marcarVisto(); closeModal(); pintarSino(); };
 }
 
@@ -10753,6 +11668,7 @@ const COLUNAS = {
   cond:   ["condition", "condicao", "condição"],
   lang:   ["language", "lang", "idioma"],
   pago:   ["purchase price", "my price", "price", "preco pago", "preço pago", "purchase_price"],
+  local:  ["location", "storage", "binder", "local", "onde", "localizacao", "localização"],
 };
 
 /* Um CSV de verdade tem vírgula dentro de aspas ("Ach! Hans, Run!") e aspas
@@ -10819,6 +11735,7 @@ function linhasDoArquivo(texto){
       cond: normalizarCondicao(pega(l, mapa.cond)),
       lang: normalizarIdioma(pega(l, mapa.lang)),
       pago: precoDoTexto(pega(l, mapa.pago)),
+      local: pega(l, mapa.local).trim().slice(0, 80),
       linha: i + 1,
     });
   }
@@ -10998,6 +11915,8 @@ function aplicarImportacao(casadas, modo){
     else if(antes.lang) registro.lang = antes.lang;
     if(it.pago) { registro.pg = it.pago; registro.pgM = "USD"; }
     else if(antes.pg){ registro.pg = antes.pg; registro.pgM = antes.pgM; }
+    if(it.local) registro.loc = it.local;
+    else if(antes.loc) registro.loc = antes.loc;
 
     S.owned[c.id] = registro;
     mexidas++;
@@ -11441,11 +12360,11 @@ function csvDaColecao(){
     return /[",\n;]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
   };
   const cab = ["Count","Name","Edition","Collector Number","Condition","Language",
-               "Foil","Purchase Price","Scryfall ID"];
+               "Foil","Purchase Price","Scryfall ID","Location"];
   const linhas = Object.entries(S.owned).map(([id, r]) => [
     qtdDe(id), r.n || "", (r.s || "").toLowerCase(), r.num || "",
     condDe(r), langDe(r), r.fin === "foil" ? "foil" : "",
-    r.pg ? Number(r.pg).toFixed(2) : "", id,
+    r.pg ? Number(r.pg).toFixed(2) : "", id, r.loc || "",
   ].map(escapar).join(","));
   return [cab.join(","), ...linhas].join("\n");
 }
