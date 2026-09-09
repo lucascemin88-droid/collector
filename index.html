@@ -246,6 +246,27 @@
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
     letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  /* ---------------- relógio dos jogadores ---------------- */
+  .rel-config{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px}
+  .relogio-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .rel-jog{display:grid;gap:2px;padding:12px 10px;border-radius:var(--radius);text-align:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--text);cursor:pointer}
+  .rel-jog:hover{border-color:var(--line-strong)}
+  .rel-jog.na-vez{border-color:var(--accent);background:var(--accent-soft);
+    box-shadow:0 0 0 1px var(--accent-line)}
+  .rel-jog.estourou{border-color:var(--neg);background:var(--neg-soft)}
+  .rel-nome{font-size:12.5px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rel-tempo{font-family:var(--font-mono,ui-monospace,monospace);font-size:26px;font-weight:600;
+    font-variant-numeric:tabular-nums;line-height:1.1}
+  .rel-jog.na-vez .rel-tempo{color:var(--accent)}
+  .rel-jog.estourou .rel-tempo{color:var(--neg)}
+  .rel-rot{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3)}
+
+  .seg-num{display:inline-block;margin-left:6px;padding:0 6px;border-radius:9px;font-size:10.5px;
+    font-weight:600;background:var(--surface-3);color:var(--text-2);vertical-align:1px}
+  .seg-num:empty{display:none}
+  .dl-mover{white-space:nowrap;font-size:10.5px}
+
   /* ---------------- ficha do deck ---------------- */
   .deck-ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
   .ficha-bloco{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-lg);
@@ -360,6 +381,22 @@
   .lc-nome{flex:1 1 auto;min-width:0;font-size:13px;color:var(--text)}
   .lc-nome small{display:block;font-size:11px;color:var(--text-3)}
   .lc-preco{flex:0 0 auto;font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .lc-preco small{display:block;font-size:10px;font-weight:400;color:var(--text-3);
+    letter-spacing:.01em;margin-top:1px;white-space:nowrap}
+
+  /* ---------------- sugestão de preço no anúncio ---------------- */
+  .sug{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:14px 16px;margin:4px 0 14px}
+  .sug-topo{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .sug-valor{font-family:var(--font-mono,inherit);font-size:24px;font-weight:600;color:var(--accent);
+    font-variant-numeric:tabular-nums;line-height:1.1}
+  .sug-rot{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);
+    display:block;margin-bottom:4px}
+  .sug-usar{flex:0 0 auto}
+  .sug-conta{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:5px}
+  .sug-conta li{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--text-2)}
+  .sug-conta li b{color:var(--text);font-variant-numeric:tabular-nums;font-weight:600}
+  .sug-aviso{margin:11px 0 0;font-size:12px;line-height:1.5;color:var(--text-3)}
   .icon-btn.sino{position:relative;font-size:15px;line-height:1;padding:8px 11px}
   .cartao-previa{margin:8px 0 4px;border-radius:var(--radius);overflow:hidden;
     background:var(--surface-2);min-height:180px;display:grid;place-items:center}
@@ -832,9 +869,41 @@
   .rank-ultimas i{width:9px;height:9px;border-radius:2px;display:block}
   .rank-ultimas i.v{background:var(--pos)} .rank-ultimas i.d{background:var(--surface-3);border:1px solid var(--line)}
   .rank-deck{font-size:11.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* com pontos entra mais uma coluna antes de V */
+  .rank-tabela.pontuada .rank-cab,
+  .rank-tabela.pontuada .rank-linha{
+    grid-template-columns:34px minmax(0,1.4fr) 52px 44px 44px 50px 110px minmax(0,1fr);
+  }
+  .rank-tabela.pontuada .rank-linha{cursor:pointer}
+  .rank-tabela.pontuada .rank-linha:hover{border-color:var(--line-strong)}
+  /* o histórico de decks de um jogador tem colunas próprias */
+  .rank-tabela.decks-jog .rank-cab,
+  .rank-tabela.decks-jog .rank-linha{
+    grid-template-columns:minmax(0,1.6fr) 40px 40px 50px 50px 84px;
+  }
+  .rank-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+    flex-wrap:wrap;margin-bottom:14px}
+  .rank-regra{margin:0;font-size:12.5px;color:var(--text-2);line-height:1.5;max-width:62ch}
+  .temporada{background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);
+    padding:12px 14px;margin-bottom:14px}
+  .temporada.fim{border-color:var(--accent-line);background:var(--accent-soft)}
+  .temporada b{display:block;font-size:13.5px;margin-bottom:3px}
+  .temporada span{font-size:12px;color:var(--text-2);line-height:1.5}
+  .temporada-barra{height:5px;border-radius:3px;background:var(--surface-3);margin-top:9px;overflow:hidden}
+  .temporada-barra i{display:block;height:100%;background:var(--accent)}
   @media (max-width:760px){
     .rank-cab,.rank-linha{grid-template-columns:28px minmax(0,1fr) 36px 36px 48px;gap:8px}
+    .rank-tabela.pontuada .rank-cab,
+    .rank-tabela.pontuada .rank-linha{grid-template-columns:26px minmax(0,1fr) 44px 34px 34px;gap:8px}
+    .rank-tabela.decks-jog .rank-cab,
+    .rank-tabela.decks-jog .rank-linha{grid-template-columns:minmax(0,1fr) 34px 34px 44px 44px;gap:8px}
+    .rank-tabela.decks-jog .rank-cab span:nth-child(6),
+    .rank-tabela.decks-jog .rank-linha span:nth-child(6){display:none}
     .rank-ultimas,.rank-deck,.rank-cab span:nth-child(6),.rank-cab span:nth-child(7){display:none}
+    .rank-tabela.pontuada .rank-cab span:nth-child(6),
+    .rank-tabela.pontuada .rank-linha span:nth-child(6),
+    .rank-tabela.pontuada .rank-cab span:nth-child(7),
+    .rank-tabela.pontuada .rank-cab span:nth-child(8){display:none}
   }
 
   .partidas{display:flex;flex-direction:column;gap:8px}
@@ -853,7 +922,7 @@
   .partida-nota{margin:8px 0 0;font-size:12px;color:var(--muted);font-style:italic}
 
   .rp-jogadores{display:flex;flex-direction:column;gap:6px}
-  .rp-jogador{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) 80px 100px;gap:8px;align-items:center;
+  .rp-jogador{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.3fr) 74px 74px 96px;gap:8px;align-items:center;
     padding:7px 9px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm)}
   .rp-jogador input[type=text],.rp-jogador input[type=number]{padding:6px 9px;font-size:12.5px}
   @media (max-width:640px){ .rp-jogador{grid-template-columns:1fr 1fr;gap:6px} }
@@ -5083,6 +5152,57 @@ function cartasDoDeck(d){
     .concat(d.cartas || []);
 }
 
+/* ---------------- reservas ----------------
+   As cartas que você considera para o deck mas que não estão nele hoje:
+   a troca que faz quando o meta muda, a peça que ainda vai comprar, a
+   versão alternativa de um pacote. Em Commander não existe sideboard de
+   torneio, então isto NÃO conta para as 100 cartas, não entra no
+   diagnóstico e não pesa no bracket — e a tela diz isso. O que ela faz
+   é deixar a carta a um clique de entrar. */
+function reservasDo(d){ return d.reservas || (d.reservas = []); }
+function totalDasReservas(d){ return reservasDo(d).reduce((a,c) => a + (c.qtd || 1), 0); }
+
+function porNasReservas(d, carta){
+  const lista = reservasDo(d);
+  const ja = lista.find(x => x.id === carta.id);
+  if(ja) ja.qtd = (ja.qtd || 1) + 1;
+  else lista.push(cartaDeDeck(carta, 1));
+  save();
+  if(view.name === "deck") pintarReservas(d);
+}
+
+/* move entre o deck e as reservas, uma cópia por vez, respeitando o
+   limite do formato — quem tenta pôr a segunda cópia num singleton
+   recebe o mesmo aviso de sempre */
+function moverParaReservas(d, id){
+  const i = (d.cartas || []).findIndex(x => x.id === id);
+  if(i < 0) return;
+  const c = d.cartas[i];
+  const uma = Object.assign({}, c, { qtd:1 });
+  if((c.qtd || 1) <= 1) d.cartas.splice(i, 1); else c.qtd--;
+  const lista = reservasDo(d);
+  const ja = lista.find(x => x.id === id);
+  if(ja) ja.qtd = (ja.qtd || 1) + 1; else lista.push(uma);
+  save();
+}
+function moverParaODeck(d, id){
+  const c = reservasDo(d).find(x => x.id === id);
+  if(!c) return false;
+  const fmt = formatoDe(d.formato);
+  const basico = /basic/i.test(c.t || "");
+  const noDeck = (d.cartas || []).find(x => x.id === id);
+  if(noDeck && !basico){
+    if(fmt.singleton){ toast(`${c.n} já está no deck (${fmt.nome} é singleton)`); return false; }
+    if((noDeck.qtd || 1) >= 4){ toast("máximo de 4 cópias"); return false; }
+  }
+  if(noDeck) noDeck.qtd = (noDeck.qtd || 1) + 1;
+  else (d.cartas = d.cartas || []).push(Object.assign({}, c, { qtd:1 }));
+  const i = d.reservas.indexOf(c);
+  if((c.qtd || 1) <= 1) d.reservas.splice(i, 1); else c.qtd--;
+  save();
+  return true;
+}
+
 /* ---------------- diagnóstico ---------------- */
 
 const EH_TERRENO = c => /land/i.test(c.t || "");
@@ -5464,6 +5584,8 @@ function renderDeck(id){
 
     <div class="seg" id="deck-abas" style="margin-bottom:14px">
       <button class="active" data-aba="cartas">Cartas</button>
+      <button data-aba="reservas">Reservas<span class="seg-num" id="aba-reservas-num">${
+        totalDasReservas(d) || ""}</span></button>
       <button data-aba="ficha">Ficha do deck</button>
     </div>
 
@@ -5471,6 +5593,7 @@ function renderDeck(id){
       <div class="deck-cartas" id="deck-cartas"></div>
       <aside class="deck-lado" id="deck-diagnostico"></aside>
     </div>
+    <div id="deck-area-reservas" hidden></div>
     <div id="deck-ficha" class="deck-ficha" hidden></div>`;
 
   document.getElementById("voltar-decks").onclick = () => go("decks");
@@ -5494,10 +5617,12 @@ function renderDeck(id){
   abas.onclick = e => {
     const b = e.target.closest("[data-aba]"); if(!b) return;
     abas.querySelectorAll("[data-aba]").forEach(x => x.classList.toggle("active", x === b));
-    const ficha = b.dataset.aba === "ficha";
-    document.getElementById("deck-area-cartas").hidden = ficha;
-    document.getElementById("deck-ficha").hidden = !ficha;
-    if(ficha) pintarFichaDoDeck(d);
+    const qual = b.dataset.aba;
+    document.getElementById("deck-area-cartas").hidden = qual !== "cartas";
+    document.getElementById("deck-area-reservas").hidden = qual !== "reservas";
+    document.getElementById("deck-ficha").hidden = qual !== "ficha";
+    if(qual === "ficha") pintarFichaDoDeck(d);
+    if(qual === "reservas") pintarReservas(d);
   };
 
   pintarDeck(d);
@@ -5533,7 +5658,45 @@ function pintarDeck(d){
   pintarResumoDoDeck(d);
 }
 
-function linhaDeCarta(c, d){
+function atualizarNumeroDasReservas(d){
+  const n = document.getElementById("aba-reservas-num");
+  if(n) n.textContent = totalDasReservas(d) || "";
+}
+
+function pintarReservas(d){
+  const alvo = document.getElementById("deck-area-reservas");
+  if(!alvo) return;
+  const lista = reservasDo(d).slice().sort((a,b) => (a.mv||0)-(b.mv||0) || a.n.localeCompare(b.n));
+  const total = totalDasReservas(d);
+  const valor = lista.reduce((a,c) => a + (precoLocal(deckParaCarta(c)) || 0) * (c.qtd || 1), 0);
+  const faltam = lista.filter(c => !isOwned(c.id)).length;
+
+  alvo.innerHTML = `
+    <div class="toolbar" style="margin-bottom:12px">
+      <button class="btn" id="add-reserva">+ Adicionar às reservas</button>
+      <div class="grow"></div>
+      <span class="status" style="margin:0">${total} carta${total===1?"":"s"}${
+        valor ? ` · ${formatarPreco(valor)}` : ""}${faltam ? ` · ${faltam} você ainda não tem` : ""}</span>
+    </div>
+
+    <p class="dg-txt" style="margin-bottom:14px">
+      <b>Reserva não é sideboard.</b> Em Commander não existe sideboard de torneio — esta lista é o seu
+      banco de trocas: a carta que entra quando a mesa muda, a peça que ainda vai comprar, a versão que
+      você está pensando. <b>Ela não conta nas 100</b>, não entra no diagnóstico e não muda o bracket.
+      Use <b>↑ deck</b> para promover uma carta e <b>↓ reserva</b> para tirar do deck sem perder a ideia.</p>
+
+    <div class="deck-cartas"><div class="deck-linhas" id="reservas-lista">${
+      lista.length ? lista.map(c => linhaDeCarta(c, d, true)).join("")
+      : `<div class="empty">Nenhuma reserva ainda. Toda carta do deck tem um <b>↓ reserva</b> —
+          e o botão acima busca em tudo que é legal no formato.</div>`}</div></div>`;
+
+  const add = document.getElementById("add-reserva");
+  if(add) add.onclick = () => buscarParaDeck(d, { reservas:true });
+  ligarLinhasDoDeck(d, true);
+  atualizarNumeroDasReservas(d);
+}
+
+function linhaDeCarta(c, d, naReserva){
   const tenho = isOwned(c.id);
   const p = precoLocal(deckParaCarta(c));
   return `
@@ -5547,30 +5710,44 @@ function linhaDeCarta(c, d){
     <span class="dl-acoes">
       ${c.ehComandante ? "" : `<button class="dl-menos" title="tirar uma">−</button>
       <button class="dl-mais" title="mais uma">+</button>`}
+      ${c.ehComandante ? "" : (naReserva
+        ? `<button class="dl-mover" title="pôr esta carta no deck">↑ deck</button>`
+        : `<button class="dl-mover" title="mandar para as reservas">↓ reserva</button>`)}
       <button class="dl-versao" title="trocar a versão desta carta">⇄</button>
       <button class="dl-info" title="detalhes">i</button>
-      <button class="dl-fora" title="tirar do deck">×</button>
+      <button class="dl-fora" title="${naReserva ? "tirar das reservas" : "tirar do deck"}">×</button>
     </span>
   </div>`;
 }
 
-function ligarLinhasDoDeck(d){
-  const alvo = document.getElementById("deck-cartas");
+function ligarLinhasDoDeck(d, naReserva){
+  const alvo = document.getElementById(naReserva ? "reservas-lista" : "deck-cartas");
   if(!alvo) return;
+  const repintar = () => { pintarDeck(d); pintarReservas(d); atualizarNumeroDasReservas(d); };
   alvo.querySelectorAll(".deck-linha").forEach(el => {
     const id = el.dataset.id;
-    const achar = () => (d.cartas || []).find(x => x.id === id);
-    const ehCmd = d.comandante && d.comandante.id === id;
-    const mexer = f => { f(); save(); pintarDeck(d); };
+    const lista = () => naReserva ? reservasDo(d) : (d.cartas || []);
+    const achar = () => lista().find(x => x.id === id);
+    const ehCmd = !naReserva && d.comandante && d.comandante.id === id;
+    const mexer = f => { f(); save(); repintar(); };
     const bt = (sel, fn) => { const b = el.querySelector(sel); if(b) b.onclick = e => { e.stopPropagation(); fn(); }; };
     bt(".dl-mais", () => mexer(() => { const c = achar(); if(c) c.qtd = (c.qtd || 1) + 1; }));
     bt(".dl-menos", () => mexer(() => {
       const c = achar(); if(!c) return;
-      if((c.qtd || 1) <= 1) d.cartas = d.cartas.filter(x => x.id !== id); else c.qtd--;
+      if((c.qtd || 1) <= 1){
+        if(naReserva) d.reservas = d.reservas.filter(x => x.id !== id);
+        else d.cartas = d.cartas.filter(x => x.id !== id);
+      } else c.qtd--;
     }));
     bt(".dl-fora", () => mexer(() => {
-      if(ehCmd) d.comandante = null; else d.cartas = d.cartas.filter(x => x.id !== id);
+      if(ehCmd) d.comandante = null;
+      else if(naReserva) d.reservas = d.reservas.filter(x => x.id !== id);
+      else d.cartas = d.cartas.filter(x => x.id !== id);
     }));
+    bt(".dl-mover", () => {
+      if(naReserva){ if(moverParaODeck(d, id)) repintar(); }
+      else { moverParaReservas(d, id); repintar(); }
+    });
     bt(".dl-info", () => {
       const c = ehCmd ? d.comandante : achar();
       if(c) openCard(deckParaCarta(c));
@@ -5937,13 +6114,16 @@ function pintarDiagnostico(d){
 function buscarParaDeck(d, opcoes = {}){
   const fmt = formatoDe(d.formato);
   const soComandante = !!opcoes.comandante;
+  const paraReserva = !!opcoes.reservas;
   let busca = 0, achadas = [], soMinhas = false;
 
   modal(`<div class="modal-pad">
-    <h3>${soComandante ? "Escolher comandante" : "Adicionar cartas"}</h3>
+    <h3>${soComandante ? "Escolher comandante" : paraReserva ? "Adicionar às reservas" : "Adicionar cartas"}</h3>
     <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
       ${soComandante
         ? "Só aparecem cartas que podem ser comandante."
+        : paraReserva
+        ? `A carta vai para as reservas, não para o deck — ela não conta nas ${fmt.cartas} do deck.`
         : `Busca em tudo que é legal em ${fmt.nome}${d.comandante ? `, dentro da identidade de cor de ${escapeHTML(d.comandante.n)}` : ""}.`}</p>
     <label class="field"><span>Nome, tipo ou o que a carta faz</span>
       <input type="text" id="bd-termo" placeholder="ex.: Sol Ring, dragão, destroy target creature" autocomplete="off">
@@ -6002,6 +6182,12 @@ function buscarParaDeck(d, opcoes = {}){
             toast(`${c.name} virou o comandante`);
             return;
           }
+          if(paraReserva){
+            porNasReservas(d, c);
+            el.classList.add("no-deck");
+            toast(`${c.name} foi para as reservas`);
+            return;
+          }
           porNoDeck(d, c);
           el.classList.add("no-deck");
           toast(`${c.name} entrou no deck`);
@@ -6015,8 +6201,11 @@ function buscarParaDeck(d, opcoes = {}){
         bv.onclick = ev => {
           ev.stopPropagation();
           if(soComandante){ d.comandante = cartaDeDeck(c, 1); save(); }
+          else if(paraReserva) porNasReservas(d, c);
           else porNoDeck(d, c);
-          const posta = soComandante ? d.comandante : (d.cartas || []).find(x => x.id === c.id);
+          const posta = soComandante ? d.comandante
+            : paraReserva ? reservasDo(d).find(x => x.id === c.id)
+            : (d.cartas || []).find(x => x.id === c.id);
           if(posta) escolherVersaoNoDeck(d, posta, soComandante);
         };
         el.appendChild(bv);
@@ -6072,7 +6261,18 @@ async function escolherVersaoNoDeck(d, carta, ehComandante){
     if(!antes) return;
     const trocada = cartaDeDeck(nova, antes.qtd || 1);
     if(ehComandante) d.comandante = trocada;
-    else d.cartas = d.cartas.map(x => x.id === carta.id ? trocada : x);
+    else {
+      /* trocar para uma impressão que já está no deck junta as cópias.
+         Sem isso o deck ficava com duas linhas da mesma carta — e num
+         formato singleton isso é uma lista ilegal que ninguém vê. */
+      const i = d.cartas.indexOf(antes);
+      if(i < 0) return;
+      const ja = d.cartas.findIndex((x, k) => k !== i && x.id === trocada.id);
+      if(ja >= 0){
+        d.cartas[ja].qtd = (d.cartas[ja].qtd || 1) + (trocada.qtd || 1);
+        d.cartas.splice(i, 1);
+      } else d.cartas[i] = trocada;
+    }
     save(); closeModal(); renderDeck(d.id);
     toast(`Agora é a versão de ${nova.setName || nova.set}`);
   });
@@ -6225,6 +6425,12 @@ function exportarDeck(d){
   const linhas = [];
   if(d.comandante) linhas.push(`1 ${d.comandante.n}`, "");
   (d.cartas || []).forEach(c => linhas.push(`${c.qtd || 1} ${c.n}`));
+  /* a lista de reservas sai separada por uma linha em branco e o
+     cabeçalho que Moxfield e Archidekt entendem como sideboard */
+  if(totalDasReservas(d)){
+    linhas.push("", "Sideboard");
+    reservasDo(d).forEach(c => linhas.push(`${c.qtd || 1} ${c.n}`));
+  }
   const txt = linhas.join("\n");
   modal(`<div class="modal-pad">
     <h3>Lista do deck</h3>
@@ -6863,37 +7069,143 @@ async function rpc(funcao, args){
   return corpo;
 }
 
+/* =====================================================================
+   PONTUAÇÃO DO GRUPO
+
+   Uma mesa de Magic quase nunca tem sempre o mesmo tamanho: hoje jogam
+   quatro, quinta que vem jogam dois. Contar "1 ponto por vitória" nesse
+   cenário premia quem joga em mesa pequena, porque vencer um duelo é
+   bem mais provável do que vencer um pod de quatro.
+
+   Por isso a regra tem DOIS eixos, e os dois ficam à vista na tela:
+
+   - O QUE CONTA: só o primeiro lugar, ou a colocação inteira (1º, 2º,
+     3º, 4º). Colocação exige que alguém anote a ordem em que a mesa
+     morreu; quem não anota continua marcando só o vencedor, e o app
+     usa "só o primeiro" naquela partida sozinho.
+   - AJUSTE PELO TAMANHO DA MESA: ligado, o ponto é quantos jogadores
+     ficaram atrás de você — vencer entre quatro vale 3, vencer um duelo
+     vale 1. Desligado, a colocação vale sempre o mesmo (3/2/1/0),
+     independentemente de quantos jogaram.
+
+   E uma temporada opcional de N partidas: quando a última é registrada,
+   quem estiver na frente é o campeão. O ranking continua completo o
+   tempo todo — campeão é um rótulo em cima da tabela, não um filtro.
+
+   Regra vive no GRUPO, não no aparelho: se cada telefone tivesse a sua,
+   duas pessoas da mesma mesa veriam campeões diferentes.
+   ===================================================================== */
+
+const PONTUACAO_PADRAO = { modo:"colocacao", ajuste:true, temporada:null };
+
+function regrasDoGrupo(dados){
+  return Object.assign({}, PONTUACAO_PADRAO, (dados && dados.scoring) || {});
+}
+
+/* o que vale cada jogador numa partida, pelas regras do grupo */
+function pontosDaPartida(p, regras){
+  const js = p.players || [];
+  const n = js.length;
+  /* sem ninguém com colocação anotada, esta partida vira "só o primeiro"
+     por conta própria — é melhor do que zerar todo mundo */
+  const temLugar = js.some(j => Number(j.place) > 0);
+  const pontos = {};
+  js.forEach(j => {
+    const lugar = Number(j.place) > 0 ? Number(j.place) : (j.won ? 1 : null);
+    let v = 0;
+    if(regras.modo === "primeiro" || !temLugar){
+      v = lugar === 1 ? (regras.ajuste ? Math.max(1, n - 1) : 1) : 0;
+    } else if(lugar == null){
+      v = 0;                                   // esse jogador não foi anotado
+    } else if(regras.ajuste){
+      v = Math.max(0, n - lugar);              // quantos ficaram atrás de você
+    } else {
+      v = Math.max(0, 4 - lugar);              // 1º=3 · 2º=2 · 3º=1 · daí em diante 0
+    }
+    pontos[j.member_id] = v;
+  });
+  return pontos;
+}
+
+/* a temporada, quando existe: quais partidas contam e quantas faltam */
+function temporadaDoGrupo(dados, regras){
+  const t = regras.temporada;
+  if(!t || !(Number(t.jogos) > 0)) return null;
+  const desde = t.desde ? Date.parse(t.desde) : 0;
+  const emOrdem = (dados.matches || [])
+    .filter(p => !desde || Date.parse(p.played_at) >= desde)
+    .slice().sort((a, b) => Date.parse(a.played_at) - Date.parse(b.played_at));
+  const contam = emOrdem.slice(0, Number(t.jogos));
+  return { alvo:Number(t.jogos), jogadas:contam.length,
+           completa:contam.length >= Number(t.jogos), partidas:contam, desde };
+}
+
 /* ---------------- ranking ---------------- */
 function rankingDoGrupo(dados){
+  const regras = regrasDoGrupo(dados);
+  const temporada = temporadaDoGrupo(dados, regras);
+  const partidas = temporada ? temporada.partidas : (dados.matches || []);
+
   const linhas = (dados.members || []).map(m => ({
-    id:m.id, nome:m.name, jogos:0, vitorias:0, tempo:0, decks:{}, ultimas:[]
+    id:m.id, nome:m.name, jogos:0, vitorias:0, pontos:0, tempo:0, decks:{}, ultimas:[]
   }));
   const porId = {};
   linhas.forEach(l => porId[l.id] = l);
 
-  (dados.matches || []).slice().reverse().forEach(p => {
+  partidas.slice().sort((a, b) => Date.parse(a.played_at) - Date.parse(b.played_at)).forEach(p => {
+    const pts = pontosDaPartida(p, regras);
     (p.players || []).forEach(j => {
       const l = porId[j.member_id];
       if(!l) return;
+      const lugar = Number(j.place) > 0 ? Number(j.place) : (j.won ? 1 : null);
       l.jogos++;
       if(j.won) l.vitorias++;
+      l.pontos += pts[j.member_id] || 0;
       l.tempo += Number(p.seconds) || 0;
-      if(j.deck_name) l.decks[j.deck_name] = (l.decks[j.deck_name] || 0) + 1;
+      if(j.deck_name){
+        const dk = l.decks[j.deck_name] = l.decks[j.deck_name] ||
+          { nome:j.deck_name, jogos:0, vitorias:0, pontos:0, ultima:null, lugares:[] };
+        dk.jogos++;
+        if(j.won) dk.vitorias++;
+        dk.pontos += pts[j.member_id] || 0;
+        dk.ultima = p.played_at;
+        if(lugar) dk.lugares.push(lugar);
+      }
       l.ultimas.push(!!j.won);
     });
   });
 
   linhas.forEach(l => {
     l.taxa = l.jogos ? l.vitorias / l.jogos : 0;
+    l.media = l.jogos ? l.pontos / l.jogos : 0;
     l.ultimas = l.ultimas.slice(-8);
     // sequência de vitórias atual, contando de trás para frente
     let seq = 0;
     for(let i = l.ultimas.length - 1; i >= 0 && l.ultimas[i]; i--) seq++;
     l.sequencia = seq;
-    const favorito = Object.entries(l.decks).sort((a,b) => b[1]-a[1])[0];
-    l.deckFavorito = favorito ? `${favorito[0]} (${favorito[1]})` : "";
+    l.listaDecks = Object.values(l.decks).sort((a, b) => b.jogos - a.jogos || b.vitorias - a.vitorias);
+    const favorito = l.listaDecks[0];
+    l.deckFavorito = favorito ? `${favorito.nome} (${favorito.jogos})` : "";
   });
-  return linhas.sort((a,b) => b.vitorias - a.vitorias || b.taxa - a.taxa || a.nome.localeCompare(b.nome));
+
+  const ordenado = linhas.sort((a, b) =>
+    b.pontos - a.pontos || b.vitorias - a.vitorias || b.taxa - a.taxa || a.nome.localeCompare(b.nome));
+  ordenado.regras = regras;
+  ordenado.temporada = temporada;
+  return ordenado;
+}
+
+/* uma frase que descreve a regra em vigor, para a tela nunca ter um
+   número de ponto sem explicação do lado */
+function explicarPontuacao(regras){
+  if(regras.modo === "primeiro"){
+    return regras.ajuste
+      ? "Só o 1º lugar pontua, e vale quantos adversários ele venceu: 3 numa mesa de quatro, 1 num duelo."
+      : "Só o 1º lugar pontua, e vale 1 ponto, não importa quantos jogaram.";
+  }
+  return regras.ajuste
+    ? "A colocação inteira pontua: você marca quantos jogadores ficaram atrás de você (mesa de quatro: 3 · 2 · 1 · 0; duelo: 1 · 0)."
+    : "A colocação inteira pontua com valor fixo: 1º = 3 · 2º = 2 · 3º = 1 · do 4º em diante, 0.";
 }
 
 const tempoCurto = seg => {
@@ -6991,7 +7303,8 @@ function pintarMesa(){
       <div class="rc"><b>${partidas.length}</b><small>partidas</small></div>
       <div class="rc"><b>${(dados.members||[]).length}</b><small>jogadores</small></div>
       <div class="rc"><b>${partidas.length ? tempoCurto(tempoTotal/partidas.length) : "—"}</b><small>duração média</small></div>
-      <div class="rc"><b>${rank[0] && rank[0].vitorias ? escapeHTML(rank[0].nome) : "—"}</b><small>líder</small></div>
+      <div class="rc"><b>${rank[0] && rank[0].pontos ? escapeHTML(rank[0].nome) : "—"}</b><small>${
+        rank.temporada && rank.temporada.completa ? "campeão" : "líder"}</small></div>
     </div>
 
     <div class="toolbar" style="margin-bottom:16px">
@@ -7015,30 +7328,115 @@ function pintarMesa(){
   };
   if(mesaView.aba === "ferramentas") ligarFerramentas();
   if(mesaView.aba === "historico") ligarHistorico(dados);
+  if(mesaView.aba === "ranking"){
+    const btr = document.getElementById("rank-regras");
+    if(btr) btr.onclick = () => abrirRegrasDePontuacao(dados);
+    document.querySelectorAll(".rank-linha[data-jog]").forEach(el =>
+      el.onclick = () => abrirJogador(rank, dados, el.dataset.jog));
+  }
 }
 
 function blocoRanking(rank){
   if(!rank.length) return `<div class="empty">Nenhum jogador ainda.</div>`;
+  const regras = rank.regras || PONTUACAO_PADRAO;
+  const t = rank.temporada;
+  const campeao = t && t.completa && rank[0] && rank[0].pontos ? rank[0] : null;
   const jogou = rank.some(l => l.jogos);
-  if(!jogou) return `<div class="empty">Ninguém jogou ainda. Clique em <b>+ Registrar partida</b> quando a
-    primeira terminar — ou use as <b>ferramentas da mesa</b> para sortear a ordem e cronometrar.</div>`;
-  return `
-    <div class="rank-tabela">
+
+  const cabecalho = `
+    <div class="rank-topo">
+      <div>
+        <span class="flabel" style="margin:0 0 4px">Como este grupo pontua</span>
+        <p class="rank-regra">${escapeHTML(explicarPontuacao(regras))}</p>
+      </div>
+      <button class="btn ghost" id="rank-regras">Mudar as regras</button>
+    </div>
+    ${t ? `
+      <div class="temporada ${t.completa ? "fim" : ""}">
+        ${campeao
+          ? `<b>Campeão da temporada: ${escapeHTML(campeao.nome)}</b>
+             <span>${t.alvo} partidas · ${campeao.pontos} pontos. O ranking abaixo é o fechamento —
+             comece outra temporada nas regras quando a mesa quiser recomeçar do zero.</span>`
+          : `<b>Temporada: partida ${t.jogadas} de ${t.alvo}</b>
+             <span>Faltam ${t.alvo - t.jogadas} para fechar. Quem estiver na frente na última é o campeão.</span>`}
+        <div class="temporada-barra"><i style="width:${Math.min(100, Math.round(100*t.jogadas/t.alvo))}%"></i></div>
+      </div>` : ""}`;
+
+  if(!jogou) return cabecalho + `<div class="empty">Ninguém jogou ainda. Clique em
+    <b>+ Registrar partida</b> quando a primeira terminar — ou use as <b>ferramentas da mesa</b>
+    para sortear a ordem, cronometrar e marcar o tempo de cada jogador.</div>`;
+
+  return cabecalho + `
+    <div class="rank-tabela pontuada">
       <div class="rank-cab">
-        <span>#</span><span>jogador</span><span>V</span><span>J</span><span>%</span>
+        <span>#</span><span>jogador</span><span>pts</span><span>V</span><span>J</span><span>%</span>
         <span>últimas</span><span>deck mais usado</span>
       </div>
       ${rank.map((l,i) => `
-        <div class="rank-linha ${i===0 && l.vitorias ? "lider" : ""}">
+        <div class="rank-linha ${i===0 && l.pontos ? "lider" : ""}" data-jog="${l.id}" title="ver o histórico de decks">
           <span class="rank-pos">${i+1}</span>
           <span class="rank-nome">${escapeHTML(l.nome)}${l.sequencia >= 2 ? ` <em title="sequência de vitórias">🔥${l.sequencia}</em>` : ""}</span>
+          <span class="rank-num destaque">${l.pontos}</span>
           <span class="rank-num">${l.vitorias}</span>
           <span class="rank-num">${l.jogos}</span>
-          <span class="rank-num destaque">${l.jogos ? Math.round(100*l.taxa) : 0}%</span>
+          <span class="rank-num">${l.jogos ? Math.round(100*l.taxa) : 0}%</span>
           <span class="rank-ultimas">${l.ultimas.map(v => `<i class="${v?"v":"d"}" title="${v?"vitória":"derrota"}"></i>`).join("")}</span>
           <span class="rank-deck">${escapeHTML(l.deckFavorito)}</span>
         </div>`).join("")}
-    </div>`;
+    </div>
+    <p class="dg-txt" style="margin-top:12px">Toque em um jogador para ver o histórico de decks dele:
+    quantas vezes usou cada um, quanto ganhou e quantos pontos tirou com cada deck.</p>`;
+}
+
+/* ---------------- histórico de decks de um jogador ---------------- */
+function abrirJogador(rank, dados, id){
+  const l = rank.find(x => x.id === id);
+  if(!l) return;
+  const partidas = (dados.matches || []).filter(p => (p.players||[]).some(j => j.member_id === id));
+  modal(`<div class="modal-pad">
+    <h3>${escapeHTML(l.nome)}</h3>
+    <div class="resumo-colecao" style="margin:10px 0 16px">
+      <div class="rc"><b>${l.pontos}</b><small>pontos</small></div>
+      <div class="rc"><b>${l.vitorias}</b><small>vitórias</small></div>
+      <div class="rc"><b>${l.jogos}</b><small>partidas</small></div>
+      <div class="rc"><b>${l.jogos ? l.media.toFixed(1).replace(".", ",") : "—"}</b><small>pontos por partida</small></div>
+    </div>
+
+    <span class="flabel">Decks que ele usou</span>
+    ${l.listaDecks.length ? `<div class="rank-tabela decks-jog">
+      <div class="rank-cab"><span>deck</span><span>J</span><span>V</span><span>%</span><span>pts</span><span>lugar médio</span></div>
+      ${l.listaDecks.map(dk => {
+        const lugarMedio = dk.lugares.length
+          ? (dk.lugares.reduce((a,b)=>a+b,0)/dk.lugares.length).toFixed(1).replace(".", ",") + "º" : "—";
+        return `<div class="rank-linha">
+          <span class="rank-nome">${escapeHTML(dk.nome)}</span>
+          <span class="rank-num">${dk.jogos}</span>
+          <span class="rank-num">${dk.vitorias}</span>
+          <span class="rank-num">${Math.round(100*dk.vitorias/dk.jogos)}%</span>
+          <span class="rank-num destaque">${dk.pontos}</span>
+          <span class="rank-num">${lugarMedio}</span>
+        </div>`;
+      }).join("")}
+    </div>` : `<div class="empty">Nenhum deck anotado nas partidas dele.<br>
+      <span style="color:var(--faint);font-size:12.5px">O campo do deck é opcional ao registrar a
+      partida — quando alguém preenche, ele vira este histórico.</span></div>`}
+
+    <span class="flabel" style="margin-top:16px">Últimas partidas</span>
+    <div class="partidas">${partidas.slice(0, 12).map(p => {
+      const eu = (p.players||[]).find(j => j.member_id === id) || {};
+      const lugar = Number(eu.place) > 0 ? `${eu.place}º` : (eu.won ? "1º" : "—");
+      return `<div class="partida ${eu.won ? "ganhou" : ""}">
+        <div class="partida-topo">
+          <b>${lugar} de ${(p.players||[]).length}${eu.deck_name ? " · " + escapeHTML(eu.deck_name) : ""}</b>
+          <span>${new Date(p.played_at).toLocaleDateString("pt-BR", { day:"2-digit", month:"short" })}${
+            p.seconds ? ` · ${tempoCurto(p.seconds)}` : ""}</span>
+        </div>
+      </div>`;
+    }).join("") || `<div class="empty">Sem partidas.</div>`}</div>
+
+    <div class="pergunta-acoes"><button class="btn" id="jog-fechar">Fechar</button></div>
+  </div>`);
+  document.getElementById("jog-fechar").onclick = closeModal;
 }
 
 function blocoHistorico(dados){
@@ -7169,6 +7567,102 @@ function mostrarCodigo(g, novo){
   };
 }
 
+/* ---------------- regras de pontuação ---------------- */
+function abrirRegrasDePontuacao(dados){
+  const r = regrasDoGrupo(dados);
+  const t = r.temporada || {};
+  modal(`<div class="modal-pad">
+    <h3>Regras de pontuação</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 16px">
+      Valem para o grupo inteiro: todo mundo que abrir a mesa vê o mesmo ranking.
+      Mudar a regra não apaga nada — os pontos são recalculados a partir das partidas já registradas.</p>
+
+    <div class="fgrupo">
+      <span class="flabel">O que conta</span>
+      <div class="toggles" id="pt-modo">
+        <button class="tog ${r.modo==="primeiro"?"on":""}" data-modo="primeiro">só o 1º lugar</button>
+        <button class="tog ${r.modo==="colocacao"?"on":""}" data-modo="colocacao">colocação inteira (1º, 2º, 3º, 4º)</button>
+      </div>
+    </div>
+
+    <div class="fgrupo">
+      <span class="flabel">Ajustar pelo tamanho da mesa</span>
+      <div class="toggles" id="pt-ajuste">
+        <button class="tog ${r.ajuste?"on":""}" data-ajuste="1">sim — recomendado</button>
+        <button class="tog ${!r.ajuste?"on":""}" data-ajuste="0">não</button>
+      </div>
+    </div>
+
+    <p class="sug-aviso" id="pt-explica" style="margin:4px 0 16px">${escapeHTML(explicarPontuacao(r))}</p>
+
+    <div class="fgrupo">
+      <span class="flabel">Temporada</span>
+      <div class="dupla">
+        <label class="field"><span>Partidas até o campeão</span>
+          <input type="number" id="pt-jogos" min="0" max="200" step="1" value="${Number(t.jogos) || 0}"
+                 placeholder="0 = ranking corrido, sem campeão"></label>
+        <label class="field"><span>Contar a partir de</span>
+          <select id="pt-desde">
+            <option value="mantem"${t.desde ? " selected" : ""}>${t.desde
+              ? "quando a temporada começou (" + new Date(t.desde).toLocaleDateString("pt-BR") + ")"
+              : "todas as partidas do grupo"}</option>
+            <option value="agora">recomeçar agora — zera a contagem</option>
+            <option value="tudo">todas as partidas do grupo</option>
+          </select></label>
+      </div>
+      <p class="sug-aviso" style="margin-top:6px">
+        Com um número aqui, o app mostra "partida 7 de 12" e crava o campeão quando a última entrar.
+        <b>O ranking continua completo o tempo todo</b> — campeão é um rótulo, não um filtro.
+        Com 0, o ranking é corrido e nunca fecha.</p>
+    </div>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="pt-ok">Salvar para o grupo</button>
+      <button class="btn ghost" id="pt-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="pt-status"></div>
+  </div>`);
+
+  let modo = r.modo, ajuste = !!r.ajuste;
+  const repintar = () => {
+    document.getElementById("pt-explica").textContent = explicarPontuacao({ modo, ajuste });
+  };
+  document.getElementById("pt-modo").onclick = e => {
+    const b = e.target.closest("[data-modo]"); if(!b) return;
+    modo = b.dataset.modo;
+    document.querySelectorAll("[data-modo]").forEach(x => x.classList.toggle("on", x === b));
+    repintar();
+  };
+  document.getElementById("pt-ajuste").onclick = e => {
+    const b = e.target.closest("[data-ajuste]"); if(!b) return;
+    ajuste = b.dataset.ajuste === "1";
+    document.querySelectorAll("[data-ajuste]").forEach(x => x.classList.toggle("on", x === b));
+    repintar();
+  };
+  document.getElementById("pt-cancelar").onclick = closeModal;
+  document.getElementById("pt-ok").onclick = async () => {
+    const st = document.getElementById("pt-status");
+    const jogos = Math.max(0, Number(document.getElementById("pt-jogos").value) || 0);
+    const quando = document.getElementById("pt-desde").value;
+    let temporada = null;
+    if(jogos > 0){
+      const desde = quando === "agora" ? new Date().toISOString()
+                  : quando === "tudo" ? null
+                  : (r.temporada && r.temporada.desde) || null;
+      temporada = { jogos, desde };
+    }
+    st.textContent = "salvando…";
+    try{
+      await rpc("play_group_scoring", {
+        p_code: grupoAtual().code,
+        p_scoring: { modo, ajuste, temporada },
+      });
+      closeModal(); mesaView.dados = null; renderMesa();
+      toast("regras salvas para o grupo");
+    }catch(e){ st.textContent = "não consegui salvar: " + e.message; }
+  };
+}
+
 /* ---------------- registrar partida ---------------- */
 function registrarPartida(dados){
   const membros = dados.members || [];
@@ -7179,7 +7673,13 @@ function registrarPartida(dados){
     <h3>Registrar partida</h3>
     <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
       Marque quem jogou, com que deck, e quem venceu. A ordem de jogo e o tempo são opcionais —
-      se você usou o cronômetro da mesa, ele já vem preenchido.</p>
+      se você usou o cronômetro ou o relógio da mesa, o tempo já vem preenchido.</p>
+    ${regrasDoGrupo(dados).modo === "colocacao" ? `
+      <div class="nota-regiao" style="margin-bottom:14px">
+        <b>Este grupo pontua a colocação inteira.</b> Preencha o campo <b>lugar</b> de cada um —
+        1 para quem venceu, 2 para o penúltimo a morrer, e assim por diante. Se você só marcar o
+        vencedor, esta partida sozinha conta como "só o 1º lugar", e o app avisa isso no ranking.
+      </div>` : ""}
 
     <div class="dupla">
       <label class="field"><span>Formato</span>
@@ -7188,7 +7688,11 @@ function registrarPartida(dados){
         </select></label>
       <label class="field"><span>Duração (minutos)</span>
         <input type="number" id="rp-minutos" min="0" step="1"
-               value="${cron.acumulado ? Math.round(cron.acumulado/60) : ""}" placeholder="ex.: 52"></label>
+               value="${(() => {
+                 if(cron.acumulado) return Math.round(cron.acumulado/60);
+                 const doRelogio = Object.values(relogio.gasto || {}).reduce((a,b) => a + b, 0);
+                 return doRelogio ? Math.round(doRelogio/60) : "";
+               })()}" placeholder="ex.: 52"></label>
     </div>
 
     <span class="flabel">Quem jogou</span>
@@ -7197,7 +7701,8 @@ function registrarPartida(dados){
         <div class="rp-jogador" data-m="${m.id}">
           <label class="check"><input type="checkbox" class="rp-tem" checked><span>${escapeHTML(m.name)}</span></label>
           <input type="text" class="rp-deck" list="rp-decks" placeholder="deck usado (opcional)">
-          <input type="number" class="rp-seat" min="1" max="12" placeholder="ordem">
+          <input type="number" class="rp-seat" min="1" max="12" placeholder="ordem" title="ordem de jogo sorteada">
+          <input type="number" class="rp-lugar" min="1" max="16" placeholder="lugar" title="colocação: 1 é quem venceu">
           <label class="check rp-venceu-lbl"><input type="radio" name="rp-venceu" class="rp-venceu" value="${m.id}">
             <span>venceu</span></label>
         </div>`).join("")}
@@ -7216,6 +7721,21 @@ function registrarPartida(dados){
   </div>`);
 
   document.getElementById("rp-cancelar").onclick = closeModal;
+  document.querySelectorAll(".rp-jogador").forEach(l => {
+    const lugar = l.querySelector(".rp-lugar");
+    lugar.oninput = () => {
+      if(Number(lugar.value) === 1) l.querySelector(".rp-venceu").checked = true;
+      else if(l.querySelector(".rp-venceu").checked && Number(lugar.value) > 1)
+        l.querySelector(".rp-venceu").checked = false;
+    };
+    l.querySelector(".rp-venceu").onchange = () => {
+      document.querySelectorAll(".rp-jogador").forEach(o => {
+        const c = o.querySelector(".rp-lugar");
+        if(o === l) c.value = 1;
+        else if(Number(c.value) === 1) c.value = "";
+      });
+    };
+  });
   document.getElementById("rp-sortear").onclick = () => {
     const linhas = [...document.querySelectorAll(".rp-jogador")]
       .filter(l => l.querySelector(".rp-tem").checked);
@@ -7232,12 +7752,17 @@ function registrarPartida(dados){
     const st = document.getElementById("rp-status");
     const jogadores = [...document.querySelectorAll(".rp-jogador")]
       .filter(l => l.querySelector(".rp-tem").checked)
-      .map(l => ({
-        member_id: l.dataset.m,
-        deck_name: l.querySelector(".rp-deck").value.trim() || null,
-        seat: Number(l.querySelector(".rp-seat").value) || null,
-        won: l.querySelector(".rp-venceu").checked,
-      }));
+      .map(l => {
+        const lugar = Number(l.querySelector(".rp-lugar").value) || null;
+        return {
+          member_id: l.dataset.m,
+          deck_name: l.querySelector(".rp-deck").value.trim() || null,
+          seat: Number(l.querySelector(".rp-seat").value) || null,
+          place: lugar,
+          // quem foi marcado em 1º venceu, mesmo sem tocar no botão
+          won: l.querySelector(".rp-venceu").checked || lugar === 1,
+        };
+      });
     if(!jogadores.length){ st.textContent = "marque quem jogou"; return; }
     st.textContent = "salvando…";
     try{
@@ -7257,6 +7782,7 @@ function registrarPartida(dados){
         const meu = decks().find(x => x.nome.toLowerCase() === minha.deck_name.toLowerCase());
         if(meu) anotarPartida(meu, {
           venceu: minha.won,
+          lugar: minha.place || null,
           formato: document.getElementById("rp-formato").value,
           minutos: Number(document.getElementById("rp-minutos").value) || null,
           jogadores: jogadores.length,
@@ -7265,6 +7791,7 @@ function registrarPartida(dados){
         });
       }
       cron.acumulado = 0; cron.rodando = false;
+      relZerar();
       closeModal(); mesaView.dados = null; renderMesa();
       toast("partida registrada");
     }catch(e){ st.textContent = "não consegui salvar: " + e.message; }
@@ -7282,6 +7809,119 @@ function registrarPartida(dados){
 
 let vida = { jogadores:[], formato:"commander" };
 let cron = { rodando:false, inicio:0, acumulado:0, timer:null };
+
+/* =====================================================================
+   RELÓGIO DOS JOGADORES
+
+   Dois jeitos de marcar, e a mesa escolhe:
+
+   - PARA CIMA: só conta quanto cada um usou. Não pressiona ninguém e
+     serve para descobrir onde a partida demora — é o que a maioria das
+     mesas de Commander quer.
+   - PARA BAIXO (xadrez): cada um começa com um tempo e ele desce só na
+     vez dele. Com incremento opcional, no estilo Fischer: ao passar a
+     vez você recebe alguns segundos de volta, para o fim de partida não
+     virar corrida.
+
+   O relógio NÃO elimina ninguém quando o tempo acaba. Magic não tem essa
+   regra e o app não vai inventar: ele marca "tempo esgotado", passa a vez
+   e deixa a mesa decidir o que fazer com isso.
+   ===================================================================== */
+let relogio = {
+  modo:"cima", inicialMin:25, incremento:0,
+  atual:null, desde:0, gasto:{}, credito:{}, estourou:{}, timer:null,
+};
+
+const relInicial = () => Math.max(0, Math.round(relogio.inicialMin * 60));
+/* segundos que este jogador já usou, contando o que corre agora */
+function relGasto(id){
+  const base = relogio.gasto[id] || 0;
+  return base + (relogio.atual === id ? (Date.now() - relogio.desde) / 1000 : 0);
+}
+/* o que o painel mostra: usado, no modo para cima; o que sobra, para baixo */
+function relMostrar(id){
+  return relogio.modo === "baixo"
+    ? relInicial() + (relogio.credito[id] || 0) - relGasto(id)
+    : relGasto(id);
+}
+const relSinal = seg => (seg < 0 ? "-" : "") + tempoLongo(Math.abs(seg));
+
+/* fecha a vez de quem estava jogando: guarda o tempo e paga o incremento */
+function relFechar(){
+  const id = relogio.atual;
+  if(id == null) return;
+  relogio.gasto[id] = relGasto(id);
+  if(relogio.modo === "baixo" && relogio.incremento > 0)
+    relogio.credito[id] = (relogio.credito[id] || 0) + relogio.incremento;
+  relogio.atual = null;
+}
+function relDarAVez(id){
+  if(relogio.atual === id){ relFechar(); relPintar(); return; }
+  relFechar();
+  relogio.atual = id;
+  relogio.desde = Date.now();
+  relTicar();
+  relPintar();
+}
+function relProximo(){
+  const ordem = vida.jogadores.map(j => j.id);
+  if(!ordem.length) return;
+  const i = ordem.indexOf(relogio.atual);
+  relDarAVez(ordem[(i + 1) % ordem.length]);
+}
+function relZerar(){
+  relFechar();
+  relogio.gasto = {}; relogio.credito = {}; relogio.estourou = {};
+  relogio.atual = null;
+  relPintar();
+}
+function relTicar(){
+  clearInterval(relogio.timer);
+  relogio.timer = setInterval(() => {
+    const grade = document.getElementById("relogio-grade");
+    if(!grade || !grade.isConnected){ clearInterval(relogio.timer); relogio.timer = null; return; }
+    const id = relogio.atual;
+    if(id == null){ clearInterval(relogio.timer); relogio.timer = null; return; }
+    const el = grade.querySelector(`[data-rel="${id}"] .rel-tempo`);
+    if(el) el.textContent = relSinal(relMostrar(id));
+    /* estourou o tempo: marca uma vez, avisa e passa a vez */
+    if(relogio.modo === "baixo" && relMostrar(id) <= 0 && !relogio.estourou[id]){
+      relogio.estourou[id] = true;
+      const j = vida.jogadores.find(x => x.id === id);
+      toast(`${j ? j.nome : "Jogador"} estourou o tempo — a mesa decide o que fazer`);
+      relProximo();
+    }
+  }, 250);
+}
+/* Repinta SEM refazer o HTML quando a mesa é a mesma: o telefone fica no
+   meio da mesa e um relógio que pisca a cada ajuste é insuportável — e um
+   botão que se troca embaixo do dedo perde o toque de quem ia usá-lo. */
+function relPintar(){
+  const grade = document.getElementById("relogio-grade");
+  if(!grade) return;
+  const ids = vida.jogadores.map(j => j.id).join(",");
+  if(grade.dataset.ids !== ids){
+    grade.dataset.ids = ids;
+    grade.innerHTML = vida.jogadores.map(j => `
+      <button class="rel-jog" data-rel="${escapeHTML(j.id)}">
+        <span class="rel-nome"></span><span class="rel-tempo"></span><span class="rel-rot"></span>
+      </button>`).join("") || `<span class="status">ponha jogadores no contador de vida primeiro</span>`;
+  }
+  vida.jogadores.forEach(j => {
+    const el = grade.querySelector(`[data-rel="${j.id}"]`);
+    if(!el) return;
+    el.classList.toggle("na-vez", relogio.atual === j.id);
+    el.classList.toggle("estourou", !!relogio.estourou[j.id]);
+    el.querySelector(".rel-nome").textContent = j.nome;
+    el.querySelector(".rel-tempo").textContent = relSinal(relMostrar(j.id));
+    el.querySelector(".rel-rot").textContent =
+      relogio.atual === j.id ? "na vez" :
+      relogio.estourou[j.id] ? "tempo esgotado" :
+      relogio.modo === "baixo" ? "restam" : "usou";
+  });
+  const b = document.getElementById("rel-pausar");
+  if(b) b.textContent = relogio.atual == null ? "Pausado" : "Pausar";
+}
 
 function vidaInicial(){ return vida.formato === "commander" ? 40 : 20; }
 
@@ -7330,6 +7970,33 @@ function blocoFerramentas(){
       </div>
       <div class="cronometro" id="cronometro">${tempoLongo(tempoDoCron())}</div>
       <p class="dg-txt">Quando você registrar a partida, esse tempo já vem preenchido.</p>
+    </section>
+
+    <section class="ferr-bloco">
+      <div class="ferr-topo">
+        <span class="flabel" style="margin:0">Relógio dos jogadores</span>
+        <div class="ferr-acoes">
+          <div class="toggles" id="rel-modo">
+            <button class="tog ${relogio.modo==="cima"?"on":""}" data-modo="cima">para cima</button>
+            <button class="tog ${relogio.modo==="baixo"?"on":""}" data-modo="baixo">para baixo</button>
+          </div>
+          <button class="btn ghost" id="rel-proximo">passar a vez</button>
+          <button class="icon-btn" id="rel-pausar">${relogio.atual == null ? "Pausado" : "Pausar"}</button>
+          <button class="icon-btn" id="rel-zerar">zerar</button>
+        </div>
+      </div>
+      <div class="rel-config" id="rel-config" ${relogio.modo === "baixo" ? "" : "hidden"}>
+        <label class="field"><span>Minutos por jogador</span>
+          <input type="number" id="rel-min" min="1" max="180" step="1" value="${relogio.inicialMin}"></label>
+        <label class="field"><span>Incremento por vez (segundos)</span>
+          <input type="number" id="rel-inc" min="0" max="120" step="1" value="${relogio.incremento}"></label>
+      </div>
+      <div class="relogio-grade" id="relogio-grade"></div>
+      <p class="dg-txt">Toque no jogador para dar a vez a ele — o relógio de quem estava jogando para
+      na hora, como no xadrez. <b>Para cima</b> só mede quanto cada um usou. <b>Para baixo</b> desconta
+      do tempo de cada um e, se você puser incremento, devolve esses segundos a quem passa a vez.
+      <b>Ninguém é eliminado por tempo:</b> o app marca "tempo esgotado", passa a vez, e a mesa decide.
+      Os nomes são os mesmos do contador de vida.</p>
     </section>
 
     <section class="ferr-bloco">
@@ -7444,6 +8111,42 @@ function ligarFerramentas(){
     const b = document.getElementById("cron-toggle");
     if(b) b.textContent = "Começar";
   };
+
+  /* relógio dos jogadores */
+  const modo = document.getElementById("rel-modo");
+  if(modo) modo.onclick = e => {
+    const b = e.target.closest("[data-modo]"); if(!b) return;
+    relFechar();
+    relogio.modo = b.dataset.modo;
+    modo.querySelectorAll("[data-modo]").forEach(x => x.classList.toggle("on", x === b));
+    const cfg = document.getElementById("rel-config");
+    if(cfg) cfg.hidden = relogio.modo !== "baixo";
+    relogio.estourou = {};
+    relPintar();
+  };
+  const relMin = document.getElementById("rel-min");
+  if(relMin) relMin.onchange = () => {
+    relogio.inicialMin = Math.max(1, Number(relMin.value) || 25);
+    relogio.estourou = {}; relPintar();
+  };
+  const relInc = document.getElementById("rel-inc");
+  if(relInc) relInc.onchange = () => {
+    relogio.incremento = Math.max(0, Number(relInc.value) || 0);
+  };
+  const relProx = document.getElementById("rel-proximo");
+  if(relProx) relProx.onclick = relProximo;
+  const relPausa = document.getElementById("rel-pausar");
+  if(relPausa) relPausa.onclick = () => { relFechar(); relPintar(); };
+  const relZero = document.getElementById("rel-zerar");
+  if(relZero) relZero.onclick = relZerar;
+  const relGrade = document.getElementById("relogio-grade");
+  if(relGrade){
+    relPintar();
+    relGrade.onclick = e => {
+      const b = e.target.closest("[data-rel]"); if(!b) return;
+      relDarAVez(b.dataset.rel);
+    };
+  }
 
   const sortear = document.getElementById("sortear-ordem");
   if(sortear) sortear.onclick = () => {
@@ -9226,6 +9929,192 @@ function pagoTotal(){
 function temPrecoPago(){ return Object.values(S.owned).some(r => Number(r.pg) > 0); }
 
 /* =====================================================================
+   REFERÊNCIA DE PREÇO — para anunciar e para ler um anúncio
+
+   O app sugere um valor, mas é preciso dizer de onde ele vem, porque
+   quem lê vai negociar com esse número na mão. São duas referências,
+   e nenhuma delas é "o preço da carta":
+
+   1. SCRYFALL — preço de carta solta no mercado americano (TCGplayer),
+      ajustado pela condição da sua cópia e convertido pelo câmbio do
+      dia. Não é o preço brasileiro: frete, imposto e o que está
+      disponível por aqui mudam isso, e o app não tem essa fonte.
+   2. A PRÓPRIA COMUNIDADE — o que as pessoas estão pedindo pela mesma
+      carta aqui dentro, agora. Com poucos anúncios isso diz pouco, e a
+      tela mostra quantos são para você julgar.
+
+   O que o app NÃO faz: inventar um multiplicador de "mercado
+   brasileiro", cobrar por idioma, ou estimar preço de carta graduada.
+   Onde não há fonte, a tela diz que não há.
+   ===================================================================== */
+
+const cifraDe = m => m === "BRL" ? "R$" : m === "EUR" ? "€" : "US$";
+function dinheiro(v, moeda){
+  return cifraDe(moeda) + " " + Number(v).toLocaleString("pt-BR",
+    { minimumFractionDigits:2, maximumFractionDigits:2 });
+}
+/* dólar -> moeda pedida (null quando o câmbio ainda não chegou) */
+function deUsd(usd, moeda){
+  if(usd == null) return null;
+  if(moeda === "USD") return usd;
+  if(moeda === "BRL") return (CAMBIO && CAMBIO.usd) ? usd * CAMBIO.usd : null;
+  if(moeda === "EUR") return (CAMBIO && CAMBIO.usd && CAMBIO.eur) ? usd * CAMBIO.usd / CAMBIO.eur : null;
+  return null;
+}
+/* moeda qualquer -> dólar */
+function paraUsd(v, moeda){
+  const n = Number(v);
+  if(!(n > 0)) return null;
+  if(moeda === "USD") return n;
+  if(moeda === "BRL") return (CAMBIO && CAMBIO.usd) ? n / CAMBIO.usd : null;
+  if(moeda === "EUR") return (CAMBIO && CAMBIO.usd && CAMBIO.eur) ? n * CAMBIO.eur / CAMBIO.usd : null;
+  return null;
+}
+
+/* preço de carta solta do Scryfall já com o desconto da condição.
+   Devolve null quando a fonte não tem preço para essa impressão. */
+function refScryfall({ usd, usdF, fin, cond }){
+  const foil = fin === "foil" || fin === "etched";
+  const base = Number(foil ? (usdF || usd) : usd) || 0;
+  if(!base) return null;
+  const fator = fatorCondicao(cond || "NM");
+  return { base, foil, fator, cond: cond || "NM", usd: base * fator };
+}
+
+/* o que a comunidade está pedindo pela mesma carta, hoje.
+   Prefere anúncios da MESMA impressão; só cai para o nome quando não
+   existe nenhum, e diz qual dos dois está mostrando. */
+function refDaComunidade(cardId, nome, ignorarId){
+  const ativos = (mercado.lista || []).filter(a =>
+    a.status === "ativo" && a.preco != null && a.tipo !== "troca" && a.id !== ignorarId);
+  const mesmaImpressao = cardId ? ativos.filter(a => a.card_id === cardId) : [];
+  const mesmoNome = ativos.filter(a => semAcento(a.card_name || "") === semAcento(nome || ""));
+  const lista = mesmaImpressao.length ? mesmaImpressao : mesmoNome;
+  const valores = lista.map(a => paraUsd(a.preco, a.moeda)).filter(v => v > 0).sort((x, y) => x - y);
+  if(!valores.length) return null;
+  const meio = Math.floor(valores.length / 2);
+  const mediana = valores.length % 2 ? valores[meio] : (valores[meio - 1] + valores[meio]) / 2;
+  return { n:valores.length, mediana, min:valores[0], max:valores[valores.length - 1],
+           impressao: mesmaImpressao.length > 0 };
+}
+
+/* preço das cartas que aparecem nos anúncios — o Scryfall em lote, só
+   dos anúncios que estão na tela. Fica em memória enquanto a aba viver. */
+let refMercado = {};
+async function carregarRefDoMercado(){
+  const ids = [...new Set((mercado.lista || [])
+    .map(a => a.card_id).filter(id => id && !(id in refMercado)))];
+  if(!ids.length) return;
+  for(let i = 0; i < ids.length; i += 75){
+    const lote = ids.slice(i, i + 75).map(id => ({ id }));
+    try{
+      const r = await fetch(`${API}/cards/collection`, {
+        method:"POST", headers:{ "Content-Type":"application/json", Accept:"application/json" },
+        body: JSON.stringify({ identifiers: lote })
+      });
+      if(!r.ok) break;
+      const j = await r.json();
+      (j.data || []).forEach(c => {
+        refMercado[c.id] = { usd:Number((c.prices||{}).usd) || 0,
+                             usdF:Number((c.prices||{}).usd_foil) || 0 };
+      });
+      (j.not_found || []).forEach(x => { if(x && x.id) refMercado[x.id] = { usd:0, usdF:0 }; });
+    }catch(e){ break; }
+    await sleep(120);
+  }
+  if(view.name === "mercado") renderMercado();
+}
+
+/* o quadro de sugestão que aparece dentro do formulário do anúncio */
+function blocoSugestao(alvo, moeda, ignorarId, tipo){
+  const titulo = tipo === "troca"
+    ? "Quanto vale o que você está oferecendo"
+    : "Sugestão para este anúncio";
+
+  if(alvo.slab && alvo.slab.grad){
+    const g = (GRADUADORAS.find(x => x[0] === alvo.slab.grad) || ["", "graduadora"])[1];
+    return `<span class="sug-rot">${titulo}</span>
+      <p class="sug-aviso" style="margin-top:0">
+        <b>Carta graduada não tem sugestão aqui.</b> Um slab ${escapeHTML(g)} ${escapeHTML(alvo.slab.nota || "")}
+        vale por leilão e por população, não pelo preço da carta solta. Procure vendas recentes da mesma
+        nota antes de pôr um número — o app não inventa esse valor.</p>`;
+  }
+
+  const ref = refScryfall(alvo);
+  const com = refDaComunidade(alvo.id, alvo.nome, ignorarId);
+
+  if(!ref && !com){
+    return `<span class="sug-rot">${titulo}</span>
+      <p class="sug-aviso" style="margin-top:0">
+        O Scryfall não publica preço para essa impressão e ninguém anunciou essa carta aqui ainda.
+        Sem fonte, o app não chuta um número.</p>`;
+  }
+
+  /* o número grande é o Scryfall quando existe; senão, a mediana da comunidade */
+  const usdSugerido = ref ? ref.usd : com.mediana;
+  const convertido  = deUsd(usdSugerido, moeda);
+  const moedaFinal  = convertido == null ? "USD" : moeda;
+  const valorFinal  = convertido == null ? usdSugerido : convertido;
+  const arredondado = valorFinal >= 20 ? Math.round(valorFinal) : Math.round(valorFinal * 100) / 100;
+
+  const linhas = [];
+  if(ref){
+    linhas.push([`Scryfall — carta solta, mercado americano${ref.foil ? " (foil)" : ""}`,
+                 dinheiro(ref.base, "USD")]);
+    if(ref.fator !== 1)
+      linhas.push([`Condição ${ref.cond} — ${nomeCondicao(ref.cond).toLowerCase()}`,
+                   "×" + ref.fator.toLocaleString("pt-BR", { minimumFractionDigits:2 })]);
+  }
+  if(moedaFinal !== "USD" && CAMBIO && CAMBIO.usd)
+    linhas.push([moedaFinal === "BRL" ? "Câmbio de hoje" : "Câmbio de hoje (US$ → €)",
+                 moedaFinal === "BRL" ? `R$ ${CAMBIO.usd.toFixed(2)}`
+                                      : (CAMBIO.usd / CAMBIO.eur).toFixed(2)]);
+  if(com){
+    const faixa = com.min === com.max ? "" :
+      ` (${dinheiro(deUsd(com.min, moedaFinal) ?? com.min, moedaFinal)} a ${dinheiro(deUsd(com.max, moedaFinal) ?? com.max, moedaFinal)})`;
+    linhas.push([`Pedido aqui na comunidade — ${com.n} anúncio${com.n > 1 ? "s" : ""} ${
+                   com.impressao ? "da mesma impressão" : "com esse nome"}`,
+                 `mediana ${dinheiro(deUsd(com.mediana, moedaFinal) ?? com.mediana, moedaFinal)}${faixa}`]);
+  }
+
+  return `
+    <div class="sug-topo">
+      <div>
+        <span class="sug-rot">${titulo}</span>
+        <span class="sug-valor">${dinheiro(arredondado, moedaFinal)}</span>
+      </div>
+      ${tipo === "troca" ? "" :
+        `<button type="button" class="btn ghost sug-usar" id="an-usar" data-valor="${arredondado}">usar esse valor</button>`}
+    </div>
+    <ul class="sug-conta">
+      ${linhas.map(([a, b]) => `<li><span>${escapeHTML(a)}</span><b>${escapeHTML(b)}</b></li>`).join("")}
+    </ul>
+    <p class="sug-aviso">
+      <b>É ponto de partida, não tabela.</b> A referência do Scryfall é o mercado americano; no Brasil
+      frete, imposto e o que está disponível por aqui mudam o valor, e o app não tem essa fonte.
+      Idioma e assinatura também mexem no preço e o Scryfall não separa por isso.
+      ${com && com.n < 3 ? "E aqui dentro ainda são poucos anúncios para tirar média." : ""}</p>`;
+}
+
+/* quanto o anúncio está acima ou abaixo da referência do Scryfall.
+   Some quando não há fonte — e some sempre em carta graduada, que tem
+   régua própria (ver a área de graduadas). */
+function distanciaDaReferencia(a){
+  if(a.tipo === "troca" || a.preco == null) return "";
+  if(a.slab && a.slab.grad) return "";
+  const ref = refScryfall(Object.assign({}, refMercado[a.card_id] || {},
+    { fin:a.finish, cond:a.cond }));
+  if(!ref) return "";
+  const pedido = paraUsd(a.preco, a.moeda);
+  if(!pedido) return "";
+  const d = (pedido - ref.usd) / ref.usd;
+  const pct = Math.round(Math.abs(d) * 100);
+  const txt = pct <= 8 ? "na referência"
+            : `${pct}% ${d > 0 ? "acima" : "abaixo"} da referência`;
+  return `<small>${txt}</small>`;
+}
+
+/* =====================================================================
    MERCADO INTERNO
 
    Um quadro de anúncios, e só. O app aproxima quem tem de quem quer, e
@@ -9252,6 +10141,8 @@ async function carregarMercado(){
   }catch(e){ mercado.erro = e.message; }
   mercado.carregando = false;
   if(view.name === "mercado") renderMercado();
+  carregarCambio().then(() => { if(view.name === "mercado") renderMercado(); });
+  carregarRefDoMercado();
 }
 
 const precoDoAnuncio = a => {
@@ -9324,6 +10215,14 @@ function renderMercado(){
       </section>`}
 
     <p class="dg-txt" style="margin-top:18px">
+      <b>O que é "a referência".</b> É o preço de carta solta do Scryfall — mercado americano —
+      ajustado pela condição declarada no anúncio e convertido pelo câmbio de hoje${
+        CAMBIO && CAMBIO.usd ? ` (US$ 1 = R$ ${CAMBIO.usd.toFixed(2)})` : ""}.
+      <b>Não é o preço brasileiro:</b> frete, imposto e o que está disponível por aqui mudam esse número,
+      e o app não tem essa fonte. Serve para comparar anúncios entre si, não para dizer quem está certo.
+      Em carta graduada não aparece, porque slab tem régua própria.</p>
+
+    <p class="dg-txt" style="margin-top:12px">
       <b>Combinem com cuidado.</b> O Collector não participa do negócio, não guarda dinheiro e não tem
       como devolver nada se algo der errado. Combine forma de envio e pagamento direto com a pessoa,
       e prefira quem você já conhece do seu grupo.</p>`;
@@ -9379,7 +10278,8 @@ function linhaDoAnuncio(a, meu){
         ${a.status !== "ativo" ? ` · <b>${a.status}</b>` : ""}
         ${a.quer ? `<br>aceita em troca: ${escapeHTML(a.quer)}` : ""}
         ${a.obs ? `<br>${escapeHTML(a.obs)}` : ""}</small></span>
-    <span class="lc-preco">${a.tipo === "troca" ? "troca" : precoDoAnuncio(a)}</span>
+    <span class="lc-preco">${a.tipo === "troca" ? "troca" : precoDoAnuncio(a)}${
+      a.tipo === "troca" ? "" : distanciaDaReferencia(a)}</span>
     ${meu ? `
       <button class="icon-btn" data-mk-editar="${a.id}">editar</button>
       ${a.status === "ativo"
@@ -9466,6 +10366,8 @@ function formDeAnuncio(anuncio, carta){
       </div>
     </div>
 
+    <div class="sug" id="an-sugestao"></div>
+
     <div class="dupla" id="an-preco-linha">
       <label class="field"><span>Preço</span>
         <input type="number" id="an-preco" min="0" step="0.01" value="${a.preco != null ? a.preco : ""}" placeholder="ex.: 180,00"></label>
@@ -9501,6 +10403,35 @@ function formDeAnuncio(anuncio, carta){
   </div>`);
 
   let tipo = a.tipo || "venda";
+
+  /* de que carta estamos falando — a sua cópia quando você a tem, senão
+     o que o próprio anúncio guardou */
+  const meu = (carta && S.owned[carta.id]) || (a.card_id && S.owned[a.card_id]) || null;
+  const doCatalogo = refMercado[(carta && carta.id) || a.card_id] || {};
+  const alvo = {
+    id:   (carta && carta.id) || a.card_id || null,
+    nome: nome,
+    cond: (meu && meu.cond) || a.cond || "NM",
+    fin:  (meu && meu.fin)  || a.finish || "normal",
+    slab: (meu && meu.slab) || a.slab || null,
+    usd:  (meu && meu.usd)  || doCatalogo.usd  || null,
+    usdF: (meu && meu.usdF) || doCatalogo.usdF || null,
+  };
+
+  const pintarSugestao = () => {
+    const el = document.getElementById("an-sugestao");
+    if(!el) return;
+    const moeda = (document.getElementById("an-moeda") || {}).value || "BRL";
+    el.innerHTML = blocoSugestao(alvo, moeda, anuncio ? a.id : null, tipo);
+    const usar = document.getElementById("an-usar");
+    if(usar) usar.onclick = () => {
+      const campo = document.getElementById("an-preco");
+      campo.value = usar.dataset.valor;
+      campo.focus();
+      toast("preço preenchido — ajuste como quiser");
+    };
+  };
+
   const ajustarPreco = () => {
     document.getElementById("an-preco-linha").style.display = tipo === "troca" ? "none" : "";
   };
@@ -9509,8 +10440,25 @@ function formDeAnuncio(anuncio, carta){
     tipo = b.dataset.antipo;
     document.querySelectorAll("[data-antipo]").forEach(x => x.classList.toggle("on", x === b));
     ajustarPreco();
+    pintarSugestao();
   };
+  document.getElementById("an-moeda").onchange = pintarSugestao;
   ajustarPreco();
+  pintarSugestao();
+
+  /* o câmbio e o preço da carta podem não estar em memória ainda:
+     quando chegarem, o quadro se repinta sozinho */
+  carregarCambio().then(pintarSugestao);
+  if(!alvo.usd && alvo.id){
+    fetch(`${API}/cards/${alvo.id}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(c => {
+        if(!c) return;
+        alvo.usd  = Number((c.prices || {}).usd) || null;
+        alvo.usdF = Number((c.prices || {}).usd_foil) || null;
+        pintarSugestao();
+      }).catch(() => {});
+  }
 
   document.getElementById("an-cancelar").onclick = closeModal;
   document.getElementById("an-ok").onclick = async () => {
