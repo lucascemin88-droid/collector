@@ -430,6 +430,13 @@
   .fl-n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .fl-n i{font-style:normal;color:var(--text-3);font-size:11px}
   .fl-s{font-family:var(--font-mono,ui-monospace,monospace);font-size:10.5px;color:var(--text-3)}
+  /* números do retrato em papel */
+  .fc-numeros{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 10px}
+  .fc-numeros div{flex:1;min-width:130px;padding:8px 10px;border-radius:var(--r-sm);
+    border:1px solid var(--line)}
+  .fc-numeros b{display:block;font-family:var(--font-mono,ui-monospace,monospace);font-size:16px;
+    font-weight:600;font-variant-numeric:tabular-nums}
+  .fc-numeros span{font-size:10.5px;color:var(--text-3)}
   .folha-reservas{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-strong)}
   .folha-obs{margin:8px 0 0;font-size:11.5px;color:var(--text-3)}
   .folha-rodape{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--line);
@@ -451,6 +458,9 @@
     body.imprimindo .folha-alerta{background:#fff;border:1px solid #000;color:#000}
     body.imprimindo .folha-campos .field span{color:#333}
     body.imprimindo .folha-campos input{border:0;border-bottom:1px solid #999;background:#fff;color:#000}
+    body.imprimindo .fc-numeros div{border-color:#999}
+    body.imprimindo .fc-numeros b{color:#000}
+    body.imprimindo .fc-numeros span{color:#333}
     @page{margin:14mm}
   }
 
@@ -1252,6 +1262,41 @@
     background:var(--surface-1);border:1px solid var(--line);flex-wrap:wrap;
   }
   .chase-linha.na-mira{border-color:var(--pos)}
+
+  /* ---- mão inicial ---- */
+  .mao-cartas{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  @media (max-width:640px){ .mao-cartas{grid-template-columns:repeat(4,1fr)} }
+  .mao-carta{
+    position:relative;border-radius:4.75% / 3.4%;overflow:hidden;aspect-ratio:488/680;
+    background:var(--surface-2);box-shadow:0 0 0 1px var(--line);
+  }
+  .mao-carta img{width:100%;height:100%;object-fit:cover;display:block}
+  /* terreno com anel discreto: dá para contar a mão de relance */
+  .mao-carta.terreno{box-shadow:0 0 0 1.5px var(--accent-line)}
+  .mao-numeros{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .mao-numeros .rc{
+    flex:1;min-width:120px;padding:8px 12px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line);
+  }
+  .mao-numeros .rc b{font-family:var(--font-mono);font-size:18px;font-weight:600}
+
+  /* ---- o que comprar primeiro ---- */
+  .cp-lista{display:flex;flex-direction:column;gap:6px;margin-top:14px;max-height:52vh;overflow:auto}
+  .cp-linha{
+    display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:var(--r-sm);
+    background:var(--surface-1);border:1px solid var(--line);opacity:.55;
+  }
+  /* o que cabe no orçamento vem inteiro; o resto fica visível mas apagado */
+  .cp-linha.cabe{opacity:1;border-color:var(--accent-line)}
+  .cp-pos{
+    flex:0 0 22px;text-align:center;font-family:var(--font-mono);font-size:12px;
+    font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums;
+  }
+  .cp-linha.cabe .cp-pos{color:var(--accent)}
+  .cp-preco{
+    margin-left:auto;font-family:var(--font-mono);font-size:12.5px;
+    font-variant-numeric:tabular-nums;color:var(--text-2);white-space:nowrap;
+  }
   .chase-graf{width:130px;flex:0 0 130px}
   .chase-graf .spark{width:100%;height:34px}
   .sem-hist{font-size:10px;color:var(--faint)}
@@ -2259,16 +2304,100 @@ function anyCollection(id){ return themeById(id) || customById(id); }
 const memCache = new Map();     // "q|unique|order|page" -> resposta
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
-async function scryPage(q, unique="cards", order="name", page=1, dir="auto"){
+/* ---------------------------------------------------------------------
+   Nome em português
+
+   O Scryfall casa NOME EM INGLÊS, e o jogador brasileiro digita o que está
+   escrito na carta dele. Conferido na API: `Anel Solar` devolve 404 — o app
+   dizia que a carta não existe. Já `lang:pt "Anel Solar"` devolve Sol Ring,
+   com `printed_name` em português e `name` em inglês.
+
+   Por que TRADUZIR O NOME e repetir a busca, em vez de usar a carta em
+   português direto: a impressão em português é UMA impressão. Devolvê-la
+   escolheria a edição pela pessoa e trocaria o preço da carta. Traduzindo
+   só o nome, tudo o que vem depois segue igual — mesma busca, mesmas
+   impressões, mesma escolha de edição.
+
+   Só entra em ação quando a busca voltou VAZIA, então não custa nada a
+   quem digita em inglês e não muda resultado nenhum que já funcionava.
+   --------------------------------------------------------------------- */
+const nomesPt = new Map();   // "anel solar" -> "Sol Ring", ou "" quando não achou
+
+/* o pedaço da busca que é nome de carta — ou "" quando a busca é uma
+   consulta de verdade (`t:creature c:g`), que não se traduz assim */
+function nomeDaBusca(q){
+  const s = String(q || "").trim();
+  const m = s.match(/(?:^|\s)name:"([^"]+)"/i);
+  if(m) return m[1];
+  return /[:<>=]/.test(s) ? "" : s;
+}
+
+/* Traduz uma lista de nomes de uma vez. O Scryfall aceita `or` dentro de
+   parênteses, então vinte nomes cabem numa busca só — importar uma coleção
+   inteira não pode virar quarenta chamadas em fila. O que não casar fica
+   marcado como "não é português" no cache, e não é perguntado de novo. */
+async function traduzirVarios(nomes){
+  const fora = new Map();
+  const pendentes = [];
+  for(const n of nomes){
+    const chave = semAcento(n || "").trim();
+    if(chave.length < 3) continue;
+    if(nomesPt.has(chave)){ if(nomesPt.get(chave)) fora.set(chave, nomesPt.get(chave)); }
+    else if(!pendentes.some(x => semAcento(x).trim() === chave)) pendentes.push(n);
+  }
+  for(let i = 0; i < pendentes.length; i += 20){
+    const lote = pendentes.slice(i, i + 20);
+    const q = `lang:pt (${lote.map(n => `"${String(n).replace(/"/g, "")}"`).join(" or ")})`;
+    let achadas = [];
+    try{
+      const r = await fetch(`${API}/cards/search?q=${encodeURIComponent(q)}&unique=cards`,
+                            { headers:{ Accept:"application/json" } });
+      if(r.ok){ const j = await r.json(); achadas = j.data || []; }
+    }catch(e){ /* sem internet: segue sem tradução */ }
+    lote.forEach(n => {
+      const chave = semAcento(n).trim();
+      const c = achadas.find(x => semAcento(x.printed_name || "") === chave)
+             || achadas.find(x => semAcento(x.printed_name || "").includes(chave));
+      const ingles = (c && c.name) || "";
+      nomesPt.set(chave, ingles);
+      if(ingles) fora.set(chave, ingles);
+    });
+    if(achadas.length) await sleep(120);
+  }
+  return fora;
+}
+
+async function traduzirDoPortugues(nome){
+  const chave = semAcento(nome || "").trim();
+  if(chave.length < 3) return "";
+  if(nomesPt.has(chave)) return nomesPt.get(chave);
+  const mapa = await traduzirVarios([nome]);
+  return mapa.get(chave) || "";
+}
+
+async function scryPage(q, unique="cards", order="name", page=1, dir="auto", tentarPt=true){
   const key = `${q}|${unique}|${order}|${dir}|${page}`;
   if(memCache.has(key)) return memCache.get(key);
   const url = `${API}/cards/search?q=${encodeURIComponent(q)}&unique=${unique}&order=${order}&dir=${dir}&page=${page}`;
   const res = await fetch(url, { headers:{ "Accept":"application/json" } });
-  if(res.status === 404){ const out = { data:[], total_cards:0, has_more:false }; memCache.set(key,out); return out; }
-  if(!res.ok) throw new Error(`Scryfall respondeu ${res.status}`);
-  const json = await res.json();
+  const vazio = { data:[], total_cards:0, has_more:false };
+  let json;
+  if(res.status === 404) json = vazio;
+  else if(!res.ok) throw new Error(`Scryfall respondeu ${res.status}`);
+  else { json = await res.json(); await sleep(PAGE_DELAY); }
+
+  /* nada achado: pode ser nome em português */
+  if(tentarPt && page === 1 && !(json.total_cards > 0)){
+    const nome = nomeDaBusca(q);
+    if(nome){
+      const ingles = await traduzirDoPortugues(nome);
+      if(ingles && semAcento(ingles) !== semAcento(nome)){
+        const outra = q.replace(nome, ingles);
+        json = await scryPage(outra, unique, order, page, dir, false);
+      }
+    }
+  }
   memCache.set(key, json);
-  await sleep(PAGE_DELAY);
   return json;
 }
 
@@ -4797,6 +4926,9 @@ async function renderMinha(){
     const el = document.getElementById(id);
     if(el) el.addEventListener(evento, () => { minha.f[campo] = el.value; renderMinha(); });
   };
+  const papel = document.getElementById("ret-papel");
+  if(papel) papel.onclick = () => abrirRetratoEmPapel();
+
   liga("m-texto","texto"); liga("m-set","set","change"); liga("m-ordem","ordem","change");
   liga("m-local","local","change");
   const agr = document.getElementById("m-agrupar");
@@ -5178,7 +5310,9 @@ function blocoRetrato(){
 
   return `
   <section class="retrato" id="retrato">
-    <h3 class="grupo-titulo">Retrato da coleção<span>${r.total.toLocaleString("pt-BR")}</span></h3>
+    <h3 class="grupo-titulo">Retrato da coleção<span>${r.total.toLocaleString("pt-BR")}</span>
+      <button class="icon-btn" id="ret-papel" title="folha para seguro, venda ou registro">em papel</button>
+    </h3>
 
     <div class="ret-grade">
       <div class="ret-bloco">
@@ -5398,8 +5532,9 @@ function abrirReportarProblema(){
    discreto quando a versão troca. A lista é escrita à mão de propósito —
    changelog gerado de commit é ruído para quem não programa.
    ===================================================================== */
-const VERSAO = "0.22";
+const VERSAO = "0.23";
 const NOVIDADES = [
+  ["0.23", "Busca pelo nome em português, trazer deck colando a lista de outro app, mão inicial para testar o deck, o que comprar primeiro com teto de gasto, e o retrato da coleção em papel."],
   ["0.22", "Modo mesa em tela cheia, reportar problema, e esta lista de novidades."],
   ["0.21", "O app abre bem mais rápido e ocupa 32% menos espaço. Conferência em massa, busca única (tecla /), retrato da coleção, aviso quando a coleção só existe num aparelho, e na mesa quem perde sai da partida com o relógio parando."],
   ["0.20", "Onde cada carta está guardada, confrontos na mesa, calendário de lançamentos, decklist para imprimir, aviso de reimpressão e cruzamento de trocas."],
@@ -6785,7 +6920,10 @@ function renderDecks(){
         <p>Monte seu deck puxando cartas da sua coleção ou do catálogo inteiro. O app conta os terrenos,
         olha a curva, confere a legalidade e diz o que falta comprar.</p>
       </div>
-      <button class="btn" id="novo-deck">+ Novo deck</button>
+      <div class="pergunta-acoes" style="margin:0">
+        <button class="btn" id="novo-deck">+ Novo deck</button>
+        <button class="btn ghost" id="importar-deck">Colar lista de outro app</button>
+      </div>
     </div>
 
     <div class="abas-deck">
@@ -6797,6 +6935,7 @@ function renderDecks(){
     <div id="deck-conteudo"></div>`;
 
   document.getElementById("novo-deck").onclick = () => novoDeck();
+  document.getElementById("importar-deck").onclick = () => abrirImportarDeck();
   document.querySelector(".abas-deck").onclick = e => {
     const b = e.target.closest("[data-aba]"); if(!b) return;
     deckView.aba = b.dataset.aba; renderDecks();
@@ -6808,7 +6947,8 @@ function renderDecks(){
   const alvo = document.getElementById("deck-conteudo");
   alvo.innerHTML = decks().length === 0
     ? `<div class="empty">Você ainda não tem deck nenhum.<br>
-         Comece pelo <b>+ Novo deck</b>, ou vá em <b>Comandantes mais jogados</b> e crie um deck já com o comandante.</div>`
+         Comece pelo <b>+ Novo deck</b>, cole a lista de um deck que você já tem em outro app,
+         ou vá em <b>Comandantes mais jogados</b> e crie um deck já com o comandante.</div>`
     : `<div class="toolbar" style="margin-bottom:14px">
          <div class="grow"><input type="search" id="busca-deck" placeholder="filtrar por nome…" value="${escapeHTML(deckView.busca)}"></div>
          <select id="filtro-formato" style="width:auto">
@@ -6902,6 +7042,301 @@ function novoDeck(preset = {}){
   };
   const campo = document.getElementById("nd-nome");
   if(campo) campo.focus();
+}
+
+/* =====================================================================
+   TRAZER DECK DE OUTRO APLICATIVO
+
+   Por que COLAR A LISTA e não colar o link: testei as três APIs no
+   navegador — Moxfield, Archidekt e Manabox — e as três recusam a
+   chamada vindo de outra origem (CORS). Um app de um arquivo só, sem
+   servidor, não tem como contornar isso, e fingir que tem daria um
+   botão que falha sempre. Todo site desses tem "copiar lista" a um
+   clique, então o caminho honesto é esse.
+
+   O formato de texto é o mesmo em todos, com pequenas manias:
+
+     4 Lightning Bolt (M10) 146
+     1 Sol Ring *F*            ← Moxfield marca foil assim
+     Sideboard:                ← cabeçalho de seção, com ou sem dois-pontos
+     Commander                 ← idem
+     // comentário             ← Archidekt e MTGGoldfish
+
+   Quantidade sem número vale 1 (tem site que exporta assim), e o nome
+   pode vir em português — a busca já sabe traduzir.
+   ===================================================================== */
+
+const SECOES_DECK = [
+  [/^(commander|comandante|general)\b/i,                    "comandante"],
+  [/^(sideboard|side ?board|reserva|reservas|maybe ?board|considerando|companion)\b/i, "reservas"],
+  [/^(deck|mainboard|main ?deck|principal|cartas)\b/i,      "deck"],
+];
+
+function lerListaDeDeck(texto){
+  const linhas = String(texto || "").split(/\r?\n/);
+  const fora = { deck:[], reservas:[], comandante:[] };
+  let secao = "deck";
+  for(let bruta of linhas){
+    const linha = bruta.trim();
+    if(!linha) continue;
+    if(/^(\/\/|#)/.test(linha)) continue;                 // comentário
+
+    // cabeçalho de seção: uma palavra conhecida, sem quantidade na frente
+    const semDoisPontos = linha.replace(/:$/, "").trim();
+    if(!/^\d/.test(semDoisPontos)){
+      const achou = SECOES_DECK.find(([re]) => re.test(semDoisPontos));
+      if(achou && semDoisPontos.split(/\s+/).length <= 2){ secao = achou[1]; continue; }
+    }
+
+    let resto = linha
+      .replace(/\s*\*[FE]\*\s*$/i, "")                     // marca de foil/etched
+      .replace(/\s*\[[^\]]*\]\s*$/, "")                    // etiqueta do Archidekt
+      .trim();
+
+    let qtd = 1;
+    const m = resto.match(/^(\d+)\s*[xX]?\s+(.*)$/);
+    if(m){ qtd = Math.max(1, Math.min(99, Number(m[1]))); resto = m[2].trim(); }
+
+    // (SET) 123 no fim — a impressão exata, quando o site manda
+    let set = "", num = "";
+    const p = resto.match(/^(.*?)\s*\(([A-Za-z0-9]{2,6})\)\s*([A-Za-z0-9★-]+)?\s*$/);
+    if(p){ resto = p[1].trim(); set = p[2].toLowerCase(); num = (p[3] || "").trim(); }
+
+    const nome = resto.replace(/\s+/g, " ").trim();
+    if(!nome) continue;
+    fora[secao].push({ qtd, nome, set, num });
+  }
+  return fora;
+}
+
+/* o link não dá para ler daqui; a lista dá */
+function pareceLinkDeDeck(t){
+  return /^https?:\/\/(www\.)?(moxfield\.com|archidekt\.com|manabox\.app|tappedout\.net|mtggoldfish\.com|deckstats\.net)/i
+    .test(String(t || "").trim());
+}
+
+function abrirImportarDeck(){
+  modal(`<div class="modal-pad">
+    <h3>Trazer deck de outro aplicativo</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      No Moxfield, Archidekt, Manabox, TappedOut ou MTGGoldfish, abra o deck e use
+      <b>Export</b> ou <b>Copiar lista</b>. Cole aqui embaixo.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 14px">
+      Entendo <code>4 Lightning Bolt (M10) 146</code>, marca de foil, comentários e as seções
+      <b>Commander</b> e <b>Sideboard</b>. Nome em português também serve.</p>
+
+    <label class="field"><span>Nome do deck</span>
+      <input type="text" id="id-nome" placeholder="ex.: Atraxa infinito"></label>
+    <span class="flabel">Formato</span>
+    <div class="formatos">
+      ${FORMATOS.map(f => `<button class="formato ${f.id==="commander"?"on":""}" data-fmt="${f.id}">
+        <b>${f.nome}</b><small>${f.desc}</small></button>`).join("")}
+    </div>
+
+    <label class="field" style="margin-top:14px"><span>A lista</span>
+      <textarea id="id-texto" rows="9" spellcheck="false"
+        placeholder="1 Atraxa, Praetors' Voice&#10;1 Sol Ring&#10;1 Anel Solar&#10;…"></textarea></label>
+
+    <div class="pergunta-acoes" style="margin-top:14px">
+      <button class="btn" id="id-ler">Ler a lista</button>
+      <button class="btn ghost" id="id-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="id-status" style="margin-top:10px"></div>
+    <div id="id-previa"></div>
+  </div>`);
+
+  let formato = "commander";
+  const grade = document.querySelector(".formatos");
+  grade.onclick = e => {
+    const b = e.target.closest(".formato"); if(!b) return;
+    formato = b.dataset.fmt;
+    grade.querySelectorAll(".formato").forEach(x => x.classList.toggle("on", x === b));
+  };
+  document.getElementById("id-cancelar").onclick = closeModal;
+  document.getElementById("id-ler").onclick = () => lerDeckColado(formato);
+  const campo = document.getElementById("id-texto");
+  if(campo) campo.focus();
+}
+
+async function lerDeckColado(formato){
+  const st = document.getElementById("id-status");
+  const previa = document.getElementById("id-previa");
+  const botao = document.getElementById("id-ler");
+  const texto = (document.getElementById("id-texto").value || "").trim();
+  previa.innerHTML = "";
+
+  if(pareceLinkDeDeck(texto)){
+    st.innerHTML = `<span style="color:var(--neg)">Isso é o link, e o link eu não consigo abrir daqui</span>
+      — esses sites não deixam outro aplicativo ler o deck pelo endereço.
+      Abra o deck lá, use <b>Export</b> ou <b>Copiar lista</b>, e cole o texto.`;
+    return;
+  }
+  const partes = lerListaDeDeck(texto);
+  const tudo = partes.comandante.concat(partes.deck, partes.reservas);
+  if(!tudo.length){ st.textContent = "não achei carta nenhuma nesse texto"; return; }
+
+  botao.disabled = true;
+  st.textContent = `procurando ${tudo.length} carta${tudo.length > 1 ? "s" : ""}…`;
+  let porNome;
+  try{
+    porNome = await cartasPorNome(tudo.map(x => x.nome));
+  }catch(e){
+    st.innerHTML = `<span style="color:var(--neg)">não consegui buscar agora</span>`;
+    botao.disabled = false; return;
+  }
+
+  const achar = it => porNome[chaveDeNome(it.nome.split(" // ")[0])] || null;
+  tudo.forEach(it => { it.carta = achar(it); });
+  const faltaram = tudo.filter(it => !it.carta);
+  const entram = partes.deck.filter(it => it.carta).reduce((a, it) => a + it.qtd, 0);
+
+  st.innerHTML = `${entram} carta${entram > 1 ? "s" : ""} no deck` +
+    (partes.reservas.length ? ` · ${partes.reservas.filter(i=>i.carta).length} em reservas` : "") +
+    (partes.comandante.length ? ` · comandante ${escapeHTML((partes.comandante[0].carta || {}).name || partes.comandante[0].nome)}` : "");
+
+  previa.innerHTML = `
+    ${faltaram.length ? `<div class="nota-regiao" style="margin-top:12px">
+      <b>${faltaram.length} não achei</b> e vão ficar de fora:
+      ${faltaram.slice(0, 12).map(it => escapeHTML(it.nome)).join(", ")}${
+        faltaram.length > 12 ? "…" : ""}.
+      Confira se o nome saiu cortado no export.</div>` : ""}
+    <div class="pergunta-acoes" style="margin-top:14px">
+      <button class="btn" id="id-criar">Criar o deck</button>
+    </div>`;
+
+  document.getElementById("id-criar").onclick = () => {
+    const nome = (document.getElementById("id-nome").value || "").trim()
+      || (partes.comandante[0] && partes.comandante[0].carta ? partes.comandante[0].carta.name : "")
+      || "Deck importado";
+    const d = { id:"deck-" + Date.now().toString(36), nome, formato,
+                comandante: null, cartas:[], reservas:[], criado:Date.now() };
+    if(partes.comandante[0] && partes.comandante[0].carta)
+      d.comandante = cartaDeDeck(partes.comandante[0].carta, 1);
+    partes.deck.forEach(it => { if(it.carta) d.cartas.push(cartaDeDeck(it.carta, it.qtd)); });
+    partes.reservas.forEach(it => { if(it.carta) d.reservas.push(cartaDeDeck(it.carta, it.qtd)); });
+    decks().push(d); save(); closeModal();
+    toast(`${d.nome} entrou com ${totalDoDeck(d)} cartas`);
+    go("deck", d.id);
+  };
+  botao.disabled = false;
+}
+
+/* =====================================================================
+   MÃO INICIAL
+
+   O teste mais barato que existe para um deck: embaralhar e olhar sete
+   cartas, várias vezes. Curva alta e mão de terreno nenhum aparecem em
+   três tentativas, e nenhuma conta de "média de mana" mostra isso tão
+   rápido quanto ver a mão.
+
+   Duas decisões:
+
+   · O COMANDANTE NÃO ENTRA no embaralho. Ele começa na zona de comando,
+     e pôr ele no baralho mentiria justamente na estatística que a
+     pessoa está tentando ler.
+   · O mulligan é o de LONDRES, que é a regra em vigor: compra-se sempre
+     sete e devolve-se N para o fundo, sendo N quantos mulligans você
+     tomou. Mostrar seis cartas seria ensinar a regra errada.
+
+   Sem animação e sem embaralho "de verdade": Fisher-Yates com
+   `Math.random`, que é honesto o bastante para ler curva.
+   ===================================================================== */
+
+function baralhoDoDeck(d){
+  const fora = [];
+  (d.cartas || []).forEach(c => {
+    for(let i = 0; i < (c.qtd || 1); i++) fora.push(c);
+  });
+  return fora;
+}
+
+function embaralhar(lista){
+  const a = lista.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const ehTerreno = c => /land/i.test(c.t || "");
+
+let mao = { deckId:null, cartas:[], mulligans:0 };
+
+function comprarMao(d){
+  const baralho = embaralhar(baralhoDoDeck(d));
+  mao.deckId = d.id;
+  mao.cartas = baralho.slice(0, 7);
+  return mao.cartas;
+}
+
+function abrirMaoInicial(d){
+  const baralho = baralhoDoDeck(d);
+  if(baralho.length < 7){
+    toast("o deck ainda não tem sete cartas para comprar");
+    return;
+  }
+  mao = { deckId:d.id, cartas:[], mulligans:0 };
+  comprarMao(d);
+  modal(`<div class="modal-pad">
+    <h3>Mão inicial</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      Sete cartas do seu deck, embaralhado agora. O comandante fica de fora —
+      ele começa na zona de comando.</p>
+    <div id="mao-area"></div>
+    <div class="pergunta-acoes" style="margin-top:16px">
+      <button class="btn" id="mao-nova">Nova mão</button>
+      <button class="btn ghost" id="mao-mulligan">Mulligan</button>
+      <button class="btn ghost" id="mao-fechar">Fechar</button>
+    </div>
+  </div>`);
+
+  const pintar = () => pintarMao(d);
+  document.getElementById("mao-nova").onclick = () => {
+    mao.mulligans = 0; comprarMao(d); pintar();
+  };
+  document.getElementById("mao-mulligan").onclick = () => {
+    mao.mulligans = Math.min(6, mao.mulligans + 1); comprarMao(d); pintar();
+  };
+  document.getElementById("mao-fechar").onclick = closeModal;
+  pintar();
+}
+
+function pintarMao(d){
+  const alvo = document.getElementById("mao-area");
+  if(!alvo) return;
+  const cartas = mao.cartas;
+  const terrenos = cartas.filter(ehTerreno).length;
+  const baralho = baralhoDoDeck(d);
+  const totalTerrenos = baralho.filter(ehTerreno).length;
+  const mv = cartas.filter(c => !ehTerreno(c))
+    .reduce((a, c) => a + (Number(c.mv) || 0), 0);
+  const naoTerrenos = cartas.length - terrenos;
+
+  /* o aviso é sobre a MÃO, não sobre o deck: dizer "poucos terrenos" a
+     quem tirou uma mão ruim de um deck bem montado seria mentira */
+  const recado = terrenos === 0 ? "mão sem terreno nenhum"
+    : terrenos === 1 ? "um terreno só"
+    : terrenos >= 6 ? "quase só terreno"
+    : "";
+
+  alvo.innerHTML = `
+    <div class="mao-cartas">
+      ${cartas.map(c => `
+        <div class="mao-carta ${ehTerreno(c) ? "terreno" : ""}" title="${escapeHTML(c.n)}">
+          ${c.img ? `<img loading="lazy" src="${escapeHTML(c.img)}" alt="${escapeHTML(c.n)}">`
+                  : `<div class="sem-arte">${escapeHTML(c.n)}</div>`}
+        </div>`).join("")}
+    </div>
+    <div class="mao-numeros">
+      <div class="rc"><b>${terrenos}</b><small>terrenos na mão</small></div>
+      <div class="rc"><b>${naoTerrenos ? (mv / naoTerrenos).toFixed(1) : "—"}</b><small>custo médio do resto</small></div>
+      <div class="rc"><b>${totalTerrenos}</b><small>terrenos no deck (${
+        baralho.length ? Math.round(100 * totalTerrenos / baralho.length) : 0}%)</small></div>
+      ${mao.mulligans ? `<div class="rc"><b>${mao.mulligans}</b><small>mulligan${
+        mao.mulligans > 1 ? "s" : ""} — devolva ${mao.mulligans} ao fundo</small></div>` : ""}
+    </div>
+    ${recado ? `<div class="nota-regiao" style="margin-top:12px">${recado} — vale ver mais algumas antes de mexer no deck.</div>` : ""}`;
 }
 
 /* ---------------- view: um deck ---------------- */
@@ -7033,6 +7468,7 @@ function renderDeck(id){
         ${FORMATOS.map(f => `<option value="${f.id}"${d.formato===f.id?" selected":""}>${f.nome}</option>`).join("")}
       </select>
       <div class="grow"></div>
+      <button class="btn ghost" id="deck-mao">Mão inicial</button>
       <button class="btn ghost" id="deck-sugestoes">Sugestões</button>
       <button class="btn ghost" id="deck-compras">O que falta comprar</button>
       <button class="btn ghost" id="deck-texto">Exportar lista</button>
@@ -7063,6 +7499,7 @@ function renderDeck(id){
   const bc = document.getElementById("def-comandante");
   if(bc) bc.onclick = () => buscarParaDeck(d, { comandante:true });
   document.getElementById("deck-formato").onchange = e => { d.formato = e.target.value; save(); renderDeck(d.id); };
+  document.getElementById("deck-mao").onclick = () => abrirMaoInicial(d);
   document.getElementById("deck-sugestoes").onclick = () => abrirSugestoes(d);
   document.getElementById("deck-compras").onclick = () => abrirComprasDoDeck(d);
   document.getElementById("deck-texto").onclick = () => exportarDeck(d);
@@ -8001,6 +8438,138 @@ function abrirFolhaDeTorneio(d){
   };
 }
 
+/* =====================================================================
+   RETRATO DA COLEÇÃO EM PAPEL
+
+   Serve para três coisas que a tela não resolve: pôr no seguro, mandar
+   para quem vai comprar, e ter um registro fora do telefone.
+
+   Reaproveita a mesma mecânica da decklist de torneio — folha em HTML,
+   estilo de impressão, e quem gera o PDF é o navegador. Sem biblioteca e
+   sem servidor, igual no computador e no iPhone.
+
+   Duas escolhas que importam num documento de valor:
+
+   · O valor sai em DUAS colunas — o que você pagou e o que vale hoje —
+     e só quando existe o dado. Um número sozinho, sem dizer de onde
+     veio, não serve para seguro nenhum.
+   · A folha DIZ DE ONDE VEM O PREÇO e em que dia, com todas as letras.
+     É estimativa de mercado do Scryfall, não avaliação. Quem assina um
+     laudo é gente com CNPJ, não um app.
+
+   A lista sai inteira, agrupada por edição — é o formato que qualquer
+   um confere carta na mão, do fichário para a folha.
+   ===================================================================== */
+
+function folhaDaColecao(){
+  const cartas = cartasQueTenho();
+  const total = somaQtd(cartas);
+  const valorHoje = cartas.reduce((a, c) => a + (c.unit || 0) * (c.qtd || 1), 0);
+  const pago = cartas.reduce((a, c) => a + (c.pago || 0) * (c.qtd || 1), 0);
+  const temPago = pago > 0;
+  const dia = new Date().toLocaleDateString("pt-BR");
+  const locais = contagemPorLocal();
+
+  const porSet = new Map();
+  cartas.forEach(c => {
+    const chave = c.set || "—";
+    if(!porSet.has(chave)) porSet.set(chave, { nome:c.setName || chave, itens:[] });
+    porSet.get(chave).itens.push(c);
+  });
+  const secoes = [...porSet.entries()]
+    .map(([code, x]) => ({ code, nome:x.nome,
+      itens:x.itens.sort((a, b) => a.name.localeCompare(b.name)),
+      copias: somaQtd(x.itens),
+      valor: x.itens.reduce((a, c) => a + (c.unit || 0) * (c.qtd || 1), 0) }))
+    .sort((a, b) => b.valor - a.valor);
+
+  /* os totais em número redondo; a linha da carta com centavos, senão
+     uma carta de meio dólar aparece como zero numa folha de seguro */
+  const dinheiro = v => money(v);
+  const dinheiroFino = v => moneyFino(v);
+
+  return `
+  <div class="folha" id="folha-colecao">
+    <div class="folha-cab">
+      <div>
+        <h1>Retrato da coleção</h1>
+        <p>Velvo · ${escapeHTML(dia)}</p>
+      </div>
+      <div class="folha-total">
+        <b>${total.toLocaleString("pt-BR")}</b>
+        <span>cartas</span>
+      </div>
+    </div>
+
+    <div class="folha-campos">
+      <label class="field"><span>Nome</span><input type="text" id="fc-nome" placeholder="quem é o dono"></label>
+      <label class="field"><span>Documento (opcional)</span><input type="text" id="fc-doc" placeholder=""></label>
+      <label class="field"><span>Finalidade</span><input type="text" id="fc-fim" placeholder="ex.: seguro, venda, registro"></label>
+    </div>
+
+    <div class="fc-numeros">
+      <div><b>${cartas.length.toLocaleString("pt-BR")}</b><span>impressões diferentes</span></div>
+      <div><b>${secoes.length}</b><span>edições</span></div>
+      <div><b>${dinheiro(valorHoje)}</b><span>estimativa de mercado hoje</span></div>
+      ${temPago ? `<div><b>${dinheiro(pago)}</b><span>o que você registrou ter pago</span></div>` : ""}
+      ${temPago ? `<div><b>${valorHoje >= pago ? "+" : "−"}${
+        dinheiro(Math.abs(valorHoje - pago))}</b><span>diferença</span></div>` : ""}
+    </div>
+
+    ${locais.length ? `<p class="folha-obs">Onde está guardada: ${
+      locais.map(([l, n]) => `${escapeHTML(l)} (${n})`).join(" · ")}.</p>` : ""}
+
+    <div class="folha-colunas" style="margin-top:14px">
+      ${secoes.map(s => `
+        <section>
+          <h2>${escapeHTML(s.nome)} <span>${s.copias} · ${dinheiro(s.valor)}</span></h2>
+          ${s.itens.map(c => `
+            <div class="folha-linha">
+              <span class="fl-q">${c.qtd || 1}</span>
+              <span class="fl-n">${escapeHTML(c.name)}
+                ${c.num ? `<i>#${escapeHTML(String(c.num))}</i>` : ""}
+                ${c.cond && c.cond !== "NM" ? `<i>${escapeHTML(c.cond)}</i>` : ""}
+                ${c.lang && c.lang !== "en" ? `<i>${escapeHTML(String(c.lang).toUpperCase())}</i>` : ""}</span>
+              <span class="fl-s">${c.unit ? dinheiroFino((c.unit || 0) * (c.qtd || 1)) : "—"}</span>
+            </div>`).join("")}
+        </section>`).join("")}
+    </div>
+
+    <p class="folha-rodape">
+      Os valores são <b>estimativa de mercado</b> lida do Scryfall em ${escapeHTML(dia)}, convertida
+      pelo câmbio do dia quando a moeda não é o dólar, e ajustada pela condição informada em cada
+      carta. Não é avaliação nem laudo: preço de carta muda todo dia e depende de estado, edição e
+      de quem está comprando. Cartas sem preço conhecido aparecem com traço e não entram na soma.
+    </p>
+  </div>`;
+}
+
+function abrirRetratoEmPapel(){
+  if(!Object.keys(S.owned).length){ toast("a coleção está vazia"); return; }
+  modal(`<div class="modal-pad modal-folha">
+    <h3>Retrato da coleção em papel</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Para o seguro, para mandar a quem vai comprar, ou só para ter fora do telefone.
+      No iPhone: <b>Compartilhar → Imprimir</b> e, na tela da impressão, pinçar a miniatura
+      para abrir e <b>Salvar em PDF</b>.</p>
+    ${folhaDaColecao()}
+    <div class="pergunta-acoes nao-imprimir">
+      <button class="btn" id="fc-imprimir">Imprimir / salvar em PDF</button>
+      <button class="btn ghost" id="fc-fechar">Fechar</button>
+    </div>
+  </div>`);
+  document.getElementById("fc-fechar").onclick = closeModal;
+  document.getElementById("fc-imprimir").onclick = () => {
+    ["fc-nome", "fc-doc", "fc-fim"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.setAttribute("value", el.value);
+    });
+    document.body.classList.add("imprimindo");
+    window.print();
+    setTimeout(() => document.body.classList.remove("imprimindo"), 800);
+  };
+}
+
 function exportarDeck(d){
   const linhas = [];
   if(d.comandante) linhas.push(`1 ${d.comandante.n}`, "");
@@ -8199,6 +8768,34 @@ async function cartasPorNome(nomes){
       });
     }catch(e){ break; }
     await sleep(120);
+  }
+
+  /* o que não casou pode estar em português — o /cards/collection só
+     entende nome em inglês. Traduz tudo de uma vez e faz um segundo lote. */
+  const faltando = unicos.filter(n => !fora[chaveDeNome(n.split(" // ")[0])]);
+  if(faltando.length){
+    const traduzidos = await traduzirVarios(faltando.slice(0, 100));
+    const pares = faltando
+      .map(n => [n, traduzidos.get(semAcento(n).trim())])
+      .filter(([, ingles]) => ingles);
+    for(let i = 0; i < pares.length; i += 75){
+      const lote = pares.slice(i, i + 75);
+      try{
+        const r = await fetch(`${API}/cards/collection`, {
+          method:"POST", headers:{ "Content-Type":"application/json", Accept:"application/json" },
+          body: JSON.stringify({ identifiers: lote.map(([, ingles]) => ({ name: ingles })) })
+        });
+        if(!r.ok) break;
+        const j = await r.json();
+        const porIngles = {};
+        (j.data || []).map(normalize).forEach(c => { porIngles[chaveDeNome(c.name)] = c; });
+        lote.forEach(([pt, ingles]) => {
+          const c = porIngles[chaveDeNome(ingles)];
+          if(c) fora[chaveDeNome(pt.split(" // ")[0])] = c;
+        });
+      }catch(e){ break; }
+      await sleep(120);
+    }
   }
   return fora;
 }
@@ -8419,6 +9016,7 @@ function renderChase(){
       </div>
       <div style="display:flex;gap:8px">
         <button class="btn" id="chase-add">+ Adicionar carta</button>
+        <button class="btn ghost" id="chase-comprar">O que comprar primeiro</button>
         <button class="btn ghost" id="chase-grupo">+ Grupo</button>
       </div>
     </div>
@@ -8436,9 +9034,164 @@ function renderChase(){
     <div id="chase-lista"></div>`;
 
   document.getElementById("chase-add").onclick = () => buscarParaChase();
+  document.getElementById("chase-comprar").onclick = () => abrirComprarPrimeiro();
   document.getElementById("chase-grupo").onclick = () => criarGrupoChase();
   pintarChase();
   carregarPrecosDoChase();
+}
+
+/* =====================================================================
+   O QUE COMPRAR PRIMEIRO
+
+   A lista de chase cards responde "o que eu quero". Ela não responde a
+   pergunta que a pessoa faz de verdade na porta da loja: **tenho tanto,
+   compro o quê?**
+
+   Todo dado para responder já está aqui e não precisa de servidor:
+
+     · em quantos DECKS SEUS a carta entra e você ainda não tem — este é
+       o sinal forte: carta que destrava três decks vale mais do que carta
+       que é ideia solta;
+     · o PREÇO ALVO que você mesmo pôs, quando o preço de hoje já bateu;
+     · o que a carta FEZ desde que entrou na lista — subindo, comprar
+       antes custa menos;
+     · REIMPRESSÃO anunciada, que puxa para BAIXO: o robô já acha isso no
+       bulk diário, e comprar na véspera de uma reimpressão é o pior
+       negócio da lista;
+     · e se alguém do app já está VENDENDO a carta.
+
+   A ordem é por quanto a carta destrava, e entre iguais a mais barata
+   primeiro — não por "valor por real", que enche a sacola de carta de
+   um dólar e nunca compra a peça que faltava. Cada linha diz POR QUE
+   está naquela posição, para você discordar com informação.
+
+   O app não vende nada e não recebe nada por isso. É a sua lista.
+   ===================================================================== */
+
+function decksQueUsam(nome){
+  const alvo = semAcento(nome || "");
+  if(!alvo) return [];
+  return decks().filter(d =>
+    cartasDoDeck(d).some(c => semAcento(c.n) === alvo) ||
+    reservasDo(d).some(c => semAcento(c.n) === alvo));
+}
+
+function nomesReimpressos(){
+  return new Set((reimpressoes.linhas || []).map(l => semAcento(l.card_name || "")));
+}
+
+function pontosDeCompra(x, reimpressos, aVenda){
+  const carta = deckParaCarta(x);
+  const p = precoLocal(carta);
+  const agora = p ? p.valor : 0;
+  const motivos = [];
+  let pontos = 0;
+
+  const usam = decksQueUsam(x.n);
+  if(usam.length){
+    pontos += Math.min(9, usam.length * 3);
+    motivos.push(usam.length === 1
+      ? `entra no ${usam[0].nome}`
+      : `entra em ${usam.length} decks seus`);
+  }
+
+  const alvo = Number(x.alvo) || 0;
+  if(alvo && agora && agora <= alvo){ pontos += 2; motivos.push("bateu o seu preço alvo"); }
+
+  const entrada = Number(x.entrada) || 0;
+  if(entrada && agora){
+    const dif = (agora - entrada) / entrada;
+    if(dif > 0.15){ pontos += 2; motivos.push(`subiu ${(dif*100).toFixed(0)}% desde que entrou`); }
+    else if(dif > 0.05){ pontos += 1; motivos.push(`subiu ${(dif*100).toFixed(0)}%`); }
+    else if(dif < -0.10) motivos.push(`caiu ${(Math.abs(dif)*100).toFixed(0)}% — dá para esperar mais`);
+  }
+
+  if(reimpressos.has(semAcento(x.n))){
+    pontos -= 3;
+    motivos.push("tem reimpressão nova — o preço tende a cair");
+  }
+  if(aVenda.has(semAcento(x.n))){ pontos += 1; motivos.push("alguém do app está vendendo"); }
+
+  return { pontos, motivos, preco: agora };
+}
+
+function planoDeCompra(teto){
+  const reimpressos = nomesReimpressos();
+  // chaseNoMercado devolve { anuncio, chase }: o nome que interessa é o da minha carta
+  const aVenda = new Set(chaseNoMercado().map(l => semAcento((l.chase || {}).n || "")));
+  const linhas = (chase().cartas || []).map(x => {
+    const r = pontosDeCompra(x, reimpressos, aVenda);
+    return { x, ...r };
+  }).sort((a, b) => b.pontos - a.pontos || (a.preco || 1e9) - (b.preco || 1e9));
+
+  let gasto = 0;
+  linhas.forEach(l => {
+    l.cabe = false;
+    if(!teto) return;
+    if(l.preco > 0 && gasto + l.preco <= teto){ l.cabe = true; gasto += l.preco; }
+  });
+  return { linhas, gasto };
+}
+
+function abrirComprarPrimeiro(){
+  const guardado = Number(S.tetoCompra) || 0;
+  modal(`<div class="modal-pad">
+    <h3>O que comprar primeiro</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      Diga quanto você tem e eu ordeno a sua lista por <b>quanto cada carta destrava</b> —
+      decks seus que ela completa, preço alvo batido, o que ela fez desde que entrou e
+      reimpressão à vista.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 14px">
+      Cada linha diz por que está onde está. O app não vende nada e não ganha nada com isso.</p>
+    <label class="field"><span>Quanto você tem para gastar (${escapeHTML(regiao().simbolo)})</span>
+      <input type="number" id="cp-teto" min="0" step="10" inputmode="decimal"
+             placeholder="ex.: 300" value="${guardado || ""}"></label>
+    <div class="pergunta-acoes" style="margin-top:12px">
+      <button class="btn" id="cp-ver">Montar a lista</button>
+      <button class="btn ghost" id="cp-fechar">Fechar</button>
+    </div>
+    <div id="cp-saida"></div>
+  </div>`);
+
+  const ver = () => {
+    const teto = Math.max(0, Number(document.getElementById("cp-teto").value) || 0);
+    S.tetoCompra = teto; save();
+    pintarComprarPrimeiro(teto);
+  };
+  document.getElementById("cp-ver").onclick = ver;
+  document.getElementById("cp-fechar").onclick = closeModal;
+  document.getElementById("cp-teto").onkeydown = e => { if(e.key === "Enter") ver(); };
+  if(guardado) ver();
+}
+
+function pintarComprarPrimeiro(teto){
+  const alvo = document.getElementById("cp-saida");
+  if(!alvo) return;
+  const { linhas, gasto } = planoDeCompra(teto);
+  if(!linhas.length){
+    alvo.innerHTML = `<div class="empty" style="margin-top:14px">
+      A sua lista de chase cards está vazia — não há o que ordenar ainda.</div>`;
+    return;
+  }
+  const simbolo = regiao().simbolo;
+  const cabem = linhas.filter(l => l.cabe);
+  const linha = (l, i) => `
+    <div class="cp-linha ${l.cabe ? "cabe" : ""}">
+      <span class="cp-pos">${i + 1}</span>
+      ${l.x.img ? `<img class="dl-img" loading="lazy" src="${escapeHTML(l.x.img)}" alt="">` : `<span class="mv-sem"></span>`}
+      <span class="dl-nome">${escapeHTML(l.x.n)}
+        <small>${l.motivos.length ? escapeHTML(l.motivos.join(" · ")) : "só na lista, sem deck seu usando"}</small></span>
+      <span class="cp-preco">${l.preco ? formatarPreco({valor:l.preco, simbolo}) : "—"}</span>
+    </div>`;
+
+  alvo.innerHTML = `
+    ${teto ? `<div class="nota-regiao" style="margin-top:14px">
+      <b>${cabem.length} carta${cabem.length === 1 ? "" : "s"} cabem em ${
+        formatarPreco({valor:teto, simbolo})}</b> — dá
+      ${formatarPreco({valor:gasto, simbolo})}, sobram ${
+        formatarPreco({valor:Math.max(0, teto - gasto), simbolo})}.
+      O que fica de fora continua na lista, na ordem.</div>` : ""}
+    <div class="cp-lista">${linhas.map(linha).join("")}</div>`;
 }
 
 function pintarChase(){
@@ -13303,7 +14056,25 @@ async function casarComOScryfall(itens, aoAndar){
     if(aoAndar) aoAndar(Math.min(i + 75, itens.length), itens.length);
     await sleep(PAGE_DELAY);
   }
-  return { casadas: itens.filter(it => it.carta), naoAchadas };
+
+  /* Última tentativa: nome em português. Export de app brasileiro sai com
+     o nome impresso na carta, e o /cards/collection só entende inglês.
+     Vai em lote, não uma a uma — uma coleção grande travaria a tela. */
+  const restam = naoAchadas.filter(it => it.nome && !it.carta);
+  if(restam.length){
+    const traduzidos = await traduzirVarios(restam.map(it => it.nome).slice(0, 200));
+    const comIngles = restam
+      .map(it => [it, traduzidos.get(semAcento(it.nome).trim())])
+      .filter(([, ingles]) => ingles);
+    const achadas2 = await cartasPorNome(comIngles.map(([, ingles]) => ingles));
+    comIngles.forEach(([it, ingles]) => {
+      const c = achadas2[chaveDeNome(ingles)];
+      if(c){ it.carta = c; it.viaPortugues = true; }
+    });
+  }
+
+  return { casadas: itens.filter(it => it.carta),
+           naoAchadas: naoAchadas.filter(it => !it.carta) };
 }
 
 function abrirImportar(){
