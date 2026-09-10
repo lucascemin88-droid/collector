@@ -246,6 +246,53 @@
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
     letter-spacing:.09em;color:var(--accent);margin-bottom:9px}
+  /* ---------------- modo mesa ---------------- */
+  body.em-mesa{overflow:hidden}
+  #modo-mesa{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;
+    flex-direction:column;padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom))}
+  .mm-topo{display:flex;gap:8px;justify-content:space-between;padding:0 2px 8px}
+  .mm-btn{min-height:44px;padding:10px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:600;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--text-2);cursor:pointer}
+  .mm-btn:hover{border-color:var(--line-strong);color:var(--text)}
+  .mm-grade{flex:1;display:grid;gap:8px;min-height:0;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .mm-grade[style*="--n:2"]{grid-template-columns:1fr}
+  .mm-jog{position:relative;border-radius:var(--r-lg);background:var(--surface-1);
+    border:1px solid var(--line);overflow:hidden;min-height:0;display:grid;place-items:center}
+  .mm-jog.na-vez{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent-line)}
+  .mm-jog.fora{opacity:.45}
+  .mm-metade{position:absolute;left:0;right:0;height:50%;background:transparent;border:0;
+    cursor:pointer;z-index:2}
+  .mm-mais{top:0} .mm-menos{bottom:0}
+  .mm-metade:active{background:rgba(255,255,255,.05)}
+  /* acima das metades de toque, mas transparente ao dedo: só o relógio
+     recebe clique, o resto atravessa e vira somar/tirar vida */
+  .mm-conteudo{position:relative;z-index:4;display:grid;justify-items:center;gap:2px;
+    pointer-events:none;padding:8px;text-align:center}
+  .mm-nome{font-size:13px;color:var(--text-2);max-width:100%;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .mm-vida{font-family:var(--font-mono,ui-monospace,monospace);font-size:clamp(40px,11vh,84px);
+    font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+  .mm-rel{pointer-events:auto;cursor:pointer;font-family:var(--font-mono,ui-monospace,monospace);
+    font-size:13px;color:var(--text-3);padding:6px 12px;min-height:32px;border-radius:8px;
+    border:1px solid var(--line);z-index:3;position:relative}
+  .mm-jog.na-vez .mm-rel{color:var(--accent);border-color:var(--accent-line)}
+  .mm-fora{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--neg)}
+  .mm-extra{font-size:12px;color:var(--text-3)}
+  .mm-fim{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+    padding:12px 8px 4px}
+  .mm-fim b{font-size:17px;color:var(--accent)}
+
+  /* ---------------- novidades e diagnóstico ---------------- */
+  .novidades{display:flex;flex-direction:column;gap:10px;max-height:50vh;overflow:auto}
+  .nov-linha{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:baseline}
+  .nov-linha b{font-family:var(--font-mono,ui-monospace,monospace);font-size:12px;color:var(--accent)}
+  .nov-linha span{font-size:13px;line-height:1.55;color:var(--text-2)}
+  .pr-diag{margin:0 0 14px;padding:12px 14px;border-radius:var(--r-sm);background:var(--surface-2);
+    border:1px solid var(--line);font-family:ui-monospace,Menlo,monospace;font-size:11px;
+    line-height:1.55;color:var(--text-2);white-space:pre-wrap;word-break:break-word;
+    max-height:220px;overflow:auto}
+
   /* ---------------- primeira abertura ---------------- */
   .primeira{max-width:620px}
   .pa-opcoes{display:grid;gap:10px}
@@ -1517,6 +1564,38 @@
     .cards{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
     .kpis{gap:12px}
   }
+  /* =====================================================================
+     ALVO DE TOQUE NO TELEFONE
+
+     Medido: os botões de navegação e os filtros ficavam entre 33 e 38 px
+     de altura. Funciona com mouse e erra com o dedo — a régua de fato é
+     44 px, e a diferença aparece justamente em pé, na loja, com uma mão
+     só.
+
+     A regra vale só onde o ponteiro é grosso (`pointer: coarse`): no
+     desktop, engordar tudo faria caber menos coisa na tela sem ninguém
+     ganhar precisão. Os botões pequenos que moram DENTRO de uma carta ou
+     de uma linha de deck ficam em 40 px: 44 ali empurraria a arte da
+     carta para fora.
+     ===================================================================== */
+  @media (pointer: coarse){
+    .icon-btn,.tog,.tab,.master,.btn,.seg button,
+    .set-chip,.op,.acab,.ex,.ano,.vacab{min-height:44px}
+    .dl-menos,.dl-mais,.dl-versao,.dl-info,.dl-fora,.dl-mover,
+    .qtd-menos,.qtd-mais,.qtd-num,.partida-x,.pv-chip{
+      min-height:40px;min-width:40px}
+    /* os do contador de vida são apertados o tempo todo, mas são cinco
+       numa linha só: altura cheia, largura o que couber */
+    .pv-menos,.pv-mais{min-height:40px;min-width:34px}
+    .card .info,.card .tirar-carta,.card .quero-carta{min-width:36px;min-height:36px}
+    .rel-jog,.res-linha button,.conf-op,.bt-item{min-height:44px}
+    /* campo de texto: o teclado do iPhone dá zoom quando a fonte é menor
+       que 16px, e o zoom desloca a tela inteira */
+    input[type=text],input[type=search],input[type=number],input[type=email],select,textarea{
+      font-size:16px;min-height:44px}
+    input[type=checkbox],input[type=radio]{width:20px;height:20px}
+    .check{min-height:40px}
+  }
 </style>
 </head>
 <body>
@@ -2395,7 +2474,12 @@ function pintarNav(){
   barra.querySelectorAll("[data-view]").forEach(b => b.onclick = () => go(b.dataset.view));
 }
 
-function go(name,id){ view={name,id}; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+function go(name,id){
+  view={name,id};
+  if(typeof anotarPasso === "function") anotarPasso("abriu " + name + (id ? " " + id : ""));
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
 function render(){
   pintarNav(); renderKPIs();
@@ -2985,6 +3069,15 @@ function renderConfig(){
       importação daqui também entende. O que é seu vai embora com você quando quiser.</p>
     </section>
 
+    <section class="bloco-cfg">
+      <h3>Sobre</h3>
+      <div class="kv"><span>Versão</span><b>${VERSAO}</b></div>
+      <div class="pergunta-acoes">
+        <button class="btn ghost" id="cfg-novidades">O que mudou nas últimas versões</button>
+        <button class="btn ghost" id="cfg-problema">Reportar um problema</button>
+      </div>
+    </section>
+
     <p class="status">Velvo é conteúdo de fã não oficial, permitido pela Fan Content Policy. Não aprovado nem endossado pela Wizards. Parte do material usado é propriedade da Wizards of the Coast. ©Wizards of the Coast LLC. Cartas e preços do Scryfall.</p>`;
 
   document.getElementById("cfg-conta").onclick = abrirConta;
@@ -2995,6 +3088,8 @@ function renderConfig(){
   document.getElementById("cfg-backup").onclick = abrirBackup;
   document.getElementById("cfg-importar").onclick = abrirImportar;
   document.getElementById("cfg-exportar").onclick = exportarColecao;
+  document.getElementById("cfg-novidades").onclick = () => abrirNovidades(true);
+  document.getElementById("cfg-problema").onclick = abrirReportarProblema;
 
   app.querySelectorAll("[data-tema]").forEach(b => b.onclick = () => {
     S.config.tema = b.dataset.tema; save();
@@ -5084,6 +5179,169 @@ function blocoRetrato(){
    aparece para quem já tem carta marcada — quem já usa o app não precisa
    ser apresentado a ele.
    ===================================================================== */
+/* =====================================================================
+   REPORTAR PROBLEMA
+
+   Sem isto, quando o app quebra no telefone de outra pessoa ela vê um
+   aviso e desiste — e ninguém fica sabendo. Aqui o app guarda os
+   últimos erros e os últimos passos e monta um relato pronto.
+
+   Duas regras que definem o que entra:
+
+   - É DIAGNÓSTICO, não conteúdo. Vai a versão, a tela, quantas cartas
+     você tem, o que o navegador diz de si mesmo, os últimos erros e os
+     últimos passos. **A coleção não vai** — nem nome de carta, nem preço
+     pago, nem onde a carta está guardada, nem o seu e-mail.
+   - O TEXTO INTEIRO APARECE ANTES DE ENVIAR. Se a pessoa não pode ler o
+     que está mandando, ela não está escolhendo mandar.
+
+   Os passos são só nomes de tela e de ação ("abriu deck", "salvou
+   anúncio") — nunca o que foi digitado.
+   ===================================================================== */
+const DIARIO = { erros:[], passos:[] };
+
+function anotarPasso(o_que){
+  DIARIO.passos.push({ q:String(o_que).slice(0, 60), em:new Date().toISOString().slice(11, 19) });
+  if(DIARIO.passos.length > 20) DIARIO.passos.shift();
+}
+function anotarErro(msg, origem){
+  DIARIO.erros.push({ msg:String(msg || "").slice(0, 240), de:String(origem || "").slice(0, 80),
+                      em:new Date().toISOString().slice(11, 19) });
+  if(DIARIO.erros.length > 8) DIARIO.erros.shift();
+}
+addEventListener("error", e => anotarErro(e.message, (e.filename || "") + ":" + (e.lineno || "")));
+addEventListener("unhandledrejection", e =>
+  anotarErro((e.reason && (e.reason.message || e.reason)) || "promessa rejeitada", "promessa"));
+
+function diagnostico(descricao){
+  return {
+    versao: VERSAO,
+    tela: view.name || "?",
+    navegador: navigator.userAgent,
+    instalado: ehAppInstalado(),
+    cartas: ownedCount(),
+    decks: (S.decks || []).length,
+    logado: logado(),
+    descricao: descricao || "",
+    erros: DIARIO.erros,
+    passos: DIARIO.passos,
+  };
+}
+function diagnosticoEmTexto(d){
+  return [
+    `Velvo ${d.versao} — ${d.instalado ? "aplicativo instalado" : "aba do navegador"}`,
+    `tela: ${d.tela} · cartas: ${d.cartas} · decks: ${d.decks} · conta: ${d.logado ? "sim" : "não"}`,
+    `navegador: ${d.navegador}`,
+    d.descricao ? `\no que aconteceu: ${d.descricao}` : "",
+    d.erros.length ? "\núltimos erros:\n" + d.erros.map(e => `  ${e.em} ${e.msg}${e.de ? ` (${e.de})` : ""}`).join("\n") : "\nnenhum erro registrado",
+    d.passos.length ? "\núltimos passos:\n" + d.passos.map(p => `  ${p.em} ${p.q}`).join("\n") : "",
+  ].filter(Boolean).join("\n");
+}
+
+function abrirReportarProblema(){
+  const monta = () => diagnostico(document.getElementById("pr-desc") ?
+    document.getElementById("pr-desc").value.trim() : "");
+
+  modal(`<div class="modal-pad">
+    <h3>Reportar um problema</h3>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 14px">
+      Descreva o que aconteceu. Junto vai um diagnóstico técnico — que você lê inteiro aqui embaixo
+      antes de mandar.</p>
+
+    <label class="field"><span>O que aconteceu</span>
+      <input type="text" id="pr-desc" maxlength="300"
+             placeholder="ex.: sumiu tudo depois que troquei de tema"></label>
+
+    <span class="flabel" style="margin-top:14px">O que vai junto</span>
+    <pre class="pr-diag" id="pr-diag">${escapeHTML(diagnosticoEmTexto(diagnostico("")))}</pre>
+
+    <div class="nota-regiao">
+      <b>A sua coleção não vai.</b> Nem nome de carta, nem quanto você pagou, nem onde a carta está
+      guardada, nem o seu e-mail. Só o que está escrito aí em cima — e os "passos" são nomes de tela,
+      nunca o que você digitou.
+    </div>
+
+    <div class="pergunta-acoes">
+      <button class="btn" id="pr-enviar">Enviar</button>
+      <button class="btn ghost" id="pr-copiar">Copiar em vez de enviar</button>
+      <button class="btn ghost" id="pr-cancelar">Cancelar</button>
+    </div>
+    <div class="status" id="pr-status"></div>
+  </div>`);
+
+  const desc = document.getElementById("pr-desc");
+  const diag = document.getElementById("pr-diag");
+  desc.oninput = () => { diag.textContent = diagnosticoEmTexto(monta()); };
+  desc.focus();
+
+  document.getElementById("pr-cancelar").onclick = closeModal;
+  document.getElementById("pr-copiar").onclick = () => {
+    const t = document.createElement("textarea");
+    t.value = diagnosticoEmTexto(monta());
+    document.body.appendChild(t); t.select();
+    try{ document.execCommand("copy"); toast("copiado — cole onde quiser"); }catch(e){}
+    t.remove();
+  };
+  document.getElementById("pr-enviar").onclick = async () => {
+    const st = document.getElementById("pr-status");
+    st.textContent = "enviando…";
+    try{
+      await rpc("problem_report", { p_dados: monta() });
+      closeModal();
+      toast("relato enviado — obrigado");
+    }catch(e){
+      st.innerHTML = `não consegui enviar: ${escapeHTML(e.message)}.
+        <b>Use "copiar"</b> e mande o texto por outro caminho.`;
+    }
+  };
+}
+
+/* =====================================================================
+   VERSÃO E NOVIDADES
+
+   O app é publicado várias vezes por semana e quem usa não faz ideia do
+   que apareceu. Pior: quando alguém escreve dizendo que algo quebrou,
+   não dá para perguntar "qual versão?" se não existe versão nenhuma.
+
+   Então: um número visível, uma lista curta do que mudou, e um aviso
+   discreto quando a versão troca. A lista é escrita à mão de propósito —
+   changelog gerado de commit é ruído para quem não programa.
+   ===================================================================== */
+const VERSAO = "0.22";
+const NOVIDADES = [
+  ["0.22", "Modo mesa em tela cheia, reportar problema, e esta lista de novidades."],
+  ["0.21", "O app abre bem mais rápido e ocupa 32% menos espaço. Conferência em massa, busca única (tecla /), retrato da coleção, aviso quando a coleção só existe num aparelho, e na mesa quem perde sai da partida com o relógio parando."],
+  ["0.20", "Onde cada carta está guardada, confrontos na mesa, calendário de lançamentos, decklist para imprimir, aviso de reimpressão e cruzamento de trocas."],
+  ["0.19", "Sugestão de preço no mercado, relógio dos jogadores, pontuação do grupo e reservas no deck."],
+  ["0.18", "Ficha do deck com bracket, cartas graduadas, mercado de anúncios e importação de CSV."],
+];
+
+function novidadesNaoVistas(){
+  const visto = S.config.versaoVista;
+  if(!visto) return [];                    // primeira vez: a primeira abertura já fala
+  if(visto === VERSAO) return [];
+  const i = NOVIDADES.findIndex(x => x[0] === visto);
+  return i < 0 ? NOVIDADES.slice(0, 1) : NOVIDADES.slice(0, i);
+}
+
+function abrirNovidades(todas){
+  const lista = todas ? NOVIDADES : novidadesNaoVistas();
+  modal(`<div class="modal-pad">
+    <h3>${todas ? "Novidades" : "O que mudou desde a última vez"}</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+      Você está na versão <b>${VERSAO}</b>.</p>
+    <div class="novidades">
+      ${(lista.length ? lista : NOVIDADES).map(([v, txt]) => `
+        <div class="nov-linha"><b>${escapeHTML(v)}</b><span>${escapeHTML(txt)}</span></div>`).join("")}
+    </div>
+    <div class="pergunta-acoes"><button class="btn" id="nv-ok">Entendi</button></div>
+  </div>`);
+  document.getElementById("nv-ok").onclick = () => {
+    S.config.versaoVista = VERSAO; save();
+    closeModal();
+  };
+}
+
 function precisaDaPrimeiraAbertura(){
   if(S.config.jaEntrou) return false;
   if(ownedCount() > 0) return false;         // veio de backup ou de outra conta
@@ -5092,6 +5350,7 @@ function precisaDaPrimeiraAbertura(){
 }
 function marcarPrimeiraAberturaVista(){
   S.config.jaEntrou = Date.now();
+  S.config.versaoVista = VERSAO;   // quem chega agora não precisa ler o histórico
   salvarAgora();
 }
 
@@ -9380,6 +9639,7 @@ function blocoFerramentas(){
       <div class="ferr-topo">
         <span class="flabel" style="margin:0">Contador de vida</span>
         <div class="ferr-acoes">
+          <button class="btn" id="vida-mesa">Modo mesa</button>
           <select id="vida-formato" style="width:auto">
             <option value="commander"${vida.formato==="commander"?" selected":""}>Commander — 40</option>
             <option value="normal"${vida.formato==="normal"?" selected":""}>Constructed — 20</option>
@@ -9462,6 +9722,146 @@ function blocoFerramentas(){
   </div>`;
 }
 
+/* =====================================================================
+   MODO MESA
+
+   As ferramentas de partida existiam dentro da mesma tela do resto:
+   cabeçalho, navegação, rolagem, letra de leitura. Só que o celular no
+   meio da mesa é usado de longe, de lado, com a mão suja de sleeve — e
+   ninguém quer rolar a página para achar a vida do oponente.
+
+   Aqui a tela vira só isto: vida grande, relógio grande, nada mais.
+   Quatro escolhas que vêm do uso e não da estética:
+
+   - SEM ROLAGEM. Os painéis se dividem no espaço que existe; com seis
+     jogadores eles encolhem, mas continuam todos visíveis.
+   - TOQUE GRANDE. Metade de cima do painel soma, metade de baixo tira —
+     alvo do tamanho de meio painel, que se acerta sem olhar.
+   - A TELA NÃO APAGA enquanto o modo está aberto, quando o navegador
+     deixa (Wake Lock). Partida de Commander passa de uma hora.
+   - SAIR É EXPLÍCITO, num canto, para ninguém cair fora no meio da
+     partida com um toque errado.
+
+   O estado é o mesmo do contador normal: `vida`, `relogio`, `mortos`.
+   Quem entra e sai do modo não perde nada.
+   ===================================================================== */
+let modoMesa = { ligado:false, luz:null };
+
+async function segurarATela(){
+  try{
+    if("wakeLock" in navigator && !modoMesa.luz)
+      modoMesa.luz = await navigator.wakeLock.request("screen");
+  }catch(e){}
+}
+function soltarATela(){
+  try{ if(modoMesa.luz){ modoMesa.luz.release(); modoMesa.luz = null; } }catch(e){}
+}
+
+function abrirModoMesa(){
+  garantirJogadores();
+  modoMesa.ligado = true;
+  document.body.classList.add("em-mesa");
+  segurarATela();
+  const raiz = document.createElement("div");
+  raiz.id = "modo-mesa";
+  document.body.appendChild(raiz);
+  pintarModoMesa();
+  /* a tela volta a segurar quando o app volta do segundo plano */
+  addEventListener("visibilitychange", aoVoltarParaAMesa);
+}
+function aoVoltarParaAMesa(){
+  if(modoMesa.ligado && !document.hidden) segurarATela();
+}
+function fecharModoMesa(){
+  modoMesa.ligado = false;
+  document.body.classList.remove("em-mesa");
+  soltarATela();
+  removeEventListener("visibilitychange", aoVoltarParaAMesa);
+  const el = document.getElementById("modo-mesa");
+  if(el) el.remove();
+  if(view.name === "mesa") renderMesa();
+}
+
+function pintarModoMesa(){
+  const raiz = document.getElementById("modo-mesa");
+  if(!raiz) return;
+  conferirMortes();
+  const js = vida.jogadores;
+  const vivos = js.filter(j => !estaMorto(j));
+  const acabou = js.length > 1 && vivos.length <= 1;
+
+  raiz.innerHTML = `
+    <div class="mm-topo">
+      <button class="mm-btn" data-mm="sair">✕ sair</button>
+      <button class="mm-btn" data-mm="vez">passar a vez</button>
+      <button class="mm-btn" data-mm="recomecar">recomeçar</button>
+    </div>
+
+    <div class="mm-grade" style="--n:${js.length}">
+      ${js.map(j => {
+        const fora = estaMorto(j);
+        return `<div class="mm-jog ${fora ? "fora" : ""} ${relogio.atual === j.id ? "na-vez" : ""}"
+                     data-j="${j.id}">
+          <button class="mm-metade mm-mais" data-mais="${j.id}" aria-label="somar vida de ${escapeHTML(j.nome)}"></button>
+          <button class="mm-metade mm-menos" data-menos="${j.id}" aria-label="tirar vida de ${escapeHTML(j.nome)}"></button>
+          <div class="mm-conteudo">
+            <span class="mm-nome">${escapeHTML(j.nome)}</span>
+            <b class="mm-vida">${j.vida}</b>
+            <span class="mm-rel" data-vez="${j.id}">${relSinal(relMostrar(j.id))}</span>
+            ${fora ? `<span class="mm-fora">fora da partida</span>` : ""}
+            ${j.veneno ? `<span class="mm-extra">☠ ${j.veneno}</span>` : ""}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    ${acabou ? `<div class="mm-fim">
+      <b>${escapeHTML((vivos[0] || {}).nome || "—")} venceu</b>
+      <button class="mm-btn" data-mm="resultado">ver o resultado e registrar</button>
+    </div>` : ""}`;
+
+  raiz.onclick = e => {
+    const b = e.target.closest("[data-mm],[data-mais],[data-menos],[data-vez]");
+    if(!b) return;
+    if(b.dataset.mais || b.dataset.menos){
+      const id = b.dataset.mais || b.dataset.menos;
+      const j = vida.jogadores.find(x => x.id === id);
+      if(!j) return;
+      j.vida += b.dataset.mais ? 1 : -1;
+      pintarModoMesa();
+      return;
+    }
+    if(b.dataset.vez){ relDarAVez(b.dataset.vez); pintarModoMesa(); return; }
+    const acao = b.dataset.mm;
+    if(acao === "sair") fecharModoMesa();
+    else if(acao === "vez"){ relProximo(); pintarModoMesa(); }
+    else if(acao === "recomecar"){
+      vida.jogadores.forEach(j => { j.vida = vidaInicial(); j.veneno = 0; j.cmd = {}; });
+      vida.mortos = []; relZerar(); pintarModoMesa();
+    }
+    else if(acao === "resultado"){
+      fecharModoMesa();
+      go("mesa");
+      mesaView.aba = "ferramentas";
+      setTimeout(() => {
+        const el = document.getElementById("resultado-mesa");
+        if(el) el.scrollIntoView({ behavior:"smooth", block:"center" });
+      }, 400);
+    }
+  };
+
+  /* o relógio anda sozinho: só o número muda, sem refazer a tela */
+  clearInterval(modoMesa.timer);
+  modoMesa.timer = setInterval(() => {
+    const raiz = document.getElementById("modo-mesa");
+    if(!raiz){ clearInterval(modoMesa.timer); return; }
+    vida.jogadores.forEach(j => {
+      const el = raiz.querySelector(`[data-vez="${j.id}"]`);
+      if(el) el.textContent = relSinal(relMostrar(j.id));
+    });
+  }, 500);
+}
+
 function painelDeVida(j){
   const perigo = j.vida <= 5 || j.veneno >= 10 || Object.values(j.cmd).some(v => v >= 21);
   const morto = estaMorto(j);
@@ -9520,6 +9920,8 @@ function ligarFerramentas(){
     vida.jogadores.forEach(j => { j.vida = vidaInicial(); j.veneno = 0; j.cmd = {}; });
     repintarVidas();
   };
+  const bmm = document.getElementById("vida-mesa");
+  if(bmm) bmm.onclick = abrirModoMesa;
   const add = document.getElementById("vida-add");
   if(add) add.onclick = () => {
     vida.jogadores.push(novoJogadorDeVida("Jogador " + (vida.jogadores.length + 1)));
@@ -13696,6 +14098,8 @@ render();
 /* a primeira abertura vem depois da tela pintada, para a pessoa ver o app
    por trás e entender que ela está entrando em algo, não sendo barrada */
 if(precisaDaPrimeiraAbertura()) setTimeout(abrirPrimeiraAbertura, 500);
+else if(novidadesNaoVistas().length) setTimeout(() => abrirNovidades(false), 800);
+else if(!S.config.versaoVista){ S.config.versaoVista = VERSAO; save(); }
 </script>
 </body>
 </html>
