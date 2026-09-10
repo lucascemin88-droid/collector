@@ -743,6 +743,27 @@
   .progress-num{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
   .progress-num b{color:var(--gold);font-family:var(--font-mono);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
 
+  /* ---- a gema que enche ----
+     A marca não é enfeite no canto: numa coleção, ela É o medidor. A pedra
+     enche da culaça (o bico, embaixo) para a mesa (a face de cima) conforme
+     a coleção fecha, e ao fechar troca o ouro pelo jade — o mesmo jade da
+     carta que você já tem. Barra continua existindo para lista; a gema é
+     para UMA coleção. */
+  /* a gema e os números andam juntos; sem isto o cabeçalho estica os dois
+     para as pontas opostas da tela e some a relação entre eles */
+  .progress-wrap.medidor{flex:0 1 auto;min-width:0}
+  .medidor{display:flex;align-items:center;gap:14px}
+  .medidor .medidor-txt{flex:0 1 auto;min-width:230px}
+  .medidor .progress-num{gap:12px}
+  .gema-med{flex:none;display:block}
+  .gema-med .gm-pedra{fill:var(--surface2)}
+  .gema-med .gm-cheio{fill:var(--gold);transition:y .45s ease,height .45s ease}
+  .gema-med .gm-fios{fill:none;stroke:var(--bg);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .gema-med .gm-borda{fill:none;stroke:var(--line2);stroke-width:1.5;stroke-linejoin:round}
+  .gema-med.cheia .gm-cheio{fill:var(--pos)}
+  .gema-med.cheia .gm-borda{stroke:var(--pos)}
+  @media (prefers-reduced-motion: reduce){ .gema-med .gm-cheio{transition:none} }
+
   .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
   .toolbar .grow{flex:1;min-width:200px}
   .seg{display:flex;background:var(--surface);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
@@ -759,12 +780,21 @@
     content-visibility:auto;contain-intrinsic-size:auto 230px;
   }
   .card img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity var(--t-base)}
-  /* o que você não tem vira fantasma limpo, não cinza lamacento */
-  .card:not(.owned) img{filter:grayscale(1) contrast(.92);opacity:.45}
+  /* Os quatro estados da carta, e por que cada cor:
+       tenho    → jade, a mesma cor de "fechou" no resto do app
+       falta    → fantasma limpo a 42%, não cinza lamacento
+       caçando  → brasa: é urgência, não conquista, e não disputa com o ouro
+       repetida → pastilha de ouro, porque repetida é valor que dá para trocar
+     Ouro fica reservado a ação e valor — um por tela. */
+  .card:not(.owned) img{filter:grayscale(1) contrast(.92);opacity:.42}
   .card.owned{box-shadow:0 0 0 1.5px rgba(79,191,139,.55)}
+  .card.chase{box-shadow:0 0 0 1.5px rgba(228,96,58,.5)}
+  /* meio caminho: some o cinza, mas continua sendo carta que falta */
+  .card.chase img{filter:grayscale(.55) contrast(.95);opacity:.66}
   @media (hover:hover){
     .card:hover{transform:scale(1.035);z-index:2;box-shadow:0 0 0 1px var(--line-strong),0 12px 28px -10px rgba(0,0,0,.8)}
     .card.owned:hover{box-shadow:0 0 0 2px var(--pos),0 12px 28px -10px rgba(0,0,0,.8)}
+    .card.chase:hover{box-shadow:0 0 0 2px var(--ember),0 12px 28px -10px rgba(0,0,0,.8)}
     .card:hover img{filter:none;opacity:1}
   }
   .card .tick{
@@ -788,8 +818,8 @@
     backdrop-filter:blur(4px);opacity:0;transition:opacity var(--t-fast),color var(--t-fast);
   }
   .card:hover .quero-carta,.card:focus-within .quero-carta,.card .quero-carta.na-lista{opacity:1}
-  .card .quero-carta:hover{color:var(--accent);border-color:var(--accent-line)}
-  .card .quero-carta.na-lista{color:var(--accent);border-color:var(--accent-line)}
+  .card .quero-carta:hover{color:var(--ember);border-color:rgba(228,96,58,.45)}
+  .card .quero-carta.na-lista{color:var(--ember);border-color:rgba(228,96,58,.45)}
   @media (hover:none){ .card .quero-carta{opacity:1} }
   .card .tirar-carta{
     position:absolute;left:7px;bottom:30px;z-index:3;width:24px;height:24px;border-radius:50%;
@@ -896,9 +926,11 @@
     display:flex;flex-direction:column;justify-content:center;
   }
   .grafico-topo{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--faint);margin-bottom:2px}
-  .grafico-topo b{font-size:12.5px;font-variant-numeric:tabular-nums}
+  .grafico-topo b{font-family:var(--font-mono);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
   .grafico-topo .sobe{color:var(--green)}
   .grafico-topo .desce{color:var(--red)}
+  /* o absoluto anda junto da porcentagem, um degrau abaixo na hierarquia */
+  .grafico-topo .grafico-abs{color:var(--faint);font-weight:400}
   .spark{width:100%;height:54px;display:block}
   .carregando{font-size:11.5px;color:var(--faint);text-align:center;line-height:1.45}
 
@@ -1636,7 +1668,7 @@
 
 const API = "https://api.scryfall.com";
 
-/* O banco do Collector. Esta chave é publicável por natureza: quem protege os
+/* O banco do Velvo. Esta chave é publicável por natureza: quem protege os
    dados é a regra do banco, não o segredo da chave — com ela é possível ler o
    catálogo e o histórico de preço, e nada da coleção de ninguém. */
 const SUPA_URL = "https://elkavicjupjcwrdgossx.supabase.co";
@@ -2396,6 +2428,19 @@ function money(v){
   if(r.moeda === "BRL" && CAMBIO && CAMBIO.usd){ valor = v * CAMBIO.usd; simbolo = "R$"; }
   else if(r.moeda === "EUR" && CAMBIO && CAMBIO.eur && CAMBIO.usd){ valor = v * (CAMBIO.eur ? CAMBIO.usd/CAMBIO.eur : 1); simbolo = "€"; }
   return simbolo + " " + valor.toLocaleString("pt-BR",{maximumFractionDigits:0});
+}
+
+/* O mesmo dinheiro, com centavos quando o número é pequeno. `money` arredonda
+   para inteiro, o que serve para o valor da coleção e mente na variação de uma
+   carta de dois dólares: uma alta de US$ 0,40 apareceria como "US$ 0". */
+function moneyFino(v){
+  const r = regiao();
+  let valor = v, simbolo = "US$";
+  if(r.moeda === "BRL" && CAMBIO && CAMBIO.usd){ valor = v * CAMBIO.usd; simbolo = "R$"; }
+  else if(r.moeda === "EUR" && CAMBIO && CAMBIO.eur && CAMBIO.usd){ valor = v * (CAMBIO.usd/CAMBIO.eur); simbolo = "€"; }
+  const casas = Math.abs(valor) < 10 ? 2 : 0;
+  return simbolo + " " + valor.toLocaleString("pt-BR",
+    { minimumFractionDigits: casas, maximumFractionDigits: casas });
 }
 
 function renderKPIs(){
@@ -3252,6 +3297,10 @@ function ligarQuero(el, c, aoMudar){
       porNoChase(c);
       toast(`${c.name} entrou nos chase cards`);
     }
+    // a moldura de brasa acompanha o botão: a carta muda de estado na hora,
+    // sem esperar a próxima pintura da grade
+    const cartao = el.classList && el.classList.contains("card") ? el : el.closest(".card");
+    if(cartao && !cartao.classList.contains("owned")) cartao.classList.toggle("chase", naChase(c.id));
     if(aoMudar) aoMudar(c, el);
     else { b.classList.toggle("na-lista", naChase(c.id)); b.textContent = naChase(c.id) ? "★" : "☆"; }
   };
@@ -3302,10 +3351,12 @@ async function renderCollection(id){
         <p>${escapeHTML(def.desc||"")}</p>
         ${def.q?`<p style="margin-top:8px"><span class="chip">busca: ${escapeHTML(def.q)}</span></p>`:""}
       </div>
-      <div class="progress-wrap">
-        <div class="progress-num"><span>progresso</span><b id="pct">0%</b></div>
-        <div class="bar"><i id="bar" style="width:0%"></i></div>
-        <div class="progress-num"><span id="prog-label">carregando…</span><span id="prog-value"></span></div>
+      <div class="progress-wrap medidor">
+        <span id="gema-progresso">${gemaMedidor(0, 72)}</span>
+        <div class="medidor-txt">
+          <div class="progress-num"><span>progresso</span><b id="pct">0%</b></div>
+          <div class="progress-num"><span id="prog-label">carregando…</span><span id="prog-value"></span></div>
+        </div>
       </div>
     </div>
     <div class="toolbar">
@@ -3369,6 +3420,43 @@ async function renderCollection(id){
 }
 
 function skeletons(n){ return Array.from({length:n},()=>`<div class="card-skel"></div>`).join(""); }
+
+/* ---------------------------------------------------------------------
+   A gema que enche
+
+   Desenhada na malha de 48 do guia: mesa de 13 a 35 no topo, cintura de 4
+   a 44 na altura 21, culaça num ponto só em 24, 44. A pedra é mais larga
+   do que alta de propósito (40 × 33) — é o que separa esta gema do losango
+   de ícone que todo app de coleção usa.
+
+   O nível sobe da culaça (44) para a mesa (11), então são 33 de curso. O
+   recorte usa a própria silhueta, o que faz o líquido tomar a forma da
+   pedra sem nenhuma conta de geometria.
+
+   Abaixo de 24 px vai a versão simplificada (só cintura e V): a lapidação
+   inteira nesse tamanho vira sujeira.
+   --------------------------------------------------------------------- */
+let GEMA_SEQ = 0;
+function gemaMedidor(fracao, tamanho = 72, rotulo = ""){
+  const p = Math.max(0, Math.min(1, Number(fracao) || 0));
+  const alturaCheia = 33 * p;                 // curso da culaça até a mesa
+  const topo = 44 - alturaCheia;
+  const id = "gm" + (++GEMA_SEQ);
+  const pedra = "M13 11 H35 L44 21 L24 44 L4 21 Z";
+  const fios = tamanho >= 24
+    ? "M4 21 H44 M13 11 V21 M35 11 V21 M13 21 L24 44 M35 21 L24 44"
+    : "M4 21 H44 M13 21 L24 44 M35 21 L24 44";
+  const cheia = p >= 1 ? " cheia" : "";
+  return `<svg class="gema-med${cheia}" viewBox="0 0 48 48" width="${tamanho}" height="${tamanho}"
+    role="img" aria-label="${escapeHTML(rotulo || Math.round(p*100) + "% completa")}">
+    <defs><clipPath id="${id}"><path d="${pedra}"/></clipPath></defs>
+    <path class="gm-pedra" d="${pedra}"/>
+    <rect class="gm-cheio" clip-path="url(#${id})" x="0" width="48"
+      y="${topo.toFixed(2)}" height="${alturaCheia.toFixed(2)}"/>
+    <path class="gm-fios" d="${fios}"/>
+    <path class="gm-borda" d="${pedra}"/>
+  </svg>`;
+}
 
 async function loadMore(){
   const st = document.getElementById("status");
@@ -3487,7 +3575,7 @@ function cardHTML(c, copias, selo, comQtd){
   const mostrarOnde = onde && view.name === "minha" &&
                       (minha.f.local || minha.f.ordem === "local");
   return `
-  <div class="card ${own?"owned":""}" data-id="${c.id}" title="${escapeHTML(c.name)}${
+  <div class="card ${own?"owned":(naChase(c.id)?"chase":"")}" data-id="${c.id}" title="${escapeHTML(c.name)}${
     onde ? " — guardada em " + escapeHTML(onde) : ""} — clique para marcar">
     ${mostrarOnde ? `<span class="etiq-local">${escapeHTML(onde)}</span>` : ""}
     ${copias > 1 ? `<span class="copias">×${copias}</span>` : ""}
@@ -3556,7 +3644,10 @@ function paintProgress(){
   const pct = total ? Math.round(100*own/total) : 0;
   if(cur.def.id && cur.def.id!=="__search__"){ S.totals[cur.def.id]=total; S.totals[cur.def.id+"::own"]=own; save(); }
   document.getElementById("pct").textContent = pct+"%";
-  document.getElementById("bar").style.width = pct+"%";
+  // a gema é o medidor desta tela; ela é redesenhada porque o nível vive no SVG
+  const gema = document.getElementById("gema-progresso");
+  if(gema) gema.innerHTML = gemaMedidor(total ? own/total : 0, 72,
+    `${pct}% da coleção — ${own} de ${total} cartas`);
   document.getElementById("prog-label").textContent = `${own} de ${total.toLocaleString("pt-BR")} cartas`;
   const val = dentro.filter(c=>isOwned(c.id)).reduce((a,c)=>a+(Number(c.usd)||0),0);
   document.getElementById("prog-value").textContent = val ? money(val)+" nesta coleção" : "";
@@ -10610,10 +10701,15 @@ async function carregarHistorico(c){
     }
     const primeiro = pontos[0].v, ultimo = pontos[pontos.length-1].v;
     const varia = ((ultimo/primeiro) - 1) * 100;
+    /* porcentagem sozinha engana nos dois sentidos: 40% de uma carta de US$ 0,50
+       são vinte centavos, e 3% de uma Mox são dez dólares. Por isso a régua da
+       identidade pede seta + sinal + cor + os DOIS números. */
+    const absoluto = moneyFino(Math.abs(ultimo - primeiro));
     alvo.innerHTML = `
       <div class="grafico-topo">
         <span>${pontos.length} dias</span>
-        <b class="${varia >= 0 ? "sobe" : "desce"}">${varia >= 0 ? "▲" : "▼"} ${Math.abs(varia).toFixed(1)}%</b>
+        <b class="${varia >= 0 ? "sobe" : "desce"}">${varia >= 0 ? "▲ +" : "▼ −"}${
+          Math.abs(varia).toFixed(1)}%${absoluto ? ` <span class="grafico-abs">${absoluto}</span>` : ""}</b>
       </div>
       ${sparkline(pontos)}`;
   }catch(e){
@@ -12545,7 +12641,7 @@ function renderMercado(){
       Em carta graduada não aparece, porque slab tem régua própria.</p>
 
     <p class="dg-txt" style="margin-top:12px">
-      <b>Combinem com cuidado.</b> O Collector não participa do negócio, não guarda dinheiro e não tem
+      <b>Combinem com cuidado.</b> O Velvo não participa do negócio, não guarda dinheiro e não tem
       como devolver nada se algo der errado. Combine forma de envio e pagamento direto com a pessoa,
       e prefira quem você já conhece do seu grupo.</p>`;
 
@@ -12631,7 +12727,7 @@ async function verContato(id){
     ${desde ? `<div class="kv"><span>Fechou o primeiro em</span><b>${desde}</b></div>` : ""}
     <div class="nota-regiao" style="margin-top:14px">
       <b>Esse número não é uma avaliação.</b> É só quantas vezes a própria pessoa marcou um anúncio dela
-      como fechado — ninguém confirmou nada. O Collector não participa do negócio e não tem como
+      como fechado — ninguém confirmou nada. O Velvo não participa do negócio e não tem como
       desfazer nada se der errado.
     </div>
     <div class="pergunta-acoes"><button class="btn" id="mkc-ok">Entendi</button></div>
@@ -13343,7 +13439,7 @@ function aplicarImportacao(casadas, modo){
 
    2. A porta é um CÓDIGO DE SEIS DÍGITOS por e-mail, não um link. Link
       mágico é mais bonito, mas no iPhone ele abre no Safari — e quem
-      instalou o Collector na tela de início ficaria logado no navegador
+      instalou o Velvo na tela de início ficaria logado no navegador
       e deslogado no aplicativo, que é exatamente o problema que a conta
       veio resolver. Código a pessoa digita onde ela está. Sem senha:
       senha é mais uma coisa para vazar, esquecer e recuperar.
@@ -13430,17 +13526,15 @@ async function pedirCodigo(email){
   await auth("otp?redirect_to=" + encodeURIComponent(voltarPara()), { email, create_user:true });
 }
 
-/* O e-mail pode chegar de duas formas, e as duas funcionam:
+/* Desde 10/09/2026 o e-mail sai por SMTP próprio (Brevo) e manda CÓDIGO de
+   seis dígitos, nunca link — o que resolve o problema de o link abrir no
+   navegador em vez de dentro do app instalado na tela de início.
 
-   - CÓDIGO de seis dígitos, que é o caminho bom: a pessoa digita onde
-     estiver, inclusive dentro do app instalado na tela de início.
-   - LINK, que é o que o Supabase manda enquanto o projeto usa o servidor
-     de e-mail dele (no plano gratuito o texto do e-mail é fixo e só traz
-     o link). Clicar no link traz os tokens no fim do endereço; esta
-     função os recolhe e limpa a barra de endereço.
-
-   Assim o login funciona hoje, e passa a funcionar também pelo código no
-   dia em que o projeto tiver SMTP próprio — sem mexer no app. */
+   Esta função fica de rede: se alguém guardou um e-mail antigo, ou se o
+   modelo do e-mail voltar a usar {{ .ConfirmationURL }} um dia, o link
+   ainda entra. Ele traz os tokens no fim do endereço; aqui eles são
+   recolhidos e a barra de endereço é limpa, para não ficarem no
+   histórico do navegador. */
 function pegarSessaoDoLink(){
   const bruto = (location.hash || "").replace(/^#/, "");
   if(!bruto) return false;
@@ -13612,13 +13706,12 @@ function abrirConta(){
 
 function telaDeEntrada(email){
   modal(`<div class="modal-pad">
-    <h3>Entrar no Collector</h3>
+    <h3>Entrar no Velvo</h3>
     <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
       Entrar guarda a sua coleção na conta e ela aparece igual em qualquer aparelho —
       celular, computador, e no app instalado na tela de início.</p>
     <p style="color:var(--faint);font-size:12.5px;margin:0 0 16px">
-      Sem senha: você põe o e-mail e recebe um código de seis dígitos — ou, se o e-mail
-      vier com um link em vez do código, é só tocar no link.</p>
+      Sem senha: você põe o e-mail e recebe um código de seis dígitos para digitar aqui.</p>
 
     <label for="ct-email" style="display:block;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);margin-bottom:8px">Seu e-mail</label>
     <input type="text" id="ct-email" inputmode="email" autocomplete="email"
@@ -13659,9 +13752,8 @@ function telaDoCodigo(email){
   modal(`<div class="modal-pad">
     <h3>Digite o código</h3>
     <p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
-      Mandei um e-mail para <b>${escapeHTML(email)}</b>, e ele vale por uma hora.
-      Se vier um código de seis dígitos, digite aqui. Se vier um link, toque nele —
-      dá no mesmo. Não chegou em um minuto? Olhe no spam.</p>
+      Mandei um código de seis dígitos para <b>${escapeHTML(email)}</b>. Ele vale por uma
+      hora e serve uma vez só. Não chegou em um minuto? Olhe no spam.</p>
 
     <input type="text" id="ct-codigo" inputmode="numeric" autocomplete="one-time-code"
            maxlength="8" placeholder="000000"
@@ -13934,7 +14026,7 @@ function abrirInstalar(){
 
     ${instalado ? `
       <p style="color:var(--muted);font-size:13px;margin:6px 0 16px">
-        O Collector está aberto como aplicativo: tela cheia, ícone junto dos outros e funciona sem internet
+        O Velvo está aberto como aplicativo: tela cheia, ícone junto dos outros e funciona sem internet
         para o que você já abriu.</p>
       <div class="pergunta-acoes"><button class="btn" id="inst-backup">Restaurar um backup</button></div>
     ` : `
@@ -13969,7 +14061,7 @@ function abrirInstalar(){
           <span class="ip-num">3</span>
           <div>
             <b>Toque em “Adicionar”, no canto de cima</b>
-            <small>O ícone do Collector aparece na sua tela junto dos outros apps.
+            <small>O ícone do Velvo aparece na sua tela junto dos outros apps.
             Abra por ele, não pelo Safari.</small>
           </div>
         </div>
