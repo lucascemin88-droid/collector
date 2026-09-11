@@ -242,6 +242,29 @@
   .chave input{width:17px;height:17px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
   .chave b{display:block;font-size:13.5px;font-weight:500;color:var(--text)}
   .chave small{display:block;font-size:12px;color:var(--text-3);margin-top:1px}
+  /* canal que não dá para ligar neste aparelho: continua visível, e o
+     motivo aparece no lugar da explicação — some é pior do que apagado */
+  .chave.travada{cursor:default;opacity:.6}
+  .chave.travada small{color:var(--text-2)}
+
+  /* ---- faixa da demonstração ----
+     Fica presa no rodapé e some com a demonstração. Demonstração que se
+     confunde com dado real é armadilha, então ela não é discreta. */
+  #faixa-demo{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+    padding:10px 16px;background:var(--accent);color:var(--accent-ink);
+    font-size:13px;line-height:1.4;box-shadow:0 -8px 24px rgba(0,0,0,.45);
+  }
+  /* pílula escura sobre o ouro: `.btn.ghost` sozinho fica tinta escura
+     em fundo escuro e some */
+  #faixa-demo .btn.ghost{background:var(--accent-ink);border-color:transparent;color:var(--accent-hover)}
+  #faixa-demo .btn.ghost:hover{background:#000;color:#fff}
+  /* o aviso passageiro sobe para não tapar o botão de sair */
+  body.com-demo .toast{bottom:82px}
+  @media (max-width:640px){ body.com-demo .toast{bottom:110px} }
+  body.com-demo{padding-bottom:64px}
+  @media (max-width:640px){ #faixa-demo{font-size:12px;gap:10px} body.com-demo{padding-bottom:92px} }
   .minha-copia{margin-top:16px;padding:13px 14px;border:1px solid var(--accent-line);
     border-radius:var(--radius);background:var(--accent-soft)}
   .minha-copia .flabel{display:block;font-size:11px;text-transform:uppercase;
@@ -1955,7 +1978,13 @@ function load(){
    ===================================================================== */
 let gravacao = { pendente:false, timer:null, em:0 };
 
+/* modo demonstração: quando está ligado, nada é escrito no aparelho.
+   Declarado aqui em cima porque `salvarAgora` precisa vê-lo. */
+let DEMO = null;
+
 function salvarAgora(){
+  // na demonstração o aparelho não é tocado: o que era do usuário fica
+  if(DEMO) return;
   clearTimeout(gravacao.timer);
   gravacao.timer = null;
   gravacao.pendente = false;
@@ -3153,9 +3182,164 @@ async function despublicarColecao(col){
    aparência, avisos, região, instalação e backup. O cabeçalho ficou com
    o que se usa toda hora; o resto mora aqui.
    ===================================================================== */
+/* =====================================================================
+   AVISOS — o quê, e por onde
+
+   Três canais, e cada um serve para uma coisa diferente:
+
+     app    — o sino, que já existia. Só vale com o app aberto, o que é
+              justamente quando o alerta menos importa.
+     push   — notificação no telefone. Chega na hora, é de graça e não
+              tem teto. **No iPhone só funciona para quem pôs o app na
+              tela de início** — Safari em aba não recebe push nenhum,
+              e a tela diz isso em vez de deixar a pessoa esperando.
+     e-mail — chega em qualquer lugar, sem instalar nada, e é o certo
+              para o resumo semanal: sete dias de novidade viram uma
+              notificação ignorada e um e-mail lido com calma.
+
+   **Nada é ligado por padrão.** Ninguém passa a receber coisa porque
+   criou conta; e desligar tudo é um clique.
+
+   O que sai do aparelho: para o robô saber a quem avisar, ele precisa
+   saber QUE CARTA e QUE ALVO — e mais nada. Por isso o alvo vai para
+   uma tabela própria (`price_alerts`), e não pela coleção inteira.
+   ===================================================================== */
+
+const TIPOS_DE_AVISO = [
+  ["alvo",        "Carta bateu o preço alvo",
+   "quando uma carta da sua lista chega no preço que você marcou"],
+  ["reimpressao", "Reimpressão de carta sua",
+   "a Wizards anunciou impressão nova de uma carta que você tem ou caça"],
+  ["mercado",     "Carta da sua lista à venda",
+   "alguém do Velvo anunciou uma carta que você está caçando"],
+  ["resumo",      "Resumo semanal",
+   "uma vez por semana: o que mexeu de preço, o que reimprimiram, o que apareceu"],
+];
+
+const CANAIS_DE_AVISO = [
+  ["app",   "No app",     "no sino, quando você abrir"],
+  ["push",  "No celular", "notificação, mesmo com o app fechado"],
+  ["email", "Por e-mail", "para o endereço da sua conta"],
+];
+
 function avisos(){
-  S.config.avisos = Object.assign({ chase:true, noticias:false, colecao:false }, S.config.avisos || {});
+  /* os três nomes antigos (chase/noticias/colecao) ficam de lado: o
+     formato novo é por tipo, e migrar valor velho para significado novo
+     ligaria aviso que a pessoa nunca pediu */
+  const antigo = S.config.avisos || {};
+  const novo = { alvo:false, reimpressao:false, mercado:false, resumo:false };
+  // só os nomes de agora sobrevivem: `chase:true` da versão velha valia
+  // "me avise de qualquer mexida de preço" e ligaria coisa que a pessoa
+  // nunca pediu neste formato
+  Object.keys(novo).forEach(k => { if(k in antigo) novo[k] = !!antigo[k]; });
+  S.config.avisos = novo;
+  S.config.canais = Object.assign({ app:true, push:false, email:false }, S.config.canais || {});
   return S.config.avisos;
+}
+function canais(){ avisos(); return S.config.canais; }
+
+/* alvos que o robô precisa conhecer: só as cartas do chase COM preço alvo */
+function alvosParaOServidor(){
+  return ((chase() || {}).cartas || [])
+    .filter(x => Number(x.alvo) > 0)
+    .slice(0, 300)
+    .map(x => ({ card_id:x.id, card_name:x.n, alvo:Number(x.alvo) }));
+}
+
+/* Sobe os alvos, e só quando faz diferença: sem conta não há a quem
+   avisar, e com o alerta desligado o servidor não precisa saber de nada.
+   Desligar o aviso apaga a lista lá — é o que "desligado" quer dizer. */
+async function subirAlvos(){
+  if(!logado()) return;
+  const ligado = avisos().alvo && (canais().push || canais().email);
+  try{ await rpc("alerts_sync", { p_lista: ligado ? alvosParaOServidor() : [] }); }
+  catch(e){ /* alerta é acessório: falhar aqui não pode atrapalhar o resto */ }
+}
+
+async function salvarPreferenciasDeAviso(){
+  save();
+  if(!logado()) return;
+  try{
+    await rpc("notify_save", {
+      p_tipos: avisos(), p_canais: canais(), p_email: null,
+      p_fuso: (Intl.DateTimeFormat().resolvedOptions().timeZone || null),
+    });
+  }catch(e){ /* segue: a escolha já está guardada neste aparelho */ }
+  await subirAlvos();
+}
+
+/* ---------------- push ----------------
+   A chave pública VAPID é pública por definição — ela vai no app de
+   propósito, como a chave publicável do Supabase. A privada fica só no
+   segredo do repositório dos jobs, e é ela que assina o envio. */
+const VAPID_PUBLICA = "";   // preenchida quando o par de chaves for gerado
+
+function pushDisponivel(){
+  return "serviceWorker" in navigator && "PushManager" in window
+      && "Notification" in window && !!VAPID_PUBLICA;
+}
+
+/* iPhone só entrega push para app na tela de início. Dizer isso é mais
+   útil do que deixar a pessoa apertar um botão que nunca funciona. */
+function porQueSemPush(){
+  if(!("Notification" in window) || !("PushManager" in window)){
+    if(ehIPhone() && !ehAppInstalado())
+      return "no iPhone, a notificação só funciona com o app na tela de início — dá para pôr em dois toques";
+    return "este navegador não entrega notificação";
+  }
+  if(!VAPID_PUBLICA) return "o envio ainda não foi ligado deste lado";
+  if(!logado()) return "precisa entrar numa conta: é ela que diz para onde mandar";
+  return "";
+}
+
+function base64ParaBytes(b64){
+  const limpo = (b64 + "=".repeat((4 - b64.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+  const bruto = atob(limpo);
+  return Uint8Array.from([...bruto].map(c => c.charCodeAt(0)));
+}
+
+async function ligarPush(){
+  const impedimento = porQueSemPush();
+  if(impedimento){ toast(impedimento); return false; }
+  try{
+    const permissao = await Notification.requestPermission();
+    if(permissao !== "granted"){
+      toast("o navegador não deu permissão — dá para mudar isso nos ajustes do site");
+      return false;
+    }
+    const reg = await navigator.serviceWorker.ready;
+    const inscricao = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: base64ParaBytes(VAPID_PUBLICA),
+    });
+    const j = inscricao.toJSON();
+    await rpc("push_sub", {
+      p_endpoint: j.endpoint,
+      p_p256dh: (j.keys || {}).p256dh,
+      p_auth: (j.keys || {}).auth,
+      p_aparelho: (navigator.userAgent || "").slice(0, 120),
+    });
+    canais().push = true;
+    await salvarPreferenciasDeAviso();
+    toast("notificação ligada neste aparelho");
+    return true;
+  }catch(e){
+    toast("não consegui ligar a notificação: " + e.message);
+    return false;
+  }
+}
+
+async function desligarPush(){
+  try{
+    const reg = await navigator.serviceWorker.ready;
+    const inscricao = await reg.pushManager.getSubscription();
+    if(inscricao){
+      await rpc("push_unsub", { p_endpoint: inscricao.endpoint }).catch(() => {});
+      await inscricao.unsubscribe().catch(() => {});
+    }
+  }catch(e){}
+  canais().push = false;
+  await salvarPreferenciasDeAviso();
 }
 
 function renderConfig(){
@@ -3198,17 +3382,39 @@ function renderConfig(){
 
     <section class="bloco-cfg">
       <h3>Avisos</h3>
-      <p class="dg-txt">Guardo a sua escolha agora; o envio ainda não está ligado —
-      aviso que chega com o app fechado precisa de um servidor de envio, e isso vem numa próxima rodada.
-      Enquanto isso estes interruptores só ficam registrados, sem prometer nada.</p>
-      ${[["chase","Preço de chase card mexeu","quando uma carta que você está namorando sobe ou cai"],
-         ["noticias","Notícia grande do Magic","banimento, anúncio de coleção nova, spoiler oficial"],
-         ["colecao","Alguém seguiu sua coleção","quando uma coleção sua ganha seguidor"]]
-        .map(([k, titulo, txt]) => `
-          <label class="chave">
-            <input type="checkbox" data-aviso="${k}" ${a[k]?"checked":""}>
-            <span><b>${titulo}</b><small>${txt}</small></span>
-          </label>`).join("")}
+      <p class="dg-txt"><b>Nada é ligado por padrão.</b> Escolha o que quer saber e por onde
+      prefere receber. Desligar tudo é um clique, e desligar apaga do servidor a lista de
+      alvos que ele usava para te avisar.</p>
+
+      <span class="flabel" style="display:block;margin:16px 0 4px">O que</span>
+      ${TIPOS_DE_AVISO.map(([k, titulo, txt]) => `
+        <label class="chave">
+          <input type="checkbox" data-aviso="${k}" ${a[k]?"checked":""}>
+          <span><b>${titulo}</b><small>${txt}</small></span>
+        </label>`).join("")}
+
+      <span class="flabel" style="display:block;margin:20px 0 4px">Por onde</span>
+      ${CANAIS_DE_AVISO.map(([k, titulo, txt]) => {
+        const c = canais();
+        const trava = k === "push" ? porQueSemPush() : (k === "email" && !logado()
+          ? "precisa entrar numa conta: é ela que diz para onde mandar" : "");
+        return `
+        <label class="chave ${trava ? "travada" : ""}">
+          <input type="checkbox" data-canal="${k}" ${c[k]?"checked":""} ${
+            trava ? "disabled" : ""} ${k === "app" ? "disabled" : ""}>
+          <span><b>${titulo}</b><small>${trava || txt}${
+            k === "app" ? " — sempre ligado" : ""}</small></span>
+        </label>`; }).join("")}
+
+      ${(() => {
+        const quer = TIPOS_DE_AVISO.some(([k]) => a[k]);
+        const canal = canais().push || canais().email;
+        if(quer && !canal) return `<div class="nota-regiao" style="margin-top:12px">
+          Você marcou o que quer saber, mas só no app — ou seja, só quando abrir.
+          Ligue <b>No celular</b> ou <b>Por e-mail</b> para o aviso te procurar.</div>`;
+        if(!quer) return `<p class="dg-txt" style="margin-top:10px">Hoje o Velvo não te manda nada.</p>`;
+        return "";
+      })()}
     </section>
 
     <section class="bloco-cfg">
@@ -3248,6 +3454,7 @@ function renderConfig(){
       <div class="kv"><span>Versão</span><b>${VERSAO}</b></div>
       <div class="pergunta-acoes">
         <button class="btn ghost" id="cfg-novidades">O que mudou nas últimas versões</button>
+        <button class="btn ghost" id="cfg-demo">${emDemo() ? "Sair da demonstração" : "Ver uma coleção de exemplo"}</button>
         <button class="btn ghost" id="cfg-problema">Reportar um problema</button>
       </div>
     </section>
@@ -3263,6 +3470,7 @@ function renderConfig(){
   document.getElementById("cfg-importar").onclick = abrirImportar;
   document.getElementById("cfg-exportar").onclick = exportarColecao;
   document.getElementById("cfg-novidades").onclick = () => abrirNovidades(true);
+  document.getElementById("cfg-demo").onclick = () => (emDemo() ? sairDaDemo() : entrarNaDemo());
   document.getElementById("cfg-problema").onclick = abrirReportarProblema;
 
   app.querySelectorAll("[data-tema]").forEach(b => b.onclick = () => {
@@ -3271,8 +3479,22 @@ function renderConfig(){
     renderConfig();
     toast(`Tema ${TEMAS[S.config.tema].nome}`);
   });
-  app.querySelectorAll("[data-aviso]").forEach(c => c.onchange = () => {
-    avisos()[c.dataset.aviso] = c.checked; save();
+  app.querySelectorAll("[data-aviso]").forEach(c => c.onchange = async () => {
+    avisos()[c.dataset.aviso] = c.checked;
+    await salvarPreferenciasDeAviso();
+    renderConfig();
+  });
+  app.querySelectorAll("[data-canal]").forEach(c => c.onchange = async () => {
+    const qual = c.dataset.canal;
+    if(qual === "push"){
+      // push precisa da permissão do navegador: não basta marcar a caixa
+      const deu = c.checked ? await ligarPush() : (await desligarPush(), true);
+      if(!deu) c.checked = false;
+    } else {
+      canais()[qual] = c.checked;
+      await salvarPreferenciasDeAviso();
+    }
+    renderConfig();
   });
 }
 
@@ -5532,8 +5754,9 @@ function abrirReportarProblema(){
    discreto quando a versão troca. A lista é escrita à mão de propósito —
    changelog gerado de commit é ruído para quem não programa.
    ===================================================================== */
-const VERSAO = "0.23";
+const VERSAO = "0.24";
 const NOVIDADES = [
+  ["0.24", "Avisos que te procuram: notificação no celular ou e-mail quando uma carta bate o preço alvo, mais resumo semanal. Tudo desligado até você ligar. E uma coleção de exemplo para conhecer o app sem cadastrar nada."],
   ["0.23", "Busca pelo nome em português, trazer deck colando a lista de outro app, mão inicial para testar o deck, o que comprar primeiro com teto de gasto, e o retrato da coleção em papel."],
   ["0.22", "Modo mesa em tela cheia, reportar problema, e esta lista de novidades."],
   ["0.21", "O app abre bem mais rápido e ocupa 32% menos espaço. Conferência em massa, busca única (tecla /), retrato da coleção, aviso quando a coleção só existe num aparelho, e na mesa quem perde sai da partida com o relógio parando."],
@@ -5609,6 +5832,11 @@ function abrirPrimeiraAbertura(){
         <span>Commander, Pauper, Modern. O app confere o formato, calcula o bracket e diz o que
         falta comprar.</span>
       </button>
+      <button class="pa-op" data-pa="demo">
+        <b>Só quero ver como é</b>
+        <span>Ligo uma coleção de exemplo e você passeia pelo app cheio. Nada é gravado
+        e some quando você sair.</span>
+      </button>
     </div>
 
     <div class="nota-regiao" style="margin-top:16px">
@@ -5628,9 +5856,132 @@ function abrirPrimeiraAbertura(){
     else if(onde === "conferir") go("conferencia");
     else if(onde === "tema") go("themes");
     else if(onde === "deck") go("decks");
+    else if(onde === "demo") entrarNaDemo();
   };
   document.querySelectorAll("[data-pa]").forEach(b => b.onclick = () => escolher(b.dataset.pa));
   document.getElementById("pa-depois").onclick = () => { marcarPrimeiraAberturaVista(); closeModal(); };
+}
+
+/* =====================================================================
+   MODO DEMONSTRAÇÃO
+
+   O pior minuto da vida deste app é o primeiro: quem abre vê tudo
+   vazio e não faz ideia do que ele faz. Explicar em texto não resolve —
+   um app de coleção só se entende cheio.
+
+   Então: uma coleção de mentira, montada na hora, que enche todas as
+   telas. Três regras que fazem isso ser seguro:
+
+   1. **Nada é gravado.** Enquanto a demonstração está no ar, `save()`
+      não escreve no aparelho. O que era seu continua exatamente onde
+      estava, mesmo se o navegador fechar no meio.
+   2. **Sair devolve tudo.** O estado real é guardado em memória ao
+      entrar e reposto ao sair — e recarregar a página também devolve,
+      porque o aparelho nunca chegou a mudar.
+   3. **A tela diz que é mentira.** Uma faixa fixa no topo, o tempo
+      inteiro. Demonstração que se confunde com dado real é armadilha.
+   ===================================================================== */
+
+/* `DEMO` é declarado lá em cima, junto de `salvarAgora`: é ele que
+   precisa enxergar a variável, e `let` não sobe. */
+const emDemo = () => !!DEMO;
+
+/* Cartas de verdade do Scryfall (id e arte reais) para a demonstração
+   parecer o app cheio, e não um esqueleto com nomes inventados. */
+const CARTAS_DEMO = [
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000001", "Sol Ring",            "LTC", "284", "uncommon", 4.10,  1,  "Artifact"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000002", "Rhystic Study",       "JR",  "35",  "rare",     38.00, 3,  "Enchantment"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000003", "Cultivate",           "M21", "177", "common",   1.20,  3,  "Sorcery"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000004", "Llanowar Elves",      "DOM", "168", "common",   0.35,  1,  "Creature — Elf Druid"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000005", "Smothering Tithe",    "RNA", "22",  "rare",     24.50, 4,  "Enchantment"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000006", "Cyclonic Rift",       "RTR", "48",  "rare",     22.00, 2,  "Instant"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000007", "Dockside Extortionist","C19","21",  "rare",     62.00, 2,  "Creature — Goblin Pirate"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000008", "Command Tower",       "ELD", "333", "common",   0.80,  0,  "Land"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-000000000009", "Arcane Signet",       "ELD", "331", "common",   1.10,  2,  "Artifact"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-00000000000a", "Swords to Plowshares","STA", "13",  "uncommon", 3.40,  1,  "Instant"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-00000000000b", "Mana Crypt",          "2XM", "270", "mythic",   118.00,0,  "Artifact"],
+  ["b3b1a4e0-0a1c-4a2f-9c3d-00000000000c", "Atraxa, Praetors' Voice","C16","28","mythic",   28.00, 4,  "Legendary Creature — Phyrexian Angel Horror"],
+];
+
+const CORES_DEMO = { "Rhystic Study":"u", "Cultivate":"g", "Llanowar Elves":"g",
+  "Smothering Tithe":"w", "Cyclonic Rift":"u", "Dockside Extortionist":"r",
+  "Swords to Plowshares":"w", "Atraxa, Praetors' Voice":"wubg" };
+
+function cartaDemo(c){
+  const [id, n, s, num, r, usd, mv, t] = c;
+  return { id, n, s, sn:s, num, r, usd, mv, t, cores: CORES_DEMO[n] || "",
+           img:`https://cards.scryfall.io/small/front/${id[0]}/${id[1]}/${id}.jpg` };
+}
+
+function estadoDaDemo(){
+  const cartas = CARTAS_DEMO.map(cartaDemo);
+  const owned = {};
+  // tenho oito das doze: coleção pela metade é o que mostra o app trabalhando
+  cartas.slice(0, 8).forEach((c, i) => {
+    owned[c.id] = { n:c.n, s:c.s, sn:c.sn, num:c.num, r:c.r, usd:c.usd, img:c.img, c:c.cores,
+                    t:c.t, mv:c.mv, ano:2019 + (i % 6),
+                    at:Date.now() - i * 86400000, q:i === 2 ? 3 : 1,
+                    loc:i < 4 ? "Fichário azul" : "Caixa da mesa",
+                    pg: Number((c.usd * 0.7).toFixed(2)) };
+  });
+  const deDeck = (c, qtd) => ({ id:c.id, n:c.n, s:c.s, sn:c.sn, num:c.num, r:c.r, t:c.t,
+                                mv:c.mv, img:c.img, usd:c.usd, qtd:qtd || 1 });
+  return {
+    owned,
+    custom: [{ id:"demo-col", name:"Peças de Commander", icon:"⭐",
+               desc:"as cartas que entram em quase todo deck — exemplo da demonstração",
+               type:"manual", cards: cartas.map(c => ({ id:c.id, name:c.n, set:c.s, setName:c.sn,
+                 num:c.num, rarity:c.r, small:c.img, usd:c.usd, type:c.t, mv:c.mv })) }],
+    decks: [{ id:"demo-deck", nome:"Atraxa infinito", formato:"commander",
+              comandante: deDeck(cartas[11], 1),
+              cartas: cartas.slice(0, 10).map(c => deDeck(c, 1)),
+              reservas: [deDeck(cartas[10], 1)], criado: Date.now() - 20 * 86400000 }],
+    chase: { grupos:[{ id:"geral", nome:"Quero comprar" }],
+             cartas: [
+               Object.assign(deDeck(cartas[10], 1), { grupo:"geral", entrada:150, alvo:110 }),
+               Object.assign(deDeck(cartas[6], 1),  { grupo:"geral", entrada:48 }),
+             ] },
+  };
+}
+
+function entrarNaDemo(){
+  if(emDemo()) return;
+  DEMO = { antes: JSON.parse(JSON.stringify(S)) };
+  const d = estadoDaDemo();
+  S.owned = d.owned;
+  S.custom = d.custom;
+  S.decks = d.decks;
+  S.chase = d.chase;
+  S.totals = {};
+  document.body.classList.add("com-demo");
+  pintarFaixaDemo();
+  go("minha");
+  toast("Demonstração ligada — nada disto é gravado no seu aparelho");
+}
+
+function sairDaDemo(){
+  if(!emDemo()) return;
+  const antes = DEMO.antes;
+  DEMO = null;                       // some ANTES de salvar, senão save() ainda é surdo
+  Object.keys(S).forEach(k => { delete S[k]; });
+  Object.assign(S, antes);
+  document.body.classList.remove("com-demo");
+  const faixa = document.getElementById("faixa-demo");
+  if(faixa) faixa.remove();
+  salvarAgora();
+  renderKPIs();
+  go("home");
+  toast("Demonstração desligada — a sua coleção voltou");
+}
+
+function pintarFaixaDemo(){
+  if(document.getElementById("faixa-demo")) return;
+  const f = document.createElement("div");
+  f.id = "faixa-demo";
+  f.innerHTML = `<span><b>Demonstração.</b> Estas cartas são de mentira e nada aqui é gravado —
+    a sua coleção está intacta.</span><button class="btn ghost" id="demo-sair">Sair da demonstração</button>`;
+  document.body.appendChild(f);
+  document.getElementById("demo-sair").onclick = sairDaDemo;
 }
 
 function abrirBuscaTudo(){
@@ -9287,7 +9638,11 @@ function ligarChase(){
       S.chase.cartas = c.cartas.filter(y => y.id !== x.id); save(); renderChase();
     };
     const alvoInput = el.querySelector("[data-alvo]");
-    if(alvoInput) alvoInput.onchange = () => { x.alvo = Number(alvoInput.value) || 0; save(); pintarChase(); };
+    if(alvoInput) alvoInput.onchange = () => {
+      x.alvo = Number(alvoInput.value) || 0; save(); pintarChase();
+      // o robô só avisa do que ele conhece: o alvo novo precisa subir
+      subirAlvos();
+    };
     const mover = el.querySelector("[data-mover]");
     if(mover) mover.onchange = () => { x.grupo = mover.value; save(); pintarChase(); };
   });
