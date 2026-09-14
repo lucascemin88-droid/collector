@@ -3272,7 +3272,9 @@ async function salvarPreferenciasDeAviso(){
    A chave pública VAPID é pública por definição — ela vai no app de
    propósito, como a chave publicável do Supabase. A privada fica só no
    segredo do repositório dos jobs, e é ela que assina o envio. */
-const VAPID_PUBLICA = "";   // preenchida quando o par de chaves for gerado
+const VAPID_PUBLICA = "BBbzDVNlPEpFrNO00Glo3Qh7d2q17fWB7yd5RTsJLTfEZtLLpAYSoqikI1Lg3dOJ_oFj-KF3AkvgWLTQNVWSdNo";
+/* 65 bytes, ponto não comprimido da curva P-256 — conferido. A privada
+   que faz par com esta vive só no segredo do repositório dos jobs. */
 
 function pushDisponivel(){
   return "serviceWorker" in navigator && "PushManager" in window
