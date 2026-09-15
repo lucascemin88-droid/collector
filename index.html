@@ -6,9 +6,12 @@
 <meta name="theme-color" content="#0C0A11">
 <meta name="description" content="Sua coleção de Magic: catálogo completo, coleções temáticas, decks, chase cards e a mesa de jogo.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icone-192.png" type="image/png">
+<link rel="icon" href="icone-192-v2.png" type="image/png">
 <!-- o iPhone não lê o manifest inteiro: precisa destas três -->
-<link rel="apple-touch-icon" href="icone-180.png">
+<!-- O nome do arquivo tem versão porque o iPhone guarda o ícone da tela
+     de início para sempre: trocar o desenho no mesmo endereço não troca
+     o que já está guardado. Endereço novo, ícone novo. -->
+<link rel="apple-touch-icon" href="icone-180-v2.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Velvo">
@@ -5822,8 +5825,9 @@ function abrirReportarProblema(){
    discreto quando a versão troca. A lista é escrita à mão de propósito —
    changelog gerado de commit é ruído para quem não programa.
    ===================================================================== */
-const VERSAO = "0.25";
+const VERSAO = "0.26";
 const NOVIDADES = [
+  ["0.26", "O ícone na tela de início agora é a gema do Velvo. Se no seu ainda estiver o antigo, tire da tela de início e ponha de novo — o iPhone guarda o ícone de quando você adicionou."],
   ["0.25", "Página pública da coleção: um link que qualquer pessoa abre sem instalar nada. E escanear carta pela câmera — o app lê o nome e você confirma."],
   ["0.24", "Avisos que te procuram: notificação no celular ou e-mail quando uma carta bate o preço alvo, mais resumo semanal. Tudo desligado até você ligar. E uma coleção de exemplo para conhecer o app sem cadastrar nada."],
   ["0.23", "Busca pelo nome em português, trazer deck colando a lista de outro app, mão inicial para testar o deck, o que comprar primeiro com teto de gasto, e o retrato da coleção em papel."],

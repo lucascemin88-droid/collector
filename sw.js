@@ -14,7 +14,7 @@
    de preço é pior que dado nenhum.
    ===================================================================== */
 
-const VERSAO = "velvo-v3";
+const VERSAO = "velvo-v4";
 const CASCA = VERSAO + "-casca";
 const ARTES = VERSAO + "-artes";
 const MAX_ARTES = 400;
@@ -23,8 +23,8 @@ const ESSENCIAIS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icone-192.png",
-  "./icone-512.png",
+  "./icone-192-v2.png",
+  "./icone-512-v2.png",
   "./fontes/archivo.woff2",
   "./fontes/plex-mono-400.woff2",
   "./fontes/plex-mono-500.woff2",
@@ -130,8 +130,8 @@ self.addEventListener("push", e => {
   const titulo = d.titulo || "Velvo";
   e.waitUntil(self.registration.showNotification(titulo, {
     body: d.corpo || "",
-    icon: "./icone-192.png",
-    badge: "./icone-192.png",
+    icon: "./icone-192-v2.png",
+    badge: "./icone-192-v2.png",
     tag: d.tag || "velvo",
     data: { ir: d.ir || "" },
     // duas notificações do mesmo assunto se substituem, mas a nova avisa
