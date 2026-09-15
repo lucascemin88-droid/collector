@@ -260,6 +260,58 @@
      em fundo escuro e some */
   #faixa-demo .btn.ghost{background:var(--accent-ink);border-color:transparent;color:var(--accent-hover)}
   #faixa-demo .btn.ghost:hover{background:#000;color:#fff}
+
+  /* ---- escanear pela câmera ----
+     A moldura desenhada na tela é a mesma proporção da carta (63×88), e a
+     faixa clara mostra ONDE o app vai ler. Sem essa faixa a pessoa
+     enquadra a carta inteira e o nome sai fora do recorte. */
+  .escanear{max-width:520px}
+  .cam-caixa{position:relative;border-radius:var(--radius);overflow:hidden;background:#000;
+    aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+  .cam-caixa video{width:100%;height:100%;object-fit:cover;display:block}
+  .cam-guia{
+    position:absolute;left:12%;top:12%;width:76%;height:76%;
+    border:2px solid var(--accent);border-radius:8px;pointer-events:none;
+    box-shadow:0 0 0 2000px rgba(0,0,0,.35);
+  }
+  /* a faixa do nome: 4,5% a 12% da altura da carta */
+  .cam-nome{position:absolute;left:0;right:0;top:4.5%;height:7.5%;
+    background:var(--accent-soft);border-top:1px solid var(--accent);
+    border-bottom:1px solid var(--accent)}
+  .cam-achado{display:flex;gap:14px;align-items:center;margin-top:14px;padding:10px 12px;
+    border-radius:var(--r-sm);background:var(--surface-1);border:1px solid var(--accent-line)}
+  .cam-achado img{width:56px;border-radius:4px;flex:none}
+  .cam-achado b{display:block;font-size:14.5px}
+  .cam-achado span{display:block;color:var(--text-2);font-size:12.5px;margin-top:2px}
+  .cam-achado em{display:block;color:var(--text-3);font-size:11.5px;font-style:normal;margin-top:3px}
+
+  /* ---- página pública ----
+     Quem chega pelo link não está usando o app: está olhando a coleção de
+     alguém. Cabeçalho, navegação e KPIs somem — eles não significam nada
+     para quem nunca entrou aqui. */
+  body.so-pagina header.top,
+  body.so-pagina nav.masters,
+  body.so-pagina nav.tabs{display:none !important}
+  body.so-pagina main{padding-top:26px}
+  .pagina-pub{max-width:1100px;margin:0 auto}
+  .pp-cab{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .pp-cab h1{margin:0 0 6px;font-family:var(--font-display);font-size:26px;font-weight:700;
+    letter-spacing:-.01em}
+  .pp-cab p{margin:0;color:var(--text-2);font-size:13.5px}
+  .pp-cab .pp-recado{margin-top:10px;color:var(--text);font-size:14px;line-height:1.5;
+    padding-left:12px;border-left:2px solid var(--accent-line)}
+  /* na página, carta nenhuma é "minha": some o anel de posse e o visto */
+  .pagina-pub .card.owned{box-shadow:0 0 0 1px var(--line)}
+  .pagina-pub .card .tick{display:none}
+  .pp-rodape{
+    margin-top:28px;padding:18px 20px;border-radius:var(--radius);
+    background:var(--surface-1);border:1px solid var(--accent-line);
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  }
+  .pp-rodape b{display:block;font-size:15px;margin-bottom:4px}
+  .pp-rodape span{display:block;color:var(--text-2);font-size:13px;line-height:1.5;max-width:60ch}
+  .pp-rodape .btn{margin-left:auto;flex:none}
+  @media (max-width:640px){ .pp-rodape .btn{margin-left:0;width:100%} }
   /* o aviso passageiro sobe para não tapar o botão de sair */
   body.com-demo .toast{bottom:82px}
   @media (max-width:640px){ body.com-demo .toast{bottom:110px} }
@@ -691,6 +743,9 @@
   .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 16px;flex-wrap:wrap}
   .section-head h2{margin:0;font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em}
   .section-head p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.55;max-width:62ch}
+  /* `display` de classe ganha de [hidden] por especificidade, e um botão
+     com hidden continuava aparecendo. Isto vale para a folha inteira. */
+  [hidden]{display:none !important}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     min-height:38px;padding:0 16px;border-radius:var(--r-sm);
@@ -2707,6 +2762,7 @@ function render(){
   if(view.name==="secretlair") return renderSecretLair();
   if(view.name==="promos") return renderPromos();
   if(view.name==="collection") return renderCollection(view.id);
+  if(view.name==="pagina") return renderPagina(view.id);
 }
 
 /* =====================================================================
@@ -3730,6 +3786,7 @@ async function renderCollection(id){
       ${def.type ? `<button class="btn ${def.publicada ? "ghost" : ""}" id="pub-coll">${
         def.publicada ? "★ publicada — tirar" : "Publicar na comunidade"}</button>` : ""}
       <button class="btn ghost" id="share-coll">Compartilhar</button>
+      <button class="btn ghost" id="pagina-coll">Página pública</button>
     </div>
     <div class="cards" id="grid">${skeletons(12)}</div>
     <div class="status" id="status"></div>
@@ -3765,6 +3822,13 @@ async function renderCollection(id){
     go("collection", def.id);
   };
   document.getElementById("share-coll").onclick = ()=> shareCollection(def);
+  document.getElementById("pagina-coll").onclick = ()=> {
+    // só o que a pessoa TEM vai para a página: o resto é lista de desejo
+    const minhas = (cur.cards || []).filter(c => isOwned(c.id))
+      .map(c => Object.assign({}, c, { qtd: qtdDe(c.id) }));
+    if(!minhas.length) return toast("publique depois de marcar alguma carta desta coleção");
+    abrirCompartilharPagina(def.name, minhas, def.id);
+  };
   const bPub = document.getElementById("pub-coll");
   if(bPub) bPub.onclick = () => def.publicada ? despublicarColecao(def) : publicarColecao(def);
 
@@ -5007,6 +5071,7 @@ async function renderMinha(){
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn" id="add-carta">+ Adicionar carta</button>
+        <button class="btn ghost" id="escanear">Escanear pela câmera</button>
         <button class="btn ghost" id="conferir-massa">Conferir em massa</button>
         <button class="btn ghost" id="importar-csv">Importar de outro app</button>
         <button class="btn ghost" id="cartao-postar">Cartão para postar</button>
@@ -5127,6 +5192,7 @@ async function renderMinha(){
 `;
 
   document.getElementById("add-carta").onclick = abrirAdicionarCarta;
+  document.getElementById("escanear").onclick = abrirEscanear;
   const bcm = document.getElementById("conferir-massa");
   if(bcm) bcm.onclick = () => go("conferencia");
   ligarValorizacao();
@@ -5756,8 +5822,9 @@ function abrirReportarProblema(){
    discreto quando a versão troca. A lista é escrita à mão de propósito —
    changelog gerado de commit é ruído para quem não programa.
    ===================================================================== */
-const VERSAO = "0.24";
+const VERSAO = "0.25";
 const NOVIDADES = [
+  ["0.25", "Página pública da coleção: um link que qualquer pessoa abre sem instalar nada. E escanear carta pela câmera — o app lê o nome e você confirma."],
   ["0.24", "Avisos que te procuram: notificação no celular ou e-mail quando uma carta bate o preço alvo, mais resumo semanal. Tudo desligado até você ligar. E uma coleção de exemplo para conhecer o app sem cadastrar nada."],
   ["0.23", "Busca pelo nome em português, trazer deck colando a lista de outro app, mão inicial para testar o deck, o que comprar primeiro com teto de gasto, e o retrato da coleção em papel."],
   ["0.22", "Modo mesa em tela cheia, reportar problema, e esta lista de novidades."],
@@ -5984,6 +6051,515 @@ function pintarFaixaDemo(){
     a sua coleção está intacta.</span><button class="btn ghost" id="demo-sair">Sair da demonstração</button>`;
   document.body.appendChild(f);
   document.getElementById("demo-sair").onclick = sairDaDemo;
+}
+
+/* =====================================================================
+   PÁGINA PÚBLICA DE COLEÇÃO
+
+   Um link que a pessoa manda no grupo e o outro abre sem instalar nada e
+   sem criar conta. É o convite mais curto que este app tem.
+
+   Como funciona: o endereço é o próprio app com `#p/<código>`. Quando o
+   app abre e vê isso, ele não pinta o app — pinta a página. Assim não
+   existe segundo site para manter, e quem gostou já está dentro do Velvo
+   quando clica em "quero um desses".
+
+   O que sai de casa é uma CÓPIA ESCOLHIDA, tirada no momento de
+   publicar: carta, edição, número e quantidade. **Não vai preço pago,
+   não vai onde a carta está guardada.** Mostrar quanto a coleção vale é
+   opção, e vem desligada — valor à vista com apelido ao lado é convite
+   para o tipo errado de visita.
+
+   Despublicar apaga. Não esconde: a linha some e o link morre.
+   ===================================================================== */
+
+/* =====================================================================
+   ESCANEAR A CARTA PELA CÂMERA
+
+   Cadastrar fichário digitando é o gargalo do app inteiro. Apontar a
+   câmera é outra ordem de grandeza — se funcionar.
+
+   Como funciona, e por que assim:
+
+   1. **Lê só a LINHA DO NOME.** O nome fica sempre no mesmo lugar da
+      carta: uma faixa no alto. Recortar essa faixa antes de reconhecer
+      resolve dois problemas de uma vez — some o texto de regras (que
+      confunde), e a imagem fica pequena o bastante para o
+      reconhecimento rodar em segundos num telefone.
+
+   2. **O reconhecimento chega sob demanda.** São ~8 MB entre programa e
+      dicionário de letras, baixados na primeira leitura e guardados pelo
+      navegador depois. Um app de um arquivo só não pode carregar isso
+      para quem nunca vai escanear — então a tela avisa o tamanho e só
+      baixa quando a pessoa manda.
+
+   3. **O que sai do OCR é PALPITE, não resposta.** Foto torta, brilho na
+      capa, carta em português: erra. Por isso o texto lido vai para a
+      busca por nome aproximado do Scryfall (que perdoa letra trocada), e
+      **a carta encontrada é mostrada para a pessoa confirmar**. Nada é
+      marcado sozinho. Errar e gravar sem perguntar seria pior do que não
+      ter a função.
+
+   4. **Deu ruim, o caminho continua.** Se não reconheceu, o texto lido
+      fica num campo editável: corrigir uma letra é mais rápido do que
+      digitar o nome inteiro, e a pessoa não volta para a estaca zero.
+   ===================================================================== */
+
+const OCR_JS = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+/* nome de carta é letra, espaço, apóstrofo, vírgula, hífen e ponto — e
+   mais nada. Restringir o alfabeto tira a maior fonte de erro do OCR. */
+const OCR_LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-,. ";
+
+let ocrPronto = null;   // promessa do carregamento, para não baixar duas vezes
+
+function carregarOCR(){
+  if(ocrPronto) return ocrPronto;
+  ocrPronto = new Promise((ok, erro) => {
+    if(window.Tesseract) return ok(window.Tesseract);
+    const s = document.createElement("script");
+    s.src = OCR_JS;
+    s.onload = () => ok(window.Tesseract);
+    s.onerror = () => { ocrPronto = null; erro(new Error("não consegui baixar o leitor")); };
+    document.head.appendChild(s);
+  });
+  return ocrPronto;
+}
+
+/* Recorta a faixa do nome de dentro da moldura que aparece na tela.
+   Os números vêm da proporção real da carta (63 × 88 mm): o nome ocupa
+   de 4,5% a 11% da altura, e some nas bordas laterais. */
+function recorteDoNome(video, moldura){
+  const c = document.createElement("canvas");
+  const larguraFonte = video.videoWidth || 1280;
+  const alturaFonte = video.videoHeight || 720;
+  const x = moldura.x * larguraFonte;
+  const y = (moldura.y + moldura.h * 0.045) * alturaFonte;
+  const w = moldura.w * larguraFonte;
+  const h = moldura.h * 0.075 * alturaFonte;
+  // 3× para o OCR ter pixel com que trabalhar: faixa de nome é fina
+  c.width = Math.round(w * 3);
+  c.height = Math.round(h * 3);
+  const ctx = c.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(video, x, y, w, h, 0, 0, c.width, c.height);
+  return contrastar(c);
+}
+
+/* Preto no branco, sem meio-termo: o OCR lê muito melhor assim do que
+   com a arte da carta aparecendo por trás das letras. */
+function contrastar(canvas){
+  const ctx = canvas.getContext("2d");
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const d = img.data;
+  let soma = 0;
+  for(let i = 0; i < d.length; i += 4) soma += (d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114);
+  const media = soma / (d.length / 4);
+  for(let i = 0; i < d.length; i += 4){
+    const cinza = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+    const v = cinza > media ? 255 : 0;
+    d[i] = d[i+1] = d[i+2] = v;
+  }
+  ctx.putImageData(img, 0, 0);
+  return canvas;
+}
+
+/* O que volta do OCR vem sujo: quebra de linha, símbolo de mana virando
+   letra, espaço dobrado. Isto é o mínimo para a busca aproximada casar. */
+function limparTextoLido(t){
+  return String(t || "")
+    .replace(/[\r\n]+/g, " ")
+    .replace(/[^A-Za-zÀ-ÿ0-9'’,.\- ]/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    /* A faixa do nome tem o CUSTO DE MANA no canto direito, na mesma
+       linha: tirados os símbolos, "Sol Ring" vira "Sol Ring 2 W".
+       A regra tira esse rabo — mas só quando ele TERMINA numa letra de
+       mana. Número sozinho no fim fica: existe nome de carta com número
+       ("Borrowing 100,000 Arrows"), e sobrar um "2" atrapalha menos a
+       busca aproximada do que comer parte do nome. */
+    .replace(/(?:\s+(?:\d{1,2}|[WUBRGCXwubrgcx])){0,6}\s+[WUBRGCXwubrgcx]$/, "")
+    .trim()
+    .slice(0, 60);
+}
+
+/* troca a promessa do OCR por outra: é o que deixa o teste rodar o fluxo
+   inteiro sem baixar 8 MB nem ter câmera */
+let lerTextoDaImagem = async function(canvas){
+  const T = await carregarOCR();
+  const worker = await T.createWorker("eng");
+  try{
+    await worker.setParameters({
+      tessedit_char_whitelist: OCR_LETRAS,
+      tessedit_pageseg_mode: "7",          // uma linha de texto, e só
+    });
+    const { data } = await worker.recognize(canvas);
+    return data.text || "";
+  } finally { await worker.terminate().catch(() => {}); }
+};
+
+/* nome aproximado: o Scryfall perdoa letra trocada, que é exatamente o
+   tipo de erro que o OCR comete */
+async function cartaPorNomeAproximado(texto){
+  const t = limparTextoLido(texto);
+  if(t.length < 3) return null;
+  try{
+    const r = await fetch(`${API}/cards/named?fuzzy=${encodeURIComponent(t)}`,
+                          { headers:{ Accept:"application/json" } });
+    if(!r.ok) return null;
+    const j = await r.json();
+    // o Scryfall responde 404 quando não acha; alguns intermediários devolvem
+    // 200 com o mesmo corpo de erro, então o corpo também é conferido
+    if(!j || j.object === "error" || !j.id) return null;
+    return normalize(j);
+  }catch(e){ return null; }
+}
+
+let camera = { fluxo:null, video:null, moldura:{ x:0.12, y:0.12, w:0.76, h:0.76 } };
+
+function pararCamera(){
+  if(camera.fluxo){ camera.fluxo.getTracks().forEach(t => t.stop()); camera.fluxo = null; }
+  camera.video = null;
+}
+
+function abrirEscanear(){
+  modal(`<div class="modal-pad escanear">
+    <h3>Escanear carta</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      Aponte a câmera para a carta e encaixe a <b>linha do nome</b> dentro da faixa.
+      Leio só essa faixa — é o que torna a leitura rápida.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 14px">
+      A primeira leitura baixa <b>cerca de 8 MB</b> do reconhecedor de texto; depois disso
+      ele fica guardado no navegador. <b>Nada é marcado sozinho</b> — você confere a carta antes.
+    </p>
+    <div class="cam-caixa" id="cam-caixa">
+      <video id="cam-video" playsinline muted></video>
+      <div class="cam-guia"><div class="cam-nome"></div></div>
+    </div>
+    <div class="pergunta-acoes" style="margin-top:14px">
+      <button class="btn" id="cam-ligar">Ligar a câmera</button>
+      <button class="btn" id="cam-ler" hidden>Ler a carta</button>
+      <button class="btn ghost" id="cam-fechar">Fechar</button>
+    </div>
+    <div class="status" id="cam-status" style="margin-top:10px"></div>
+    <div id="cam-achado"></div>
+  </div>`);
+
+  const st = document.getElementById("cam-status");
+  const video = document.getElementById("cam-video");
+  const bLigar = document.getElementById("cam-ligar");
+  const bLer = document.getElementById("cam-ler");
+
+  document.getElementById("cam-fechar").onclick = () => { pararCamera(); closeModal(); };
+
+  bLigar.onclick = async () => {
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      st.innerHTML = `<span style="color:var(--neg)">este navegador não abre a câmera</span>
+        — dá para cadastrar digitando, em Conferir em massa`;
+      return;
+    }
+    st.textContent = "pedindo a câmera…";
+    try{
+      camera.fluxo = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } }, audio: false });
+      video.srcObject = camera.fluxo;
+      camera.video = video;
+      await video.play().catch(() => {});
+      bLigar.hidden = true; bLer.hidden = false;
+      st.textContent = "encaixe o nome da carta na faixa e toque em Ler";
+    }catch(e){
+      st.innerHTML = `<span style="color:var(--neg)">não consegui abrir a câmera</span>
+        — o navegador pode ter negado a permissão. Dá para liberar nos ajustes do site.`;
+    }
+  };
+
+  bLer.onclick = async () => {
+    bLer.disabled = true;
+    document.getElementById("cam-achado").innerHTML = "";
+    st.textContent = "lendo…";
+    try{
+      const recorte = recorteDoNome(camera.video || video, camera.moldura);
+      const texto = await lerTextoDaImagem(recorte);
+      const limpo = limparTextoLido(texto);
+      if(!limpo){ st.textContent = "não consegui ler nada — tente com mais luz"; bLer.disabled = false; return; }
+      st.textContent = `li “${limpo}” — procurando…`;
+      const carta = await cartaPorNomeAproximado(limpo);
+      mostrarAchado(carta, limpo);
+    }catch(e){
+      st.innerHTML = `<span style="color:var(--neg)">${escapeHTML(e.message)}</span>`;
+    }
+    bLer.disabled = false;
+  };
+}
+
+/* A confirmação é obrigatória: o OCR erra, e gravar errado sem perguntar
+   seria pior do que não ter a função. */
+function mostrarAchado(carta, textoLido){
+  const alvo = document.getElementById("cam-achado");
+  const st = document.getElementById("cam-status");
+  if(!alvo) return;
+
+  if(!carta){
+    st.textContent = "";
+    alvo.innerHTML = `
+      <div class="nota-regiao" style="margin-top:12px">
+        <b>Não achei carta com esse nome.</b> Li <b>“${escapeHTML(textoLido)}”</b> —
+        corrija o que estiver errado e procure de novo. Uma letra costuma resolver.
+      </div>
+      <label class="field" style="margin-top:10px"><span>Nome lido</span>
+        <input type="text" id="cam-corrigir" value="${escapeHTML(textoLido)}"></label>
+      <div class="pergunta-acoes" style="margin-top:10px">
+        <button class="btn" id="cam-procurar">Procurar de novo</button>
+      </div>`;
+    document.getElementById("cam-procurar").onclick = async () => {
+      const t = document.getElementById("cam-corrigir").value;
+      st.textContent = "procurando…";
+      mostrarAchado(await cartaPorNomeAproximado(t), limparTextoLido(t));
+    };
+    return;
+  }
+
+  const ja = qtdDe(carta.id);
+  st.textContent = "";
+  alvo.innerHTML = `
+    <div class="cam-achado" id="cam-carta">
+      ${carta.small ? `<img src="${escapeHTML(carta.small)}" alt="">` : ""}
+      <div>
+        <b>${escapeHTML(carta.name)}</b>
+        <span>${escapeHTML(carta.setName || carta.set || "")}${carta.num ? ` · #${escapeHTML(String(carta.num))}` : ""}</span>
+        ${ja ? `<em>você já tem ${ja}</em>` : ""}
+        ${textoLido && semAcento(textoLido) !== semAcento(carta.name)
+          ? `<em>li “${escapeHTML(textoLido)}”</em>` : ""}
+      </div>
+    </div>
+    <div class="pergunta-acoes" style="margin-top:12px">
+      <button class="btn" id="cam-confirmar">${ja ? "É esta — somar mais uma" : "É esta — marcar que tenho"}</button>
+      <button class="btn ghost" id="cam-nao">Não é esta</button>
+    </div>`;
+
+  document.getElementById("cam-confirmar").onclick = () => {
+    if(ja) definirQtd(carta.id, ja + 1);
+    else { S.owned[carta.id] = resumoCarta(carta); save(); }
+    renderKPIs();
+    toast(`${carta.name} — ${ja ? ja + 1 : 1} na coleção`);
+    alvo.innerHTML = "";
+    document.getElementById("cam-status").textContent = "pronto. Aponte para a próxima carta.";
+  };
+  document.getElementById("cam-nao").onclick = () => mostrarAchado(null, textoLido);
+}
+
+function paginas(){ return S.paginas || (S.paginas = []); }
+
+/* código curto e aleatório. Não é sequencial de propósito: número que
+   anda de um em um deixa qualquer um contar e folhear o que os outros
+   publicaram. */
+function novoEndereco(){
+  const alfabeto = "abcdefghijkmnopqrstuvwxyz23456789";   // sem l/1/0/o
+  const n = new Uint8Array(10);
+  (crypto && crypto.getRandomValues ? crypto : { getRandomValues: a => {
+    for(let i = 0; i < a.length; i++) a[i] = Math.floor(Math.random() * 256);
+  }}).getRandomValues(n);
+  return [...n].map(x => alfabeto[x % alfabeto.length]).join("");
+}
+
+function linkDaPagina(slug){
+  return location.origin + location.pathname + "#p/" + slug;
+}
+
+/* o que vai para a página: o mínimo que faz sentido para quem olha */
+function cartasParaPagina(lista){
+  return lista.slice(0, 2000).map(c => ({
+    id: c.id, n: c.name, s: c.set, num: c.num, r: c.rarity,
+    q: c.qtd || c.copias || 1, img: c.small,
+  }));
+}
+
+function abrirCompartilharPagina(titulo, lista, idDaColecao){
+  const jaTem = paginas().find(p => p.colecao === idDaColecao);
+  const total = lista.reduce((a, c) => a + (c.qtd || c.copias || 1), 0);
+  const valor = lista.reduce((a, c) => a + (Number(c.unit || c.usd) || 0) * (c.qtd || c.copias || 1), 0);
+
+  modal(`<div class="modal-pad">
+    <h3>Página pública</h3>
+    <p style="color:var(--muted);font-size:13px;margin:6px 0 4px">
+      Gera um link que qualquer pessoa abre — sem instalar nada, sem criar conta.
+      É o jeito mais curto de mostrar a sua coleção para o grupo.</p>
+    <p style="color:var(--faint);font-size:12.5px;margin:0 0 14px">
+      Vai <b>${total.toLocaleString("pt-BR")} carta${total === 1 ? "" : "s"}</b> de
+      <b>${escapeHTML(titulo)}</b>: nome, edição, número e quantidade.
+      <b>Não vai</b> o que você pagou nem onde a carta está guardada.</p>
+
+    <label class="field"><span>Título da página</span>
+      <input type="text" id="pp-titulo" maxlength="80" value="${escapeHTML((jaTem && jaTem.titulo) || titulo)}"></label>
+    <label class="field"><span>Seu apelido (opcional)</span>
+      <input type="text" id="pp-apelido" maxlength="40" placeholder="como o pessoal te chama"
+             value="${escapeHTML((jaTem && jaTem.apelido) || "")}"></label>
+    <label class="field"><span>Recado (opcional)</span>
+      <input type="text" id="pp-recado" maxlength="300" placeholder="ex.: troco repetidas, chamem no grupo"
+             value="${escapeHTML((jaTem && jaTem.recado) || "")}"></label>
+
+    <label class="chave" style="margin-top:6px">
+      <input type="checkbox" id="pp-valor" ${jaTem && jaTem.valor ? "checked" : ""}>
+      <span><b>Mostrar quanto vale (${money(valor)})</b>
+        <small>vem desligado de propósito: valor à vista, com apelido do lado, é convite
+        para o tipo errado de visita</small></span>
+    </label>
+
+    <div class="pergunta-acoes" style="margin-top:16px">
+      <button class="btn" id="pp-publicar">${jaTem ? "Atualizar a página" : "Gerar o link"}</button>
+      ${jaTem ? `<button class="btn ghost" id="pp-tirar">Despublicar</button>` : ""}
+      <button class="btn ghost" id="pp-fechar">Fechar</button>
+    </div>
+    <div class="status" id="pp-status" style="margin-top:10px">${
+      logado() ? "" : "precisa entrar numa conta: é ela que segura a página no ar"}</div>
+    <div id="pp-link"></div>
+  </div>`);
+
+  const st = document.getElementById("pp-status");
+  document.getElementById("pp-fechar").onclick = closeModal;
+
+  const mostrarLink = slug => {
+    document.getElementById("pp-link").innerHTML = `
+      <div class="minha-copia" style="margin-top:14px">
+        <span class="flabel">O link</span>
+        <input type="text" id="pp-url" readonly value="${escapeHTML(linkDaPagina(slug))}">
+        <div class="pergunta-acoes" style="margin-top:10px">
+          <button class="btn ghost" id="pp-copiar">Copiar</button>
+          <button class="btn ghost" id="pp-abrir">Abrir para conferir</button>
+        </div>
+      </div>`;
+    document.getElementById("pp-copiar").onclick = async () => {
+      const campo = document.getElementById("pp-url");
+      try{ await navigator.clipboard.writeText(campo.value); toast("link copiado"); }
+      catch(e){ campo.select(); toast("selecionei o link — copie com ⌘C"); }
+    };
+    document.getElementById("pp-abrir").onclick = () => { closeModal(); go("pagina", slug); };
+  };
+  if(jaTem) mostrarLink(jaTem.slug);
+
+  document.getElementById("pp-publicar").onclick = async () => {
+    if(!logado()){ closeModal(); return telaDeEntrada(); }
+    const slug = (jaTem && jaTem.slug) || novoEndereco();
+    const dados = {
+      titulo: (document.getElementById("pp-titulo").value || titulo).trim(),
+      apelido: document.getElementById("pp-apelido").value.trim(),
+      recado: document.getElementById("pp-recado").value.trim(),
+      valor: document.getElementById("pp-valor").checked,
+    };
+    st.textContent = "publicando…";
+    try{
+      await rpc("shared_publish", {
+        p_slug: slug, p_titulo: dados.titulo, p_apelido: dados.apelido || null,
+        p_recado: dados.recado || null, p_cartas: cartasParaPagina(lista),
+        p_mostra_valor: dados.valor, p_valor_usd: dados.valor ? Number(valor.toFixed(2)) : null,
+      });
+      const registro = Object.assign({ slug, colecao: idDaColecao, em: Date.now() }, dados);
+      const i = paginas().findIndex(p => p.slug === slug);
+      if(i >= 0) paginas()[i] = registro; else paginas().push(registro);
+      save();
+      st.textContent = "no ar";
+      mostrarLink(slug);
+    }catch(e){ st.innerHTML = `<span style="color:var(--neg)">${escapeHTML(e.message)}</span>`; }
+  };
+
+  const tirar = document.getElementById("pp-tirar");
+  if(tirar) tirar.onclick = async () => {
+    try{ await rpc("shared_delete", { p_slug: jaTem.slug }); }catch(e){}
+    S.paginas = paginas().filter(p => p.slug !== jaTem.slug); save();
+    closeModal();
+    toast("página despublicada — o link não abre mais");
+  };
+}
+
+/* ---------------- a página, vista por quem chegou pelo link ---------------- */
+let paginaVista = { slug:null, dados:null, carregando:false };
+
+async function renderPagina(slug){
+  document.body.classList.add("so-pagina");
+  if(paginaVista.slug !== slug){
+    paginaVista = { slug, dados:null, carregando:true };
+    app.innerHTML = `<div class="empty">abrindo a página…</div>`;
+    try{
+      const r = await fetch(`${SUPA_URL}/rest/v1/rpc/shared_read`, {
+        method:"POST",
+        headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}`,
+                  "Content-Type":"application/json", Accept:"application/json" },
+        body: JSON.stringify({ p_slug: slug }),
+      });
+      paginaVista.dados = r.ok ? await r.json() : null;
+    }catch(e){ paginaVista.dados = null; }
+    paginaVista.carregando = false;
+  }
+
+  const d = paginaVista.dados;
+  if(!d){
+    app.innerHTML = `
+      <div class="pagina-pub">
+        <div class="empty">
+          <b>Esta página não existe mais.</b><br>
+          Quem publicou pode ter despublicado — despublicar aqui apaga de verdade.
+        </div>
+        ${rodapePagina()}
+      </div>`;
+    ligarRodapePagina();
+    return;
+  }
+
+  const cartas = d.cartas || [];
+  app.innerHTML = `
+    <div class="pagina-pub">
+      <header class="pp-cab">
+        <h1>${escapeHTML(d.titulo)}</h1>
+        <p>${d.apelido ? `coleção de <b>${escapeHTML(d.apelido)}</b> · ` : ""}${
+          d.n_cartas.toLocaleString("pt-BR")} carta${d.n_cartas === 1 ? "" : "s"}${
+          d.valor_usd ? ` · ${money(Number(d.valor_usd))}` : ""}</p>
+        ${d.recado ? `<p class="pp-recado">${escapeHTML(d.recado)}</p>` : ""}
+      </header>
+
+      <div class="cards" id="pp-grade">
+        ${cartas.map(c => `
+          <div class="card owned" title="${escapeHTML(c.n)}">
+            ${c.img ? `<img loading="lazy" src="${escapeHTML(c.img)}" alt="${escapeHTML(c.n)}">`
+                    : `<div class="sem-arte">${escapeHTML(c.n)}</div>`}
+            ${c.q > 1 ? `<span class="copias">×${c.q}</span>` : ""}
+            <div class="cap"><span class="cap-nome">${escapeHTML(c.n)}</span>
+              <span class="cap-preco">${escapeHTML(String(c.s || "").toUpperCase())}</span></div>
+          </div>`).join("")}
+      </div>
+      ${rodapePagina()}
+    </div>`;
+  ligarRodapePagina();
+}
+
+function rodapePagina(){
+  return `
+    <div class="pp-rodape">
+      <div>
+        <b>Isto é uma coleção no Velvo.</b>
+        <span>Um app para guardar quais cartas você tem, quais quer, e quanto isso vale.
+        Funciona no navegador, dá para pôr na tela de início e não custa nada.</span>
+      </div>
+      <button class="btn" id="pp-quero">Quero um desses</button>
+    </div>
+    <p class="status" style="margin-top:18px">Velvo é conteúdo de fã não oficial, permitido pela
+    Fan Content Policy. Não aprovado nem endossado pela Wizards. Cartas e preços do Scryfall.</p>`;
+}
+
+function ligarRodapePagina(){
+  const b = document.getElementById("pp-quero");
+  if(b) b.onclick = () => {
+    // sai do modo página e entra no app de verdade, do começo
+    history.replaceState(null, "", location.pathname + location.search);
+    document.body.classList.remove("so-pagina");
+    paginaVista = { slug:null, dados:null, carregando:false };
+    go("home");
+    setTimeout(abrirPrimeiraAbertura, 300);
+  };
+}
+
+/* o endereço manda: `#p/<código>` abre a página em vez do app */
+function enderecoDePagina(){
+  const m = (location.hash || "").match(/^#p\/([a-z0-9]{8,16})$/i);
+  return m ? m[1].toLowerCase() : "";
 }
 
 function abrirBuscaTudo(){
@@ -12244,7 +12820,7 @@ function shareCollection(def){
 
 /* as chaves que compõem o seu estado; qualquer coisa nova entra aqui */
 const CHAVES_BACKUP = ["owned","custom","totals","exclusoes","inclusoes","uniques",
-                       "selados","capas","decks","chase","mesa","config"];
+                       "selados","capas","decks","chase","mesa","config","paginas"];
 
 function pacoteDeBackup(){
   const fora = { app:"collector-backup", versao:2, em:new Date().toISOString() };
@@ -12293,6 +12869,12 @@ function restaurarBackup(obj){
   };
   S.custom = juntarPorId(S.custom, obj.custom);
   S.decks  = juntarPorId(S.decks,  obj.decks);
+  // as páginas publicadas viajam junto: sem isto, trocar de aparelho perde
+  // o registro de qual link está no ar e a pessoa não consegue despublicar
+  if(obj.paginas){
+    const slugs = new Set((S.paginas || []).map(p => p.slug));
+    S.paginas = (S.paginas || []).concat((obj.paginas || []).filter(p => p && !slugs.has(p.slug)));
+  }
 
   if(obj.chase){
     S.chase = S.chase || { grupos:[], cartas:[] };
@@ -15313,11 +15895,18 @@ matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
   if(temaAtual() === "sistema") aplicarTema();
 });
 carregarCambio().then(()=>{ if(regiao().moeda === "BRL") render(); else renderKPIs(); });
-render();
+
+/* Quem chega por um link de página não está abrindo o app: está olhando a
+   coleção de alguém. Então a página vem no lugar do app inteiro, e só
+   quem tocar em "quero um desses" entra de verdade. */
+const ENDERECO_DE_PAGINA = enderecoDePagina();
+if(ENDERECO_DE_PAGINA) go("pagina", ENDERECO_DE_PAGINA);
+else render();
 
 /* a primeira abertura vem depois da tela pintada, para a pessoa ver o app
    por trás e entender que ela está entrando em algo, não sendo barrada */
-if(precisaDaPrimeiraAbertura()) setTimeout(abrirPrimeiraAbertura, 500);
+if(ENDERECO_DE_PAGINA){ /* visitante: nenhuma janela na frente da coleção */ }
+else if(precisaDaPrimeiraAbertura()) setTimeout(abrirPrimeiraAbertura, 500);
 else if(novidadesNaoVistas().length) setTimeout(() => abrirNovidades(false), 800);
 else if(!S.config.versaoVista){ S.config.versaoVista = VERSAO; save(); }
 </script>
