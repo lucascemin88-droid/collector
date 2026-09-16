@@ -287,6 +287,26 @@
     border-bottom:2px solid var(--accent)}
   .cam-nome span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;
     color:var(--accent);opacity:.85;white-space:nowrap}
+  /* a lista de edições dentro do escaneamento: o OCR lê o nome, e nome
+     não diz qual impressão nem se é foil */
+  .cam-versoes{margin-top:14px}
+  .cam-versoes .versoes{max-height:250px}
+  .cam-versoes .versao.escolhida{border-color:var(--accent);background:var(--accent-soft)}
+  .cam-versoes .set-simbolo{flex:0 0 auto;width:18px;height:18px}
+  .cam-versoes .set-simbolo.vazio{width:auto;font-size:10px;letter-spacing:.05em;
+    color:var(--muted);padding-right:4px}
+  /* No celular a linha de uma coluna só espremia o nome da edição até
+     sobrar o símbolo: com dois ou três botões de acabamento do lado, não
+     há largura para "Commander Masters · #381 · 2023". Então a linha
+     quebra — edição em cima, acabamentos embaixo — e o que a pessoa
+     precisa ler para escolher fica legível. */
+  @media (max-width:640px){
+    .cam-versoes .versao{flex-wrap:wrap;padding:9px 10px}
+    .cam-versoes .versao-mini{width:30px}
+    .cam-versoes .versao-nome{flex:1 1 auto;white-space:normal}
+    .cam-versoes .versao-nome small{white-space:normal}
+    .cam-versoes .versao-acabs{flex:1 0 100%;justify-content:flex-start;margin-top:2px}
+  }
   .cam-recorte{margin-top:12px;padding:10px 12px;border-radius:var(--r-sm);
     background:var(--surface-1);border:1px solid var(--line)}
   .cam-recorte>span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
@@ -5895,8 +5915,9 @@ function abrirReportarProblema(){
    discreto quando a versão troca. A lista é escrita à mão de propósito —
    changelog gerado de commit é ruído para quem não programa.
    ===================================================================== */
-const VERSAO = "0.27";
+const VERSAO = "0.28";
 const NOVIDADES = [
+  ["0.28", "Ao escanear, o app agora pergunta QUAL edição e se é foil antes de marcar — nome de carta não diz impressão, e impressão é o que manda no preço. A edição lida vem marcada, então passar um monte de carta continua sendo um toque."],
   ["0.27", "Três correções: a câmera agora mira onde a moldura mostra (era esse o motivo de não ler carta nenhuma), a faixa do nome ficou maior e o app mostra o pedaço que leu; o sino apaga TODOS os avisos depois de lido, inclusive fechando no ×; e o modo mesa ganhou uma versão de celular — quem está do outro lado lê a vida de frente, o toque mostra o quanto tirou, e veneno e dano de comandante ficam atrás do nome do jogador."],
   ["0.26", "O ícone na tela de início agora é a gema do Velvo. Se no seu ainda estiver o antigo, tire da tela de início e ponha de novo — o iPhone guarda o ícone de quando você adicionou."],
   ["0.25", "Página pública da coleção: um link que qualquer pessoa abre sem instalar nada. E escanear carta pela câmera — o app lê o nome e você confirma."],
@@ -6426,7 +6447,8 @@ async function cartaPorNomeAproximado(texto){
   }catch(e){ return null; }
 }
 
-let camera = { fluxo:null, video:null, moldura:{ x:0.12, y:0.12, w:0.76, h:0.76 } };
+let camera = { fluxo:null, video:null, moldura:{ x:0.12, y:0.12, w:0.76, h:0.76 },
+               carta:null, versoes:[], escolha:null, lido:"" };
 
 function pararCamera(){
   if(camera.fluxo){ camera.fluxo.getTracks().forEach(t => t.stop()); camera.fluxo = null; }
@@ -6554,6 +6576,7 @@ function mostrarAchado(carta, textoLido){
 
   if(!carta){
     st.textContent = "";
+    camera.carta = null; camera.versoes = []; camera.escolha = null;
     alvo.innerHTML = `
       <div class="nota-regiao" style="margin-top:12px">
         <b>Não achei carta com esse nome.</b> Li <b>“${escapeHTML(textoLido)}”</b> —
@@ -6572,7 +6595,17 @@ function mostrarAchado(carta, textoLido){
     return;
   }
 
-  const ja = qtdDe(carta.id);
+  /* O OCR lê o NOME, e nome não identifica impressão: Sol Ring tem mais
+     de trinta. Gravar a que o Scryfall devolveu primeiro seria chutar a
+     edição — e com ela o preço, que é o número que o app inteiro usa.
+     Então a tela pergunta: qual edição, e foil ou não. A que foi lida
+     vem marcada, para quem estiver passando um monte de carta só tocar
+     em confirmar. */
+  camera.lido = textoLido;
+  camera.escolha = { id:carta.id, fin:finalPadrao(carta) };
+  camera.versoes = [carta];
+  camera.carta = carta;
+
   st.textContent = "";
   alvo.innerHTML = `
     <div class="cam-achado" id="cam-carta">
@@ -6580,25 +6613,151 @@ function mostrarAchado(carta, textoLido){
       <div>
         <b>${escapeHTML(carta.name)}</b>
         <span>${escapeHTML(carta.setName || carta.set || "")}${carta.num ? ` · #${escapeHTML(String(carta.num))}` : ""}</span>
-        ${ja ? `<em>você já tem ${ja}</em>` : ""}
         ${textoLido && semAcento(textoLido) !== semAcento(carta.name)
           ? `<em>li “${escapeHTML(textoLido)}”</em>` : ""}
       </div>
     </div>
+    <div id="cam-versoes" class="cam-versoes"><div class="carregando">vendo as edições…</div></div>
     <div class="pergunta-acoes" style="margin-top:12px">
-      <button class="btn" id="cam-confirmar">${ja ? "É esta — somar mais uma" : "É esta — marcar que tenho"}</button>
-      <button class="btn ghost" id="cam-nao">Não é esta</button>
+      <button class="btn" id="cam-confirmar">Marcar que tenho</button>
+      <button class="btn ghost" id="cam-nao">Não é esta carta</button>
     </div>`;
 
-  document.getElementById("cam-confirmar").onclick = () => {
-    if(ja) definirQtd(carta.id, ja + 1);
-    else { S.owned[carta.id] = resumoCarta(carta); save(); }
-    renderKPIs();
-    toast(`${carta.name} — ${ja ? ja + 1 : 1} na coleção`);
-    alvo.innerHTML = "";
-    document.getElementById("cam-status").textContent = "pronto. Aponte para a próxima carta.";
-  };
+  document.getElementById("cam-confirmar").onclick = confirmarEscaneada;
   document.getElementById("cam-nao").onclick = () => mostrarAchado(null, textoLido);
+  pintarVersoesDaCamera();
+  carregarVersoesDaCamera(carta);
+}
+
+/* nonfoil quando existe; senão o único acabamento que a impressão tem —
+   carta que só sai em foil não pode começar marcada como normal */
+function finalPadrao(c){
+  const a = (c.acabamentos || []).filter(x => ["nonfoil","foil","etched"].includes(x));
+  if(!a.length || a.includes("nonfoil")) return "normal";
+  return a[0];
+}
+const acabsDe = c => {
+  const a = (c.acabamentos || []).filter(x => ["nonfoil","foil","etched"].includes(x));
+  return (a.length ? a : ["nonfoil"]).map(x => x === "nonfoil" ? "normal" : x);
+};
+
+async function carregarVersoesDaCamera(carta){
+  const pedido = carta.id;
+  carregarSets().then(() => { if(camera.carta && camera.carta.id === pedido) pintarVersoesDaCamera(); })
+                .catch(() => {});
+  try{
+    const url = carta.impressoesUri
+      || `${API}/cards/search?q=${encodeURIComponent(`!"${carta.name}"`)}&unique=prints&order=released&dir=desc`;
+    const r = await fetch(url, { headers:{ Accept:"application/json" } });
+    if(!r.ok) throw new Error("não deu");
+    const j = await r.json();
+    if(!camera.carta || camera.carta.id !== pedido) return;      // já leu outra carta
+    const todas = (j.data || []).map(normalize).filter(v => v && v.id);
+    if(todas.length){
+      /* a impressão lida primeiro, depois as que você já tem, depois da
+         mais nova para a mais velha — que é a ordem em que o Scryfall
+         devolveu */
+      const lida = todas.filter(v => v.id === pedido);
+      const resto = todas.filter(v => v.id !== pedido);
+      camera.versoes = [...(lida.length ? lida : [carta]), ...resto];
+    }
+  }catch(e){ /* sem lista, fica só a impressão lida — e isso continua funcionando */ }
+  if(camera.carta && camera.carta.id === pedido) pintarVersoesDaCamera();
+}
+
+function pintarVersoesDaCamera(){
+  const alvo = document.getElementById("cam-versoes");
+  if(!alvo || !camera.carta) return;
+  const versoes = camera.versoes || [];
+  const escolhida = versoes.find(v => v.id === camera.escolha.id) || versoes[0];
+  const tenho = versoes.filter(v => isOwned(v.id)).length;
+
+  alvo.innerHTML = `
+    <div class="versoes-topo">
+      <span class="flabel">Qual é a sua? — ${versoes.length} ediç${versoes.length > 1 ? "ões" : "ão"}${
+        tenho ? ` · você já tem ${tenho}` : ""}</span>
+    </div>
+    <div class="versoes">
+      ${versoes.map(v => {
+        const marcada = v.id === camera.escolha.id;
+        const qtd = qtdDe(v.id);
+        return `<div class="versao ${marcada ? "escolhida" : ""}" data-v="${escapeHTML(v.id)}">
+          ${v.small ? `<img class="versao-mini" loading="lazy" src="${escapeHTML(v.small)}" alt="">` : ""}
+          ${simboloDoSet(v.set, v.setName)}
+          <span class="versao-nome">${escapeHTML(v.setName || (v.set || "").toUpperCase())}
+            <small>#${escapeHTML(String(v.num || ""))} · ${(v.released || "").slice(0,4)}${
+              rotuloVariante(v) ? " · " + escapeHTML(rotuloVariante(v)) : ""}${
+              v.id === camera.carta.id ? " · foi esta que eu li" : ""}${
+              qtd ? ` · você tem ${qtd}` : ""}</small></span>
+          <span class="versao-acabs">
+            ${acabsDe(v).map(chave => {
+              const preco = precoLocal(v, chave);
+              const on = marcada && camera.escolha.fin === chave;
+              return `<button class="vacab ${on ? "on" : ""}" data-v="${escapeHTML(v.id)}" data-acab="${chave}">
+                ${nomeAcabamento(v, chave)}${preco ? ` · ${formatarPreco(preco)}` : ""}</button>`;
+            }).join("")}
+          </span>
+        </div>`;
+      }).join("")}
+    </div>`;
+
+  alvo.onclick = e => {
+    const b = e.target.closest("[data-acab]") || e.target.closest("[data-v]");
+    if(!b) return;
+    const v = versoes.find(x => x.id === b.dataset.v);
+    if(!v) return;
+    camera.escolha = { id:v.id, fin:b.dataset.acab || (v.id === camera.escolha.id ? camera.escolha.fin : finalPadrao(v)) };
+    pintarVersoesDaCamera();
+    atualizarBotaoDaCamera();
+  };
+
+  const linha = alvo.querySelector(".versao.escolhida");
+  if(linha) linha.scrollIntoView({ block:"nearest" });
+  atualizarBotaoDaCamera();
+}
+
+function atualizarBotaoDaCamera(){
+  const b = document.getElementById("cam-confirmar");
+  if(!b || !camera.escolha) return;
+  const v = (camera.versoes || []).find(x => x.id === camera.escolha.id);
+  const ja = qtdDe(camera.escolha.id);
+  const fin = camera.escolha.fin;
+  const marca = v && fin !== "normal" ? ` ${nomeAcabamento(v, fin)}` : "";
+  const ed = v ? ` (${(v.set || "").toUpperCase()}${marca})` : "";
+  b.textContent = ja ? `Somar mais uma${ed}` : `Marcar que tenho${ed}`;
+}
+
+function confirmarEscaneada(){
+  const esc = camera.escolha;
+  const v = (camera.versoes || []).find(x => x.id === esc.id) || camera.carta;
+  if(!v) return;
+  const ja = qtdDe(v.id);
+  const finAntes = ja ? ((S.owned[v.id] || {}).fin || "normal") : null;
+  if(ja) definirQtd(v.id, ja + 1);
+  else {
+    v.acabamentoEscolhido = esc.fin;
+    S.owned[v.id] = resumoCarta(v);
+  }
+  /* o acabamento é da CÓPIA, não da impressão: quem tem a foil marca a
+     foil, e o preço da coleção passa a usar o preço de foil. O app guarda
+     UM acabamento por impressão, então somar uma foil onde já havia uma
+     normal passa as duas para foil — e a tela diz isso em vez de trocar
+     calado, porque é a diferença entre o preço normal e o de foil. */
+  S.owned[v.id].fin = esc.fin;
+  save();
+  renderKPIs();
+  const nome = nomeAcabamento(v, esc.fin);
+  const marca = esc.fin !== "normal" ? " " + nome : "";
+  toast(finAntes && finAntes !== esc.fin
+    ? `${v.name} · ${(v.set || "").toUpperCase()} — ${ja + 1} na coleção, agora como ${nome}`
+    : `${v.name} · ${(v.set || "").toUpperCase()}${marca} — ${ja ? ja + 1 : 1} na coleção`);
+  camera.carta = null; camera.versoes = []; camera.escolha = null;
+  const alvo = document.getElementById("cam-achado");
+  if(alvo) alvo.innerHTML = "";
+  const st = document.getElementById("cam-status");
+  if(st) st.textContent = "pronto. Aponte para a próxima carta.";
+  const rec = document.getElementById("cam-recorte");
+  if(rec) rec.hidden = true;
 }
 
 function paginas(){ return S.paginas || (S.paginas = []); }
